@@ -37,10 +37,13 @@ education/
 │   │   ├── navbar.js       Comportamiento del menú fijo
 │   │   ├── typer.js        Texto animado del buscador grande
 │   │   ├── icons.js        Iconos SVG por tipo de recurso
-│   │   └── utils.js        Utilidades compartidas
+│   │   ├── utils.js        Utilidades compartidas
+│   │   └── descargas.js    Descargas de archivos dentro de los recursos interactivos
+│   ├── deck/               Reproductor de presentaciones y plantillas (CSS, JS, iconos)
+│   ├── libs/               Librerías de terceros (jsPDF)
 │   ├── fonts/              Archivo (variable), autoalojada + licencia OFL
 │   └── img/                Foto de perfil y favicon
-└── recursos/               Copias HTML de tus recursos (opcional, ver abajo)
+└── recursos/               Los 45 recursos, una carpeta por recurso (ver abajo)
 ```
 
 ---
@@ -58,7 +61,7 @@ Abre `data/recursos.json` y agrega un objeto al final de la lista (cuida la coma
   "semana": 12,
   "temas": ["ciudadanía digital", "gamificación"],
   "descripcion": "Una o dos frases sobre qué es y cómo se usa en clase.",
-  "enlace": "recursos/mi-nuevo-juego/index.html",
+  "enlace": "recursos/mi-nuevo-juego/",
   "fecha": "2026-11-25"
 }
 ```
@@ -72,7 +75,7 @@ Abre `data/recursos.json` y agrega un objeto al final de la lista (cuida la coma
 | `semana` | No | Número de semana del curso. Si no aplica, omite el campo. |
 | `temas` | Sí | Lista de temas. Alimentan el buscador, el filtro de temas y la marquesina. Reutiliza los existentes cuando se pueda. |
 | `descripcion` | Sí | Una o dos frases. |
-| `enlace` | Sí | URL completa o ruta dentro del repositorio. |
+| `enlace` | Sí | Carpeta del recurso dentro de `recursos/` (o una URL externa pública). |
 | `fecha` | Sí | `AAAA-MM-DD`. Ordena «Más recientes» y muestra la etiqueta «Nuevo» durante 21 días. |
 
 Guarda, haz commit y push. GitHub Pages lo publica en uno o dos minutos.
@@ -83,23 +86,48 @@ En `data/cursos.json`, agrega un objeto con `id`, `nombre`, `corto` (nombre brev
 
 ### Agregar un tipo de recurso
 
-En `data/tipos.json`, agrega `id`, `nombre`, `plural` e `icono`. Los iconos disponibles están en `assets/js/icons.js` (`presentacion`, `juego`, `quiz`, `guia`, `plantilla`, `ejemplo`, `video`, `enlace`); para uno nuevo, agrega su SVG allí.
+En `data/tipos.json`, agrega `id`, `nombre`, `plural` e `icono`. Los iconos disponibles están en `assets/js/icons.js` (`presentacion`, `juego`, `quiz`, `plantilla`, `ejemplo`, `video`, `enlace`); para uno nuevo, agrega su SVG allí.
 
 ---
 
-## Alojar los recursos en el mismo repositorio
+## Recursos alojados en el sitio
 
-Para que cualquier visitante pueda abrir un recurso, su enlace debe ser público. La forma más estable es guardar cada recurso en `recursos/`, uno por carpeta:
+Todos los recursos viven dentro del proyecto, en `recursos/`, uno por carpeta. Al abrirlos desde una ficha se cargan en una pestaña nueva del mismo sitio, sin depender de otra plataforma.
 
 ```
 recursos/
-└── netiqueta-el-otro-lado-de-la-pantalla/
-    └── index.html
+├── hackea-al-estudiante/
+│   └── index.html              ← juego o recurso interactivo
+└── produccion-audiovisual/
+    ├── index.html              ← presentación
+    └── img/                    ← imágenes de esa presentación
 ```
 
-y usar `"enlace": "recursos/netiqueta-el-otro-lado-de-la-pantalla/index.html"`.
+En `data/recursos.json`, el enlace es la carpeta: `"enlace": "recursos/hackea-al-estudiante/"`.
 
-> Varios enlaces actuales apuntan a artefactos privados de Claude (`claude.ai/artifact/...`). Mientras no los compartas públicamente o los copies a `recursos/`, los visitantes no podrán abrirlos.
+### Presentaciones
+
+Las presentaciones usan un reproductor común (`assets/deck/`). Cada diapositiva es un `<section>` de 1920 × 1080 px dentro de `.stage`:
+
+```html
+<body data-deck="mi-presentacion" data-course="Interacción Digital">
+<main class="stage-wrap"><div class="stage">
+  <section style="background:#fff;padding:128px">…</section>
+  <section>…</section>
+</div></main>
+<script src="../../assets/deck/deck.js"></script>
+</body>
+```
+
+con `<link rel="stylesheet" href="../../assets/deck/deck.css">` en el `<head>`. El reproductor agrega la barra de control, la vista general (tecla G), pantalla completa (F), navegación con flechas o deslizando el dedo, enlace directo a una diapositiva (`#5`) e impresión o PDF con una diapositiva por página.
+
+### Plantillas y fichas para llenar
+
+Si el `<body>` lleva el atributo `data-fillable`, cada texto entre corchetes (`[Escribe tu frase]`, `[ ]`) se convierte en un espacio para escribir. El estudiante pulsa **Llenar**, completa los espacios, y lo que escribe se guarda en su navegador; con **PDF** lo descarga para entregarlo y con **Borrar** empieza de nuevo.
+
+### Recursos interactivos
+
+Los juegos, quizzes e infografías son páginas HTML completas. Si un recurso descarga archivos, incluye antes de sus scripts `<script src="../../assets/js/descargas.js"></script>`, que hace la descarga desde el navegador. Las librerías externas van en `assets/libs/` (por ejemplo, `assets/libs/jspdf/`).
 
 ---
 

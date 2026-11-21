@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Infografía deficiente - actividad de rediseño</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  h1.page-title{text-align:center;font-size:20px;font-weight:700;margin:0 0 6px;}
+  p.page-sub{text-align:center;color:#666;font-size:14px;margin:0 0 26px;}
+  .stage{max-width:520px;margin:0 auto;}
+
+  /* La pieza deficiente en sí */
+  .poster{background:#fffef0;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.08);padding:18px 16px;}
+  .poster .top{background:#ff5e00;padding:14px;text-align:center;margin-bottom:14px;}
+  .poster .top h2{margin:0;font-family:Georgia,serif;color:#00d9ff;font-size:24px;font-weight:700;text-shadow:1px 1px #000;}
+
+  .row{display:flex;gap:6px;margin-bottom:6px;}
+  .card{padding:10px;border-radius:2px;}
+  .card p{margin:0;line-height:1.25;}
+
+  /* tarjeta 1: bien intencionada, pero pequeña y perdida (info mas importante, jerarquia invertida) */
+  .c1{background:#fff;width:60%;border:1px solid #ddd;}
+  .c1 p{font-size:10px;color:#999;font-family:Arial;}
+
+  /* tarjeta 2: gigante y llamativa aunque es un dato secundario (jerarquia invertida) */
+  .c2{background:#7b2fff;width:40%;display:flex;align-items:center;justify-content:center;}
+  .c2 p{font-size:20px;color:#ffea00;font-weight:900;font-family:"Comic Sans MS",cursive;text-align:center;}
+
+  .c3{background:#39ff14;width:50%;}
+  .c3 p{font-size:13px;color:#e6ffe6;font-family:"Courier New",monospace;} /* bajo contraste */
+
+  .c4{background:#00e5ff;width:50%;transform:rotate(-3deg);} /* rotada = desalineada */
+  .c4 p{font-size:14px;color:#003366;font-family:Georgia,serif;}
+
+  .c5{background:#ff0000;width:100%;margin-top:2px;}
+  .c5 p{font-size:12px;color:#8b0000;font-family:Arial;} /* bajo contraste rojo sobre rojo */
+
+  .c6{background:#fffbe0;width:65%;border:2px dashed #ff00aa;}
+  .c6 p{font-size:11px;color:#333;font-family:"Trebuchet MS",sans-serif;}
+
+  .c7{background:#eeedfe;width:35%;display:flex;align-items:center;justify-content:center;}
+  .c7 p{font-size:9px;color:#3c3489;font-family:Verdana;text-align:center;}
+
+  .poster .foot{margin-top:10px;text-align:right;font-size:9px;color:#aaa;font-family:Arial;}
+
+  .divider{max-width:820px;margin:40px auto 0;border-top:2px dashed #ccc;padding-top:24px;}
+  .notes{max-width:820px;margin:0 auto;background:#fff;border-radius:12px;padding:18px 22px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .notes h3{margin:0 0 12px;font-size:15px;}
+  .notes h4{margin:16px 0 6px;font-size:13px;color:#26215c;}
+  .notes ul{margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#444;}
+  .notes .ok{background:#eaf3de;border-radius:8px;padding:10px 14px;margin-bottom:4px;font-size:13px;color:#27500a;}
+</style>
+</head>
+<body>
+  <h1 class="page-title">Infografía deficiente — actividad de rediseño</h1>
+  <p class="page-sub">Tema: "Consejos para dormir mejor" · el contenido es correcto, el diseño no</p>
+
+  <div class="stage">
+    <div class="poster">
+      <div class="top"><h2>¡DUERME MEJOR YA!</h2></div>
+      <div class="row">
+        <div class="card c1"><p>Duerme entre 7 y 8 horas cada noche para un buen descanso.</p></div>
+        <div class="card c2"><p>Sin cafeína después de las 3pm!!</p></div>
+      </div>
+      <div class="row">
+        <div class="card c3"><p>Evita pantallas 1 hora antes de dormir.</p></div>
+        <div class="card c4"><p>Mantén un horario constante todos los días.</p></div>
+      </div>
+      <div class="row">
+        <div class="card c5"><p>Habitación oscura, fresca y silenciosa favorece el sueño profundo.</p></div>
+      </div>
+      <div class="row">
+        <div class="card c6"><p>Haz ejercicio regularmente, pero no justo antes de acostarte.</p></div>
+        <div class="card c7"><p>Evita comidas pesadas en la noche</p></div>
+      </div>
+      <div class="foot">fuente: internet</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="notes">
+    <h3>Guía para el docente (no incluir en la copia que reciben los estudiantes)</h3>
+    <p class="ok" style="margin-bottom:12px;">Lo que sí está bien: el contenido es correcto y útil, hay 6 consejos claros, y la pieza tiene un encabezado que intenta dar contexto. La actividad consiste en corregir la forma, no el fondo.</p>
+
+    <h4>Errores de principios de diseño (contraste, repetición, alineación, proximidad, whitespace)</h4>
+    <ul>
+      <li>Tarjetas con tamaños, formas y estilos completamente distintos entre sí (sin repetición ni sistema).</li>
+      <li>Una tarjeta está rotada, rompiendo la alineación del conjunto.</li>
+      <li>Casi no hay espacio en blanco entre bloques; todo está apretado.</li>
+    </ul>
+
+    <h4>Errores de color</h4>
+    <ul>
+      <li>Más de 7 colores sin relación entre sí (naranja, morado, verde neón, cian, rojo, amarillo).</li>
+      <li>Texto verde claro sobre fondo verde y texto rojo oscuro sobre fondo rojo: contraste insuficiente, casi ilegible.</li>
+    </ul>
+
+    <h4>Errores de tipografía</h4>
+    <ul>
+      <li>6 familias tipográficas distintas en una sola pieza (Georgia, Comic Sans, Courier New, Trebuchet, Verdana, Arial).</li>
+      <li>Tamaños de letra inconsistentes sin relación con la importancia del contenido.</li>
+    </ul>
+
+    <h4>Errores de jerarquía visual</h4>
+    <ul>
+      <li>El dato menos crítico ("sin cafeína después de las 3pm") es el más grande y llamativo del diseño.</li>
+      <li>El dato más importante ("duerme 7-8 horas") aparece en el texto más pequeño y de menor contraste.</li>
+      <li>No hay un recorrido de lectura claro: el ojo no sabe por dónde empezar.</li>
+    </ul>
+
+    <h4>Sugerencia de rúbrica para evaluar el rediseño</h4>
+    <ul>
+      <li>Aplica una paleta de máximo 3-4 colores con buen contraste (25%)</li>
+      <li>Usa máximo 2 tipografías de forma consistente (25%)</li>
+      <li>Establece una jerarquía clara según la importancia real de cada consejo (25%)</li>
+      <li>Aplica alineación, repetición y espacio en blanco de forma consistente (25%)</li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script src="../../assets/js/descargas.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Semáforo de derechos de autor</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Tablero de competencia proyectado: barra superior navy con fases, área de trabajo amplia y riel derecho con la clasificación en vivo. */
+:root{
+  --navy:#172B5B; --blue:#2456A6; --violet:#4330BC; --cyan:#00A9D6;
+  --ink:#334155; --muted:#64748B; --bg:#FFFFFF; --surface:#F5F7FB; --line:#DCE3EE; --lav:#ECE9FB; --sky:#E3F4FA;
+  --ok:#17875A; --ok-bg:#E3F5EC; --warn:#A86F00; --warn-bg:#FFF4D6; --bad:#C2264B; --bad-bg:#FCE8EE;
+  --f-display:'Manrope', 'Segoe UI', Arial, sans-serif;
+  --f-body:'Source Sans 3', 'Segoe UI', Arial, sans-serif;
+  --r:14px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.45}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);color:var(--navy);margin:0;text-wrap:balance;line-height:1.15}
+p{margin:0}
+.app{min-height:100%;display:flex;flex-direction:column}
+.top{background:linear-gradient(120deg,var(--navy) 0%,#1F3F86 60%,var(--violet) 100%);color:#fff;position:relative;overflow:hidden}
+.top-in{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.top svg.net{position:absolute;right:0;top:0;height:100%;width:420px;opacity:.55;pointer-events:none}
+.brand{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand small{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#7FD8F0;font-weight:600}
+.brand b{font-family:var(--f-display);font-size:24px;font-weight:800;line-height:1.1}
+.phases{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+.phase{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#fff;border-radius:999px;padding:7px 14px;font-size:15px;font-weight:600;display:flex;gap:8px;align-items:center}
+.phase i{font-style:normal;font-variant-numeric:tabular-nums;color:#7FD8F0;font-size:13px}
+.phase[aria-current="step"]{background:#fff;color:var(--navy);border-color:#fff}
+.phase[aria-current="step"] i{color:var(--blue)}
+.timer{display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.18);border-radius:12px;padding:6px 8px}
+.timer .t{font-family:var(--f-display);font-weight:800;font-size:26px;font-variant-numeric:tabular-nums;min-width:86px;text-align:center}
+.timer.low .t{color:#FFB3C4}
+.timer.done .t{color:#FFB3C4;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.35}}
+.tbtn{border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:8px;padding:5px 9px;font-size:14px;font-weight:600}
+.tbtn:hover{background:rgba(255,255,255,.26)}
+.body{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;padding-block:24px 32px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));align-items:start}
+@media (max-width:1100px){.body{grid-template-columns:minmax(0,1fr)}}
+.main{min-width:0;display:flex;flex-direction:column;gap:20px}
+.rail{position:sticky;top:16px;display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.rail h2{font-size:18px}
+.rail .mini{display:flex;flex-direction:column;gap:6px}
+.mini-row{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:16px}
+.mini-row .pos{font-family:var(--f-display);font-weight:800;color:var(--muted);text-align:center}
+.mini-row:nth-child(1) .pos{color:var(--violet)}
+.mini-row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:var(--navy)}
+.mini-row .pt{font-variant-numeric:tabular-nums;font-weight:700;color:var(--blue)}
+.eyebrow{font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);font-weight:700}
+.lead{font-size:20px;color:var(--ink);max-width:70ch}
+.muted{color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:10px;padding:10px 16px;font-weight:700;font-size:17px;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--navy)}
+.btn.violet{background:var(--violet);border-color:var(--violet);color:#fff}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--bad);border-color:#F1C6D6}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 11px;font-size:15px;border-radius:8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:820px){.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:700;color:var(--navy);font-size:16px}
+.field input,.field select{border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff;width:100%}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.names input{border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%;background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-weight:700;font-size:16px;color:var(--navy);display:inline-flex;gap:6px;align-items:center}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip.okc[aria-pressed="true"]{background:var(--ok);border-color:var(--ok)}
+.chip.vc[aria-pressed="true"]{background:var(--violet);border-color:var(--violet)}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;font-weight:700;font-size:15px;background:var(--lav);color:var(--violet)}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.stepper button{border:0;background:var(--surface);width:38px;height:38px;font-size:22px;font-weight:700;color:var(--navy)}
+.stepper button:hover{background:var(--line)}
+.stepper span{min-width:44px;text-align:center;font-weight:800;font-family:var(--f-display);font-variant-numeric:tabular-nums;color:var(--navy)}
+table.score{width:100%;border-collapse:collapse;font-size:17px}
+table.score th{text-align:left;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:2px solid var(--line)}
+table.score td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.score td.num{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+.tablewrap{overflow-x:auto}
+/* Clasificación */
+.board{display:flex;flex-direction:column;gap:10px}
+.brow{display:grid;grid-template-columns:56px minmax(0,1.2fr) minmax(0,2fr) 90px 80px;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.brow.top1{border-color:var(--violet);box-shadow:0 0 0 2px var(--lav)}
+.brow .rk{font-family:var(--f-display);font-weight:800;font-size:28px;color:var(--muted);text-align:center}
+.brow.top1 .rk{color:var(--violet)}.brow.top2 .rk{color:var(--blue)}.brow.top3 .rk{color:var(--cyan)}
+.brow .nm{font-family:var(--f-display);font-weight:800;color:var(--navy);font-size:20px;min-width:0;overflow-wrap:anywhere}
+.brow .bd{font-size:14px;color:var(--muted);margin-top:2px}
+.bar{height:14px;border-radius:999px;background:var(--surface);overflow:hidden}
+.bar b{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--violet));transition:width .5s ease}
+.brow .pts{font-family:var(--f-display);font-weight:800;font-size:26px;color:var(--blue);text-align:right;font-variant-numeric:tabular-nums}
+.brow .nota{font-family:var(--f-display);font-weight:800;font-size:22px;text-align:center;background:var(--lav);color:var(--violet);border-radius:10px;padding:6px 0;font-variant-numeric:tabular-nums}
+@media (max-width:700px){.brow{grid-template-columns:40px minmax(0,1fr) 64px 60px}.brow .barcell{display:none}}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:end}
+.pod{border-radius:14px;padding:16px;text-align:center;color:#fff;display:flex;flex-direction:column;gap:4px}
+.pod b{font-family:var(--f-display);font-size:22px;overflow-wrap:anywhere}
+.pod span{font-size:15px;opacity:.85}
+.pod.p1{background:var(--violet);min-height:190px;justify-content:flex-end}
+.pod.p2{background:var(--blue);min-height:150px;justify-content:flex-end}
+.pod.p3{background:var(--navy);min-height:120px;justify-content:flex-end}
+.pod .big{font-family:var(--f-display);font-weight:800;font-size:34px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 20px;border-radius:12px;font-weight:600;box-shadow:0 10px 30px rgba(23,43,91,.3);z-index:50}
+.confirm{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--bad-bg);border:1px solid #F1C6D6;border-radius:12px;padding:12px 16px}
+.note{font-size:16px;color:var(--muted)}
+.big-count{font-family:var(--f-display);font-weight:800;font-size:96px;line-height:1;color:var(--navy);font-variant-numeric:tabular-nums;text-align:center}
+textarea.copy{width:100%;min-height:140px;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:ui-monospace,Consolas,monospace;font-size:14px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@media (max-width:900px){.mgrid{grid-template-columns:minmax(0,1fr)!important}}
+
+</style>
+<div id="app" class="app"></div>
+<script>
+(function(){
+'use strict';
+var COL = {
+  verde: { name: 'Verde', label: 'Permitido', fg: '#FFFFFF', bg: 'var(--ok)', soft: 'var(--ok-bg)', text: 'var(--ok)' },
+  amarillo: { name: 'Amarillo', label: 'Revisar condiciones', fg: '#3A2A00', bg: '#F2B705', soft: 'var(--warn-bg)', text: 'var(--warn)' },
+  rojo: { name: 'Rojo', label: 'No autorizado', fg: '#FFFFFF', bg: 'var(--bad)', soft: 'var(--bad-bg)', text: 'var(--bad)' }
+};
+var ORDER = ['verde', 'amarillo', 'rojo'];
+
+var SITUACIONES = [
+  { t: 'Descargas una fotografía de un buscador y la pones en tu presentación de clase sin citar al autor ni la fuente.', c: 'rojo', e: 'No conocemos su licencia y, además, se omite la autoría. Encontrar una imagen no es tener permiso: hay que buscar el origen, revisar la licencia y citar. Si nada lo permite, se usa otra imagen.' },
+  { t: 'Usas una fotografía con licencia CC BY en tu presentación y la atribuyes con título, autor, fuente y licencia.', c: 'verde', e: 'CC BY permite compartir y adaptar la obra, incluso con fines comerciales, siempre que se reconozca la autoría.' },
+  { t: 'Un blog dice que una imagen es "libre de derechos", pero no indica autor ni licencia. La quieres para un trabajo que vas a publicar.', c: 'amarillo', e: 'Falta información. "Libre de derechos" no es una licencia. Busca el origen (por ejemplo, con búsqueda inversa de imágenes) y la licencia real antes de usarla.' },
+  { t: 'Modificas una imagen CC BY-ND (le cambias los colores y le agregas texto) y publicas la versión modificada en redes.', c: 'rojo', e: 'ND significa sin obras derivadas: se puede compartir la obra original con atribución, pero no publicar una versión modificada.' },
+  { t: 'Descargas un grabado marcado como dominio público en el repositorio de una biblioteca reconocida y lo usas en un afiche.', c: 'verde', e: 'Las obras en dominio público se pueden usar libremente. Verifica que la fuente sea confiable y cita la procedencia como buena práctica.' },
+  { t: 'Usas una ilustración CC BY-NC en una campaña publicitaria para una empresa.', c: 'rojo', e: 'NC excluye los usos comerciales bajo esa licencia. Para una campaña habría que pedir permiso al autor o buscar otro recurso.' },
+  { t: 'Creas una imagen con una herramienta de inteligencia artificial cuyos términos de uso no has leído y la quieres usar en la campaña de un cliente.', c: 'amarillo', e: 'Hay que revisar condiciones: cada herramienta define en sus términos si permite el uso comercial y quién puede usar los resultados.' },
+  { t: 'Compartes con tus compañeros un recurso educativo abierto con licencia CC BY-SA, con su atribución y la misma licencia.', c: 'verde', e: 'Los REA existen para reutilizarse. Respetar la atribución y la licencia es justamente lo que la licencia pide.' },
+  { t: 'Pones de fondo una canción comercial en un video institucional que se publicará en redes.', c: 'rojo', e: 'Sin licencia o permiso del titular no está autorizado. Citar al artista no lo resuelve: se necesita música con licencia que permita ese uso.' },
+  { t: 'Usas una fotografía CC0 en un afiche comercial sin mencionar al autor.', c: 'verde', e: 'Con CC0 el titular renunció a sus derechos en la medida que permite la ley. La atribución no es obligatoria, aunque sigue siendo una buena práctica.' },
+  { t: 'Adaptas una infografía CC BY-SA y publicas tu versión con licencia CC BY-NC.', c: 'rojo', e: 'SA (compartir igual) exige que las adaptaciones se publiquen con la misma licencia o una compatible. Cambiarla a BY-NC no está permitido.' },
+  { t: 'Una imagen tiene licencia CC BY-NC y la quieres usar en el video del semillero, que se publica en un canal de YouTube monetizado.', c: 'amarillo', e: 'Hay que revisar condiciones: la monetización puede convertir el uso en comercial. Lo prudente es pedir permiso al autor o elegir un recurso CC BY.' },
+  { t: 'Citas en tu ensayo un fragmento breve de un libro, entre comillas y con referencia en APA.', c: 'verde', e: 'La cita breve con fines académicos y con reconocimiento de autoría es un uso aceptado. Es distinto de reproducir la obra completa.' },
+  { t: 'Usas una canción famosa en un video para la cuenta de una marca y en la descripción das crédito al artista.', c: 'rojo', e: 'Dar crédito no reemplaza la autorización. Es posible atribuir correctamente y aun así usar la obra de una forma no permitida.' },
+  { t: 'Adaptas una ilustración CC BY-NC-SA para el afiche de un evento académico gratuito y la compartes con la misma licencia y la atribución.', c: 'verde', e: 'Se cumplen las tres condiciones: reconocimiento (BY), uso no comercial (NC) y misma licencia para la adaptación (SA).' }
+];
+
+var RECURSOS = [
+  { n: 'Atardecer en el cañón', tipo: 'Fotografía', autor: 'Lucía Prada', lic: 'CC BY 4.0' },
+  { n: 'Cerebro en red', tipo: 'Ilustración', autor: 'Estudio Nodo', lic: 'CC BY-NC 4.0' },
+  { n: 'Reciclar en casa', tipo: 'Infografía', autor: 'Colectivo Verde', lic: 'CC BY-ND 4.0' },
+  { n: 'Ritmo de ciudad', tipo: 'Canción', autor: 'Sello Sonar Records', lic: 'Todos los derechos reservados' },
+  { n: 'Mapa antiguo de la Nueva Granada', tipo: 'Grabado del siglo XIX', autor: 'Anónimo', lic: 'Dominio público (marcado en el repositorio de una biblioteca)' },
+  { n: 'El ciclo del agua', tipo: 'Diagrama', autor: 'Andrés Gil', lic: 'CC BY-SA 4.0' },
+  { n: 'Personaje con audífonos', tipo: 'Ilustración encontrada en Pinterest', autor: 'Desconocido', lic: 'Sin licencia visible' }
+];
+
+var V = 'verde', Y = 'amarillo', R = 'rojo';
+var TXT = {
+  byOk: 'Se puede usar con atribución (título, autor, fuente y licencia) e indicando si se modificó.',
+  ncOk: 'Uso no comercial: se puede usar con atribución.',
+  ncNo: 'Es un uso comercial y NC lo excluye. Habría que pedir permiso al autor.',
+  ndNo: 'La misión adapta los recursos y ND no permite compartir versiones modificadas.',
+  ndOk: 'Se proyecta sin modificar y con atribución: ND lo permite.',
+  musNo: 'Sin licencia ni permiso del titular, no se puede incluir en una pieza que se publica.',
+  musClase: 'Reproducirla en clase puede estar cubierto por excepciones educativas según la ley de cada país. Verifica y, si puedes, usa música con licencia abierta.',
+  dp: 'Dominio público: uso libre. Citar la procedencia sigue siendo buena práctica.',
+  saOk: 'Se puede adaptar con atribución, siempre que la adaptación se comparta con CC BY-SA.',
+  saRev: 'El uso comercial está permitido, pero la adaptación tendría que publicarse con CC BY-SA. Revisa si quien encarga la pieza acepta esa condición.',
+  unk: 'Sin autor ni licencia no hay permiso demostrado. Busca el origen y la licencia; si no las encuentras, no la uses.'
+};
+var MISIONES = [
+  { n: 'Infografía académica', uso: 'Se recortan y combinan los recursos con texto propio. Se publica en el aula virtual del curso, sin fines comerciales.',
+    r: [[V, TXT.byOk], [V, TXT.ncOk], [R, TXT.ndNo], [R, TXT.musNo], [V, TXT.dp], [V, TXT.saOk], [Y, TXT.unk]] },
+  { n: 'Video educativo del semillero', uso: 'Se editan y combinan los recursos. Se publica en el canal de YouTube del semillero, que no está monetizado.',
+    r: [[V, TXT.byOk], [V, TXT.ncOk], [R, TXT.ndNo], [R, TXT.musNo], [V, TXT.dp], [V, TXT.saOk], [Y, TXT.unk]] },
+  { n: 'Campaña digital para una empresa', uso: 'Piezas para redes y pauta pagada. Los recursos se adaptan al estilo de la marca.',
+    r: [[V, TXT.byOk], [R, TXT.ncNo], [R, TXT.ndNo], [R, TXT.musNo], [V, TXT.dp], [Y, TXT.saRev], [Y, TXT.unk]] },
+  { n: 'Presentación en clase', uso: 'Se proyecta en el aula. Los recursos se usan sin modificarlos y la presentación no se publica.',
+    r: [[V, TXT.byOk], [V, TXT.ncOk], [V, TXT.ndOk], [Y, TXT.musClase], [V, TXT.dp], [V, 'Se puede usar con atribución y la licencia indicada.'], [Y, TXT.unk]] },
+  { n: 'Pieza para el emprendimiento de un amigo', uso: 'Publicación en redes para promocionar sus productos. Los recursos se adaptan.',
+    r: [[V, TXT.byOk], [R, TXT.ncNo], [R, TXT.ndNo], [R, TXT.musNo], [V, TXT.dp], [Y, TXT.saRev], [Y, TXT.unk]] }
+];
+
+var h = function(){ return App.h.apply(null, arguments); };
+function shuffle(a){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function sortearMisiones(s){
+  var pool = [];
+  var order = shuffle(s.teams.map(function(t){ return t.id; }));
+  var asg = {};
+  order.forEach(function(id, i){ if (i % MISIONES.length === 0) pool = shuffle(MISIONES.map(function(_, k){ return k; })); asg[id] = pool[i % MISIONES.length]; });
+  s.data.mis = asg;
+  s.data.mview = asg[s.teams[0].id];
+}
+function misInPlay(s){ var u = {}; Object.keys(s.data.mis).forEach(function(k){ u[s.data.mis[k]] = true; }); return Object.keys(u).map(Number).sort(function(a, b){ return a - b; }); }
+function teamsOf(s, mi){ return s.teams.filter(function(t){ return s.data.mis[t.id] === mi; }); }
+
+function badge(c, big){
+  var k = COL[c];
+  return h('span', { style: 'display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-weight:800;font-family:var(--f-display);background:' + k.bg + ';color:' + k.fg + ';padding:' + (big ? '8px 18px;font-size:24px' : '3px 12px;font-size:15px') },
+    h('span', { 'aria-hidden': 'true', style: 'width:' + (big ? 14 : 10) + 'px;height:' + (big ? 14 : 10) + 'px;border-radius:50%;background:' + k.fg + ';opacity:.85' }), k.name + ' · ' + k.label);
+}
+function colorPicker(cur, onPick, name){
+  return h('span', { role: 'group', 'aria-label': 'Tarjeta de ' + name, style: 'display:inline-flex;gap:6px' }, ORDER.map(function(c){
+    var k = COL[c], on = cur === c;
+    return h('button', { type: 'button', 'aria-pressed': on ? 'true' : 'false', 'aria-label': k.name, title: k.name + ' · ' + k.label, onclick: function(){ onPick(on ? null : c); },
+      style: 'width:46px;height:40px;border-radius:10px;font-weight:800;font-size:15px;border:2px solid ' + (on ? k.bg : 'var(--line)') + ';background:' + (on ? k.bg : '#fff') + ';color:' + (on ? k.fg : k.text) }, k.name.charAt(0));
+  }));
+}
+function resourceCard(r, i){
+  return h('div', { class: 'card', style: 'padding:16px 18px;display:flex;flex-direction:column;gap:6px' },
+    h('div', { class: 'row', style: 'justify-content:space-between;gap:8px' }, h('span', { class: 'pill' }, 'R' + (i + 1) + ' · ' + r.tipo)),
+    h('h3', { style: 'font-size:21px' }, r.n),
+    h('p', { class: 'muted' }, 'Autor: ' + r.autor),
+    h('p', null, h('b', { style: 'color:var(--navy)' }, 'Licencia: '), r.lic));
+}
+
+window.ACT = {
+  key: 'id-semaforo-derechos-v1',
+  course: 'Interacción Digital · Semana 11',
+  title: 'Semáforo de derechos de autor',
+  unit: 'Equipo', unitPlural: 'Equipos', defaultCount: 8, min: 2, max: 16, defaultRef: 300,
+  intro: 'Concurso por equipos de 3 o 4 personas. En cada situación, un integrante de cada equipo corre a tomar la pelota: el orden en que la toman es el orden en que responden. Cada equipo decide si el uso es permitido (verde), condicionado o con información faltante (amarillo) o no autorizado (rojo), y lo justifica. Responder primero solo suma si la respuesta es correcta.',
+  initData: function(){ return { i: 0, ans: {}, show: {}, rv: {}, just: {}, ord: {} }; },
+  withMembers: true,
+  defaultRefNote: true,
+  configExtra: function(){
+    return h('section', { class: 'card', style: 'display:flex;flex-direction:column;gap:14px' },
+      h('h2', { style: 'font-size:24px' }, 'Reglas y puntos'),
+      h('div', { class: 'row', style: 'gap:10px' }, ORDER.map(function(c){ return badge(c); })),
+      h('div', { class: 'tablewrap' }, h('table', { class: 'score' },
+        h('tr', null, h('th', null, 'Logro'), h('th', null, 'Ronda'), h('th', { style: 'text-align:right' }, 'Puntos')),
+        [['Levantar la tarjeta del color correcto', 'Cada situación', '+10'],
+         ['Justificar con la condición de la licencia o el dato que falta', 'Cada situación', '+5'],
+         ['Tomar primero la pelota y acertar', 'Cada situación', '+2'],
+         ['Tomar en segundo lugar la pelota y acertar', 'Cada situación', '+1']].map(function(r){ return h('tr', null, h('td', null, r[0]), h('td', null, r[1]), h('td', { class: 'num' }, r[2])); })
+      )),
+      h('p', { class: 'note' }, 'Cada equipo necesita tres tarjetas de papel (verde, amarilla y roja) y en el centro del salón va una pelota. La justificación pesa más que la velocidad: el orden solo da 2 o 1 punto extra si la respuesta es correcta.')
+    );
+  },
+  phases: [
+    { id: 'semaforo', label: 'Semáforo', render: function(box, s){
+      var i = Math.min(s.data.i || 0, SITUACIONES.length - 1);
+      var q = SITUACIONES[i];
+      var ans = s.data.ans[i] || {}, shown = !!s.data.show[i], just = s.data.just[i] || {};
+      box.appendChild(h('div', null, h('p', { class: 'eyebrow' }, 'Situación ' + (i + 1) + ' de ' + SITUACIONES.length), h('h1', { style: 'font-size:38px;margin-top:6px' }, '¿Qué color le corresponde?')));
+      box.appendChild(h('div', { class: 'card', style: 'display:flex;flex-direction:column;gap:16px;border-left:6px solid var(--blue)' },
+        h('p', { style: 'font-family:var(--f-display);font-size:32px;font-weight:700;color:var(--navy);line-height:1.3' }, q.t),
+        h('div', { class: 'row' },
+          h('button', { type: 'button', class: 'btn', onclick: function(){ App.timer.start(1); } }, 'Deliberar 1 minuto'),
+          h('button', { type: 'button', class: 'btn primary', onclick: function(){ App.set(function(st){ st.data.show[i] = !shown; st.data.rv = st.data.rv || {}; st.data.rv[i] = true; }); } }, shown ? 'Ocultar respuesta' : 'Revelar respuesta')),
+        shown ? h('div', { style: 'border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;background:' + COL[q.c].soft }, badge(q.c, true), h('p', { style: 'font-size:20px' }, q.e)) : null
+      ));
+      var counts = { verde: 0, amarillo: 0, rojo: 0 };
+      s.teams.forEach(function(t){ if (ans[t.id]) counts[ans[t.id]]++; });
+      box.appendChild(h('div', { class: 'card', style: 'display:flex;flex-direction:column;gap:12px' },
+        h('div', { class: 'row', style: 'justify-content:space-between' }, h('h2', { style: 'font-size:22px' }, 'Tarjetas levantadas'),
+          h('span', { class: 'note' }, 'Verde ' + counts.verde + ' · Amarillo ' + counts.amarillo + ' · Rojo ' + counts.rojo)),
+        h('p', { class: 'note' }, 'Marca qué equipo tomó la pelota en 1.º y 2.º lugar, registra la tarjeta de cada equipo y revela. Luego pide justificación, empezando por el equipo que tomó primero la pelota, y marca a quienes argumentaron bien.'),
+        h('div', { class: 'tablewrap' }, h('table', { class: 'score' },
+          h('tr', null, h('th', null, 'Equipo'), h('th', null, 'Orden de la pelota'), h('th', null, 'Tarjeta'), h('th', null, 'Resultado'), h('th', null, 'Justificación +5')),
+          s.teams.map(function(t){
+            var a = ans[t.id];
+            var o = (s.data.ord || {})[i] || {};
+            var setOrd = function(slot){ App.set(function(st){ st.data.ord = st.data.ord || {}; var x = st.data.ord[i] = st.data.ord[i] || {}; var other = slot === 'first' ? 'second' : 'first'; if (x[slot] === t.id) x[slot] = null; else { x[slot] = t.id; if (x[other] === t.id) x[other] = null; } }); };
+            var ordCell = h('span', { style: 'display:inline-flex;gap:6px' }, App.chip('1.º', o.first === t.id, function(){ setOrd('first'); }, 'vc'), App.chip('2.º', o.second === t.id, function(){ setOrd('second'); }, 'vc'));
+            var bonus = (s.data.rv || {})[i] && a === q.c ? (o.first === t.id ? ' · +2 por orden' : o.second === t.id ? ' · +1 por orden' : '') : '';
+            var res = !(s.data.rv || {})[i] || !a ? h('span', { class: 'note' }, (s.data.rv || {})[i] ? 'Sin tarjeta' : '—') : (a === q.c ? h('b', { style: 'color:var(--ok)' }, 'Correcta +10' + bonus) : h('b', { style: 'color:var(--bad)' }, 'Incorrecta'));
+            return h('tr', null, h('td', null, h('b', { style: 'color:var(--navy)' }, t.name)),
+              h('td', null, ordCell),
+              h('td', null, colorPicker(a, function(c){ App.set(function(st){ var o = st.data.ans[i] = st.data.ans[i] || {}; if (c) o[t.id] = c; else delete o[t.id]; }); }, t.name)),
+              h('td', null, res),
+              h('td', null, App.chip('Bien argumentado', !!just[t.id], function(){ App.set(function(st){ var o = st.data.just[i] = st.data.just[i] || {}; o[t.id] = !o[t.id]; }); }, 'vc')));
+          })))
+      ));
+      box.appendChild(h('div', { class: 'row' },
+        h('button', { type: 'button', class: 'btn', disabled: i === 0, onclick: function(){ App.set(function(st){ st.data.i = i - 1; }); } }, '← Situación anterior'),
+        h('button', { type: 'button', class: 'btn violet', disabled: i >= SITUACIONES.length - 1, onclick: function(){ App.set(function(st){ st.data.i = i + 1; }); } }, 'Siguiente situación →')));
+    } }
+  ],
+  score: function(s, id){
+    var d = s.data, sem = 0, ju = 0, bo = 0;
+    Object.keys(d.ans).forEach(function(k){ var q = SITUACIONES[k]; if (q && (d.rv || {})[k] && d.ans[k][id] === q.c){ sem += 10; var o = (d.ord || {})[k] || {}; if (o.first === id) bo += 2; else if (o.second === id) bo += 1; } });
+    Object.keys(d.just).forEach(function(k){ if (d.just[k][id]) ju += 5; });
+    return { total: sem + ju + bo, parts: [['Semáforo', sem], ['Justificación', ju], ['Orden', bo]] };
+  }
+};
+})();
+
+</script>
+<script>
+(function(){
+'use strict';
+var A = window.ACT;
+var KEY = A.key;
+var S = load() || fresh();
+var confirmReset = false;
+var copyText = null, imgUrl = null, imgMsg = '';
+
+function h(tag, attrs){
+  var el = document.createElement(tag);
+  if (attrs) for (var k in attrs){
+    var v = attrs[k];
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k.slice(0,2) === 'on') el.addEventListener(k.slice(2), v);
+    else if (k === 'style') el.setAttribute('style', v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (var i = 2; i < arguments.length; i++){
+    var c = arguments[i];
+    if (c === null || c === undefined || c === false) continue;
+    if (Array.isArray(c)) c.forEach(function(x){ if (x !== null && x !== undefined && x !== false) el.appendChild(typeof x === 'string' ? document.createTextNode(x) : x); });
+    else el.appendChild(typeof c === 'string' || typeof c === 'number' ? document.createTextNode(String(c)) : c);
+  }
+  return el;
+}
+function mkTeams(n, prev){
+  var out = [];
+  for (var i = 0; i < n; i++){
+    var id = 't' + (i + 1);
+    var old = prev && prev.filter(function(t){ return t.id === id; })[0];
+    out.push({ id: id, name: old ? old.name : A.unit + ' ' + (i + 1), members: old ? (old.members || '') : '' });
+  }
+  return out;
+}
+function fresh(){
+  return { v: 1, teams: mkTeams(A.defaultCount), settings: { notaMax: 5, ref: 'top', refPts: A.defaultRef || 100 }, phase: 'config', data: A.initData() };
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} }
+function load(){
+  try {
+    var s = JSON.parse(localStorage.getItem(KEY));
+    if (s && s.teams && s.data && s.settings) return s;
+  } catch(e) {}
+  return null;
+}
+function set(fn){ fn(S); save(); render(); }
+function toast(msg){
+  var t = document.querySelector('.toast');
+  if (t) t.remove();
+  t = h('div', { class: 'toast', role: 'status', text: msg });
+  document.body.appendChild(t);
+  setTimeout(function(){ if (t.parentNode) t.remove(); }, 2200);
+}
+function membersOf(t){ return (t.members || '').split(/[\n,;]+/).map(function(x){ return x.trim(); }).filter(Boolean); }
+function fmt(n, d){ return Number(n).toLocaleString('es-CO', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
+
+/* Puntajes y nota */
+function ranking(){
+  var rows = S.teams.map(function(t){
+    var sc = A.score(S, t.id);
+    return { id: t.id, name: t.name, members: membersOf(t), total: sc.total, parts: sc.parts };
+  });
+  rows.sort(function(a, b){ return b.total - a.total || a.id.localeCompare(b.id, 'es', { numeric: true }); });
+  var rank = 0, last = null;
+  rows.forEach(function(r, i){ if (r.total !== last){ rank = i + 1; last = r.total; } r.rank = rank; });
+  return rows;
+}
+function refPoints(rows){
+  if (S.settings.ref === 'fixed') return Math.max(1, Number(S.settings.refPts) || 1);
+  return rows.length ? rows[0].total : 0;
+}
+function nota(total, ref){
+  var max = Number(S.settings.notaMax) || 5;
+  if (!ref || ref <= 0) return 0;
+  return Math.round(Math.min(max, max * total / ref) * 10) / 10;
+}
+
+/* Temporizador */
+var T = { dur: 0, end: null, left: 0, el: null, cb: null };
+function tStart(min){ T.dur = min * 60000; T.left = T.dur; T.end = Date.now() + T.left; tPaint(); }
+function tToggle(){
+  if (T.end){ T.left = Math.max(0, T.end - Date.now()); T.end = null; }
+  else if (T.left > 0){ T.end = Date.now() + T.left; }
+  tPaint();
+}
+function tReset(){ T.end = null; T.left = T.dur; tPaint(); }
+function tRemaining(){ return T.end ? Math.max(0, T.end - Date.now()) : T.left; }
+function tPaint(){
+  var box = document.getElementById('timer');
+  if (!box) return;
+  var ms = tRemaining();
+  var s = Math.ceil(ms / 1000);
+  box.querySelector('.t').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+  box.classList.toggle('low', T.dur > 0 && ms > 0 && ms <= 30000);
+  box.classList.toggle('done', T.dur > 0 && ms === 0);
+  var pb = box.querySelector('[data-k="pp"]');
+  if (pb) pb.textContent = T.end ? 'Pausar' : 'Iniciar';
+  var big = document.getElementById('bigtimer');
+  if (big) big.textContent = box.querySelector('.t').textContent;
+  if (T.end && ms === 0){ T.end = null; T.left = 0; }
+}
+setInterval(tPaint, 250);
+
+/* Controles reutilizables */
+function stepper(val, min, max, onChange, label){
+  return h('span', { class: 'stepper', role: 'group', 'aria-label': label || 'Ajustar' },
+    h('button', { type: 'button', 'aria-label': 'Restar', onclick: function(){ if (val > min) onChange(val - 1); } }, '−'),
+    h('span', { 'aria-live': 'polite' }, String(val)),
+    h('button', { type: 'button', 'aria-label': 'Sumar', onclick: function(){ if (val < max) onChange(val + 1); } }, '+')
+  );
+}
+function chip(label, pressed, onClick, extra){
+  return h('button', { type: 'button', class: 'chip ' + (extra || ''), 'aria-pressed': pressed ? 'true' : 'false', onclick: onClick }, label);
+}
+function teamName(id){ var t = S.teams.filter(function(x){ return x.id === id; })[0]; return t ? t.name : id; }
+
+/* Fases */
+function phases(){
+  return [{ id: 'config', label: 'Configurar' }].concat(A.phases).concat([{ id: 'tabla', label: 'Clasificación' }]);
+}
+function go(id){ S.phase = id; save(); render(); window.scrollTo(0, 0); }
+
+function netSvg(){
+  var wrap = document.createElement('div');
+  wrap.innerHTML = '<svg class="net" viewBox="0 0 420 120" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><g fill="none" stroke="#00A9D6" stroke-opacity=".55" stroke-width="1.2"><path d="M420 18 L330 40 L262 22 L200 64 L282 92 L360 76 L420 104"/><path d="M330 40 L360 76"/><path d="M262 22 L282 92 L230 118"/><path d="M200 64 L140 48"/></g><g fill="#00A9D6"><circle cx="330" cy="40" r="4"/><circle cx="282" cy="92" r="4"/><circle cx="420" cy="104" r="3"/></g><g fill="#fff" fill-opacity=".7"><circle cx="262" cy="22" r="3"/><circle cx="200" cy="64" r="3"/><circle cx="360" cy="76" r="3"/><circle cx="140" cy="48" r="2.5"/></g></svg>';
+  return wrap.firstChild;
+}
+
+function renderTop(){
+  var ph = phases();
+  var idx = ph.map(function(p){ return p.id; }).indexOf(S.phase);
+  var nav = h('nav', { class: 'phases', 'aria-label': 'Fases de la actividad' },
+    ph.map(function(p, i){
+      return h('button', { type: 'button', class: 'phase', 'aria-current': i === idx ? 'step' : null, onclick: function(){ go(p.id); } }, h('i', null, String(i + 1)), p.label);
+    })
+  );
+  var timer = h('div', { class: 'timer', id: 'timer', role: 'timer', 'aria-label': 'Temporizador' },
+    h('span', { class: 't' }, '00:00'),
+    h('button', { type: 'button', class: 'tbtn', 'data-k': 'pp', onclick: tToggle }, 'Iniciar'),
+    h('button', { type: 'button', class: 'tbtn', onclick: tReset, 'aria-label': 'Reiniciar temporizador' }, '↺'),
+    [1, 3, 5, 10].map(function(m){ return h('button', { type: 'button', class: 'tbtn', onclick: function(){ tStart(m); }, 'aria-label': m + ' minutos' }, m + "'"); })
+  );
+  return h('header', { class: 'top' }, netSvg(),
+    h('div', { class: 'top-in' },
+      h('div', { class: 'brand' }, h('small', null, A.course), h('b', null, A.title)),
+      nav, timer
+    )
+  );
+}
+
+function renderRail(){
+  var rows = ranking();
+  var shown = rows.slice(0, 10);
+  return h('aside', { class: 'rail', 'aria-label': 'Clasificación en vivo' },
+    h('div', { class: 'row', style: 'justify-content:space-between' }, h('h2', null, 'Clasificación en vivo'), h('span', { class: 'pill' }, rows.length + ' ' + A.unitPlural.toLowerCase())),
+    h('div', { class: 'mini' }, shown.map(function(r){
+      return h('div', { class: 'mini-row' }, h('span', { class: 'pos' }, String(r.rank)), h('span', { class: 'nm' }, r.name), h('span', { class: 'pt' }, fmt(r.total) + ' pts'));
+    })),
+    rows.length > 10 ? h('p', { class: 'note' }, 'Y ' + (rows.length - 10) + ' más en la clasificación completa.') : null,
+    h('button', { type: 'button', class: 'btn sm', onclick: function(){ go('tabla'); } }, 'Ver clasificación completa')
+  );
+}
+
+function renderConfig(){
+  var box = h('div', { class: 'main' });
+  box.appendChild(h('div', null, h('p', { class: 'eyebrow' }, 'Antes de empezar'), h('h1', { style: 'font-size:40px;margin-top:6px' }, A.title)));
+  box.appendChild(h('p', { class: 'lead' }, A.intro));
+  var c = h('section', { class: 'card', style: 'display:flex;flex-direction:column;gap:18px' });
+  c.appendChild(h('div', { class: 'row', style: 'justify-content:space-between' },
+    h('h2', { style: 'font-size:24px' }, A.unitPlural + ' en competencia'),
+    h('div', { class: 'row' }, h('span', { class: 'muted' }, 'Cantidad'), stepper(S.teams.length, A.min, A.max, function(v){ set(function(s){ s.teams = mkTeams(v, s.teams); if (A.onTeamsChange) A.onTeamsChange(s); }); }, 'Cantidad de ' + A.unitPlural.toLowerCase()))
+  ));
+  c.appendChild(h('p', { class: 'note' }, 'Escribe los nombres si quieres que aparezcan en el tablero (por ejemplo, los apellidos de los integrantes).'));
+  if (A.withMembers){
+    c.appendChild(h('div', { class: 'grid3', style: 'align-items:start' }, S.teams.map(function(t, i){
+      var ta = h('textarea', { id: 'mem-' + t.id, rows: '4', placeholder: 'Un integrante por línea', style: 'border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;font:inherit;resize:vertical', oninput: function(e){ t.members = e.target.value; save(); } });
+      ta.value = t.members || '';
+      return h('div', { class: 'panel', style: 'display:flex;flex-direction:column;gap:8px;padding:16px' },
+        h('label', { for: 'name-' + t.id, style: 'font-weight:700;color:var(--navy);font-size:15px' }, 'Nombre del ' + A.unit.toLowerCase() + ' ' + (i + 1)),
+        h('input', { id: 'name-' + t.id, value: t.name, style: 'border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff', oninput: function(e){ t.name = e.target.value || (A.unit + ' ' + (i + 1)); save(); }, onchange: function(){ render(); } }),
+        h('label', { for: 'mem-' + t.id, style: 'font-weight:700;color:var(--navy);font-size:15px' }, 'Integrantes'), ta);
+    })));
+  } else {
+  c.appendChild(h('div', { class: 'names' }, S.teams.map(function(t, i){
+    return h('input', { id: 'name-' + t.id, value: t.name, 'aria-label': 'Nombre de ' + A.unit.toLowerCase() + ' ' + (i + 1), oninput: function(e){ t.name = e.target.value || (A.unit + ' ' + (i + 1)); save(); }, onchange: function(){ render(); } });
+  })));
+  }
+  box.appendChild(c);
+  if (A.configExtra) box.appendChild(A.configExtra(S));
+
+  var n = h('section', { class: 'card', style: 'display:flex;flex-direction:column;gap:14px' });
+  n.appendChild(h('h2', { style: 'font-size:24px' }, 'Conversión a nota'));
+  n.appendChild(h('div', { class: 'grid3' },
+    h('div', { class: 'field' }, h('label', { for: 'notaMax' }, 'Nota máxima'), h('input', { id: 'notaMax', type: 'number', min: '0.5', max: '5', step: '0.1', value: String(S.settings.notaMax), onchange: function(e){ set(function(s){ s.settings.notaMax = Math.max(0.1, Math.min(5, Number(e.target.value) || 5)); }); } })),
+    h('div', { class: 'field' }, h('label', { for: 'refMode' }, 'Referencia'),
+      (function(){ var sel = h('select', { id: 'refMode', onchange: function(e){ set(function(s){ s.settings.ref = e.target.value; }); } },
+        h('option', { value: 'top' }, 'El primer lugar obtiene la nota máxima'),
+        h('option', { value: 'fixed' }, 'Puntaje fijo para la nota máxima')); sel.value = S.settings.ref; return sel; })()),
+    S.settings.ref === 'fixed' ? h('div', { class: 'field' }, h('label', { for: 'refPts' }, 'Puntos para la nota máxima'), h('input', { id: 'refPts', type: 'number', min: '1', step: '1', value: String(S.settings.refPts), onchange: function(e){ set(function(s){ s.settings.refPts = Math.max(1, Math.round(Number(e.target.value) || 1)); }); } })) : h('div')
+  ));
+  n.appendChild(h('p', { class: 'note' }, 'Nota = nota máxima × puntos de la ' + A.unit.toLowerCase() + ' ÷ puntos de referencia, con un decimal y sin superar la nota máxima. Puedes cambiarla al final, antes de copiar los resultados.'));
+  box.appendChild(n);
+
+  var r = h('section', { class: 'panel', style: 'display:flex;flex-direction:column;gap:12px' });
+  r.appendChild(h('p', { class: 'note' }, 'El tablero guarda el avance en este navegador. Si recargas la página, los puntos siguen ahí.'));
+  if (!confirmReset){
+    r.appendChild(h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn danger', onclick: function(){ confirmReset = true; render(); } }, 'Empezar de cero')));
+  } else {
+    r.appendChild(h('div', { class: 'confirm' }, h('b', null, 'Se borrarán todos los puntos y el sorteo.'),
+      h('button', { type: 'button', class: 'btn danger', onclick: function(){ confirmReset = false; S = fresh(); save(); render(); toast('Tablero reiniciado'); } }, 'Sí, borrar todo'),
+      h('button', { type: 'button', class: 'btn ghost', onclick: function(){ confirmReset = false; render(); } }, 'Cancelar')));
+  }
+  box.appendChild(r);
+  return box;
+}
+
+function renderTabla(){
+  var rows = ranking();
+  var ref = refPoints(rows);
+  var top = rows.length ? rows[0].total : 0;
+  var box = h('div', { class: 'main' });
+  box.appendChild(h('div', null, h('p', { class: 'eyebrow' }, 'Resultado de la clase'), h('h1', { style: 'font-size:40px;margin-top:6px' }, 'Tabla de clasificación')));
+  if (rows.length >= 3){
+    var p = [rows[1], rows[0], rows[2]];
+    box.appendChild(h('div', { class: 'podium' }, p.map(function(r, i){
+      var cls = ['p2', 'p1', 'p3'][i];
+      return h('div', { class: 'pod ' + cls }, h('span', null, r.rank + '.º lugar'), h('b', null, r.name), h('span', { class: 'big' }, fmt(r.total)), h('span', null, 'puntos · nota ' + fmt(nota(r.total, ref), 1)));
+    })));
+  }
+  box.appendChild(h('div', { class: 'board' }, rows.map(function(r){
+    var w = top > 0 ? Math.round(100 * r.total / top) : 0;
+    return h('div', { class: 'brow' + (r.rank <= 3 ? ' top' + r.rank : '') },
+      h('span', { class: 'rk' }, String(r.rank)),
+      h('div', null, h('div', { class: 'nm' }, r.name), r.members.length ? h('div', { class: 'bd', style: 'color:var(--ink)' }, r.members.join(' · ')) : null, h('div', { class: 'bd' }, r.parts.filter(function(x){ return x[1]; }).map(function(x){ return x[0] + ' ' + fmt(x[1]); }).join(' · ') || 'Sin puntos todavía')),
+      h('div', { class: 'barcell' }, h('div', { class: 'bar', role: 'img', 'aria-label': fmt(r.total) + ' puntos' }, h('b', { style: 'width:' + w + '%' }))),
+      h('span', { class: 'pts' }, fmt(r.total)),
+      h('span', { class: 'nota', title: 'Nota' }, fmt(nota(r.total, ref), 1))
+    );
+  })));
+  box.appendChild(h('p', { class: 'note' }, 'Nota sobre ' + fmt(S.settings.notaMax, 1) + '. Referencia: ' + (S.settings.ref === 'fixed' ? fmt(ref) + ' puntos fijos.' : 'el primer lugar (' + fmt(ref) + ' puntos).') + ' Puedes cambiarla en Configurar.'));
+  var lines = ['Posición\t' + A.unit + '\tIntegrantes\tPuntos\tNota'].concat(rows.map(function(r){ return r.rank + '\t' + r.name + '\t' + r.members.join(', ') + '\t' + r.total + '\t' + fmt(nota(r.total, ref), 1); }));
+  var txt = lines.join('\n');
+  if (A.withMembers){
+    box.appendChild(h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn violet', onclick: function(){ downloadBoard(rows, ref); } }, 'Descargar imagen de la tabla'), h('span', { class: 'note' }, 'PNG con posiciones, integrantes, puntos y nota.')));
+    if (imgMsg) box.appendChild(h('p', { class: 'note', role: 'status' }, imgMsg));
+    if (imgUrl) box.appendChild(h('div', { class: 'panel' }, h('p', { class: 'note', style: 'margin-bottom:8px' }, 'Vista de la imagen. Si la descarga no está disponible aquí, haz clic derecho sobre ella y elige guardar imagen.'), h('img', { src: imgUrl, alt: 'Tabla de posiciones', style: 'width:100%;border-radius:10px;border:1px solid var(--line)' })));
+  }
+  box.appendChild(h('div', { class: 'row' },
+    h('button', { type: 'button', class: 'btn primary', onclick: function(){
+      var done = function(){ toast('Resultados copiados. Pégalos en Excel o en la planilla de notas.'); };
+      try { navigator.clipboard.writeText(txt).then(done, function(){ copyText = txt; render(); }); } catch(e){ copyText = txt; render(); }
+    } }, 'Copiar resultados'),
+    h('span', { class: 'note' }, 'Se copian en columnas para pegarlos en una hoja de cálculo.')
+  ));
+  if (copyText){
+    var ta = h('textarea', { class: 'copy', id: 'copybox', readonly: true, 'aria-label': 'Resultados para copiar' });
+    ta.value = copyText;
+    box.appendChild(h('p', { class: 'note' }, 'Tu navegador no permitió copiar automáticamente. Selecciona el texto y cópialo.'));
+    box.appendChild(ta);
+    setTimeout(function(){ ta.focus(); ta.select(); }, 30);
+    copyText = null;
+  }
+  return box;
+}
+
+
+function wrapT(ctx, text, maxW){ var words = String(text).split(/\s+/), out = [], line = ''; words.forEach(function(w){ var t = line ? line + ' ' + w : w; if (ctx.measureText(t).width > maxW && line){ out.push(line); line = w; } else line = t; }); if (line) out.push(line); return out; }
+function rrect(ctx, x, y, w, hh, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + hh, r); ctx.arcTo(x + w, y + hh, x, y + hh, r); ctx.arcTo(x, y + hh, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function boardCanvas(rows, ref){
+  var W = 1800, pad = 60, DF = 'Manrope, "Segoe UI", Arial, sans-serif', BF = '"Source Sans 3", "Segoe UI", Arial, sans-serif';
+  var c = document.createElement('canvas'), ctx = c.getContext('2d');
+  var colRank = pad + 20, colName = pad + 110, colMem = pad + 520, colPts = W - pad - 300, colNota = W - pad - 120, memW = colPts - colMem - 40;
+  ctx.font = '22px ' + BF;
+  var items = rows.map(function(r){ var ml = wrapT(ctx, r.members.length ? r.members.join(' · ') : 'Sin integrantes registrados', memW); var nl = wrapT(ctx, r.name, colMem - colName - 30); return { r: r, ml: ml, nl: nl, h: Math.max(84, 36 + Math.max(ml.length, nl.length) * 30) }; });
+  var headH = 210, H = headH + 56 + items.reduce(function(a, x){ return a + x.h + 12; }, 0) + 90;
+  c.width = W; c.height = H;
+  ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, W, H);
+  var g = ctx.createLinearGradient(0, 0, W, 170); g.addColorStop(0, '#172B5B'); g.addColorStop(.6, '#1F3F86'); g.addColorStop(1, '#4330BC');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, 170);
+  ctx.strokeStyle = 'rgba(0,169,214,.55)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(W, 30); ctx.lineTo(W - 220, 70); ctx.lineTo(W - 360, 40); ctx.lineTo(W - 470, 110); ctx.lineTo(W - 300, 140); ctx.stroke();
+  ctx.fillStyle = '#7FD8F0'; ctx.font = '600 22px ' + BF; ctx.fillText(A.course.toUpperCase(), pad, 62);
+  ctx.fillStyle = '#FFFFFF'; ctx.font = '800 48px ' + DF; ctx.fillText(A.title + ' · Tabla de posiciones', pad, 120);
+  ctx.fillStyle = '#334155'; ctx.font = '22px ' + BF;
+  ctx.fillText(new Date().toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' }) + ' · Nota sobre ' + fmt(S.settings.notaMax, 1) + ' · Referencia: ' + (S.settings.ref === 'fixed' ? fmt(ref) + ' puntos' : 'primer lugar'), pad, headH - 4);
+  var y = headH + 40;
+  ctx.fillStyle = '#64748B'; ctx.font = '700 18px ' + BF;
+  ctx.fillText('POSICIÓN', colRank - 20, y); ctx.fillText(A.unit.toUpperCase(), colName, y); ctx.fillText('INTEGRANTES', colMem, y); ctx.fillText('PUNTOS', colPts, y); ctx.fillText('NOTA', colNota, y);
+  y += 16;
+  items.forEach(function(it){
+    var r = it.r, top = r.rank === 1, col = r.rank === 1 ? '#4330BC' : r.rank === 2 ? '#2456A6' : r.rank === 3 ? '#00A9D6' : '#94A3B8';
+    ctx.fillStyle = top ? '#ECE9FB' : '#F5F7FB'; rrect(ctx, pad, y, W - pad * 2, it.h, 14); ctx.fill();
+    ctx.fillStyle = col; rrect(ctx, pad, y, 8, it.h, 4); ctx.fill();
+    var mid = y + it.h / 2;
+    ctx.fillStyle = col; ctx.font = '800 38px ' + DF; ctx.fillText(String(r.rank), colRank, mid + 13);
+    ctx.fillStyle = '#172B5B'; ctx.font = '800 26px ' + DF; it.nl.forEach(function(l, k){ ctx.fillText(l, colName, y + 46 + k * 30); });
+    ctx.fillStyle = '#334155'; ctx.font = '22px ' + BF; it.ml.forEach(function(l, k){ ctx.fillText(l, colMem, y + 44 + k * 30); });
+    ctx.fillStyle = '#2456A6'; ctx.font = '800 32px ' + DF; ctx.fillText(fmt(r.total), colPts, mid + 11);
+    ctx.fillStyle = '#4330BC'; ctx.font = '800 32px ' + DF; ctx.fillText(fmt(nota(r.total, ref), 1), colNota, mid + 11);
+    y += it.h + 12;
+  });
+  ctx.fillStyle = '#64748B'; ctx.font = '20px ' + BF; ctx.fillText('Nota = nota máxima × puntos ÷ puntos de referencia, con un decimal.', pad, y + 40);
+  return c;
+}
+function downloadBoard(rows, ref){
+  var run = function(){
+    var c = boardCanvas(rows, ref);
+    try { imgUrl = c.toDataURL('image/png'); } catch(e) { imgUrl = null; }
+    c.toBlob(function(blob){
+      var fname = 'tabla-' + A.key.replace(/^id-/, '').replace(/-v\d+$/, '') + '-' + new Date().toISOString().slice(0, 10) + '.png';
+      var p = window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null);
+      Promise.resolve(p).then(function(dl){
+        if (!dl){ imgMsg = 'La descarga directa no está disponible en esta vista. Guarda la imagen desde la vista previa.'; render(); return; }
+        return dl.save({ filename: fname, data: blob }).then(function(){ imgMsg = 'Imagen descargada.'; render(); toast('Imagen descargada'); }, function(err){ imgMsg = err && err.code === 'declined' ? 'Cancelaste la descarga. Puedes intentarlo de nuevo.' : 'No se pudo descargar aquí. Guarda la imagen desde la vista previa.'; render(); });
+      }).catch(function(){ imgMsg = 'No se pudo descargar aquí. Guarda la imagen desde la vista previa.'; render(); });
+    }, 'image/png');
+  };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(run, run); else run();
+}
+
+function renderNav(){
+  var ph = phases(), ids = ph.map(function(p){ return p.id; }), i = ids.indexOf(S.phase);
+  return h('div', { class: 'row', style: 'justify-content:space-between;border-top:1px solid var(--line);padding-top:16px' },
+    i > 0 ? h('button', { type: 'button', class: 'btn', onclick: function(){ go(ids[i - 1]); } }, '← ' + ph[i - 1].label) : h('span'),
+    i < ids.length - 1 ? h('button', { type: 'button', class: 'btn primary', onclick: function(){ go(ids[i + 1]); } }, ph[i + 1].label + ' →') : h('span')
+  );
+}
+
+function render(){
+  var y = window.scrollY;
+  var root = document.getElementById('app');
+  root.innerHTML = '';
+  root.appendChild(renderTop());
+  var main;
+  if (S.phase === 'config') main = renderConfig();
+  else if (S.phase === 'tabla') main = renderTabla();
+  else {
+    var p = A.phases.filter(function(x){ return x.id === S.phase; })[0] || A.phases[0];
+    main = h('div', { class: 'main' });
+    p.render(main, S);
+  }
+  main.appendChild(renderNav());
+  root.appendChild(h('div', { class: 'body' }, main, renderRail()));
+  tPaint();
+  window.scrollTo(0, y);
+}
+
+window.App = { h: h, set: set, save: save, render: render, toast: toast, stepper: stepper, chip: chip, teamName: teamName, fmt: fmt, go: go, timer: { start: tStart }, st: function(){ return S; } };
+render();
+})();
+
+</script>
+
+</body></html>

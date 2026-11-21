@@ -1,0 +1,633 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>¿Lo publicarías?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: tablero de aula — barra de pasos arriba, una sola escena grande por paso, navegación abajo; legible a 4 metros.
+   Línea gráfica del curso: fondo blanco, navy estructural, azul eléctrico, violeta de acento y cyan para conexiones. Un solo tema claro, deliberado, para proyección. */
+:root{
+  --bg:#F3F6FB; --surface:#FFFFFF; --ink:#172B5B; --muted:#334155; --line:#DCE3EE;
+  --accent:#4330BC; --accent-ink:#FFFFFF; --accent-soft:#ECE9FB;
+  --navy:#172B5B; --navy-ink:#FFFFFF; --blue:#2456A6; --cyan:#00A9D6;
+  --good:#0E7A5F; --good-soft:#E2F4EE; --warn:#8A5A00; --warn-soft:#FBF0D6; --bad:#B0215F; --bad-soft:#FBE7EF;
+  --display:'Manrope','Segoe UI',Arial,sans-serif;
+  --body:'Source Sans 3','Segoe UI',Arial,sans-serif;
+  --page:#FFFFFF; --r:16px; color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.45;padding-inline:clamp(16px,3vw,40px);padding-block:0}
+h1,h2,h3{font-family:var(--display);line-height:1.08;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.app{max-width:1400px;margin-inline:auto;min-height:100%;display:flex;flex-direction:column;gap:24px;padding-block:20px 28px}
+
+/* barra superior */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.brand{display:flex;flex-direction:column}
+.brand small{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.brand h1{font-size:clamp(28px,3.4vw,44px);font-weight:800}
+.brand h1 span{color:var(--accent)}
+.steps{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.steps button{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px 8px 8px;font-size:15px;font-weight:700;color:var(--muted)}
+.steps button b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--bg);font-size:14px;font-variant-numeric:tabular-nums}
+.steps button[aria-current="step"]{background:var(--navy);color:var(--navy-ink);border-color:var(--navy)}
+.steps button[aria-current="step"] b{background:var(--cyan);color:var(--navy)}
+.steps button.done b{background:var(--good-soft);color:var(--good)}
+
+.scene{flex:1;display:flex;flex-direction:column;gap:24px;min-width:0}
+.scene-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.scene-head h2{font-size:clamp(30px,4vw,56px);font-weight:800}
+.lead{font-size:clamp(18px,1.6vw,22px);color:var(--muted);max-width:62ch}
+
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:14px 22px;font-weight:700;font-size:18px;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.btn.on-dark{background:rgba(255,255,255,.12);color:#FFFFFF;border-color:rgba(255,255,255,.4)}
+.btn.on-dark:hover{background:rgba(255,255,255,.2)}
+.btn.on-dark.primary{background:var(--cyan);color:var(--navy);border-color:var(--cyan)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.dark{background:var(--navy);color:var(--navy-ink);border-color:var(--navy)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.small{padding:8px 14px;font-size:15px;border-radius:10px}
+
+/* paso 1 */
+.setup{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:24px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel h3{font-size:22px}
+.counter{display:flex;align-items:center;gap:16px}
+.counter button{width:72px;height:72px;border-radius:50%;border:1px solid var(--line);background:var(--bg);font-size:40px;font-weight:700;line-height:1}
+.counter output{font-family:var(--display);font-size:120px;font-weight:800;line-height:1;min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:17px}
+.check input{width:24px;height:24px;accent-color:var(--accent);margin-top:2px}
+.note{font-size:15px;color:var(--muted)}
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.names label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.names input{font:inherit;font-size:18px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:0}
+
+/* paso 2 */
+.turn{background:var(--navy);color:var(--navy-ink);border-radius:var(--r);padding:18px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.turn p{font-size:clamp(20px,2.2vw,30px)}
+.turn strong{font-family:var(--display);color:var(--cyan)}
+.turn-actions{display:flex;gap:8px;flex-wrap:wrap}
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.card{perspective:1200px;min-height:196px;min-width:0;border:0;padding:0;background:none;text-align:left}
+.card-inner{position:relative;height:100%;min-height:196px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:var(--r);backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:14px;display:flex;flex-direction:column;overflow:hidden}
+.front{background:var(--navy);color:var(--navy-ink);justify-content:space-between;overflow:hidden}
+.front{background:linear-gradient(135deg,#172B5B 0%,#2456A6 60%,#4330BC 100%)}
+.front::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.2px,transparent 1.4px);background-size:16px 16px;-webkit-mask-image:linear-gradient(200deg,#000 0%,transparent 55%);mask-image:linear-gradient(200deg,#000 0%,transparent 55%)}
+.front::after{content:"";position:absolute;right:-30px;bottom:-30px;width:130px;height:130px;border-radius:50%;border:2px solid #00A9D6;box-shadow:0 0 0 14px rgba(0,169,214,.12)}
+.front .num{font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;opacity:.8}
+.front .q{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;position:relative;z-index:1}
+.back{background:var(--surface);border:2px solid var(--accent);transform:rotateY(180deg);gap:8px}
+.back .num{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.back h3{font-size:18px;line-height:1.15}
+.back p{font-size:14px;line-height:1.3;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.back .who{margin-top:auto;font-weight:700;font-size:13px;background:var(--accent-soft);color:var(--ink);border-radius:999px;padding:6px 12px;align-self:flex-start}
+.card:disabled{cursor:default}
+.card.taken:not(.flipped) .front{opacity:.35}
+.picks{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border-radius:999px;padding:6px 12px;font-size:15px;font-weight:700;background:var(--surface);border:1px solid var(--line)}
+.chip.on{background:var(--good-soft);border-color:var(--good-soft);color:var(--good)}
+
+/* paso 3 */
+.summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:16px}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:10px;text-align:left;min-width:0}
+.rowtop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.team{font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.row h3{font-size:clamp(24px,2.2vw,30px)}
+.row .sit{font-size:18px;color:var(--muted)}
+.row ol{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:17px}
+.row ol li{display:flex;gap:10px}
+.row ol li b{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--bg);font-size:15px}
+.row .q{font-size:17px;font-weight:700;border-top:1px dashed var(--line);padding-top:10px}
+
+/* paso 4 */
+.guide{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.role{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:6px}
+.role h3{font-size:24px}
+.role .ico{width:44px;height:44px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:22px}
+.role p{color:var(--muted);font-size:17px}
+.extra{font-size:16px;color:var(--muted);grid-column:1/-1}
+.steps-list{counter-reset:s;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.steps-list li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:17px}
+.steps-list li::before{content:counter(s);display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--navy-ink);font-family:var(--display);font-weight:800;font-size:22px}
+.steps-list b{display:block;font-size:19px}
+.timer{background:var(--navy);color:var(--navy-ink);border-radius:var(--r);padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.timer .clock{font-family:var(--display);font-size:clamp(56px,7vw,96px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.timer .phase{font-size:20px;font-weight:700}
+.timer .phase small{display:block;font-weight:400;opacity:.8;font-size:16px}
+.timer .ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.timer .btn{background:transparent;color:var(--navy-ink);border-color:rgba(255,255,255,.3)}
+.timer .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.bar{flex-basis:100%;height:10px;border-radius:999px;background:rgba(255,255,255,.15);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--cyan),#7C6CF0);border-radius:999px;width:0}
+
+.timer.alert{outline:4px solid var(--cyan)}
+
+/* paso 5 */
+.twists{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:16px}
+.twist{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px}
+.reveal{background:var(--accent-soft);border-radius:14px;padding:16px;font-size:20px;line-height:1.4}
+.reveal b{display:block;color:var(--accent);font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+
+/* paso 6 */
+.social{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}
+.big-case{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:14px}
+.big-case h3{font-size:clamp(28px,3vw,40px)}
+.big-case .sit{font-size:20px;color:var(--muted)}
+.vote{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.vote div{background:var(--bg);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px;font-size:15px;min-width:0}
+.vote div b{font-family:var(--display);font-size:28px}
+.prompt{background:var(--navy);color:var(--navy-ink);border-radius:14px;padding:16px 18px;font-size:19px;line-height:1.5}
+.matrix{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px}
+.lens{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.lens:last-child{border-bottom:0}
+.lens b{font-size:19px}
+.lens small{display:block;color:var(--muted);font-size:14px}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:8px 12px;font-weight:700;font-size:15px;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"].si{background:var(--good-soft);color:var(--good)}
+.seg button[aria-pressed="true"].no{background:var(--bad-soft);color:var(--bad)}
+.seg button[aria-pressed="true"].dep{background:var(--warn-soft);color:var(--warn)}
+.mini{display:flex;flex-wrap:wrap;align-items:center;gap:12px;background:var(--bg);border-radius:14px;padding:12px 14px}
+.mini .clock{font-family:var(--display);font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;min-width:3.2ch}
+.mini.alert .clock{color:var(--accent)}
+.teamnav{display:flex;flex-wrap:wrap;gap:6px}
+.teamnav button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 12px;font-weight:700;font-size:15px}
+.teamnav button[aria-current="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:16px;min-width:720px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+th{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td.v{font-weight:700;text-align:center}
+td.v.si{color:var(--good)} td.v.no{color:var(--bad)} td.v.dep{color:var(--warn)}
+.empty{color:var(--muted);font-size:18px;padding:24px;border:2px dashed var(--line);border-radius:var(--r);text-align:center}
+
+/* retroalimentación */
+tr.open td{background:var(--accent-soft)}
+.fb{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+.fbgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.fbl{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--surface);min-width:0}
+.fbl.ok{border-color:var(--good);box-shadow:0 0 0 2px var(--good-soft)}
+.fbn{font-family:var(--display);font-weight:800;color:var(--blue);font-size:17px}
+.fbbest{font-size:15px;color:var(--muted)}
+.fbbest b{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--navy);color:var(--navy-ink);font-family:var(--display);font-size:16px;margin-left:4px}
+.fbopt{font-family:var(--display);font-weight:700;color:var(--navy);font-size:16px;line-height:1.3}
+.fbwhy{font-size:15px;color:var(--muted);border-left:3px solid var(--cyan);padding-left:10px}
+.fbtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.fbgiro{background:var(--accent-soft);border-radius:12px;padding:12px 16px;font-size:17px}
+.fbgiro b{display:block;color:var(--accent);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+
+/* elección, giro, voto popular */
+.choose{display:flex;flex-direction:column;gap:8px;border-top:1px dashed var(--line);padding-top:12px}
+.choose>span{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.seg.big{align-self:flex-start}
+.seg.big button{padding:10px 18px;font-size:18px;font-family:var(--display);color:var(--navy)}
+.seg.big button[aria-pressed="true"]{background:var(--navy);color:var(--navy-ink)}
+.head-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.count-pill{font-weight:700;font-size:15px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:8px 14px}
+.initial{font-size:16px;color:var(--muted)}
+.initial b{color:var(--navy)}
+.keeprow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.keepbtn[aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.status{font-weight:700;font-size:16px}
+.status.keep{color:var(--good)}
+.status.change{color:var(--accent)}
+.reveal.small{font-size:17px;padding:12px 14px}
+.popbox{border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.pophead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.pophead b{font-family:var(--display);color:var(--navy)}
+.popgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pv{background:var(--bg);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px;font-size:14px;min-width:0;border:2px solid transparent}
+.pv.lead{border-color:var(--accent);background:var(--accent-soft)}
+.pv b{font-family:var(--display);font-size:24px;color:var(--navy)}
+.pv span{flex:1}
+.votes{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.votes button{border:0;background:var(--bg);width:34px;height:32px;font-size:18px;font-weight:700;color:var(--navy)}
+.votes output{flex:1;text-align:center;font-family:var(--display);font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.votes input{flex:1;min-width:0;width:100%;border:0;border-inline:1px solid var(--line);height:32px;text-align:center;font-family:var(--display);font-weight:800;font-size:17px;color:var(--navy);background:var(--surface);-moz-appearance:textfield;appearance:textfield}
+.votes input::-webkit-outer-spin-button,.votes input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.decide{background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+.decide h3{font-size:clamp(24px,2.4vw,32px)}
+.decide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:10px}
+.drow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;background:var(--bg);border-radius:12px;padding:10px 14px}
+.dname{display:flex;flex-direction:column;min-width:0}
+.dname b{font-family:var(--display);color:var(--navy);font-size:17px}
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tri div{background:var(--navy);color:var(--navy-ink);border-radius:12px;padding:10px 14px;min-width:0}
+.tri small{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.tri b{font-family:var(--display);font-size:30px}
+td.v.chg{color:var(--accent)}
+td small{color:var(--muted);font-weight:400}
+.cmps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.cmp{background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.cmp small{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.cmp b{font-family:var(--display);color:var(--navy);font-size:16px;line-height:1.3}
+.cmp span{font-size:14px;color:var(--blue);font-weight:700}
+.fbtag{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--bg);color:var(--muted)}
+.fbtag.ok{background:var(--good-soft);color:var(--good)}
+.fb h3{font-size:clamp(24px,2.4vw,32px)}
+@media (max-width:640px){
+  .deck{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .front .q{font-size:48px}
+  .popgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tri b{font-size:24px}
+}
+@media (max-width:900px){
+  .setup,.guide,.social{grid-template-columns:1fr}
+  .roles{grid-template-columns:1fr}
+  .vote{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){.card-inner{transition:none}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand"><small>Interacción Digital · Semana 9 · Análisis de casos</small><h1>¿Lo <span>publicarías</span>?</h1></div>
+    <nav aria-label="Pasos de la actividad"><ol class="steps" id="steps"></ol></nav>
+  </header>
+  <main class="scene" id="scene"></main>
+  <footer class="nav">
+    <button class="btn" id="prev" type="button">← Anterior</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn small" id="reset" type="button">Reiniciar actividad</button>
+      <button class="btn small" id="fs" type="button">Pantalla completa</button>
+    </div>
+    <button class="btn primary" id="next" type="button">Siguiente →</button>
+  </footer>
+</div>
+
+<script>
+const CASES = [
+ {t:"El correo sin respuesta", s:"Escribiste al profesor hace tres días para aclarar una duda del trabajo final; la entrega es en 48 horas. En el grupo del curso alguien escribe: “¿Será que al profe le da igual?”.", short:"Tres días sin respuesta del profesor y la entrega en 48 horas.",
+  o:["Publicar una historia: “Tres días esperando respuesta… así funciona la U 🙃”.","Enviar un segundo correo breve, con asunto claro.","Responder en el grupo y sumarte a la queja colectiva.","Buscar otro canal institucional: plataforma, monitor o coordinación."],
+  g:"En la plataforma del curso hay un aviso de hace dos días: el profesor está incapacitado y un docente de reemplazo responde dudas en el foro.", q:"¿Quién es responsable de buscar la información antes de reclamar?",
+  fb:{legal:[1,"Canal formal y privado: no compromete la honra ni el buen nombre de nadie. Una queja pública que identifique al docente sí podría hacerlo."],etica:[1,"No supone mala intención y le da al profesor la oportunidad de responder."],resp:[3,"Antes de reclamar, busca la información en los canales oficiales. El giro lo confirma: la respuesta ya estaba publicada."],rel:[1,"Mantiene la relación con el docente sin exponerlo frente al curso."],marca:[3,"Muestra iniciativa y manejo de los canales institucionales, algo que un empleador valora."]},
+  gn:"El giro favorece la D: la información estaba disponible y quejarse en público habría expuesto a alguien que estaba incapacitado."},
+ {t:"El error en la exposición", s:"En la exposición final, un compañero presenta una cifra equivocada que cambia la conclusión del trabajo. La nota es grupal y el docente no lo notó.", short:"Un compañero dio una cifra equivocada en la exposición; la nota es grupal.",
+  o:["Corregirlo en ese momento, con cortesía, frente a todos.","Hablarle en privado al terminar.","Proponer en el chat del equipo enviar una fe de erratas al docente.","No decir nada: ya pasó y nadie lo notó."],
+  g:"Otro integrante grabó el momento del error y lo subió a sus historias con el texto “cuando improvisas 😂”.", q:"¿Señalar un error es irrespetuoso? ¿Qué cambia cuando se hace público?",
+  fb:{legal:[2,"Ninguna opción es ilegal. El riesgo está en el giro: publicar un video de una persona sin su consentimiento puede afectar su derecho a la propia imagen."],etica:[2,"Es honesta con el docente y corrige el error sin humillar a nadie."],resp:[2,"Asume la responsabilidad del equipo sobre un resultado que afecta a todos."],rel:[1,"Hablarle primero en privado protege la confianza dentro del equipo."],marca:[2,"Rigor y trabajo en equipo: reconocer y corregir errores es una competencia profesional."]},
+  gn:"Con el giro, lo urgente es pedir que se retire el video de las historias: el problema ya no es la cifra, es la exposición del compañero."},
+ {t:"La opinión que no compartes", s:"Un amigo publica una opinión fuerte sobre un tema controvertido. Ya tiene 40 comentarios, varios de ellos agresivos.", short:"Un amigo publicó una opinión polémica que no compartes.",
+  o:["Comentar con tus argumentos y una fuente.","Escribirle en privado para entender su postura.","No responder.","Publicar tu postura en tu perfil, sin mencionarlo."],
+  g:"La publicación incluye un dato falso que puedes desmentir con una fuente confiable.", q:"¿Desacuerdo es lo mismo que conflicto? ¿Cambia algo cuando hay desinformación?",
+  fb:{legal:[1,"Todas son legales; la de menor riesgo es la conversación privada, que no expone a nadie."],etica:[1,"Busca entender antes de juzgar y respeta su derecho a opinar."],resp:[0,"Ante un dato falso, aportar una fuente en el lugar donde circula frena la desinformación."],rel:[1,"Protege la amistad: la conversación privada evita sumarse a un hilo que ya es agresivo."],marca:[0,"Argumentar con evidencia y respeto en público construye credibilidad."]},
+  gn:"El giro refuerza la A: no es solo una diferencia de opinión, hay un dato verificablemente falso."},
+ {t:"La captura que circula", s:"En el grupo de la carrera (180 personas) alguien comparte la captura de un chat privado entre dos compañeros que critican a un docente con nombre propio.", short:"Circula en un grupo de 180 la captura de un chat privado.",
+  o:["Reenviarla: ya está circulando.","No reenviarla y no decir nada.","Preguntar si las personas del chat autorizaron su difusión.","Pedir en el grupo que se borre y explicar por qué."],
+  g:"Alguien nota que la hora y el formato de la captura no coinciden: podría estar editada.", q:"¿Que algo ya circule autoriza a seguir difundiéndolo? ¿Cómo se verifica una captura?",
+  fb:{legal:[3,"Difundir conversaciones privadas puede vulnerar la intimidad (Constitución, art. 15) y afectar la honra del docente nombrado. Frenar la difusión reduce el riesgo para todos."],etica:[3,"Protege a tres personas expuestas: los dos del chat y el docente."],resp:[3,"Interrumpe la cadena de difusión en lugar de mirar a otro lado."],rel:[2,"Preguntar invita a reflexionar sin señalar a quien la compartió."],marca:[3,"Defender la privacidad de otros, con argumentos, habla bien de tu criterio."]},
+  gn:"El giro suma un problema de veracidad: una captura editada puede ser una forma de desinformación o difamación."},
+ {t:"La reseña furiosa", s:"Manejas las redes de un emprendimiento. Un cliente publica: “El peor servicio que he recibido. Nunca vuelvo”. Lleva 200 reacciones.", short:"Un cliente critica con dureza el emprendimiento cuyas redes manejas.",
+  o:["Responder en público, reconocer la molestia y ofrecer un canal directo.","Escribirle solo por privado.","Responder en público con los detalles del caso para mostrar que exagera.","Ocultar el comentario."],
+  g:"Al revisar el pedido descubres que el error sí fue de la empresa.", q:"¿Una organización debe responder toda crítica en público? ¿Cómo se ve una disculpa profesional?",
+  fb:{legal:[0,"Publicar los detalles del pedido (opción C) expone datos personales del cliente, regulados por la Ley 1581 de 2012."],etica:[0,"Reconoce la molestia sin descalificar al cliente."],resp:[0,"Atiende el problema donde se hizo visible y lo lleva a un canal para resolverlo."],rel:[0,"Muestra a todos los que leen que la empresa escucha."],marca:[0,"Una respuesta pública, cordial y con solución es lo que más protege la reputación."]},
+  gn:"Con el giro, la respuesta pública debe incluir una disculpa clara: la empresa se equivocó."},
+ {t:"El meme del grupo", s:"Una compañera se equivocó al hablar en clase. En el chat del curso (40 personas) empiezan a circular memes con su foto.", short:"Circulan memes de una compañera en el chat del curso.",
+  o:["Reaccionar con un emoji: es solo una broma.","No participar, pero tampoco intervenir.","Pedir en el grupo que paren.","Escribirle en privado para saber cómo está."],
+  g:"Ella está en el grupo. Hace un minuto apareció el aviso: “salió del grupo”.", q:"¿El silencio es neutral? ¿Cuándo deja una broma de serlo?",
+  fb:{legal:[2,"Usar la foto de alguien para burlarse puede afectar su imagen y su honra; pedir que paren frena la difusión."],etica:[2,"Defiende a la persona afectada cuando más lo necesita."],resp:[2,"Rompe la dinámica de grupo que convierte una broma en acoso."],rel:[3,"El apoyo directo a la persona afectada es lo que más cuida el vínculo."],marca:[2,"Intervenir con respeto muestra liderazgo y coherencia."]},
+  gn:"El giro muestra que ya hubo daño: además de pedir que paren, conviene escribirle (D)."},
+ {t:"La crítica dura en LinkedIn", s:"Publicas tu proyecto de semestre en LinkedIn. Un comentario dice: “Esto demuestra que no tienes idea del tema”.", short:"Un comentario duro en tu publicación de LinkedIn.",
+  o:["Responder con el mismo tono.","Borrar la publicación.","Agradecer y preguntar qué parte considera incorrecta.","Ignorar el comentario."],
+  g:"Quien comenta es un profesional reconocido en el área donde quieres trabajar.", q:"¿Cambia tu respuesta según quién critica? ¿Debería?",
+  fb:{legal:[2,"Todas son legales; responder con el mismo tono podría escalar hacia ofensas personales."],etica:[2,"Separa la crítica del ataque y busca lo útil en ella."],resp:[2,"Convierte un comentario duro en una conversación sobre el trabajo."],rel:[2,"Abre la puerta a una conversación con alguien de tu sector."],marca:[2,"Responder con serenidad ante una crítica pública es una de las señales más fuertes de profesionalismo."]},
+  gn:"El giro no debería cambiar la respuesta: la C es adecuada sea quien sea quien critica."},
+ {t:"La publicación antigua", s:"Encuentras un tuit de hace seis años de quien acaba de ser elegido representante estudiantil. Hoy te parece ofensivo.", short:"Un tuit antiguo y ofensivo del nuevo representante estudiantil.",
+  o:["Compartirlo para que la comunidad lo conozca.","Preguntarle directamente por el contexto.","Llevarlo a la instancia institucional correspondiente.","No hacer nada."],
+  g:"Hace tres años se disculpó públicamente por ese tuit, pero casi nadie lo vio.", q:"¿Una publicación antigua define a una persona hoy? ¿Importa el cargo que ocupa?",
+  fb:{legal:[2,"Compartirlo con acusaciones puede afectar su honra y buen nombre (SU-420 de 2019); la vía institucional es la de menor riesgo."],etica:[1,"Escuchar antes de juzgar respeta que las personas cambian."],resp:[1,"Verifica el contexto antes de actuar sobre una reputación."],rel:[1,"Una conversación directa evita convertir el tema en una exposición pública."],marca:[1,"Mostrar criterio y proporcionalidad dice más de ti que exponer a otro."]},
+  gn:"El giro muestra por qué preguntar primero: ya existía una disculpa pública."},
+ {t:"El dato falso en tu red", s:"Un egresado que admiras comparte en LinkedIn un dato falso sobre tu sector. Tiene 1.500 reacciones y tú tienes la fuente que lo desmiente.", short:"Alguien que admiras comparte un dato falso en LinkedIn.",
+  o:["Comentar en público con la fuente, en tono respetuoso.","Escribirle en privado con la fuente.","Publicar en tu perfil un post que aclare el dato, sin mencionarlo.","No intervenir: no te conviene quedar mal con él."],
+  g:"Esa misma tarde te escribe para invitarte a aplicar a una práctica en su empresa.", q:"¿Corregir en público fortalece o debilita tu marca personal?",
+  fb:{legal:[1,"Todas son legales; la vía privada es la de menor riesgo de malentendidos."],etica:[0,"Corrige la desinformación donde circula, con respeto y evidencia."],resp:[0,"1.500 personas ya vieron el dato: la corrección debe llegar al mismo lugar."],rel:[1,"Le permite corregir él mismo sin exponerse."],marca:[0,"Aportar evidencia con respeto, incluso a alguien influyente, construye credibilidad."]},
+  gn:"El giro pone a prueba la independencia: la oferta no debería cambiar lo que es correcto informar."},
+ {t:"Mensajes a las 2 a.m.", s:"Un compañero de equipo envía audios al grupo a las 2 a.m. exigiendo respuestas sobre el trabajo. Ya pasó tres noches seguidas.", short:"Un compañero escribe al grupo de madrugada y exige respuestas.",
+  o:["Responderle molesto al día siguiente en el grupo.","Silenciar el grupo y proponer en horario razonable un acuerdo de horarios.","Salir del grupo.","Responder de inmediato para no quedar mal."],
+  g:"Descubres que está de intercambio en otro país y para él son las 9 a.m.", q:"¿Quién define qué es un horario adecuado en un equipo digital?",
+  fb:{legal:[1,"Ninguna opción tiene riesgo legal; los acuerdos de horario son una práctica reconocida de desconexión."],etica:[1,"Cuida tu descanso sin descalificar al compañero."],resp:[1,"Resuelve la causa del problema con un acuerdo explícito."],rel:[1,"Hace visible una diferencia que nadie había hablado."],marca:[1,"Proponer reglas de trabajo claras es liderazgo de equipo."]},
+  gn:"El giro muestra que no había mala intención: el acuerdo de horarios debe considerar las zonas horarias."},
+ {t:"La foto de la fiesta", s:"Un amigo sube a Instagram una foto tuya en una fiesta y te etiqueta. Mañana tienes una entrevista para una práctica.", short:"Te etiquetaron en una foto de fiesta antes de una entrevista.",
+  o:["Comentar en la foto pidiéndole que la borre.","Escribirle en privado y pedirle que la quite o te desetiquete.","Reportar la foto en la plataforma.","Quitar la etiqueta tú mismo y no decir nada."],
+  g:"La empresa de la entrevista sigue la cuenta de tu amigo.", q:"¿Quién decide sobre tu imagen en las redes de otros?",
+  fb:{legal:[1,"Tienes derecho a decidir sobre tu propia imagen; pedir el retiro de forma directa es la vía más simple."],etica:[1,"Pide lo que necesitas sin exponer a tu amigo."],resp:[1,"Atiende la causa: la foto sigue publicada aunque no tenga etiqueta."],rel:[1,"Una conversación privada cuida la amistad."],marca:[3,"Desetiquetarte es lo más rápido para tu huella digital; compleméntalo con la B."]},
+  gn:"Con el giro, quitar la etiqueta ya no basta: la foto está en una cuenta que la empresa ve."},
+ {t:"El formulario del trabajo", s:"Un compañero crea un formulario para una investigación del curso y pide nombre, cédula y dirección a 200 estudiantes, aunque el trabajo no los necesita.", short:"Un formulario del curso pide datos personales innecesarios.",
+  o:["Llenarlo igual: es para un trabajo.","Advertirle en privado que pide datos innecesarios.","Escribir en el grupo que nadie lo llene.","Avisar al docente."],
+  g:"El formulario ya tiene 80 respuestas y la hoja con los datos está abierta para cualquiera con el enlace.", q:"¿Qué datos necesita realmente una investigación de clase?",
+  fb:{legal:[1,"La Ley 1581 de 2012 exige pedir solo los datos necesarios para una finalidad clara y protegerlos."],etica:[1,"Le da la oportunidad de corregir sin exponerlo."],resp:[1,"Corrige la recolección antes de que crezca."],rel:[1,"Una advertencia privada se recibe mejor que un señalamiento público."],marca:[1,"Saber de protección de datos es una competencia digital valorada."]},
+  gn:"Con el giro hay datos expuestos: lo responsable es avisar de inmediato al docente (D) y cerrar el acceso a la hoja."},
+ {t:"El chiste del grupo", s:"En el grupo de la carrera (180 personas) alguien comparte un chiste que se burla del acento y las costumbres de una región del país.", short:"Un chiste que se burla de una región circula en el grupo.",
+  o:["Reírte y reaccionar.","Responder en el grupo que el chiste es ofensivo.","Escribirle en privado a quien lo compartió.","Ignorarlo."],
+  g:"Un compañero de esa región sale del grupo.", q:"¿El humor justifica cualquier estereotipo?",
+  fb:{legal:[2,"Ninguna opción es ilegal por sí misma. Si el contenido discriminara por etnia, religión u orientación, podría haber responsabilidad penal (Ley 1482 de 2011)."],etica:[1,"Nombrar el estereotipo en el mismo espacio protege a quienes se sienten aludidos."],resp:[1,"Rompe la normalización del estereotipo frente a 180 personas."],rel:[2,"En privado, quien lo compartió puede escuchar sin sentirse atacado."],marca:[1,"Defender el respeto con calma muestra criterio y liderazgo."]},
+  gn:"El giro muestra que hubo daño: además de responder, conviene escribirle al compañero que salió."},
+ {t:"La página de los profes", s:"Una página anónima de Instagram invita a calificar docentes. Un amigo te pide escribir sobre el profesor que te reprobó.", short:"Una página anónima invita a calificar docentes.",
+  o:["Escribir anónimamente lo que piensas, sin filtro.","Escribir una crítica concreta sobre su metodología, sin datos personales.","Usar la evaluación docente institucional.","No participar."],
+  g:"La página empieza a publicar fotos de los docentes tomadas en clase sin permiso.", q:"¿El anonimato cambia lo que es justo decir?",
+  fb:{legal:[2,"La evaluación institucional está diseñada para eso y no pone en riesgo la honra de nadie."],etica:[2,"Da una opinión que el docente puede conocer y responder."],resp:[2,"Es el canal donde la crítica puede producir cambios reales."],rel:[2,"Evita una exposición pública que dañaría la relación con el docente."],marca:[1,"Una crítica concreta y sin ataques es la forma profesional de disentir; recuerda que el anonimato rara vez es total."]},
+  gn:"El giro convierte la página en un espacio de exposición: participar ahí suma riesgo legal y ético."},
+ {t:"El audio reenviado", s:"Te llega un audio en el que una compañera habla mal de otra. Quien te lo envía dice que es “solo para ti”.", short:"Te reenvían un audio donde critican a una compañera.",
+  o:["Reenviárselo a la persona afectada.","Borrarlo y no compartirlo.","Pedirle a quien te lo envió que no lo siga difundiendo.","Subirlo a tus historias sin nombres."],
+  g:"La compañera afectada te pregunta si sabes de algún audio sobre ella.", q:"¿Ser honesto obliga a reenviar?",
+  fb:{legal:[1,"La voz es un dato personal y la conversación era privada: no difundirlo es lo de menor riesgo."],etica:[2,"Frena la cadena sin exponer a nadie."],resp:[2,"Actúa sobre la causa: la difusión."],rel:[2,"Cuida a las dos compañeras y a quien te lo envió."],marca:[1,"No participar en la circulación de chismes también es parte de tu reputación."]},
+  gn:"Con el giro, la honestidad pide decirle que existe, sin reenviarlo, y sugerirle hablar con la persona."},
+ {t:"La práctica sospechosa", s:"En el grupo de la carrera circula una oferta de práctica que pide pagar una inscripción y enviar copia de la cédula por WhatsApp.", short:"Una oferta de práctica pide pago y copia de la cédula.",
+  o:["Reenviarla a tus amigos por si les sirve.","Verificar la oferta en la página oficial de la empresa.","Advertir en el grupo que parece un fraude.","Enviar tus datos para no perder la oportunidad."],
+  g:"La empresa existe, pero su página oficial no publica esa oferta.", q:"¿Cómo se evalúa la fuente de una oferta de trabajo?",
+  fb:{legal:[1,"Verificar antes de entregar datos o dinero te protege de una posible estafa."],etica:[2,"Advertir protege a otros compañeros."],resp:[1,"Es la evaluación de fuentes aplicada: comprobar antes de actuar."],rel:[2,"Cuidar al grupo fortalece la confianza en él."],marca:[2,"Advertir con evidencia muestra criterio digital."]},
+  gn:"El giro confirma la sospecha: ahora la C es urgente, idealmente con la verificación como evidencia."},
+ {t:"El anuncio de la matrícula", s:"La cuenta oficial de la universidad anuncia un alza de la matrícula. Cientos de comentarios incluyen insultos.", short:"La universidad anuncia un alza y llueven insultos.",
+  o:["Comentar con insultos como los demás.","Comentar con argumentos y datos sobre el impacto.","Compartir un meme burlándote de las directivas.","Llevar la inquietud al consejo estudiantil."],
+  g:"Un medio local publica una nota citando varios comentarios con nombre y foto.", q:"¿Cómo se expresa un desacuerdo legítimo sin perder legitimidad?",
+  fb:{legal:[1,"Opinar con argumentos está protegido por la libertad de expresión (art. 20); los insultos pueden afectar la honra."],etica:[1,"Ejerce el desacuerdo sin atacar a personas."],resp:[3,"El consejo estudiantil puede llevar la inquietud a donde se toman las decisiones."],rel:[3,"Usa un canal donde hay diálogo, no solo reacción."],marca:[1,"Tu comentario puede terminar citado en un medio: que sea uno del que te sientas orgulloso."]},
+  gn:"El giro muestra la persistencia: los comentarios públicos pueden salir de la red con tu nombre."},
+ {t:"El reclutador insistente", s:"Alguien que se presenta como reclutador te escribe en LinkedIn, te ofrece un empleo y te pide pasar a WhatsApp y enviar fotos personales “para el perfil”.", short:"Un supuesto reclutador pide fotos personales por WhatsApp.",
+  o:["Enviar las fotos: es una oportunidad.","Pedir información oficial de la empresa y de la vacante.","Reportarlo a la plataforma y bloquearlo.","Publicar capturas con su nombre para alertar a otros."],
+  g:"Dos compañeras recibieron el mismo mensaje.", q:"¿Qué señales distinguen una oferta real de una trampa?",
+  fb:{legal:[2,"Reportar usa los mecanismos de la plataforma; publicar su nombre sin verificar podría afectar a alguien suplantado."],etica:[2,"Te protege sin exponer a terceros."],resp:[2,"Corta el contacto y deja registro para que la plataforma actúe."],rel:[1,"Si fuera real, una empresa seria entregará información oficial."],marca:[2,"Saber identificar y reportar riesgos es parte de una presencia profesional segura."]},
+  gn:"Con el giro, también conviene avisar a la universidad para alertar a otros estudiantes sin exponer nombres."},
+ {t:"Las preguntas del parcial", s:"Durante un parcial virtual, alguien comparte en el grupo del curso fotos de las preguntas.", short:"Comparten las preguntas de un parcial en el grupo.",
+  o:["Guardarlas por si acaso.","Salir del grupo.","Escribir en el grupo que eso no se debe compartir y no usarlas.","Avisar al docente."],
+  g:"Al día siguiente el docente pregunta en clase si alguien sabe algo.", q:"¿El silencio también es una decisión?",
+  fb:{legal:[3,"El reglamento estudiantil sanciona el fraude académico; informar al docente te deja del lado correcto."],etica:[2,"Pone un límite claro frente a todos."],resp:[3,"Permite que la evaluación sea justa para todo el curso."],rel:[2,"Marca un límite sin señalar a nadie con nombre."],marca:[2,"La integridad académica es la base de la confianza profesional."]},
+  gn:"Con el giro, quien sabe y calla queda en una posición difícil: decir la verdad sin señalar personas es la salida más íntegra."},
+ {t:"El perfil falso", s:"Descubres un perfil de Instagram que usa fotos de una compañera y publica contenido a su nombre.", short:"Un perfil falso usa las fotos de una compañera.",
+  o:["Comentar en el perfil que es falso.","Avisarle a ella en privado y reportar el perfil.","Compartirlo en tus historias para que todos lo denuncien.","Ignorarlo."],
+  g:"El perfil empieza a escribirle a sus contactos pidiendo dinero.", q:"¿Qué hacer cuando la víctima de una suplantación no lo sabe?",
+  fb:{legal:[1,"La suplantación puede constituir delito; reportar y avisarle para que ella decida si denuncia es la vía adecuada."],etica:[1,"Ella decide cómo manejar su propia imagen."],resp:[1,"Usa los mecanismos de la plataforma y alerta a la afectada."],rel:[1,"Muestra apoyo sin exponerla más."],marca:[1,"Actuar con discreción ante un caso así habla de tu criterio."]},
+  gn:"Con el giro hay un posible fraude: conviene que ella denuncie y avise a sus contactos."},
+ {t:"El grupo de egresados", s:"En un grupo de WhatsApp de egresados creado para compartir ofertas laborales, un integrante comparte propaganda política todos los días.", short:"Propaganda política diaria en un grupo de ofertas laborales.",
+  o:["Responder con propaganda de la postura contraria.","Recordar en el grupo su propósito y proponer una regla.","Escribirle al administrador.","Salir del grupo."],
+  g:"El administrador es quien comparte la propaganda.", q:"¿Quién cuida las reglas de un espacio digital compartido?",
+  fb:{legal:[1,"Ninguna opción tiene riesgo legal; proponer reglas es lo más sano."],etica:[1,"Respeta la libertad de opinión y el propósito acordado del espacio."],resp:[1,"Propone una solución para todos, no solo para ti."],rel:[2,"Escribirle primero al administrador evita una discusión pública."],marca:[1,"Proponer normas con respeto en una red profesional muestra liderazgo."]},
+  gn:"Con el giro, la conversación privada pierde sentido: proponer la regla al grupo (B) es la mejor salida."},
+ {t:"La foto del equipo ganador", s:"Tu equipo gana una hackatón. Publicas en LinkedIn y olvidas etiquetar a una integrante clave. Ella comenta: “Gracias por recordarme”.", short:"Olvidaste etiquetar a una integrante en un logro del equipo.",
+  o:["Borrar la publicación.","Responder en público reconociendo su aporte y editar para etiquetarla.","Escribirle en privado una disculpa sin cambiar el post.","Responder: “Fue sin querer, no es para tanto”."],
+  g:"Otros comentan que en ese equipo siempre se olvidan de las mujeres.", q:"¿Cómo se reconoce un error en público?",
+  fb:{legal:[1,"Ninguna opción tiene riesgo legal; reconocer la autoría es lo más correcto."],etica:[1,"Da crédito a quien lo merece donde todos pueden verlo."],resp:[1,"Corrige el error en el mismo espacio donde ocurrió."],rel:[2,"Una disculpa personal y directa repara el vínculo; idealmente, junto con la B."],marca:[1,"Reconocer un error en público y corregirlo fortalece tu reputación."]},
+  gn:"El giro amplía la discusión: el reconocimiento público (B) es aún más necesario."},
+ {t:"El documento compartido", s:"En el documento compartido del equipo, un compañero borra dos de tus secciones sin avisar. La entrega es mañana.", short:"Un compañero borró tus secciones en el documento compartido.",
+  o:["Reclamarle en el grupo de WhatsApp.","Restaurar desde el historial y dejar un comentario en el documento preguntando qué pasó.","Restaurar sin decir nada.","Contarle al docente."],
+  g:"El historial muestra que lo borró al pegar por error una versión antigua.", q:"¿Qué herramientas digitales ayudan a no suponer?",
+  fb:{legal:[1,"Ninguna opción tiene riesgo legal; el historial te permite actuar con evidencia."],etica:[1,"Recupera tu trabajo sin suponer mala intención."],resp:[1,"Resuelve el problema y deja registro para que no se repita."],rel:[1,"Pregunta en el lugar del trabajo, sin exponerlo en el chat."],marca:[1,"Usar las herramientas colaborativas con criterio es una competencia profesional."]},
+  gn:"El giro confirma que fue un error: suponer sabotaje habría escalado el conflicto sin razón."}
+];
+const LENSES=[["legal","Legal","¿Lo permiten las normas?"],["etica","Ética","¿Respeta dignidad, privacidad, no daño?"],["resp","Responsable","¿Consideré las consecuencias?"],["rel","Relacional","¿Resuelve o amplifica?"],["marca","Marca personal","¿Coherente con quien quiero ser?"]];
+const STEPS=["Equipos","Sorteo","Resumen","Análisis y decisión","Giro","Socialización"];
+const L="ABCD", L5="ABCD";
+const KEY="lo-publicarias-v3";
+const T_ANALYSIS=540, T_AFTER=300;
+
+function fresh(){return{step:0,count:8,names:[],allowRepeat:false,picks:[],flipped:null,twists:{},matrix:{},soc:0,init:{},after:{},pop:{},shown:{},fbOpen:null,full:true,decide:false}}
+let S=fresh();
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(fresh(),JSON.parse(raw))}catch(e){}
+S.flipped=null;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const has=v=>v!==undefined&&v!==null;
+const teamName=i=>(S.names[i]&&S.names[i].trim())||("Equipo "+(i+1));
+const optText=(c,v)=>`${L[v]} · ${c.o[v]}`;
+function sync(){S.picks.length=S.count;for(let i=0;i<S.count;i++)if(S.picks[i]===undefined)S.picks[i]=null}
+const allPicked=()=>S.picks.slice(0,S.count).every(p=>p!==null);
+const nextTurn=()=>{const i=S.picks.findIndex(p=>p===null);return i<0?S.count:i};
+const afterOf=k=>has(S.after[k])?S.after[k]:S.init[k];
+function popular(k){const a=(S.pop[k]||[0,0,0,0]).slice(0,4);const tot=a.reduce((x,y)=>x+y,0);const max=Math.max(...a);const leaders=max>0?a.map((v,i)=>v===max?i:-1).filter(i=>i>=0):[];return{a,tot,leaders,one:leaders.length===1?leaders[0]:null}}
+
+/* ---------- temporizadores ---------- */
+const timers={};
+function makeTimer(id,secs,onTick,onEnd){stopTimer(id);timers[id]={left:secs,total:secs,running:false,iv:null,onTick,onEnd};onTick(timers[id])}
+function toggleTimer(id){
+  const t=timers[id];if(!t)return;
+  if(t.running){clearInterval(t.iv);t.running=false;t.onTick(t);return}
+  if(t.left<=0)return;
+  t.running=true;t.onTick(t);
+  t.iv=setInterval(()=>{t.left--;t.onTick(t);if(t.left<=0){clearInterval(t.iv);t.running=false;t.onTick(t);t.onEnd&&t.onEnd(t)}},1000);
+}
+function stopTimer(id){const t=timers[id];if(t){clearInterval(t.iv);delete timers[id]}}
+const mmss=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+const KEEP=new Set(["work","post"]);
+
+/* ---------- render ---------- */
+function renderSteps(){$("#steps").innerHTML=STEPS.map((n,i)=>`<li><button type="button" data-go="${i}" ${i===S.step?'aria-current="step"':''} class="${i<S.step?'done':''}"><b>${i+1}</b>${n}</button></li>`).join("")}
+const after={};
+function render(){
+  sync();renderSteps();
+  Object.keys(timers).forEach(k=>{if(!KEEP.has(k))stopTimer(k)});
+  $("#scene").innerHTML=[s1,s2,s3,s4,s5,s6][S.step]();
+  after[S.step]&&after[S.step]();
+  $("#prev").disabled=S.step===0;
+  const block=S.step===1&&!allPicked();
+  $("#next").disabled=S.step===STEPS.length-1||block;
+  $("#next").textContent=block?"Faltan equipos por elegir":"Siguiente →";
+  save();
+}
+function keepMini(fn){const keep={vote:timers.vote&&{...timers.vote},talk:timers.talk&&{...timers.talk}};fn();render();["vote","talk"].forEach(id=>{const k=keep[id];if(!k||!timers[id])return;const t=timers[id];t.left=k.left;t.onTick(t);if(k.running)toggleTimer(id)})}
+function seg(attr,k,cur,labels){return `<div class="seg big" role="group">${labels.map((x,v)=>`<button type="button" ${attr}="${k}:${v}" aria-pressed="${cur===v}">${x}</button>`).join("")}</div>`}
+
+/* paso 1 */
+function s1(){
+  const inputs=Array.from({length:S.count},(_,i)=>`<label for="n${i}">Equipo ${i+1}<input id="n${i}" data-name="${i}" value="${esc(S.names[i]||"")}" placeholder="Equipo ${i+1}" maxlength="24"></label>`).join("");
+  const auto=S.count>CASES.length;
+  return `<div class="scene-head"><div><h2>¿Cuántos equipos se formaron?</h2><p class="lead">Ajusta el número y, si quieren, escriban un nombre para cada equipo. Hay ${CASES.length} casos disponibles.</p></div></div>
+  <div class="setup">
+    <div class="panel">
+      <h3>Número de equipos</h3>
+      <div class="counter"><button type="button" data-count="-1" aria-label="Quitar un equipo">−</button><output id="count" aria-live="polite">${S.count}</output><button type="button" data-count="1" aria-label="Agregar un equipo">+</button></div>
+      <label class="check" for="rep"><input type="checkbox" id="rep" ${S.allowRepeat||auto?"checked":""} ${auto?"disabled":""}><span>Permitir que dos equipos tengan el mismo caso<br><span class="note">${auto?"Se activa sola porque hay más equipos que casos.":"Útil para contrastar decisiones en la socialización."}</span></span></label>
+    </div>
+    <div class="panel"><h3>Nombres (opcional)</h3><div class="names">${inputs}</div></div>
+  </div>`;
+}
+
+/* paso 2 */
+let lastIdx=null;
+function s2(){
+  const t=nextTurn(); const done=t>=S.count; const rep=S.allowRepeat||S.count>CASES.length;
+  const takenBy={}; S.picks.forEach((p,i)=>{if(p!==null)(takenBy[p]=takenBy[p]||[]).push(i)});
+  const cards=CASES.map((c,i)=>{
+    const who=takenBy[i]; const taken=!!who; const flipped=S.flipped===i;
+    const disabled=done||(taken&&!rep)||S.flipped!==null;
+    return `<button type="button" class="card ${flipped?'flipped':''} ${taken&&!flipped?'taken':''}" data-card="${i}" ${disabled?'disabled':''} aria-label="${flipped||taken?esc(c.t):'Card '+(i+1)+' boca abajo'}">
+      <div class="card-inner">
+        <div class="face front"><span class="num">Card ${i+1}</span><span class="q">${taken?'✓':'?'}</span><span class="num">${taken?esc(who.map(teamName).join(', ')):'Toca para elegir'}</span></div>
+        <div class="face back"><span class="num">Caso ${i+1}</span><h3>${esc(c.t)}</h3><p>${esc(c.short)}</p>${who?`<span class="who">${esc(who.map(teamName).join(' · '))}</span>`:''}</div>
+      </div></button>`}).join("");
+  const chips=Array.from({length:S.count},(_,i)=>`<span class="chip ${S.picks[i]!==null?'on':''}">${esc(teamName(i))}${S.picks[i]!==null?' · Caso '+(S.picks[i]+1):''}</span>`).join("");
+  let bar;
+  if(done) bar=`<p>Todos los equipos tienen caso. <strong>Pasemos a la elección inicial.</strong></p>`;
+  else if(S.flipped!==null) bar=`<p><strong>${esc(teamName(lastIdx??0))}</strong> eligió: ${esc(CASES[S.flipped].t)}</p><button class="btn on-dark primary" type="button" id="cont">Siguiente equipo →</button>`;
+  else bar=`<p>Turno de <strong>${esc(teamName(t))}</strong>: pasa un integrante y toca una card.</p><div class="turn-actions"><button class="btn small on-dark" type="button" id="rand">Asignar al azar a los que faltan</button>${S.picks.some(p=>p!==null)?'<button class="btn small on-dark" type="button" id="undo">Deshacer la última</button>':''}</div>`;
+  return `<div class="turn">${bar}</div><div class="deck">${cards}</div><div class="picks" aria-label="Estado de los equipos">${chips}</div>`;
+}
+
+/* paso 3 */
+function s3(){
+  const rows=Array.from({length:S.count},(_,i)=>{
+    const c=CASES[S.picks[i]];
+    return `<article class="row"><div class="rowtop"><span class="team">${esc(teamName(i))}</span><span class="chip">Caso ${S.picks[i]+1}</span></div><h3>${esc(c.t)}</h3><p class="sit">${esc(S.full?c.s:c.short)}</p>
+    ${S.full?`<ol>${c.o.map((o,k)=>`<li><b>${L[k]}</b><span>${esc(o)}</span></li>`).join("")}</ol>`:''}</article>`}).join("");
+  return `<div class="scene-head"><div><h2>Así quedaron los casos</h2><p class="lead">Cada equipo lee su caso completo: situación y opciones A a D. La respuesta se marca al final del análisis.</p></div><button class="btn dark" type="button" id="toggleFull">${S.full?'Ver solo resumen':'Ver opciones'}</button></div>
+  <div class="summary">${rows}</div>`;
+}
+
+/* paso 4 */
+function s4(){
+  const roles=[["M","Moderador/a","Lleva el tiempo, da la palabra y asegura que todos opinen."],["R","Relator/a","Registra la decisión y expone en la socialización."],["D","Abogado/a del diablo","Defiende la opción que el equipo está descartando."],["V","Verificador/a","Separa hechos de supuestos y pregunta qué información falta."]];
+  const guide=[["Hechos y supuestos","¿Qué sabemos con certeza y qué estamos suponiendo?"],["Personas y audiencias","¿A quién afecta y quién más podría verlo?"],["Decisión y canal","¿Por qué esa opción y ese canal: público, privado o institucional?"],["Cinco lentes","Legal, ética, responsable, relacional y marca personal."],["Pregunta para la clase","Una pregunta que le harán al resto del grupo en la socialización."]];
+  const n=Array.from({length:S.count},(_,i)=>i).filter(i=>has(S.init[i])).length;
+  const decide=S.decide?`<section class="decide" id="decide"><div class="scene-head"><div><h3>Decisión de los equipos</h3><p class="lead" style="font-size:17px">Terminó la discusión. Cada equipo marca la respuesta que considera correcta.</p></div><span class="count-pill">${n} de ${S.count} equipos marcaron</span></div>
+    <div class="decide-grid">${Array.from({length:S.count},(_,i)=>{const c=CASES[S.picks[i]];return `<div class="drow"><div class="dname"><span class="team">${esc(teamName(i))}</span><b>${esc(c.t)}</b></div>${seg("data-init",i,S.init[i],L5.split(""))}</div>`}).join("")}</div></section>`
+    :`<button class="btn" type="button" id="openDecide">Terminaron antes: marcar respuestas ahora</button>`;
+  return `<div class="scene-head"><div><h2>Análisis y decisión</h2><p class="lead">Repartan los roles y analicen el caso. Tienen 9 minutos; al terminar, cada equipo marca su respuesta.</p></div></div>
+  ${S.decide?decide:''}
+  <div class="timer" id="workBox"><div class="phase" id="workPhase"></div><div class="clock" id="workClock">9:00</div><div class="ctrl"><button class="btn primary" type="button" id="workGo">Iniciar</button><button class="btn" type="button" id="workReset">Reiniciar</button></div><div class="bar"><i id="workBar"></i></div></div>
+  <div class="guide">
+    <div class="roles">${roles.map(r=>`<div class="role"><span class="ico" aria-hidden="true">${r[0]}</span><h3>${r[1]}</h3><p>${r[2]}</p></div>`).join("")}<p class="extra">¿Equipo de 5? El quinto integrante es <b>estratega de marca</b>: evalúa qué dice la decisión de cada uno como profesional.</p></div>
+    <ol class="steps-list">${guide.map(g=>`<li><span><b>${g[0]}</b>${g[1]}</span></li>`).join("")}</ol>
+  </div>
+  ${S.decide?'':decide}`;
+}
+function paintWork(t){
+  const c=$("#workClock"); if(!c)return;
+  const el=t.total-t.left;
+  c.textContent=mmss(t.left);
+  const [p,s]=t.left===0?["Tiempo","Cada equipo marca su respuesta"]:el<120?["Lectura individual","Cada uno lee el caso en silencio"]:["Deliberación","Analicen las opciones con las cinco lentes"];
+  $("#workPhase").innerHTML=`${p}<small>${s}</small>`;
+  $("#workBar").style.width=(el/t.total*100)+"%";
+  $("#workGo").textContent=t.running?"Pausar":(t.left===t.total?"Iniciar":"Continuar");
+  $("#workBox").classList.toggle("alert",t.left<=30);
+}
+function workEnd(){S.decide=true;render();window.scrollTo(0,0)}
+after[3]=()=>{if(!timers.work)makeTimer("work",T_ANALYSIS,paintWork,workEnd);else{timers.work.onTick=paintWork;timers.work.onEnd=workEnd;paintWork(timers.work)}};
+
+/* paso 5 */
+function s5(){
+  const cards=Array.from({length:S.count},(_,i)=>{
+    const c=CASES[S.picks[i]]; const on=S.twists[i]; const ini=S.init[i]; const aft=S.after[i];
+    let status="";
+    if(on&&has(aft)) status=has(ini)&&aft===ini?`<p class="status keep">Mantienen la ${L5[ini]}</p>`:`<p class="status change">${has(ini)?`Cambian de ${L5[ini]} a ${L5[aft]}`:`Eligen la ${L5[aft]}`}</p>`;
+    return `<article class="twist"><div class="rowtop"><span class="team">${esc(teamName(i))}</span><span class="chip">Caso ${S.picks[i]+1}</span></div><h3 style="font-size:24px">${esc(c.t)}</h3>
+    <p class="initial">Respuesta inicial: <b>${has(ini)?esc(optText(c,ini)):"sin registrar"}</b></p>
+    ${on?`<div class="reveal"><b>Giro</b>${esc(c.g)}</div>
+      <div class="choose"><span>¿Mantienen o cambian?</span><div class="keeprow">${has(ini)?`<button type="button" class="btn small keepbtn" data-keep="${i}" aria-pressed="${has(aft)&&aft===ini}">Mantener ${L5[ini]}</button>`:''}${seg("data-after",i,aft,L5.split(""))}</div></div>${status}`
+      :`<button class="btn primary" type="button" data-twist="${i}">Revelar giro</button>`}</article>`}).join("");
+  return `<div class="scene-head"><div><h2>Llegó el giro</h2><p class="lead">Revela el dato nuevo de cada equipo. Con él, cada equipo decide si mantiene su respuesta o la cambia. Tienen 5 minutos.</p></div><button class="btn dark" type="button" id="revealAll">Revelar todos</button></div>
+  <div class="timer" id="postBox"><div class="phase" id="postPhase"></div><div class="clock" id="postClock">5:00</div><div class="ctrl"><button class="btn primary" type="button" id="postGo">Iniciar</button><button class="btn" type="button" id="postReset">Reiniciar</button></div><div class="bar"><i id="postBar"></i></div></div>
+  <div class="twists">${cards}</div>`;
+}
+function paintPost(t){
+  const c=$("#postClock"); if(!c)return;
+  const el=t.total-t.left; c.textContent=mmss(t.left);
+  const [p,s]=t.left===0?["Tiempo","Pasamos a la socialización"]:el<180?["Reconsideren","¿El giro cambia su decisión? Llenen la matriz"]:["Preparen la exposición","90 segundos: caso, decisión, giro y pregunta"];
+  $("#postPhase").innerHTML=`${p}<small>${s}</small>`;
+  $("#postBar").style.width=(el/t.total*100)+"%";
+  $("#postGo").textContent=t.running?"Pausar":(t.left===t.total?"Iniciar":"Continuar");
+  $("#postBox").classList.toggle("alert",t.left<=30);
+}
+after[4]=()=>{if(!timers.post)makeTimer("post",T_AFTER,paintPost);else{timers.post.onTick=paintPost;paintPost(timers.post)}};
+
+/* paso 6 */
+function s6(){
+  const i=Math.min(S.soc,S.count-1); const c=CASES[S.picks[i]]; const m=S.matrix[i]||{};
+  const P=popular(i); const ini=S.init[i]; const aft=afterOf(i); const shown=!!S.shown[i];
+  const nav=Array.from({length:S.count},(_,k)=>`<button type="button" data-soc="${k}" ${k===i?'aria-current="true"':''}>${esc(teamName(k))}</button>`).join("");
+  const votes=c.o.map((o,v)=>{const lead=P.leaders.includes(v);return `<div class="pv ${lead?'lead':''}"><b>${L5[v]}</b><span>${esc(o)}</span><div class="votes"><button type="button" data-pop="${i}:${v}:-1" aria-label="Quitar un voto a ${L5[v]}">−</button><input type="number" min="0" max="999" inputmode="numeric" data-popin="${i}:${v}" value="${P.a[v]}" aria-label="Votos para ${L5[v]}"><button type="button" data-pop="${i}:${v}:1" aria-label="Sumar un voto a ${L5[v]}">+</button></div></div>`}).join("");
+  const popTxt=P.tot===0?"Cuenten las manos de cada opción.":P.one!==null?`Mayoría: ${L5[P.one]} (${P.a[P.one]} de ${P.tot} votos)`:`Empate entre ${P.leaders.map(x=>L5[x]).join(" y ")}`;
+  const teamBox=shown?`<div class="tri"><div><small>Inicial</small><b>${has(ini)?L5[ini]:"·"}</b></div><div><small>Tras el giro</small><b>${has(aft)?L5[aft]:"·"}</b></div><div><small>Voto popular</small><b>${P.one!==null?L5[P.one]:P.tot?"Empate":"·"}</b></div></div>`
+    :`<button class="btn dark" type="button" data-show="${i}">Revelar la decisión del equipo</button>`;
+  const lenses=LENSES.map(([id,n,q])=>`<div class="lens"><span><b>${n}</b><small>${q}</small></span><div class="seg" role="group" aria-label="${n}">${[["si","Sí"],["no","No"],["dep","Depende"]].map(([v,t])=>`<button type="button" class="${v}" data-lens="${id}" data-val="${v}" aria-pressed="${m[id]===v}">${t}</button>`).join("")}</div></div>`).join("");
+  const rows=Array.from({length:S.count},(_,k)=>{const mm=S.matrix[k]||{};const pk=popular(k);const a=afterOf(k);const ch=has(S.init[k])&&has(a)&&a!==S.init[k];
+    return `<tr class="${S.fbOpen===k?'open':''}"><td><b>${esc(teamName(k))}</b></td><td>${esc(CASES[S.picks[k]].t)}</td><td class="v">${has(S.init[k])?L5[S.init[k]]:"·"}</td><td class="v ${ch?'chg':''}">${has(a)?L5[a]+(ch?" ↺":""):"·"}</td><td class="v">${pk.one!==null?`${L5[pk.one]} <small>${pk.a[pk.one]}/${pk.tot}</small>`:pk.tot?"Empate":"·"}</td>${LENSES.map(([id])=>{const v=mm[id];return `<td class="v ${v||''}">${v==="si"?"Sí":v==="no"?"No":v==="dep"?"Depende":"·"}</td>`}).join("")}<td><button class="btn small" type="button" data-fbteam="${k}">${S.fbOpen===k?"Ocultar":"Ver"}</button></td></tr>`}).join("");
+  return `<div class="scene-head"><div><h2>Socialización</h2><p class="lead">Por equipo: primero vota la clase, luego se revela la decisión del equipo, expone y se llena la matriz.</p></div><div class="teamnav" aria-label="Equipo que expone">${nav}</div></div>
+  <div class="social">
+    <div class="big-case">
+      <span class="team">${esc(teamName(i))} · Caso ${S.picks[i]+1}</span>
+      <h3>${esc(c.t)}</h3><p class="sit">${esc(c.s)}</p>
+      ${S.twists[i]?`<div class="reveal small"><b>Giro</b>${esc(c.g)}</div>`:''}
+      <div class="popbox"><div class="pophead"><b>Voto popular del resto de la clase</b><span class="note">${popTxt}</span></div><div class="popgrid">${votes}</div>
+      <div class="mini" id="voteBox"><span class="clock" id="voteClock">0:15</span><button class="btn small" type="button" data-t="vote">Iniciar voto</button><span class="note">Manos alzadas: registra cuántas por opción</span></div></div>
+      ${teamBox}
+      <div class="prompt">“Nuestro caso era… Al inicio elegimos… Con el giro mantuvimos / cambiamos porque… Nuestra pregunta para la clase es…”</div>
+      <div class="mini" id="talkBox"><span class="clock" id="talkClock">1:30</span><button class="btn small" type="button" data-t="talk">Iniciar exposición</button><span class="note">Pregunta del caso: ${esc(c.q)}</span></div>
+    </div>
+    <div class="matrix"><h3 style="font-size:24px">Matriz de cinco lentes del equipo</h3>${lenses}<p class="note">“Depende” obliga a nombrar la información que falta.</p><button class="btn primary" type="button" data-fbteam="${i}">${S.fbOpen===i?"Ocultar retroalimentación":"Ver retroalimentación del caso"}</button></div>
+  </div>
+  ${S.fbOpen===i?fbCard(i):""}
+  <div class="scene-head"><div><h3 style="font-size:26px">Resumen comparado</h3><p class="lead" style="font-size:17px">Respuesta inicial, respuesta tras el giro y voto popular de cada caso. Toca “Ver” para la retroalimentación por lente.</p></div></div>
+  <div class="table-wrap"><table><thead><tr><th>Equipo</th><th>Caso</th><th>Inicial</th><th>Tras el giro</th><th>Voto popular</th>${LENSES.map(l=>`<th>${l[1]}</th>`).join("")}<th>Retroalimentación</th></tr></thead><tbody>${rows}</tbody></table></div>
+  ${has(S.fbOpen)&&S.fbOpen!==i&&S.fbOpen<S.count?fbCard(S.fbOpen):""}`;
+}
+const VAL={si:"Sí",no:"No",dep:"Depende"};
+function fbCard(k){
+  const c=CASES[S.picks[k]]; const m=S.matrix[k]||{};
+  const P=popular(k);
+  const three=[["Inicial",S.init[k]],["Tras el giro",afterOf(k)],["Voto popular",P.one]];
+  const hits=v=>has(v)?LENSES.filter(([id])=>c.fb[id][0]===v).length:null;
+  const top=three.map(([n,v])=>`<div class="cmp"><small>${n}</small><b>${has(v)?esc(optText(c,v)):(n==="Voto popular"&&P.tot?"Empate":"Sin registrar")}</b>${has(v)?`<span>${hits(v)} de 5 lentes la señalan como la mejor</span>`:''}</div>`).join("");
+  const cards=LENSES.map(([id,n])=>{const [b,why]=c.fb[id];
+    const tags=three.filter(([,v])=>has(v)&&v===b).map(([nm])=>`<span class="fbtag ok">${nm} ✓</span>`).join("");
+    return `<article class="fbl ${tags?'ok':''}"><span class="fbn">${n}</span><p class="fbbest">Mejor opción: <b>${L[b]}</b></p><p class="fbopt">${esc(c.o[b])}</p><p class="fbwhy">${esc(why)}</p><div class="fbtags">${tags}${m[id]?`<span class="fbtag">Matriz del equipo: ${VAL[m[id]]}</span>`:''}</div></article>`}).join("");
+  return `<section class="fb" id="fbPanel" aria-label="Retroalimentación">
+    <div><span class="team">Retroalimentación · ${esc(teamName(k))} · Caso ${S.picks[k]+1}</span><h3>${esc(c.t)}</h3></div>
+    <div class="cmps">${top}</div>
+    <div class="fbgrid">${cards}</div>
+    <p class="fbgiro"><b>Con el giro</b>${esc(c.gn)}</p>
+    <p class="note">No hay una única respuesta correcta: cada lente puede señalar una opción distinta. Lo importante es que cada decisión se pueda argumentar.</p>
+  </section>`;
+}
+function paintMini(id){return t=>{const c=$("#"+id+"Clock");if(!c)return;c.textContent=mmss(t.left);const b=document.querySelector(`[data-t="${id}"]`);if(b)b.textContent=t.running?"Pausar":(t.left===0?"Tiempo":(t.left===t.total?(id==="vote"?"Iniciar voto":"Iniciar exposición"):"Continuar"));$("#"+id+"Box").classList.toggle("alert",t.left<=10)}}
+after[5]=()=>{makeTimer("vote",15,paintMini("vote"));makeTimer("talk",90,paintMini("talk"))};
+
+/* ---------- eventos ---------- */
+const pair=s=>s.split(":").map(Number);
+document.addEventListener("click",e=>{
+  const go=e.target.closest("[data-go]"); if(go){const n=+go.dataset.go;S.step=(n>1&&!allPicked())?1:n;S.flipped=null;render();return}
+  const cnt=e.target.closest("[data-count]"); if(cnt){S.count=Math.max(2,Math.min(24,S.count+ +cnt.dataset.count));S.picks=S.picks.slice(0,S.count);render();return}
+  const card=e.target.closest("[data-card]"); if(card&&!card.disabled){const i=+card.dataset.card;const t=nextTurn();if(t<S.count){S.picks[t]=i;lastIdx=t;S.flipped=i;render()}return}
+  if(e.target.closest("#cont")){S.flipped=null;render();return}
+  if(e.target.closest("#undo")){let k=-1;for(let j=S.count-1;j>=0;j--)if(S.picks[j]!==null){k=j;break}if(k>=0)S.picks[k]=null;S.flipped=null;render();return}
+  if(e.target.closest("#rand")){const rep=S.allowRepeat||S.count>CASES.length;for(let t=0;t<S.count;t++){if(S.picks[t]!==null)continue;const used=S.picks.filter(p=>p!==null);let pool=CASES.map((_,i)=>i).filter(i=>!used.includes(i));if(!pool.length&&rep)pool=CASES.map((_,i)=>i);if(!pool.length)break;S.picks[t]=pool[Math.floor(Math.random()*pool.length)]}S.flipped=null;render();return}
+  if(e.target.closest("#openDecide")){S.decide=true;render();const d=document.getElementById("decide");if(d)d.scrollIntoView({behavior:"smooth",block:"start"});return}
+  if(e.target.closest("#toggleFull")){S.full=!S.full;render();return}
+  const ini=e.target.closest("[data-init]"); if(ini){const [k,v]=pair(ini.dataset.init);S.init[k]=S.init[k]===v?null:v;render();return}
+  const tw=e.target.closest("[data-twist]"); if(tw){S.twists[+tw.dataset.twist]=true;render();return}
+  if(e.target.closest("#revealAll")){for(let i=0;i<S.count;i++)S.twists[i]=true;render();return}
+  const kp=e.target.closest("[data-keep]"); if(kp){const k=+kp.dataset.keep;S.after[k]=S.init[k];render();return}
+  const af=e.target.closest("[data-after]"); if(af){const [k,v]=pair(af.dataset.after);S.after[k]=S.after[k]===v?null:v;render();return}
+  const so=e.target.closest("[data-soc]"); if(so){S.soc=+so.dataset.soc;render();return}
+  const pp=e.target.closest("[data-pop]"); if(pp){const [k,v,d]=pair(pp.dataset.pop);keepMini(()=>{const a=S.pop[k]=S.pop[k]||[0,0,0,0];a[v]=Math.max(0,a[v]+d)});return}
+  const sh=e.target.closest("[data-show]"); if(sh){keepMini(()=>{S.shown[+sh.dataset.show]=true});return}
+  const fbt=e.target.closest("[data-fbteam]"); if(fbt){const k=+fbt.dataset.fbteam;keepMini(()=>{S.fbOpen=S.fbOpen===k?null:k});const el=document.getElementById("fbPanel");if(el&&has(S.fbOpen))el.scrollIntoView({behavior:"smooth",block:"start"});return}
+  const ln=e.target.closest("[data-lens]"); if(ln){const i=Math.min(S.soc,S.count-1);keepMini(()=>{S.matrix[i]=S.matrix[i]||{};const cur=S.matrix[i][ln.dataset.lens];S.matrix[i][ln.dataset.lens]=cur===ln.dataset.val?null:ln.dataset.val});return}
+  const tb=e.target.closest("[data-t]"); if(tb){toggleTimer(tb.dataset.t);return}
+  if(e.target.closest("#workGo")){toggleTimer("work");return}
+  if(e.target.closest("#workReset")){makeTimer("work",T_ANALYSIS,paintWork,workEnd);return}
+  if(e.target.closest("#postGo")){toggleTimer("post");return}
+  if(e.target.closest("#postReset")){makeTimer("post",T_AFTER,paintPost);return}
+});
+document.addEventListener("input",e=>{if(e.target.dataset.name!==undefined){S.names[+e.target.dataset.name]=e.target.value;save()}});
+document.addEventListener("change",e=>{
+  if(e.target.id==="rep"){S.allowRepeat=e.target.checked;save();return}
+  const pi=e.target.dataset&&e.target.dataset.popin; if(pi){const [k,v]=pair(pi);const n=Math.max(0,Math.min(999,parseInt(e.target.value,10)||0));keepMini(()=>{const a=S.pop[k]=S.pop[k]||[0,0,0,0];a[v]=n})}
+});
+document.addEventListener("focusin",e=>{if(e.target.dataset&&e.target.dataset.popin)e.target.select()});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset&&e.target.dataset.popin)e.target.blur()});
+$("#prev").onclick=()=>{if(S.step>0){S.step--;S.flipped=null;render()}};
+$("#next").onclick=()=>{if(S.step<STEPS.length-1){if(S.step===1&&!allPicked())return;S.step++;S.flipped=null;render();window.scrollTo(0,0)}};
+let armed=false;
+$("#reset").onclick=()=>{const b=$("#reset");if(!armed){armed=true;b.textContent="Toca otra vez para borrar todo";b.classList.add("primary");setTimeout(()=>{armed=false;b.textContent="Reiniciar actividad";b.classList.remove("primary")},3000);return}armed=false;b.textContent="Reiniciar actividad";b.classList.remove("primary");Object.keys(timers).forEach(stopTimer);S=fresh();render()};
+$("#fs").onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{$("#fs").textContent="No disponible aquí"})}catch(e){$("#fs").textContent="No disponible aquí"}};
+render();
+</script>
+
+</body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tipo: comparativa</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  .badge{display:block;width:fit-content;margin:0 auto 14px;background:#eaf3de;color:#27500a;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:6px 14px;border-radius:20px;}
+  .stage{max-width:620px;margin:0 auto;}
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+  .head{background:#27500a;color:#fff;padding:26px 24px;text-align:center;}
+  .head h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  .head p{margin:0;font-size:13px;opacity:.85;}
+  .stat-banner{margin:18px 22px 0;background:#27500a;color:#fff;border-radius:10px;padding:12px 16px;text-align:center;font-size:12.5px;}
+  .stat-banner b{font-size:19px;margin-right:4px;}
+  .stat-banner span{opacity:.75;font-size:10.5px;display:block;margin-top:2px;}
+  .cols{padding:18px 22px 4px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .colblock{border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+  .colblock.ren{background:#f7faf2;border:1px solid #d8e8c4;}
+  .colblock.noren{background:#faf5f2;border:1px solid #e8d4c4;}
+  .chead{font-size:13px;font-weight:700;text-align:center;margin-bottom:2px;}
+  .colblock.ren .chead{color:#27500a;}
+  .colblock.noren .chead{color:#712b13;}
+  .opt{display:flex;flex-direction:column;gap:4px;}
+  .opt .top{display:flex;align-items:center;gap:8px;}
+  .opt .ic{width:30px;height:30px;flex:0 0 30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .colblock.ren .ic{background:#eaf3de;}
+  .colblock.noren .ic{background:#f5e6dd;}
+  .opt h3{margin:0;font-size:12.5px;font-weight:700;}
+  .colblock.ren .opt h3{color:#27500a;}
+  .colblock.noren .opt h3{color:#712b13;}
+  .opt p.desc{margin:0;font-size:10.5px;color:#666;line-height:1.35;}
+  .pro{font-size:10.5px;border-radius:6px;padding:6px 8px;font-weight:700;text-align:center;margin-top:4px;}
+  .pro-ren{color:#3b6d11;background:#eaf3de;}
+  .pro-noren{color:#993c1d;background:#f5e6dd;}
+  .foot{background:#f4f4f2;padding:12px;text-align:center;font-size:11px;color:#444;font-weight:700;border-top:1px solid #e5e5e0;}
+</style>
+</head>
+<body>
+  <div class="badge">Tipo: comparativa</div>
+  <div class="stage">
+    <div class="card">
+      <div class="head">
+        <h1>Energías renovables vs. no renovables</h1>
+        <p>Dos formas de generar la energía que usamos</p>
+      </div>
+      <div class="stat-banner"><b>31,7%</b> de la electricidad mundial en 2024 provino de fuentes renovables <span>(IRENA, 2025)</span></div>
+      <div class="cols">
+        <div class="colblock ren">
+          <div class="chead">🌱 Renovables</div>
+          <div class="opt"><div class="top"><div class="ic">☀️</div><h3>Solar</h3></div><p class="desc">Convierte la luz del sol en electricidad con paneles fotovoltaicos.</p></div>
+          <div class="opt"><div class="top"><div class="ic">🌬️</div><h3>Eólica</h3></div><p class="desc">Aprovecha la fuerza del viento con turbinas.</p></div>
+          <div class="opt"><div class="top"><div class="ic">💧</div><h3>Hidráulica</h3></div><p class="desc">Usa el movimiento del agua en ríos o represas.</p></div>
+          <span class="pro pro-ren">Se regeneran de forma natural</span>
+        </div>
+        <div class="colblock noren">
+          <div class="chead">⛽ No renovables</div>
+          <div class="opt"><div class="top"><div class="ic">🪨</div><h3>Carbón</h3></div><p class="desc">Combustible fósil sólido, alto en emisiones de CO₂.</p></div>
+          <div class="opt"><div class="top"><div class="ic">🛢️</div><h3>Petróleo</h3></div><p class="desc">Base de combustibles y numerosos productos derivados.</p></div>
+          <div class="opt"><div class="top"><div class="ic">🔥</div><h3>Gas natural</h3></div><p class="desc">Combustible fósil, más limpio que el carbón pero finito.</p></div>
+          <span class="pro pro-noren">Reservas limitadas y no renovables</span>
+        </div>
+      </div>
+      <div class="foot">La transición energética avanza, pero los fósiles siguen dominando la matriz mundial</div>
+    </div>
+  </div>
+</body>
+</html>

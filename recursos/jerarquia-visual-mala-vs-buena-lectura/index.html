@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jerarquía visual: mala vs. buena lectura</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  h1.page-title{text-align:center;font-size:20px;font-weight:700;margin:0 0 6px;}
+  p.page-sub{text-align:center;color:#666;font-size:14px;margin:0 0 24px;}
+  .wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
+  .col{flex:1 1 380px;max-width:440px;}
+  .label{text-align:center;font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px;padding:6px;border-radius:6px;}
+  .label.bad{background:#fde3e3;color:#a32d2d;}
+  .label.good{background:#dff3ea;color:#0f6e56;}
+  .card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+  .card.flat{padding:20px;}
+
+  /* MALA JERARQUÍA: todo el mismo peso/tamaño, orden plano */
+  .flat h2{font-size:15px;font-weight:400;margin:0 0 10px;}
+  .flat ul{margin:0;padding-left:18px;font-size:14px;line-height:1.9;color:#333;}
+  .flat li{font-weight:400;}
+  .flat li.important{font-weight:400;} /* deliberadamente sin destacar */
+
+  /* BUENA JERARQUÍA: tamaño, color y posición guían la lectura, con más carácter visual */
+  .hier .head{background:linear-gradient(0deg,#a32d2d,#a32d2d);background:#a32d2d;color:#fff;padding:22px 20px;text-align:center;}
+  .hier .head .ic{font-size:32px;display:block;margin-bottom:6px;}
+  .hier .head h2{margin:0;font-size:17px;font-weight:700;}
+  .hier .body{padding:22px 20px;}
+  .hier .alert{background:#fcebeb;border:1.5px solid #f09595;border-radius:10px;padding:16px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+  .hier .alert .aic{font-size:24px;line-height:1;}
+  .hier .alert .tag{font-size:11px;font-weight:700;color:#791f1f;text-transform:uppercase;letter-spacing:.03em;display:block;margin-bottom:4px;}
+  .hier .alert p{margin:0;font-size:15px;font-weight:700;color:#501313;line-height:1.4;}
+  .hier .secondary{font-size:11.5px;font-weight:700;color:#888780;text-transform:uppercase;letter-spacing:.04em;margin:0 0 10px;}
+  .hier .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .hier .chip{display:flex;align-items:center;gap:8px;background:#f1efe8;border-radius:8px;padding:9px 10px;}
+  .hier .chip .cic{font-size:16px;}
+  .hier .chip span{font-size:12px;color:#444441;font-weight:500;}
+  .hier .foot{background:#fcebeb;padding:11px;text-align:center;font-size:11px;color:#791f1f;font-weight:700;}
+
+  .legend{max-width:820px;margin:24px auto 0;background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 1px 4px rgba(0,0,0,.06);font-size:12.5px;color:#444;}
+</style>
+</head>
+<body>
+  <h1 class="page-title">Jerarquía visual y lectura correcta</h1>
+  <p class="page-sub">Mismo tema, dos tratamientos: "Señales de alerta de un golpe de calor"</p>
+
+  <div class="wrap">
+    <div class="col">
+      <div class="label bad">Sin jerarquía</div>
+      <div class="card flat">
+        <h2>Señales de alerta de un golpe de calor</h2>
+        <ul>
+          <li>Piel enrojecida y caliente</li>
+          <li>Mareo y debilidad</li>
+          <li>Temperatura corporal por encima de 40°C y confusión: llama a urgencias de inmediato</li>
+          <li>Pulso acelerado</li>
+          <li>Náuseas</li>
+          <li>Dolor de cabeza</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label good">Con jerarquía clara</div>
+      <div class="card hier">
+        <div class="head"><span class="ic">🌡️</span><h2>Golpe de calor: señales de alerta</h2></div>
+        <div class="body">
+          <div class="alert">
+            <span class="aic">🚨</span>
+            <div>
+              <span class="tag">Actúa de inmediato si notas</span>
+              <p>Temperatura mayor a 40°C y confusión → llama a urgencias ya.</p>
+            </div>
+          </div>
+          <div class="secondary">Otros síntomas a vigilar</div>
+          <div class="chips">
+            <div class="chip"><span class="cic">🔴</span><span>Piel roja y caliente</span></div>
+            <div class="chip"><span class="cic">💫</span><span>Mareo y debilidad</span></div>
+            <div class="chip"><span class="cic">💓</span><span>Pulso acelerado</span></div>
+            <div class="chip"><span class="cic">🤢</span><span>Náuseas y dolor de cabeza</span></div>
+          </div>
+        </div>
+        <div class="foot">Ante la duda, prioriza siempre bajar la temperatura y pedir ayuda</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>Qué observar:</b> en la versión izquierda, la señal más crítica (llamar a urgencias) está enterrada en medio de una lista plana, sin diferencia de tamaño, color o posición frente a los demás síntomas — obliga a leer todo para encontrar lo importante. En la versión derecha, el tamaño, el color y la posición hacen que el ojo llegue primero a la acción urgente, y luego, en un bloque visualmente secundario, a la información complementaria.
+  </div>
+</body>
+</html>

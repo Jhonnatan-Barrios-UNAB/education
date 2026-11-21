@@ -1,0 +1,104 @@
+/* ==========================================================
+   Reproductor de presentaciones
+   Cada diapositiva es un <section> de 1920 × 1080 con estilos en línea.
+   Este archivo define los valores por defecto del formato y la
+   interfaz del reproductor (barra, vista general, modo plantilla).
+   ========================================================== */
+
+:root{
+  --ui-bg:#14123A;
+  --ui-fg:#FFFFFF;
+  --ui-muted:rgba(255,255,255,.65);
+  --ui-line:rgba(255,255,255,.16);
+  --ui-accent:#B6F03C;
+  --bar-h:60px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#0B0A24;color:var(--ui-fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ui-accent);outline-offset:2px}
+
+/* ---------- Escenario ---------- */
+.stage-wrap{position:fixed;inset:0 0 var(--bar-h) 0;overflow:hidden}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;transform:translate(-50%,-50%) scale(.5);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.stage > section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;opacity:0;visibility:hidden;transition:opacity .35s ease, visibility 0s linear .35s;background:#fff}
+.stage > section.is-active{opacity:1;visibility:visible;transition:opacity .35s ease}
+@media (prefers-reduced-motion: reduce){.stage > section{transition:none}}
+
+/* ---------- Valores por defecto del formato de diapositiva ---------- */
+section{font-size:32px;line-height:1.4}
+/* Sin display declarado: columna flexible. Con display:flex explícito se respeta la fila por defecto. */
+.stage section:not([style*="display"]),
+.stage section div:not([style*="display"]),
+.mini section:not([style*="display"]),
+.mini section div:not([style*="display"]){display:flex;flex-direction:column}
+section h1,section h2,section h3,section p,section ul,section ol{margin:0}
+section h1{font-size:96px;font-weight:600;line-height:1.1}
+section h2{font-size:64px;font-weight:600;line-height:1.15}
+section h3{font-size:44px;font-weight:600;line-height:1.2}
+section p{overflow-wrap:break-word}
+section ul,section ol{padding-left:1.25em}
+section li{margin:0}
+section a{color:inherit}
+section img{display:block;max-width:none}
+section svg{display:block;flex:none}
+section table{border-collapse:collapse;width:100%}
+section th,section td{padding:.35em .6em;text-align:left;vertical-align:top;border-bottom:1px solid rgba(100,116,139,.35)}
+section th{font-weight:600}
+section .x-icon{display:block;flex:none}
+section .x-shape{display:block;flex:none}
+section .x-connector{display:block;flex:none;align-self:center}
+
+/* ---------- Barra de control ---------- */
+.deck-bar{position:fixed;left:0;right:0;bottom:0;height:var(--bar-h);display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--ui-bg);border-top:1px solid var(--ui-line);z-index:20}
+.deck-bar .title{flex:1;min-width:0;font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.deck-bar .title small{display:block;font-weight:500;color:var(--ui-muted);font-size:12.5px}
+.deck-btn{display:inline-grid;place-items:center;min-width:40px;height:40px;padding:0 10px;border-radius:10px;border:1px solid var(--ui-line);background:transparent;font-weight:650;font-size:14px;gap:6px;grid-auto-flow:column;text-decoration:none;color:var(--ui-fg)}
+.deck-btn:hover{background:rgba(255,255,255,.1)}
+.deck-btn[aria-pressed="true"]{background:var(--ui-accent);color:#14123A;border-color:var(--ui-accent)}
+.deck-btn:disabled{opacity:.35;cursor:not-allowed}
+.deck-count{font-variant-numeric:tabular-nums;font-weight:700;font-size:14px;min-width:70px;text-align:center}
+.deck-progress{position:fixed;left:0;bottom:var(--bar-h);height:3px;background:var(--ui-accent);transition:width .3s ease;z-index:21}
+@media (max-width:720px){
+  .deck-bar .title small,.deck-btn .lbl{display:none}
+  .deck-bar{gap:6px;padding:0 8px}
+  .deck-btn{min-width:36px;padding:0 8px}
+}
+@media (max-width:460px){ .deck-bar .title{display:none} .deck-bar{justify-content:space-between} }
+
+/* Zonas táctiles invisibles para avanzar o retroceder */
+.tap{position:fixed;top:0;bottom:var(--bar-h);width:18%;z-index:5;background:transparent;border:0}
+.tap.prev{left:0}.tap.next{right:0}
+body.is-editing .tap{display:none}
+
+/* ---------- Vista general ---------- */
+.overview{position:fixed;inset:0 0 var(--bar-h) 0;background:rgba(11,10,36,.96);z-index:15;overflow:auto;padding:24px;display:none}
+.overview.is-open{display:block}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;max-width:1500px;margin:0 auto}
+.thumb{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;border:2px solid transparent;background:#fff;padding:0;cursor:pointer}
+.thumb.is-current{border-color:var(--ui-accent)}
+.thumb .mini{position:absolute;top:0;left:0;width:1920px;height:1080px;transform-origin:0 0;pointer-events:none}
+.thumb .mini > section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;opacity:1;visibility:visible}
+.thumb .n{position:absolute;left:8px;bottom:8px;background:rgba(20,18,58,.85);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+
+/* ---------- Modo plantilla (editable) ---------- */
+.edit-note{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:25;background:var(--ui-accent);color:#14123A;font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.3);display:none;max-width:calc(100vw - 28px);text-align:center}
+body.is-editing .edit-note.show{display:block}
+
+/* ---------- Aviso ---------- */
+.deck-toast{position:fixed;left:50%;bottom:calc(var(--bar-h) + 16px);transform:translate(-50%,20px);opacity:0;background:#fff;color:#14123A;font-weight:700;font-size:14px;padding:10px 16px;border-radius:10px;transition:.25s;z-index:30;pointer-events:none}
+.deck-toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Impresión / PDF: una diapositiva por página ---------- */
+@page{size:1920px 1080px;margin:0}
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff}
+  .deck-bar,.deck-progress,.overview,.tap,.edit-note,.deck-toast{display:none!important}
+  .stage-wrap{position:static;display:block;overflow:visible}
+  .stage{position:static;transform:none!important;width:1920px;height:auto;box-shadow:none}
+  .stage > section{position:relative;opacity:1;visibility:visible;break-after:page;page-break-after:always;transition:none}
+  .stage > section:last-child{break-after:auto;page-break-after:auto}
+  [contenteditable]{outline:none!important}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}

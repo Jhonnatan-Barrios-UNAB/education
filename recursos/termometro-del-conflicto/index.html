@@ -1,0 +1,426 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Termómetro del conflicto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: tres columnas en el tablero — termómetro y trayectoria | conversación | decisión. Línea gráfica del curso: fondo blanco, navy estructural, azul eléctrico, violeta de acento, cyan para conexiones. Un solo tema claro, deliberado, para proyección. */
+:root{
+  --navy:#172B5B; --blue:#2456A6; --violet:#4330BC; --cyan:#00A9D6;
+  --slate:#334155; --gray:#64748B; --white:#FFFFFF;
+  --mist:#F3F6FB; --line:#DCE3EE; --violet-soft:#ECE9FB; --blue-soft:#E7EEF9; --cyan-soft:#E0F5FB;
+  --hot1:#7A2FA6; --hot2:#B0215F; --hot2-soft:#FBE7EF; --good:#0E7A5F; --good-soft:#E2F4EE;
+  --display:'Manrope','Segoe UI',Arial,sans-serif;
+  --body:'Source Sans 3','Segoe UI',Arial,sans-serif;
+  --r:16px; color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--white);color:var(--slate);font-family:var(--body);font-size:18px;line-height:1.45;padding-inline:clamp(16px,2.4vw,36px);padding-block:0;margin:0}
+h1,h2,h3{font-family:var(--display);color:var(--navy);margin:0;line-height:1.12;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--violet);outline-offset:3px}
+.app{max-width:1560px;margin-inline:auto;padding-block:18px 28px;display:flex;flex-direction:column;gap:18px;position:relative}
+
+/* encabezado con red de nodos sutil */
+.head{position:relative;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;padding-bottom:16px;border-bottom:1px solid var(--line);overflow:hidden}
+.head .net{position:absolute;right:0;top:-10px;width:520px;max-width:60%;height:120px;pointer-events:none;opacity:.9}
+.eyebrow{font-size:15px;font-weight:600;color:var(--blue);letter-spacing:.04em}
+.head h1{font-size:clamp(30px,3.4vw,46px);font-weight:800}
+.head-actions{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
+.btn{border:1px solid var(--line);background:var(--white);border-radius:12px;padding:10px 16px;font-weight:700;font-size:16px;color:var(--navy)}
+.btn.primary{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.btn.violet{background:var(--violet);border-color:var(--violet);color:var(--white)}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.grid{display:grid;grid-template-columns:260px minmax(0,1fr) minmax(0,1.08fr);gap:20px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+/* termómetro */
+.thermo{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px}
+.thermo-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.temp{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;color:var(--navy);font-variant-numeric:tabular-nums}
+.band-name{font-family:var(--display);font-weight:800;font-size:20px}
+.scale{display:grid;grid-template-columns:44px 1fr;gap:14px;height:330px}
+.tube{position:relative;border-radius:22px;background:var(--mist);border:1px solid var(--line);overflow:hidden}
+.fill{position:absolute;left:0;right:0;bottom:0;border-radius:0 0 22px 22px;transition:height .7s cubic-bezier(.2,.7,.2,1),background .7s}
+.marks{display:flex;flex-direction:column-reverse;justify-content:space-between;font-size:15px}
+.marks div{display:flex;align-items:center;gap:8px;flex:1;border-bottom:1px dashed var(--line);padding-block:2px}
+.marks div:first-child{border-bottom:0}
+.marks i{width:10px;height:10px;border-radius:50%;flex:none}
+.marks b{font-family:var(--display);color:var(--navy);font-size:15px}
+.marks span{color:var(--gray);font-size:13px;margin-left:auto;font-variant-numeric:tabular-nums}
+.marks div.on{background:var(--mist);border-radius:8px}
+
+.traj{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px}
+.traj h3{font-size:17px}
+.traj svg{width:100%;height:auto;display:block}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps button{width:100%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--white);border-radius:10px;padding:8px 10px;font-size:15px}
+.steps button .d{font-family:var(--display);font-weight:800;color:var(--navy)}
+.steps button .t{font-variant-numeric:tabular-nums;font-weight:700}
+.steps button[aria-current="step"]{border-color:var(--violet);background:var(--violet-soft)}
+.steps .hint{font-size:13px;color:var(--gray)}
+
+/* conversación */
+.chat{background:var(--mist);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-height:540px;max-height:calc(100vh - 170px);overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--white);border-bottom:1px solid var(--line)}
+.avatars{display:flex}
+.avatars span{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:13px;color:var(--white);border:2px solid var(--white);margin-left:-8px}
+.avatars span:first-child{margin-left:0}
+.chat-head b{font-family:var(--display);color:var(--navy)}
+.chat-head small{display:block;color:var(--gray);font-size:14px}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.msg{max-width:84%;display:flex;flex-direction:column;gap:3px}
+.msg .who{font-size:13px;font-weight:700;display:flex;gap:6px;align-items:center}
+.msg .bubble{background:var(--white);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:10px 14px;font-size:18px;color:var(--slate)}
+.msg.me{align-self:flex-end;align-items:flex-end}
+.msg.me .bubble{background:var(--navy);border-color:var(--navy);color:var(--white);border-radius:14px 4px 14px 14px}
+.chan{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 8px;background:var(--blue-soft);color:var(--blue)}
+.chan.p{background:var(--cyan-soft);color:#00708F}
+.chan.ig,.chan.cu{background:var(--hot2-soft);color:var(--hot2)}
+.chan.pr,.chan.ins{background:var(--violet-soft);color:var(--violet)}
+.sys{align-self:center;text-align:center;font-size:15px;color:var(--gray);font-style:italic;max-width:90%}
+.act{align-self:flex-end;font-size:15px;color:var(--violet);font-style:italic;max-width:84%;text-align:right}
+.divider{align-self:stretch;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--blue);letter-spacing:.04em;margin-top:6px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.fresh{animation:pop .45s ease-out both}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* panel de decisión */
+.panel{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:14px}
+.panel-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.panel-head h2{font-size:clamp(24px,2.2vw,32px);font-weight:800}
+.counter{font-family:var(--display);font-weight:800;color:var(--violet);font-size:16px}
+.dots{display:flex;gap:6px}
+.dots i{width:28px;height:6px;border-radius:999px;background:var(--line)}
+.dots i.on{background:var(--violet)}
+.situ{color:var(--gray);font-size:17px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 12px;align-items:start;background:var(--white)}
+.opt .L{grid-row:span 3;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:22px;background:var(--blue-soft);color:var(--blue)}
+.opt .lab{font-family:var(--display);font-weight:800;color:var(--navy);font-size:18px}
+.opt .txt{font-size:17px;color:var(--slate)}
+.opt .row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.opt.lead{border-color:var(--violet);box-shadow:0 0 0 2px var(--violet-soft)}
+.opt.lead .L{background:var(--violet);color:var(--white)}
+.votes{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.votes button{border:0;background:var(--mist);width:36px;height:34px;font-size:20px;font-weight:700;color:var(--navy)}
+.votes output{min-width:44px;text-align:center;font-family:var(--display);font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.votes small{padding-inline:8px;color:var(--gray);font-size:13px}
+.pick{margin-left:auto;border:1px solid var(--navy);background:var(--white);color:var(--navy);border-radius:10px;padding:6px 12px;font-weight:700;font-size:15px}
+.pick:hover{background:var(--navy);color:var(--white)}
+.seen{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--mist);color:var(--slate);border:1px dashed var(--gray)}
+.consensus{display:flex;flex-wrap:wrap;align-items:center;gap:10px;border-radius:12px;padding:10px 14px;background:var(--mist);font-size:16px}
+.consensus b{font-family:var(--display);color:var(--navy)}
+.consensus.unan{background:var(--good-soft)}
+.consensus.unan b{color:var(--good)}
+
+.effect{border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--mist);border:1px solid var(--line)}
+.delta{display:flex;align-items:center;gap:14px}
+.delta .n{font-family:var(--display);font-weight:800;font-size:48px;line-height:1;font-variant-numeric:tabular-nums}
+.delta p{font-size:16px;color:var(--gray)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fact{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.fact small{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gray);font-weight:700}
+.fact b{font-family:var(--display);color:var(--navy);font-size:16px}
+.evs{display:flex;flex-wrap:wrap;gap:6px}
+.ev{font-size:14px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--hot2-soft);color:var(--hot2)}
+.ev.good{background:var(--good-soft);color:var(--good)}
+.why{font-size:18px;color:var(--slate);border-left:3px solid var(--cyan);padding-left:12px}
+.ask{font-size:16px;color:var(--violet);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+
+.ending{border-radius:14px;padding:20px;color:var(--white);display:flex;flex-direction:column;gap:10px}
+.ending h3{color:var(--white);font-size:30px}
+.ending p{font-size:18px}
+.route{display:flex;flex-wrap:wrap;gap:6px}
+.route span{background:var(--mist);border-radius:8px;padding:4px 10px;font-size:15px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+
+.routes{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.routes h3{font-size:17px}
+.routes button{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--white);padding:8px 10px;font-size:15px}
+.routes .empty{font-size:14px;color:var(--gray)}
+.pill{border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700;color:var(--white)}
+
+.hbar{display:none}
+
+@media (max-width:1180px){
+  .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .col.side{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .scale{height:220px}
+}
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr}
+  .chat{max-height:none;min-height:360px}
+  .facts{grid-template-columns:1fr}
+  .head .net{display:none}
+}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}.fresh{animation:none}}
+</style>
+
+<div class="app">
+  <header class="head">
+    <svg class="net" viewBox="0 0 520 120" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#2456A6" stop-opacity="0"/><stop offset=".5" stop-color="#4330BC" stop-opacity=".45"/><stop offset="1" stop-color="#00A9D6" stop-opacity=".7"/></linearGradient></defs>
+      <g stroke="url(#lg)" stroke-width="1" fill="none">
+        <path d="M120 90 L210 40 L300 72 L380 22 L470 58 L515 18"/><path d="M210 40 L260 105 L380 22"/><path d="M300 72 L420 100 L470 58"/><path d="M170 15 L210 40"/>
+      </g>
+      <g fill="#00A9D6"><circle cx="210" cy="40" r="3"/><circle cx="380" cy="22" r="3.5"/><circle cx="470" cy="58" r="3"/><circle cx="515" cy="18" r="2.5"/></g>
+      <g fill="#4330BC" fill-opacity=".55"><circle cx="300" cy="72" r="3"/><circle cx="260" cy="105" r="2.5"/><circle cx="420" cy="100" r="2.5"/><circle cx="120" cy="90" r="2"/><circle cx="170" cy="15" r="2"/></g>
+    </svg>
+    <div>
+      <p class="eyebrow">Interacción Digital · Semana 9 · Simulador</p>
+      <h1>Termómetro del conflicto</h1>
+    </div>
+    <div class="head-actions">
+      <button class="btn ghost" type="button" id="back1">Retroceder una decisión</button>
+      <button class="btn" type="button" id="restart">Empezar de nuevo</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <aside class="col side">
+      <section class="thermo" aria-label="Termómetro de la conversación">
+        <div class="thermo-top"><span class="temp" id="temp">20°</span><span class="band-name" id="bandName">Tensión</span></div>
+        <div class="scale">
+          <div class="tube"><div class="fill" id="fill"></div></div>
+          <div class="marks" id="marks"></div>
+        </div>
+      </section>
+      <section class="traj">
+        <h3>Trayectoria</h3>
+        <svg id="spark" viewBox="0 0 220 90" role="img" aria-label="Temperatura en cada decisión"></svg>
+        <ol class="steps" id="steps"></ol>
+        <p class="hint" style="font-size:13px;color:var(--gray)">Toca una decisión para volver a ella y elegir otra opción.</p>
+      </section>
+      <section class="routes" id="routes"></section>
+    </aside>
+
+    <section class="chat" aria-label="Conversación">
+      <div class="chat-head">
+        <div class="avatars" aria-hidden="true"><span style="background:#172B5B">TÚ</span><span style="background:#4330BC">M</span><span style="background:#2456A6">S</span><span style="background:#00A9D6">J</span></div>
+        <div><b>Proyecto final · Grupo 3</b><small>Tú, Mateo, Sara y Julián · Entrega mañana 8:00 a.m.</small></div>
+      </div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+    </section>
+
+    <section class="col">
+      <div class="panel" id="panel"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+const START=20, MAXD=5, L="ABCD";
+const BANDS=[
+ {max:20,name:"Calma",c:"#00A9D6",end:"Conflicto resuelto",txt:"La conversación terminó en coordinación. Preguntar antes de suponer, usar canales privados y proponer planes concretos evitó que la ambigüedad se convirtiera en ataque."},
+ {max:40,name:"Tensión",c:"#2456A6",end:"Resuelto, con tensión",txt:"El trabajo salió, pero quedaron cosas por hablar. Un conflicto no se cierra solo porque termina la tarea."},
+ {max:60,name:"Discusión",c:"#4330BC",end:"Conflicto abierto",txt:"La relación del equipo quedó afectada. En varios momentos se respondió en caliente o frente a otros."},
+ {max:80,name:"Escalada",c:"#7A2FA6",end:"Escalada",txt:"El conflicto salió del equipo: más personas, exposición y ataques. Repararlo ahora cuesta mucho más que haberlo evitado."},
+ {max:100,name:"Crisis",c:"#B0215F",end:"Crisis",txt:"Una persona quedó expuesta frente a muchas otras. La situación ya tiene rasgos de ciberacoso y puede tener consecuencias institucionales y legales."}
+];
+const band=t=>BANDS.find(b=>t<=b.max);
+const CH={g:"Grupo del equipo",p:"Privado con Mateo",ig:"Historia de Instagram",cu:"Grupo del curso (40)",pr:"Correo al profesor",ins:"Canal institucional",no:"Sin mensaje",t3:"Otros compañeros"};
+const CHS={g:"Grupo",p:"Privado",ig:"Instagram",cu:"Grupo del curso",pr:"Correo"};
+const COL={"Mateo":"#4330BC","Sara":"#2456A6","Julián":"#00708F","Profesor":"#172B5B"};
+
+const N={
+ INI:{title:"11:42 p.m. y llega un “Bueno.”",situ:"Mateo no ha subido su parte y la entrega es en ocho horas. El grupo está leyendo.",o:[
+  {lab:"Reclamarle en el grupo",say:["g","¿“Bueno”? Son casi las 12 y no has subido nada. Siempre es lo mismo contigo."],ch:"g",emo:"Alta",amb:"Baja",d:20,ev:["Ataque personal"],why:"Generaliza con “siempre” y juzga a la persona frente al grupo. Mateo se siente atacado en público.",re:[["g","Mateo","¿Siempre? Esta semana tuve turnos dobles en el trabajo. Qué fácil es juzgar desde la casa."],["g","Julián","uy"]],next:"DEF"},
+  {lab:"Escribirle por privado",say:["p","Vi tu “bueno”. ¿Alcanzas a subirla hoy o necesitas ayuda con algo? Necesito saberlo para organizarnos."],ch:"p",emo:"Baja",amb:"Baja",d:-10,ev:[],why:"Pregunta antes de suponer, en un canal privado y con una oferta concreta de ayuda.",re:[["p","Mateo","Perdón. Tuve turno doble. Tengo la mitad; me falta la parte de datos y no sé si alcanzo."],["g","Sara","¿Alguien sabe algo de Mateo? Esto ya es una falta de respeto."]],next:"DIA"},
+  {lab:"Responder con ironía",say:["g","Perfecto, “bueno”. Ya veremos a qué hora."],ch:"g",emo:"Media",amb:"Alta",d:10,ev:[],why:"El sarcasmo escrito se interpreta casi al azar: en el estudio de Kruger et al. (2005) el acierto por correo fue del 56 %.",re:[["g","Mateo","¿“Ya veremos”? ¿Qué quieres decir con eso?"],["sys","Julián reaccionó con una risa a tu mensaje."]],next:"DEF"},
+  {lab:"Publicar una historia",say:["ig","Cuando trabajas en grupo y uno solo responde “bueno”…"],ch:"ig",emo:"Alta",amb:"Media",d:30,ev:["Exposición","Se suman personas"],why:"Saca un conflicto del equipo a una audiencia sin contexto, que puede adivinar de quién se habla.",re:[["ig","Respuesta a tu historia","jajaja ¿es Mateo?"],["g","Mateo","Vi tu historia. Todo el curso sabe que es por mí."]],next:"EXP"}
+ ]},
+ DEF:{title:"Hay molestia y el grupo está leyendo",situ:"Mateo está a la defensiva. Lo que se escriba ahora lo ven todos.",o:[
+  {lab:"Desestimar sus razones",say:["g","Si de verdad quisieras, ya estaría hecho. No me vengas con excusas."],ch:"g",emo:"Alta",amb:"Baja",d:15,ev:["Ataque personal"],why:"Descalifica sus razones en público: el problema deja de ser la tarea y pasa a ser la persona.",re:[["g","Mateo","Mira quién habla. En el parcial dejaste todo para la última noche."],["g","Julián","jajaja se prendió esto"]],next:"ATQ"},
+  {lab:"Pausar y escribir por privado",act:"Esperas diez minutos y le escribes por privado.",say:["p","Me pasé con lo que escribí. ¿Qué te falta y cómo te ayudamos?"],ch:"p",emo:"Baja",amb:"Baja",d:-15,ev:["Pausa","Reparación"],why:"Aplica PAUSA: baja la emoción, reconoce el error y cambia a un canal adecuado.",re:[["p","Mateo","Gracias por escribir así. Me falta la sección de resultados; puedo subirla a la 1:30."]],next:"DIA"},
+  {lab:"Reconocer y volver al objetivo",say:["g","No sabía lo de tus turnos. Igual necesitamos tu parte: ¿a qué hora la subes?"],ch:"g",emo:"Baja",amb:"Baja",d:-5,ev:[],why:"Reconoce su situación y vuelve al objetivo común. Sigue siendo público, pero sin juicio sobre la persona.",re:[["g","Mateo","A la 1:30 la subo."],["g","Sara","Ok. Que sea a esa hora, por favor."]],next:"ACU"},
+  {lab:"Mandar capturas al profesor",act:"Envías capturas del chat al profesor.",say:["pr","Profe, le comparto estas capturas para que sepa quién no está trabajando en el grupo."],ch:"pr",emo:"Media",amb:"Media",d:15,ev:["Se suman personas","Exposición"],why:"Involucra a una autoridad sin hablar antes con el equipo. Se lee como castigo, no como solución.",re:[["pr","Profesor","Recibí unas capturas. Resuélvanlo como equipo; mañana hablamos en clase."],["g","Mateo","¿Le mandaste capturas al profe? En serio."]],next:"EXP"}
+ ]},
+ DIA:{title:"Hay una conversación privada abierta",situ:"Mateo explicó su situación por privado. El resto del grupo no sabe qué pasa.",o:[
+  {lab:"Informar al grupo sin detalles",say:["g","Ya hablé con Mateo. Tuvo un inconveniente; nos vamos a organizar."],ch:"g",emo:"Baja",amb:"Baja",d:-5,ev:[],why:"Informa al grupo y frena la especulación sin exponer lo que Mateo contó en privado.",re:[["g","Sara","Ok, gracias por avisar. ¿Qué hacemos?"],["g","Julián","Yo puedo ayudar con el formato."]],next:"ACU"},
+  {lab:"Proponer un plan concreto",say:["p","Yo hago la parte de datos y tú terminas lo demás. ¿La subes a la 1? ¿Te sirve?"],ch:"p",emo:"Baja",amb:"Baja",d:-10,ev:["Reparación"],why:"Propuesta concreta y colaborativa: convierte el conflicto en un plan con hora.",re:[["p","Mateo","Sí, me sirve. Gracias, de verdad."]],next:"ACU"},
+  {lab:"Contarle al grupo lo que dijo",say:["g","Mateo dice que tuvo turno doble, pero siempre tiene una excusa."],ch:"g",emo:"Media",amb:"Baja",d:20,ev:["Exposición"],why:"Divulga lo que se contó en privado y le añade un juicio: rompe la integridad contextual (Nissenbaum, 2010).",re:[["g","Mateo","Te lo conté por privado. Gracias por nada."],["g","Sara","Pues sí, siempre es lo mismo."]],next:"ATQ"},
+  {lab:"Dejarlo en visto",act:"Dejas el mensaje de Mateo en visto y sigues trabajando sin responder.",ch:"p",emo:"Media",amb:"Alta",d:10,ev:[],why:"El silencio es ambiguo: cada parte lo llena con su propia interpretación.",re:[["g","Mateo","Nadie me responde. Asumo que lo hacen sin mí."],["g","Sara","¿Y tú dónde estabas?"]],next:"DEF"}
+ ]},
+ ATQ:{title:"La discusión ya es personal",situ:"Ya no se habla del trabajo. Se cruzan reproches y el resto del grupo empieza a opinar.",o:[
+  {lab:"Responder con otro ataque",say:["g","Eres un vago y todo el curso lo sabe."],ch:"g",emo:"Alta",amb:"Baja",d:20,ev:["Ataque personal","Exposición"],why:"Ataque personal frente a otros: es el paso de “ataques” en la cadena de escalamiento.",re:[["sys","Mateo salió del grupo."],["g","Julián","Le hice captura. Esto va para el grupo del curso."]],next:"EXP"},
+  {lab:"Nombrar la escalada y pausar",say:["g","Paremos aquí. Esto ya no es sobre el trabajo. ¿Hablamos mañana a las 7 por llamada?"],ch:"g",emo:"Baja",amb:"Baja",d:-15,ev:["Pausa"],why:"Nombra lo que está pasando, propone una pausa y cambia a un canal con voz.",re:[["g","Sara","De acuerdo."],["g","Mateo","Ok. Subo lo que tengo a la 1."]],next:"ACU"},
+  {lab:"Pedir respaldo al grupo",say:["g","Sara, Julián, díganle ustedes cómo ha sido todo el semestre."],ch:"g",emo:"Alta",amb:"Baja",d:15,ev:["Se suman personas"],why:"Moviliza a otros contra una persona: aparece el desequilibrio de poder que caracteriza el acoso.",re:[["g","Sara","La verdad sí, Mateo, siempre es igual."],["g","Julián","Yo no me meto, pero…"],["sys","Mateo deja de responder."]],next:"CRI"},
+  {lab:"Silenciar el grupo",act:"Silencias el grupo y no vuelves a escribir.",ch:"no",emo:"Media",amb:"Alta",d:5,ev:[],why:"Detiene tu participación, pero deja el conflicto abierto y sin nadie que lo conduzca.",re:[["sys","1:00 a.m. · 47 mensajes nuevos en el grupo."],["g","Julián","¿Y entonces quién une el documento?"]],next:"DEF"}
+ ]},
+ EXP:{title:"El conflicto salió del equipo",situ:"Ahora lo conocen personas que no tienen el contexto completo.",o:[
+  {lab:"Defenderse en público",say:["ig","Para que sepan: hay gente que no trabaja y luego se hace la víctima."],ch:"ig",emo:"Alta",amb:"Baja",d:20,ev:["Exposición","Se suman personas","Ataque personal"],why:"Amplía la audiencia y suma exposición: más personas toman partido sin conocer el contexto.",re:[["ig","Respuesta a tu historia","Qué oso Mateo jajaja"],["p","Mateo","Me están escribiendo personas que ni conozco."]],next:"CRI"},
+  {lab:"Retirar y reparar",act:"Borras lo publicado y le escribes a Mateo por privado.",say:["p","Me equivoqué al sacarlo del grupo. Ya lo borré. ¿Podemos hablar?"],ch:"p",emo:"Baja",amb:"Baja",d:-20,ev:["Reparación"],why:"Reconoce el daño, retira la exposición y propone conversar en un canal adecuado.",re:[["p","Mateo","Ya muchos lo vieron, pero gracias por borrarlo. Hablemos."]],next:"DIA"},
+  {lab:"Aclarar de forma vaga",say:["ig","No era para nadie en particular."],ch:"ig",emo:"Media",amb:"Alta",d:5,ev:[],why:"Una aclaración ambigua no repara: quienes vieron lo primero ya saben a quién iba.",re:[["ig","Respuesta a tu historia","Ajá, claro."],["sys","Mateo no responde."]],next:"DEF"},
+  {lab:"Esperar a que se olvide",act:"No haces nada y esperas a que pase.",ch:"no",emo:"Baja",amb:"Alta",d:10,ev:["Exposición","Se suman personas"],why:"Lo publicado persiste y sigue circulando sin control.",re:[["cu","Alguien del curso","[Captura del chat del Grupo 3] miren cómo se tratan jajaja"],["sys","Aparece el primer meme con la foto de Mateo."]],next:"CRI"}
+ ]},
+ ACU:{title:"Hay un plan, pero quedan roces",situ:"El trabajo avanza. La entrega es en pocas horas y todavía hay tensión.",o:[
+  {lab:"Confirmar el plan y agradecer",say:["g","Gracias a todos. Quedamos así: Mateo sube a la 1:30, Julián da formato y yo uno todo a las 6."],ch:"g",emo:"Baja",amb:"Baja",d:-10,ev:[],why:"Claridad y reconocimiento: no deja espacio a la ambigüedad.",re:[["g","Sara","Perfecto."],["sys","1:25 a.m. · Mateo subió su sección."]],next:"DES"},
+  {lab:"Corregir en público con reproche",act:"Mateo sube su parte con errores.",say:["g","Mateo, esto está mal hecho, otra vez."],ch:"g",emo:"Alta",amb:"Baja",d:15,ev:["Ataque personal"],why:"Señala el error en público y con reproche: reabre el conflicto.",re:[["g","Mateo","Hice lo que pude con el tiempo que tenía. Arréglenlo ustedes."]],next:"DEF"},
+  {lab:"Corregir en privado con datos",act:"Mateo sube su parte con algunos errores.",say:["p","Te dejé comentarios en tres partes de tu sección. ¿Los ajustas tú o lo hago yo?"],ch:"p",emo:"Baja",amb:"Baja",d:-10,ev:[],why:"Señala el error en privado, con datos concretos y una opción para corregir.",re:[["p","Mateo","Los reviso ya. Gracias por decirme así."]],next:"DES"},
+  {lab:"Arreglarlo sin decir nada",act:"Corriges tú los errores de Mateo sin comentarlo con nadie.",ch:"no",emo:"Media",amb:"Media",d:0,ev:[],why:"Resuelve la entrega, pero el malestar queda sin conversar.",re:[["sys","7:40 a.m. · Entregado. Nadie vuelve a escribir en el grupo."]],next:"DES"}
+ ]},
+ DES:{title:"La entrega se hizo. Mañana se ven en clase",situ:"Queda una última decisión: cómo cierran lo que pasó.",o:[
+  {lab:"Proponer acuerdos para el próximo trabajo",say:["g","¿Nos vemos 15 minutos antes de clase y acordamos cómo trabajar el próximo proyecto?"],ch:"g",emo:"Baja",amb:"Baja",d:-10,ev:["Reparación"],why:"Convierte lo que pasó en acuerdos: la mejor prevención del próximo conflicto.",re:[["g","Sara","Buena idea."],["g","Mateo","Cuenten conmigo."]],end:true},
+  {lab:"Comentarlo con otros compañeros",act:"Les cuentas a otros compañeros del curso lo que pasó con Mateo.",ch:"t3",emo:"Media",amb:"Baja",d:15,ev:["Se suman personas","Exposición"],why:"El comentario amplía la audiencia del conflicto y daña la reputación de Mateo.",re:[["sys","El comentario le llega a Mateo antes de que empiece la clase."]],end:true},
+  {lab:"Agradecer y cerrar",say:["g","Gracias por el esfuerzo de todos. Fue una noche difícil, pero salió."],ch:"g",emo:"Baja",amb:"Baja",d:-5,ev:[],why:"Cierra con reconocimiento, aunque no aborda lo que generó el conflicto.",re:[["g","Julián","Gracias a ti por coordinar."]],end:true},
+  {lab:"No volver a hablar del tema",act:"Nadie vuelve a mencionar lo que pasó.",ch:"no",emo:"Baja",amb:"Alta",d:5,ev:[],why:"Lo que no se conversa se acumula: el próximo trabajo empieza con desconfianza.",re:[["sys","Dos semanas después, el equipo se divide para el siguiente proyecto."]],end:true}
+ ]},
+ CRI:{title:"Ya no es una discusión entre dos",situ:"Varias personas se burlan de Mateo o lo atacan. La situación tiene rasgos de acoso.",o:[
+  {lab:"Sumarse a la burla",act:"Compartes el meme en el grupo del curso.",say:["cu","Es solo una broma, no se lo tomen tan en serio."],ch:"cu",emo:"Alta",amb:"Media",d:20,ev:["Ataque personal","Se suman personas","Exposición"],why:"Participar en la burla colectiva sostiene el acoso: repetición, difusión y desequilibrio de poder.",re:[["sys","Al día siguiente, Mateo no llega a clase."]],end:true},
+  {lab:"Pedir en público que paren",say:["cu","Esto se salió de control y fue mi error empezarlo. Por favor, borren los memes y las capturas."],ch:"cu",emo:"Baja",amb:"Baja",d:-20,ev:["Reparación"],why:"Asume la responsabilidad en el mismo espacio donde ocurrió el daño e interrumpe la difusión.",re:[["cu","Sara","Tienes razón. Ya borré lo mío."],["p","Mateo","Gracias."]],next:"DIA"},
+  {lab:"Escribirle a Mateo",say:["p","¿Cómo estás? Quiero ayudar a parar esto."],ch:"p",emo:"Baja",amb:"Baja",d:-10,ev:["Reparación"],why:"Apoya a la persona afectada, aunque la exposición sigue activa.",re:[["p","Mateo","Mal. ¿Puedes pedir que borren las capturas?"]],next:"EXP"},
+  {lab:"Reportar y pedir apoyo institucional",act:"Reportas las publicaciones en la plataforma y avisas a Bienestar Universitario.",ch:"ins",emo:"Baja",amb:"Baja",d:-10,ev:["Reparación"],why:"Usa los canales institucionales cuando la situación ya tiene rasgos de acoso.",re:[["sys","Las publicaciones son retiradas. Bienestar contacta a Mateo y al equipo."]],next:"DES"}
+ ]}
+};
+const INTRO=[["g","Tú","Mateo, necesitamos tu parte hoy antes de las 10 p.m. para unir todo.","9:02 p.m."],["g","Mateo","Bueno.","11:42 p.m."],["sys","La carpeta compartida sigue sin la sección de Mateo."]];
+const GOOD=new Set(["Pausa","Reparación"]);
+
+/* ---------- estado ---------- */
+const KEY="termometro-conflicto-v1";
+function fresh(){return{path:[],phase:"choose",votes:{},explored:{},routes:[]}}
+let S=fresh();
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(fresh(),JSON.parse(r))}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const clamp=t=>Math.max(0,Math.min(100,t));
+const pkey=p=>p.join("");
+
+function replay(path){
+  let node="INI",t=START; const temps=[t],nodes=[node],opts=[]; let ended=false;
+  for(let i=0;i<path.length;i++){
+    const o=N[node].o[path[i]]; opts.push(o);
+    t=clamp(t+o.d); temps.push(t);
+    if(o.end||t>=100||i+1>=MAXD||!o.next){ended=true;break}
+    node=o.next; nodes.push(node);
+  }
+  return{temps,nodes,opts,ended,t};
+}
+
+/* ---------- vista ---------- */
+let lastLen=-1;
+function render(){
+  const R=replay(S.path); const k=S.path.length;
+  if(R.ended&&S.phase==="choose") S.phase="effect";
+  if(!R.ended&&S.phase==="end") S.phase="choose";
+  renderThermo(R.t); renderSpark(R); renderSteps(R); renderChat(R); renderPanel(R); renderRoutes();
+  $("#back1").disabled=k===0;
+  lastLen=k; save();
+}
+function renderThermo(t){
+  const b=band(t);
+  $("#temp").textContent=t+"°";
+  $("#bandName").textContent=b.name; $("#bandName").style.color=b.c;
+  const f=$("#fill"); f.style.height=Math.max(t,3)+"%"; f.style.background=`linear-gradient(0deg,#00A9D6,${b.c})`;
+  $("#marks").innerHTML=BANDS.map((x,i)=>`<div class="${x===b?'on':''}"><i style="background:${x.c}"></i><b>${x.name}</b><span>${i?BANDS[i-1].max+1:0}–${x.max}</span></div>`).join("");
+}
+function renderSpark(R){
+  const W=220,H=90,px=12,py=8; const n=MAXD;
+  const X=i=>px+i*(W-2*px)/n, Y=t=>H-py-(t/100)*(H-2*py);
+  let g=BANDS.map((b,i)=>{const lo=i?BANDS[i-1].max:0;return `<rect x="${px}" y="${Y(b.max)}" width="${W-2*px}" height="${Y(lo)-Y(b.max)}" fill="${b.c}" fill-opacity="${.05+i*.025}"/>`}).join("");
+  const pts=R.temps.map((t,i)=>`${X(i)},${Y(t)}`).join(" ");
+  g+=`<polyline points="${pts}" fill="none" stroke="#172B5B" stroke-width="2" stroke-linejoin="round"/>`;
+  g+=R.temps.map((t,i)=>`<circle cx="${X(i)}" cy="${Y(t)}" r="${i===R.temps.length-1?5:3.5}" fill="${band(t).c}" stroke="#fff" stroke-width="1.5"/>`).join("");
+  for(let i=0;i<=n;i++) g+=`<text x="${X(i)}" y="${H-0.5}" font-size="8" text-anchor="middle" fill="#64748B" font-family="Source Sans 3, Arial">${i===0?"Inicio":"D"+i}</text>`;
+  $("#spark").innerHTML=g;
+}
+function renderSteps(R){
+  const k=S.path.length; let h="";
+  h+=`<li><button type="button" data-back="0" ${k===0&&S.phase==="choose"?'aria-current="step"':''}><span class="d">D1</span><span>${k>0?`Opción ${L[S.path[0]]}`:"Decidiendo…"}</span><span class="t" style="color:${band(R.temps[1]??R.temps[0]).c}">${R.temps[1]??R.temps[0]}°</span></button></li>`;
+  for(let i=1;i<MAXD;i++){
+    if(i>k||(i===k&&R.ended)) break;
+    const chosen=i<k; const t=chosen?R.temps[i+1]:R.temps[i];
+    h+=`<li><button type="button" data-back="${i}" ${i===k&&S.phase==="choose"?'aria-current="step"':''}><span class="d">D${i+1}</span><span>${chosen?`Opción ${L[S.path[i]]}`:"Decidiendo…"}</span><span class="t" style="color:${band(t).c}">${t}°</span></button></li>`;
+  }
+  $("#steps").innerHTML=h;
+}
+function bubble(m,fresh){
+  const [c,who,txt,time]=m; const cls=fresh?" fresh":"";
+  if(c==="sys") return `<p class="sys${cls}">${esc(who)}</p>`;
+  const me=who==="Tú";
+  return `<div class="msg${me?" me":""}${cls}"><span class="who" style="color:${me?"var(--navy)":(COL[who]||"var(--hot2)")}">${esc(who)}${CHS[c]?` <span class="chan ${c}">${CHS[c]}</span>`:""}${time?` <span style="color:var(--gray);font-weight:400">${time}</span>`:""}</span><div class="bubble">${esc(txt)}</div></div>`;
+}
+function renderChat(R){
+  const k=S.path.length; let h=INTRO.map(m=>bubble(m,false)).join("");
+  R.opts.forEach((o,i)=>{
+    const isNew=i===k-1&&k>lastLen;
+    let part=`<p class="divider${isNew?" fresh":""}">Decisión ${i+1} · Opción ${L[S.path[i]]}</p>`;
+    if(o.act) part+=`<p class="act${isNew?" fresh":""}">${esc(o.act)}</p>`;
+    if(o.say) part+=bubble([o.say[0],"Tú",o.say[1]],isNew);
+    o.re.forEach(r=>part+=bubble(r,isNew));
+    h+=part;
+  });
+  const box=$("#msgs"); box.innerHTML=h; box.scrollTop=box.scrollHeight;
+}
+function voteState(prefix){const v=S.votes[prefix]||[0,0,0,0];const tot=v.reduce((a,b)=>a+b,0);const max=Math.max(...v);const leaders=v.map((x,i)=>x===max&&max>0?i:-1).filter(i=>i>=0);return{v,tot,max,leaders,unan:tot>0&&v.filter(x=>x>0).length===1}}
+function renderPanel(R){
+  const k=S.path.length; const P=$("#panel");
+  const dots=n=>`<div class="dots" aria-hidden="true">${Array.from({length:MAXD},(_,i)=>`<i class="${i<n?"on":""}"></i>`).join("")}</div>`;
+  if(S.phase==="choose"){
+    const node=N[R.nodes[k]]; const pre=pkey(S.path); const vs=voteState(pre); const seen=S.explored[pre]||{};
+    const opts=node.o.map((o,i)=>{
+      const lead=vs.leaders.includes(i);
+      return `<article class="opt${lead?" lead":""}"><span class="L">${L[i]}</span><span class="lab">${esc(o.lab)}</span><span class="txt">${o.say?`“${esc(o.say[1])}”`:esc(o.act)}${o.act&&o.say?`<br><em style="color:var(--gray)">${esc(o.act)}</em>`:""}</span>
+      <div class="row"><span class="chan ${o.ch}">${CH[o.ch]}</span>${seen[i]!==undefined?`<span class="seen">Ya explorada · ${seen[i]}° ${band(seen[i]).name}</span>`:""}
+      <div class="votes" role="group" aria-label="Manos para la opción ${L[i]}"><button type="button" data-vote="${i}" data-dv="-1" aria-label="Quitar una mano">−</button><output>${vs.v[i]}</output><button type="button" data-vote="${i}" data-dv="1" aria-label="Sumar una mano">+</button><small>manos</small></div>
+      <button class="pick" type="button" data-pick="${i}">Elegir ${L[i]}</button></div></article>`}).join("");
+    const cons=vs.tot===0?`<div class="consensus"><b>Votación a mano alzada.</b> Cuenten las manos de cada opción.</div>`
+      : vs.unan?`<div class="consensus unan"><b>Unanimidad en la opción ${L[vs.leaders[0]]}.</b> Elijan esa opción para continuar.</div>`
+      : `<div class="consensus"><b>${vs.tot} votos · ${vs.leaders.length>1?"Empate":"Mayoría en "+L[vs.leaders[0]]}.</b> Pidan a una persona de cada opción que la defienda en 30 segundos y vuelvan a votar.</div>`;
+    P.innerHTML=`<div class="panel-head"><h2>${esc(node.title)}</h2><span class="counter">Decisión ${k+1} de ${MAXD}</span></div>${dots(k)}<p class="situ">${esc(node.situ)}</p>${cons}<div class="opts">${opts}</div>`;
+  } else if(S.phase==="effect"){
+    const o=R.opts[k-1]; const before=R.temps[k-1], after=R.temps[k]; const real=after-before;
+    const col=real>0?"var(--hot2)":real<0?"var(--good)":"var(--slate)";
+    P.innerHTML=`<div class="panel-head"><h2>Efecto de la opción ${L[S.path[k-1]]}</h2><span class="counter">Decisión ${k} de ${MAXD}</span></div>${dots(k)}
+    <div class="effect"><div class="delta"><span class="n" style="color:${col}">${real>0?"+":""}${real}°</span><p>El termómetro pasa de <b>${before}°</b> a <b style="color:${band(after).c}">${after}° · ${band(after).name}</b></p></div>
+    <div class="facts"><div class="fact"><small>Canal</small><b>${CH[o.ch]}</b></div><div class="fact"><small>Emocionalidad</small><b>${o.emo}</b></div><div class="fact"><small>Ambigüedad</small><b>${o.amb}</b></div></div>
+    ${o.ev.length?`<div class="evs">${o.ev.map(e=>`<span class="ev${GOOD.has(e)?" good":""}">${e}</span>`).join("")}</div>`:""}
+    <p class="why">${esc(o.why)}</p><p class="ask">Para la clase: ¿qué hizo subir o bajar la temperatura? ¿Cómo lo leyó la otra parte?</p></div>
+    <div class="actions"><button class="btn primary" type="button" id="cont">${R.ended?"Ver el final de la conversación":"Continuar a la decisión "+(k+1)}</button><button class="btn" type="button" id="undo">Volver a la decisión ${k} y elegir otra</button></div>`;
+  } else {
+    const b=band(R.t); const why=R.t>=100&&k<MAXD?"La temperatura llegó al máximo antes de la quinta decisión.":R.opts[k-1].end&&k<MAXD?"La conversación se cerró antes de la quinta decisión.":"";
+    P.innerHTML=`<div class="panel-head"><h2>Final de esta ruta</h2><span class="counter">${k} decisiones</span></div>
+    <div class="ending" style="background:linear-gradient(120deg,#172B5B,${b.c})"><p style="font-weight:700;opacity:.9">${R.t}° · ${b.name}</p><h3>${b.end}</h3><p>${b.txt}</p>${why?`<p style="opacity:.85">${why}</p>`:""}</div>
+    <div class="route" aria-label="Ruta recorrida"><span>Inicio ${START}°</span>${S.path.map((p,i)=>`<span>D${i+1} ${L[p]} · ${R.temps[i+1]}°</span>`).join("")}</div>
+    <p class="ask">Debate: ¿en qué decisión cambió el rumbo? Volvamos a ella y probemos otra opción.</p>
+    <div class="actions">${S.path.map((_,i)=>`<button class="btn" type="button" data-back="${i}">Volver a D${i+1}</button>`).join("")}<button class="btn violet" type="button" id="restart2">Nueva ruta desde el inicio</button></div>`;
+  }
+}
+function renderRoutes(){
+  const el=$("#routes");
+  el.innerHTML=`<h3>Rutas exploradas (${S.routes.length})</h3>`+(S.routes.length?S.routes.map((r,i)=>{const b=band(r.final);return `<button type="button" data-route="${i}"><span>${r.path.map(p=>L[p]).join(" → ")}</span><span class="pill" style="background:${b.c}">${r.final}° ${b.name}</span></button>`}).join(""):`<p class="empty">Cada ruta que llegue al final se guarda aquí para compararla.</p>`);
+}
+
+/* ---------- acciones ---------- */
+function choose(i){
+  const pre=pkey(S.path); S.path.push(i);
+  const R=replay(S.path); (S.explored[pre]=S.explored[pre]||{})[i]=R.temps[S.path.length];
+  S.phase="effect"; render();
+}
+function goBack(i){S.path=S.path.slice(0,i);S.phase="choose";lastLen=S.path.length;render()}
+function finish(){
+  const R=replay(S.path); S.phase="end";
+  const key=pkey(S.path); if(!S.routes.some(r=>pkey(r.path)===key)) S.routes.push({path:S.path.slice(),final:R.t});
+  render();
+}
+document.addEventListener("click",e=>{
+  const v=e.target.closest("[data-vote]"); if(v){const pre=pkey(S.path);const a=S.votes[pre]=S.votes[pre]||[0,0,0,0];a[+v.dataset.vote]=Math.max(0,a[+v.dataset.vote]+ +v.dataset.dv);render();return}
+  const p=e.target.closest("[data-pick]"); if(p){choose(+p.dataset.pick);return}
+  const b=e.target.closest("[data-back]"); if(b){goBack(+b.dataset.back);return}
+  const r=e.target.closest("[data-route]"); if(r){S.path=S.routes[+r.dataset.route].path.slice();S.phase="end";lastLen=S.path.length;render();return}
+  if(e.target.closest("#cont")){const R=replay(S.path);if(R.ended)finish();else{S.phase="choose";render()}return}
+  if(e.target.closest("#undo")){goBack(S.path.length-1);return}
+  if(e.target.closest("#restart2")){goBack(0);return}
+});
+$("#back1").onclick=()=>{if(S.path.length)goBack(S.path.length-1)};
+let armed=false;
+$("#restart").onclick=()=>{const b=$("#restart");if(!armed){armed=true;b.textContent="Toca otra vez: borra rutas y votos";setTimeout(()=>{armed=false;b.textContent="Empezar de nuevo"},3000);return}armed=false;b.textContent="Empezar de nuevo";S=fresh();lastLen=-1;render()};
+lastLen=S.path.length; render();
+</script>
+
+</body></html>

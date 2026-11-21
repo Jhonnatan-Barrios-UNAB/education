@@ -18,12 +18,6 @@
     "icono": "quiz"
   },
   {
-    "id": "guia",
-    "nombre": "Guía o ficha",
-    "plural": "guías y fichas",
-    "icono": "guia"
-  },
-  {
     "id": "plantilla",
     "nombre": "Plantilla",
     "plural": "plantillas",

@@ -1,0 +1,525 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script src="../../assets/js/descargas.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Sorteo de retos de producción</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Proyección en aula: encabezado con pasos, tablero de 12 cards boca abajo, panel de detalle del reto */
+:root {
+  color-scheme: dark;
+  --bg: #121c45;
+  --bg-2: #172554;
+  --panel-2: #24357a;
+  --line: rgba(199, 208, 238, 0.18);
+  --fg: #f5f7ff;
+  --fg-soft: #c7d0ee;
+  --fg-muted: #93a0cf;
+  --indigo: #303f9f;
+  --violet: #4330bc;
+  --cyan: #00bcd4;
+  --cyan-soft: #67e0ee;
+  --ok: #5ee0a0;
+  --warn: #ffcf70;
+  --t-podcast: #8c9bff;
+  --t-audio: #b39cff;
+  --t-video: #67e0ee;
+  --t-mudo: #5ee0a0;
+  --t-doc: #ffcf70;
+  --t-foto: #ff9fc0;
+  --font-display: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 700px at 85% -10%, rgba(67, 48, 188, 0.45), transparent 60%), linear-gradient(160deg, var(--bg-2) 0%, var(--bg) 70%);
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 40px); padding-block: 28px 48px; display: flex; flex-direction: column; gap: 24px; }
+header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.eyebrow { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan-soft); margin: 0; }
+.eyebrow::before { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--cyan); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4.2vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 8px 0 0; text-wrap: balance; }
+.pill { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--fg-soft); font-size: 15px; background: rgba(255,255,255,0.04); }
+.pill b { color: var(--fg); }
+
+nav.steps { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.steps button { font: 600 15px/1 var(--font-body); color: var(--fg-soft); background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 999px; padding: 11px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+nav.steps button .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 12px; font-variant-numeric: tabular-nums; }
+nav.steps button[aria-current="step"] { background: var(--fg); color: var(--bg-2); border-color: var(--fg); }
+nav.steps button[aria-current="step"] .n { background: var(--indigo); color: var(--fg); }
+nav.steps button .done { color: var(--ok); font-size: 13px; }
+button:focus-visible, input:focus-visible, .card:focus-visible { outline: 3px solid var(--cyan-soft); outline-offset: 3px; }
+
+.panel { background: rgba(29, 44, 102, 0.72); border: 1px solid var(--line); border-radius: 20px; padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 20px; }
+.panel h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.15; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.lead { color: var(--fg-soft); margin: 0; max-width: 72ch; font-size: 17px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { font: 600 15px/1 var(--font-body); border-radius: 12px; padding: 12px 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--fg); cursor: pointer; }
+.btn:hover { background: rgba(255,255,255,0.12); }
+.btn.primary { background: var(--cyan); color: #0b1435; border-color: var(--cyan); }
+.btn.primary:hover { background: var(--cyan-soft); }
+.btn.danger { border-color: rgba(255, 207, 112, 0.5); color: var(--warn); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.hint { font-size: 14px; color: var(--fg-muted); margin: 0; }
+
+/* Equipos */
+.counter { display: flex; align-items: center; gap: 14px; }
+.counter output { font-family: var(--font-display); font-size: 44px; font-weight: 800; min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.teamgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.teamchip { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+.badge { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 20px; background: linear-gradient(135deg, var(--indigo), var(--violet)); color: var(--fg); flex: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 14px; font-weight: 600; }
+.legend span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--tc); }
+
+/* Sorteo */
+.round { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 860px) { .round { grid-template-columns: minmax(0, 1fr); } }
+.turns { display: flex; flex-direction: column; gap: 14px; }
+.turns h3 { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); margin: 0; font-weight: 600; }
+.turnlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
+.turn { font: 800 22px/1 var(--font-display); height: 56px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.05); color: var(--fg); cursor: pointer; position: relative; }
+.turn[aria-pressed="true"] { background: var(--fg); color: var(--bg-2); border-color: var(--fg); }
+.turn.has { color: var(--fg-muted); background: transparent; border-style: dashed; cursor: default; }
+.turn.has::after { content: "✓"; position: absolute; top: 4px; right: 7px; font-size: 12px; color: var(--ok); }
+label.field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--fg-soft); }
+input[type="text"] { font: 500 16px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.06); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; width: 100%; }
+input::placeholder { color: var(--fg-muted); }
+.status { padding: 14px 16px; border-radius: 14px; background: rgba(0, 188, 212, 0.12); border: 1px solid rgba(103, 224, 238, 0.35); color: var(--fg); font-size: 15px; }
+.status.ok { background: rgba(94, 224, 160, 0.12); border-color: rgba(94, 224, 160, 0.4); }
+
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 14px; }
+.card { perspective: 1200px; aspect-ratio: 3 / 4; max-width: 100%; cursor: pointer; }
+.card[aria-disabled="true"] { cursor: not-allowed; }
+.card .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(.2,.7,.2,1); transform-style: preserve-3d; }
+.card.flipped .inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+.back { background: linear-gradient(150deg, var(--panel-2) 0%, var(--indigo) 60%, var(--violet) 100%); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 10px 30px rgba(5, 10, 40, 0.35); }
+.card:not([aria-disabled="true"]):hover .back { border-color: var(--cyan-soft); }
+.back .k { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--cyan-soft); }
+.back .num { font-family: var(--font-display); font-weight: 800; font-size: 52px; line-height: 1; font-variant-numeric: tabular-nums; position: relative; }
+.back svg { position: absolute; right: -14px; bottom: -14px; width: 130px; height: 130px; opacity: 0.5; }
+.front { transform: rotateY(180deg); background: #f5f7ff; color: #172554; border: 4px solid var(--tc, var(--cyan)); }
+.front .type { align-self: flex-start; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; color: #172554; background: var(--tc); border-radius: 6px; padding: 4px 8px; }
+.front .ttl { font-family: var(--font-display); font-weight: 800; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.2; text-wrap: balance; }
+.front .owner { display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: #4b5563; border-top: 1px solid #e1e5f0; padding-top: 8px; }
+.front .owner b { font-family: var(--font-display); font-size: 18px; color: #172554; }
+.card.viewing .front { box-shadow: 0 0 0 4px var(--fg); }
+
+/* Detalle del reto */
+.detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: clamp(18px, 2.4vw, 28px); border-radius: 18px; background: var(--fg); color: #172554; border-top: 8px solid var(--tc); }
+@media (max-width: 860px) { .detail { grid-template-columns: minmax(0, 1fr); } }
+.detail .head { display: flex; flex-direction: column; gap: 12px; }
+.detail .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 14px; color: #4b5563; }
+.detail .type { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--tc); border-radius: 6px; padding: 4px 8px; color: #172554; }
+.detail h3 { font: 800 clamp(26px, 3vw, 38px)/1.1 var(--font-display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.detail .premise { font-size: 18px; margin: 0; color: #303a57; }
+.detail .dur { align-self: flex-start; font-weight: 700; font-size: 15px; background: #172554; color: var(--fg); border-radius: 999px; padding: 8px 14px; }
+.detail .reqs h4 { margin: 0 0 8px; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #303f9f; }
+.detail ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; }
+.detail .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; border-top: 1px solid #e1e5f0; padding-top: 14px; font-size: 14px; color: #4b5563; }
+.detail .actions button { font: 600 14px var(--font-body); border-radius: 10px; padding: 8px 12px; border: 0; cursor: pointer; background: #eef1f9; color: #303f9f; }
+.detail .actions button.yes { background: #303f9f; color: #fff; }
+.detail.empty { background: rgba(255,255,255,0.05); color: var(--fg-soft); border: 1px dashed var(--line); border-top: 1px dashed var(--line); display: block; }
+
+/* Resumen */
+.summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.tcard { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-left: 6px solid var(--tc, var(--line)); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.tcard header { display: flex; align-items: center; gap: 12px; }
+.tcard header h3 { margin: 0; font-family: var(--font-display); font-size: 20px; }
+.tcard .type { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tc); font-weight: 700; }
+.tcard .ttl { font: 800 20px/1.2 var(--font-display); }
+.tcard .pre { color: var(--fg-soft); font-size: 15px; margin: 0; }
+.tcard ul { margin: 0; padding-left: 18px; font-size: 15px; display: flex; flex-direction: column; gap: 4px; }
+.tcard .who { font-size: 13px; color: var(--fg-muted); }
+.tcard .empty { color: var(--fg-muted); font-style: italic; }
+
+/* Ruta del reto */
+.weeks { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.week { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+.week.w10 { background: rgba(0, 188, 212, 0.1); border-color: rgba(103, 224, 238, 0.35); }
+.week .wk { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-soft); }
+.week ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; counter-reset: f var(--start); }
+.week li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; counter-increment: f; }
+.week li::before { content: counter(f); width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font: 800 16px var(--font-display); background: linear-gradient(135deg, var(--indigo), var(--violet)); }
+.week li b { display: block; font-family: var(--font-display); font-size: 17px; }
+.week li span { color: var(--fg-soft); font-size: 15px; }
+.week .deliv { padding: 10px 14px; border-radius: 12px; background: var(--fg); color: #172554; font-weight: 600; font-size: 15px; }
+.gen { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.gen div { padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); font-size: 15px; color: var(--fg-soft); }
+.gen b { color: var(--fg); display: block; font-family: var(--font-display); font-size: 16px; }
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding: 20px 24px; border-radius: 18px; background: rgba(5, 10, 40, 0.35); border: 1px solid var(--line); }
+.timer output { font: 800 clamp(48px, 7vw, 84px)/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; min-width: 4.4ch; }
+.timer.end output { color: var(--warn); }
+.timer .presets { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.preview { display: flex; flex-direction: column; gap: 10px; }
+.preview img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+@media (prefers-reduced-motion: reduce) { .card .inner { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Creación de Contenidos Digitales</p>
+      <h1>Sorteo de retos de producción</h1>
+    </div>
+    <span class="pill">Equipos nuevos de <b>3 a 4 personas</b> · recurso de <b>máximo 2 minutos</b></span>
+  </header>
+
+  <nav class="steps" id="steps" aria-label="Momentos de la actividad"></nav>
+
+  <main id="view"></main>
+
+  <div class="foot">
+    <button class="btn" id="prev" type="button">← Anterior</button>
+    <button class="btn primary" id="next" type="button">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var TYPES = {
+    podcast: { label: 'Podcast narrativo', c: 'var(--t-podcast)' },
+    audio: { label: 'Audiorrelato inmersivo', c: 'var(--t-audio)' },
+    video: { label: 'Video narrativo', c: 'var(--t-video)' },
+    mudo: { label: 'Video sin diálogos', c: 'var(--t-mudo)' },
+    doc: { label: 'Minidocumental', c: 'var(--t-doc)' },
+    foto: { label: 'Fotorrelato narrado', c: 'var(--t-foto)' }
+  };
+  var RETOS = [
+    { t: 'La noche antes del parcial', type: 'podcast', p: 'A medianoche, un estudiante descubre que estudió el tema equivocado. ¿Cómo sobrevive a esa noche?', r: ['Al menos 2 voces además del narrador', 'Cortinilla musical de entrada y de cierre', 'Cerrar con un aprendizaje o un consejo para la audiencia'] },
+    { t: 'El último bus', type: 'audio', p: 'Alguien pierde el último bus y debe volver a casa caminando por una ciudad que de noche suena distinta.', r: ['Al menos 5 efectos o ambientes sonoros', 'Un silencio intencional de 3 segundos o más', 'Sin narrador: solo diálogos y sonidos'] },
+    { t: 'Primer día en la U', type: 'video', p: 'Un estudiante de primer semestre se pierde en el campus el primer día y encuentra ayuda donde no la esperaba.', r: ['Al menos 5 tipos de plano distintos', 'Un diálogo con sonido directo claro', 'Un cambio emocional visible del personaje'] },
+    { t: 'Desconectados', type: 'mudo', p: 'Por una apuesta, un grupo de amigos pasa un día entero sin celulares.', r: ['Sin diálogos ni texto en pantalla, salvo el título', 'La música y el ambiente marcan la emoción', 'Incluir un plano detalle y un plano cenital'] },
+    { t: 'Detrás del mostrador', type: 'doc', p: 'La historia real de una persona que atiende un negocio cerca de la universidad.', r: ['Entrevista con buena luz y audio limpio', 'Planos de recurso (B-roll) del lugar y del oficio', 'Consentimiento del entrevistado registrado'] },
+    { t: 'La receta de la abuela', type: 'foto', p: 'Alguien intenta recrear la receta de un familiar y descubre la historia que hay detrás.', r: ['Al menos 12 fotos con 4 tipos de plano', 'Voz en off en primera persona', 'Luz natural y regla de tercios'] },
+    { t: 'El objeto perdido', type: 'video', p: 'Un objeto olvidado pasa de mano en mano por el campus hasta volver a su dueño.', r: ['Al menos 3 personajes y 3 locaciones', 'Un plano subjetivo y un contrapicado', 'Continuidad cuidada entre escenas'] },
+    { t: 'Mi barrio a las 6 a. m.', type: 'audio', p: 'El despertar de un barrio, contado con sus sonidos y la voz interior de quien lo habita.', r: ['Al menos 6 sonidos reales grabados con celular', 'Voz interior en máximo 4 momentos', 'Inicio, desarrollo y cierre marcados por cambios de ambiente'] },
+    { t: 'La entrevista de trabajo', type: 'podcast', p: 'Un podcast que acompaña a una persona antes, durante y después de su primera entrevista de trabajo.', r: ['Una dramatización breve con 2 voces', '3 bloques con transiciones sonoras', '3 consejos concretos para la audiencia'] },
+    { t: 'El mensaje que no envié', type: 'mudo', p: 'Alguien escribe un mensaje importante, duda, lo borra y vuelve a escribirlo.', r: ['La tensión se construye con planos, ritmo y sonido', 'Primeros planos y al menos un primerísimo primer plano', 'La luz marca el estado de ánimo'] },
+    { t: 'Hecho en Santander', type: 'doc', p: 'Un producto o un oficio de la región, contado por quienes lo hacen.', r: ['Al menos 2 personas entrevistadas', 'El proceso mostrado en planos detalle', 'Cerrar con un llamado a la acción'] },
+    { t: 'Lo que guarda una foto vieja', type: 'foto', p: 'Una foto antigua de la familia o de la ciudad abre una conversación entre ese momento y el presente.', r: ['Una foto antigua y al menos 10 fotos nuevas', 'Voz en off y música que marquen el cambio de época', 'Al menos un contraluz o una silueta'] }
+  ];
+  var STEPS = [
+    { id: 'equipos', label: 'Equipos' },
+    { id: 'sorteo', label: 'Sorteo' },
+    { id: 'resumen', label: 'Resumen' },
+    { id: 'ruta', label: 'Ruta del reto' }
+  ];
+  var LETTERS = 'ABCDEFGHIJKL'.split('');
+  var KEY = 'sorteo-retos-produccion-v1';
+
+  function shuffle(n) {
+    var a = []; for (var i = 0; i < n; i++) a.push(i);
+    for (var j = n - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var t = a[j]; a[j] = a[k]; a[k] = t; }
+    return a;
+  }
+  function fresh() { return { step: 'equipos', teams: 6, order: shuffle(RETOS.length), picks: RETOS.map(function () { return null; }), sel: 'A', view: null, confirm: null }; }
+  var state = null;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
+  if (!state || !state.order || state.order.length !== RETOS.length) state = fresh();
+  state.confirm = null;
+  var who = '';
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function teams() { return LETTERS.slice(0, state.teams); }
+  function posOf(t) { for (var i = 0; i < state.picks.length; i++) if (state.picks[i] && state.picks[i].team === t) return i; return -1; }
+  function nextPending() { var ts = teams(); for (var i = 0; i < ts.length; i++) if (posOf(ts[i]) < 0) return ts[i]; return null; }
+  function allDone() { return teams().every(function (t) { return posOf(t) > -1; }); }
+  function reto(pos) { return RETOS[state.order[pos]]; }
+  function tc(type) { return '--tc:' + TYPES[type].c; }
+
+  var reelSvg = '<svg viewBox="0 0 160 160" aria-hidden="true"><g fill="none" stroke="#67e0ee" stroke-width="2" stroke-opacity="0.85"><circle cx="80" cy="80" r="56"/><circle cx="80" cy="80" r="10"/><circle cx="80" cy="44" r="14"/><circle cx="80" cy="116" r="14"/><circle cx="44" cy="80" r="14"/><circle cx="116" cy="80" r="14"/></g></svg>';
+
+  var view = document.getElementById('view');
+  var stepsNav = document.getElementById('steps');
+
+  function renderSteps() {
+    stepsNav.innerHTML = STEPS.map(function (s, i) {
+      var done = s.id === 'sorteo' && allDone();
+      return '<button type="button" data-step="' + s.id + '"' + (state.step === s.id ? ' aria-current="step"' : '') + '><span class="n">' + (i + 1) + '</span>' + s.label + (done ? ' <span class="done" aria-label="completo">✓</span>' : '') + '</button>';
+    }).join('');
+  }
+
+  function renderEquipos() {
+    var used = state.picks.some(function (p) { return p; });
+    view.innerHTML = '<section class="panel"><h2>¿Cuántos equipos se formaron?</h2>' +
+      '<p class="lead">Pidan a los estudiantes que formen equipos nuevos de 3 a 4 personas, distintos a los de actividades anteriores. Cada equipo recibe una letra y elige una sola card.</p>' +
+      '<div class="counter"><button class="btn" type="button" id="minus" aria-label="Quitar un equipo">−</button><output id="count" aria-live="polite">' + state.teams + '</output><button class="btn" type="button" id="plus" aria-label="Agregar un equipo">+</button><span class="hint">equipos (de 2 a 12; hay 12 retos)</span></div>' +
+      '<div class="teamgrid">' + teams().map(function (t) { return '<div class="teamchip"><span class="badge">' + t + '</span><span>Equipo ' + t + '</span></div>'; }).join('') + '</div>' +
+      '<div><p class="hint" style="margin-bottom:8px">Seis tipos de experiencia, dos retos de cada uno:</p><div class="legend">' + Object.keys(TYPES).map(function (k) { return '<span style="' + tc(k) + '">' + TYPES[k].label + '</span>'; }).join('') + '</div></div>' +
+      (used ? '<p class="hint">Si quitan equipos, se libera la card que esos equipos ya tenían.</p>' : '') +
+      '<div class="row">' + (state.confirm === 'reset'
+        ? '<span>¿Borrar todos los sorteos y barajar de nuevo?</span><button class="btn danger" type="button" id="resetYes">Sí, empezar de cero</button><button class="btn" type="button" id="resetNo">Cancelar</button>'
+        : '<button class="btn danger" type="button" id="reset">Reiniciar sorteo</button>') + '</div></section>';
+  }
+
+  function detailHtml(pos) {
+    if (pos === null || pos === undefined || !state.picks[pos]) return '<div class="detail empty">Cuando un equipo elija su card, aquí aparece el reto completo: la historia, el tipo de experiencia y lo que deben incluir.</div>';
+    var R = reto(pos), p = state.picks[pos];
+    var confirming = state.confirm === pos;
+    return '<div class="detail" role="status" style="' + tc(R.type) + '"><div class="head"><div class="meta"><span class="badge">' + p.team + '</span><span>Equipo ' + p.team + (p.who ? ' · eligió ' + esc(p.who) : '') + ' · card ' + (pos + 1) + '</span><span class="type">' + TYPES[R.type].label + '</span></div>' +
+      '<h3>' + esc(R.t) + '</h3><p class="premise">' + esc(R.p) + '</p><span class="dur">Duración: máximo 2 minutos</span></div>' +
+      '<div class="reqs"><h4>Lo que deben incluir</h4><ul>' + R.r.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '<li>Inicio, desarrollo y cierre con aprendizaje o llamado a la acción</li><li>Créditos, licencias y subtítulos o transcripción</li></ul></div>' +
+      '<div class="actions">' + (confirming
+        ? '<span>¿Devolver esta card al tablero?</span><button type="button" class="yes" data-release="' + pos + '">Sí, liberar</button><button type="button" data-cancel="1">Cancelar</button>'
+        : '<button type="button" data-ask="' + pos + '">Liberar card</button><span>Úsenlo solo si hubo un error al elegir.</span>') + '</div></div>';
+  }
+
+  function renderSorteo() {
+    var ts = teams();
+    if (!state.sel || posOf(state.sel) > -1 || ts.indexOf(state.sel) < 0) state.sel = nextPending();
+    var sel = state.sel, done = allDone();
+    var turns = '<div class="turns"><h3>Turno de</h3><div class="turnlist">' + ts.map(function (t) {
+      var has = posOf(t) > -1;
+      return '<button type="button" class="turn' + (has ? ' has' : '') + '" data-team="' + t + '" aria-pressed="' + (sel === t) + '" aria-label="Equipo ' + t + (has ? ', ya eligió' : '') + '">' + t + '</button>';
+    }).join('') + '</div>' +
+      '<label class="field" for="who">¿Quién pasa a elegir? (opcional)<input type="text" id="who" placeholder="Nombre del integrante" value="' + esc(who) + '" autocomplete="off"></label>' +
+      (done ? '<div class="status ok">Todos los equipos tienen su reto. Pasen al resumen.</div>'
+            : '<div class="status">Pasa al frente un integrante del <b>equipo ' + sel + '</b> y elige una card boca abajo.</div>') +
+      '<p class="hint">Toquen una card ya elegida para ver de nuevo su reto.</p></div>';
+    var board = '<div class="board">' + state.order.map(function (idx, pos) {
+      var R = RETOS[idx], p = state.picks[pos];
+      var front = '<div class="face front"><span class="type">' + TYPES[R.type].label + '</span><span class="ttl">' + esc(R.t) + '</span>' +
+        (p ? '<span class="owner"><b>Equipo ' + p.team + '</b>' + (p.who ? '<span>' + esc(p.who) + '</span>' : '') + '</span>' : '<span></span>') + '</div>';
+      var back = '<div class="face back"><span class="k">Reto</span><span class="num">' + (pos + 1) + '</span>' + reelSvg + '</div>';
+      var disabled = !p && (done || !sel);
+      return '<div class="card' + (p ? ' flipped' : '') + (state.view === pos ? ' viewing' : '') + '" style="' + tc(R.type) + '" role="button" tabindex="' + (disabled ? '-1' : '0') + '" data-pos="' + pos + '"' + (disabled ? ' aria-disabled="true"' : '') +
+        ' aria-label="' + (p ? esc(R.t) + ', ' + TYPES[R.type].label + ', equipo ' + p.team : 'Card ' + (pos + 1) + ' boca abajo') + '"><div class="inner">' + back + front + '</div></div>';
+    }).join('') + '</div>';
+    view.innerHTML = '<section class="panel"><h2>Sorteo: una card por equipo</h2>' + detailHtml(state.view) +
+      '<div class="round">' + turns + '<div>' + board + '</div></div></section>';
+  }
+
+  /* ---- Resumen como imagen (canvas) ---- */
+  var downloadsP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').catch(function () { return null; }) : Promise.resolve(null);
+  function wrapText(ctx, text, maxW) {
+    var words = String(text).split(/\s+/), lines = [], line = '';
+    words.forEach(function (w) {
+      var test = line ? line + ' ' + w : w;
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test;
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+  // items: [{badge, name, tag, color, head, body, list:[], foot}]
+  function drawSummary(eyebrow, title, items) {
+    var W = 1600, M = 64, G = 32, cols = items.length > 1 ? 2 : 1, cw = (W - 2 * M - (cols - 1) * G) / cols, P = 32, tw = cw - 2 * P - 8;
+    var D = 'Manrope, "Segoe UI", Arial, sans-serif', B = 'Inter, "Segoe UI", Arial, sans-serif';
+    var meas = document.createElement('canvas').getContext('2d');
+    function lay(it) {
+      var L = { head: [], body: [], list: [] };
+      meas.font = '800 30px ' + D; L.head = it.head ? wrapText(meas, it.head, tw) : [];
+      meas.font = '400 22px ' + B; L.body = it.body ? wrapText(meas, it.body, tw) : [];
+      L.list = (it.list || []).map(function (x) { return wrapText(meas, x, tw - 24); });
+      var h = P + 52 + 14 + (it.tag ? 40 : 0) + L.head.length * 38 + (L.body.length ? 10 + L.body.length * 31 : 0);
+      L.list.forEach(function (ls) { h += 6 + ls.length * 31; });
+      if (it.foot) h += 14 + 28;
+      L.h = h + P; return L;
+    }
+    var lays = items.map(lay), rows = [];
+    for (var i = 0; i < items.length; i += cols) rows.push(Math.max.apply(null, lays.slice(i, i + cols).map(function (l) { return l.h; })));
+    var headH = 150, H = M + headH + rows.reduce(function (a, b) { return a + b + G; }, 0) - G + M;
+    var S = 1.5, c = document.createElement('canvas'); c.width = W * S; c.height = H * S;
+    var ctx = c.getContext('2d'); ctx.scale(S, S);
+    var g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#172554'); g.addColorStop(1, '#121c45');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#00bcd4'; ctx.fillRect(M, M + 14, 48, 4);
+    ctx.textBaseline = 'top'; ctx.fillStyle = '#67e0ee'; ctx.font = '600 20px ' + B; ctx.fillText(eyebrow.toUpperCase(), M + 64, M + 4);
+    ctx.fillStyle = '#f5f7ff'; ctx.font = '800 48px ' + D; ctx.fillText(title, M, M + 44);
+    var y = M + headH;
+    items.forEach(function (it, i) {
+      var L = lays[i], col = i % cols, x = M + col * (cw + G), h = rows[Math.floor(i / cols)];
+      if (col === 0 && i > 0) y += rows[Math.floor(i / cols) - 1] + G;
+      ctx.fillStyle = 'rgba(255,255,255,0.07)'; rr(ctx, x, y, cw, h, 20); ctx.fill();
+      ctx.fillStyle = it.color || '#67e0ee'; rr(ctx, x, y, 8, h, 4); ctx.fill();
+      var cx = x + P + 8, cy = y + P;
+      var bg = ctx.createLinearGradient(cx, cy, cx + 52, cy + 52); bg.addColorStop(0, '#303f9f'); bg.addColorStop(1, '#4330bc');
+      ctx.fillStyle = bg; rr(ctx, cx, cy, 52, 52, 14); ctx.fill();
+      ctx.fillStyle = '#f5f7ff'; ctx.font = '800 26px ' + D; ctx.textAlign = 'center'; ctx.fillText(it.badge, cx + 26, cy + 11); ctx.textAlign = 'left';
+      ctx.font = '800 26px ' + D; ctx.fillText(it.name, cx + 68, cy + 12);
+      cy += 52 + 14;
+      if (it.tag) { ctx.fillStyle = it.color || '#67e0ee'; ctx.font = '700 18px ' + B; ctx.fillText(it.tag.toUpperCase(), cx, cy + 6); cy += 40; }
+      ctx.fillStyle = '#f5f7ff'; ctx.font = '800 30px ' + D; L.head.forEach(function (l) { ctx.fillText(l, cx, cy); cy += 38; });
+      if (L.body.length) { cy += 10; ctx.fillStyle = '#c7d0ee'; ctx.font = '400 22px ' + B; L.body.forEach(function (l) { ctx.fillText(l, cx, cy); cy += 31; }); }
+      ctx.font = '400 22px ' + B;
+      L.list.forEach(function (ls) {
+        cy += 6; ctx.fillStyle = it.color || '#67e0ee'; ctx.beginPath(); ctx.arc(cx + 6, cy + 13, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#f5f7ff'; ls.forEach(function (l) { ctx.fillText(l, cx + 24, cy); cy += 31; });
+      });
+      if (it.foot) { cy += 14; ctx.fillStyle = '#93a0cf'; ctx.font = '400 20px ' + B; ctx.fillText(it.foot, cx, cy); }
+    });
+    return c;
+  }
+  function offerImage(canvas, filename, msgEl, previewEl) {
+    msgEl.textContent = 'Preparando la imagen…';
+    canvas.toBlob(function (blob) {
+      if (!blob) { msgEl.textContent = 'No se pudo crear la imagen.'; return; }
+      var url = URL.createObjectURL(blob);
+      function showPreview(note) {
+        previewEl.innerHTML = '<p class="hint">' + note + '</p><img alt="Resumen como imagen" src="' + url + '">';
+        previewEl.hidden = false;
+      }
+      downloadsP.then(function (dl) {
+        if (!dl) { showPreview('Clic derecho (o mantener presionado) sobre la imagen y «Guardar imagen como…».'); msgEl.textContent = ''; return; }
+        dl.save({ filename: filename, data: blob }).then(function () {
+          msgEl.textContent = 'Imagen descargada.';
+        }, function (e) {
+          if (e && e.code === 'declined') { msgEl.textContent = 'Descarga cancelada.'; return; }
+          if (e && e.code === 'rate_limited') { msgEl.textContent = 'Hay una descarga pendiente; intenten de nuevo en un momento.'; return; }
+          msgEl.textContent = ''; showPreview('No se pudo descargar aquí. Clic derecho (o mantener presionado) sobre la imagen y «Guardar imagen como…».');
+        });
+      });
+    }, 'image/png');
+  }
+
+  function summaryText() {
+    return teams().map(function (t) {
+      var pos = posOf(t); if (pos < 0) return 'Equipo ' + t + ': pendiente';
+      var R = reto(pos), p = state.picks[pos];
+      return 'Equipo ' + t + (p.who ? ' (eligió ' + p.who + ')' : '') + ': ' + R.t + ' · ' + TYPES[R.type].label + ' · ' + R.r.join('; ') + ' · máximo 2 minutos';
+    }).join('\n');
+  }
+  function renderResumen() {
+    view.innerHTML = '<section class="panel"><h2>El reto de cada equipo</h2><p class="lead">Cada equipo anota su reto en la portada de la guía de la actividad. Todos los recursos duran máximo 2 minutos.</p><div class="summary">' +
+      teams().map(function (t) {
+        var pos = posOf(t);
+        if (pos < 0) return '<article class="tcard"><header><span class="badge">' + t + '</span><h3>Equipo ' + t + '</h3></header><span class="empty">Pendiente de sorteo</span></article>';
+        var R = reto(pos), p = state.picks[pos];
+        return '<article class="tcard" style="' + tc(R.type) + '"><header><span class="badge">' + t + '</span><h3>Equipo ' + t + '</h3></header><span class="type">' + TYPES[R.type].label + '</span><span class="ttl">' + esc(R.t) + '</span><p class="pre">' + esc(R.p) + '</p><ul>' + R.r.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' + (p.who ? '<span class="who">Eligió: ' + esc(p.who) + '</span>' : '') + '</article>';
+      }).join('') + '</div><div class="row"><button class="btn" type="button" id="copy">Copiar resumen</button><button class="btn primary" type="button" id="png">Descargar como imagen</button><span class="hint" id="copyMsg" aria-live="polite"></span></div><div class="preview" id="preview" hidden></div></section>';
+  }
+
+  var timer = { total: 840, left: 840, id: null };
+  function fmt(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function renderRuta() {
+    view.innerHTML = '<section class="panel"><h2>Ruta del reto: siete fases, un solo recurso</h2><p class="lead">Integra narrativa, guiones, storyboard, fotografía y producción. Todo el proceso queda registrado en la guía de la actividad.</p>' +
+      '<div class="weeks">' +
+        '<article class="week"><span class="wk">Preproducción</span><ol style="--start:0">' +
+          '<li><div><b>Ficha del reto y narrativa</b><span>Personaje, objetivo, conflicto, acción, resultado y aprendizaje.</span></div></li>' +
+          '<li><div><b>Guion literario</b><span>Escenas, acciones y diálogos.</span></div></li>' +
+          '<li><div><b>Guion técnico o guion auditivo</b><span>Planos y ángulos, o voces, efectos, música y silencios.</span></div></li>' +
+          '<li><div><b>Storyboard y fotos de referencia</b><span>Viñeta, acción, audio, duración y plano. Storyboard sonoro para retos de audio.</span></div></li>' +
+        '</ol></article>' +
+        '<article class="week w10"><span class="wk">Producción</span><ol style="--start:4">' +
+          '<li><div><b>Plan de grabación</b><span>Tomas ordenadas por locación y roles asignados.</span></div></li>' +
+          '<li><div><b>Práctica de grabación en clase</b><span>Mínimo tres tomas por plano clave; revisión con audífonos.</span></div></li>' +
+          '<li><div><b>Montaje y entrega</b><span>Edición, música con licencia, subtítulos y créditos.</span></div></li>' +
+        '</ol></article>' +
+      '</div>' +
+      '<div class="gen"><div><b>Duración</b>Máximo 2 minutos.</div><div><b>Estructura</b>Inicio, desarrollo y cierre con aprendizaje o llamado a la acción.</div><div><b>Accesibilidad</b>Subtítulos en video; transcripción en audio.</div><div><b>Ética</b>Consentimiento de quien aparece, créditos, licencias y uso de IA declarado.</div></div>' +
+      '<div class="timer" id="timerBox"><output id="clock" aria-live="off">' + fmt(timer.left) + '</output><div class="presets">' +
+        '<button class="btn" type="button" data-preset="840">14:00 preproducción</button><button class="btn" type="button" data-preset="240">4:00 plan de grabación</button><button class="btn" type="button" data-preset="1080">18:00 grabación</button></div>' +
+        '<div class="row"><button class="btn primary" type="button" id="play">' + (timer.id ? 'Pausar' : 'Iniciar') + '</button><button class="btn" type="button" id="restart">Reiniciar</button></div></div></section>';
+  }
+  function tick() {
+    timer.left = Math.max(0, timer.left - 1);
+    var c = document.getElementById('clock'); if (c) c.textContent = fmt(timer.left);
+    var b = document.getElementById('timerBox'); if (b) b.classList.toggle('end', timer.left === 0);
+    if (timer.left === 0) { clearInterval(timer.id); timer.id = null; var p = document.getElementById('play'); if (p) p.textContent = 'Iniciar'; }
+  }
+
+  function render() {
+    renderSteps();
+    if (state.step === 'equipos') renderEquipos();
+    else if (state.step === 'sorteo') renderSorteo();
+    else if (state.step === 'resumen') renderResumen();
+    else renderRuta();
+    var i = STEPS.findIndex(function (s) { return s.id === state.step; });
+    document.getElementById('prev').disabled = i === 0;
+    var nx = document.getElementById('next');
+    nx.disabled = i === STEPS.length - 1;
+    nx.textContent = i < STEPS.length - 1 ? STEPS[i + 1].label + ' →' : 'Fin';
+    save();
+  }
+  function go(step) { state.step = step; state.confirm = null; who = ''; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  stepsNav.addEventListener('click', function (e) { var b = e.target.closest('button[data-step]'); if (b) go(b.dataset.step); });
+  document.getElementById('prev').addEventListener('click', function () { var i = STEPS.findIndex(function (s) { return s.id === state.step; }); if (i > 0) go(STEPS[i - 1].id); });
+  document.getElementById('next').addEventListener('click', function () { var i = STEPS.findIndex(function (s) { return s.id === state.step; }); if (i < STEPS.length - 1) go(STEPS[i + 1].id); });
+
+  function pick(pos) {
+    if (state.picks[pos]) { state.view = pos; state.confirm = null; render(); return; }
+    var t = state.sel;
+    if (!t || posOf(t) > -1) return;
+    var name = (document.getElementById('who') || {}).value || '';
+    state.picks[pos] = { team: t, who: name.trim() };
+    state.view = pos;
+    state.sel = nextPending();
+    state.confirm = null; who = '';
+    render();
+  }
+
+  view.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.id === 'plus' && state.teams < 12) { state.teams++; render(); return; }
+    if (t.id === 'minus' && state.teams > 2) {
+      state.teams--;
+      var gone = LETTERS[state.teams];
+      state.picks = state.picks.map(function (p, i) { if (p && p.team === gone) { if (state.view === i) state.view = null; return null; } return p; });
+      render(); return;
+    }
+    if (t.id === 'reset') { state.confirm = 'reset'; render(); return; }
+    if (t.id === 'resetNo') { state.confirm = null; render(); return; }
+    if (t.id === 'resetYes') { var n = state.teams; state = fresh(); state.teams = n; render(); return; }
+    if (t.dataset.ask) { state.confirm = +t.dataset.ask; render(); return; }
+    if (t.dataset.release) { var pos = +t.dataset.release; state.picks[pos] = null; state.view = null; state.confirm = null; state.sel = nextPending(); render(); return; }
+    if (t.dataset.cancel) { state.confirm = null; render(); return; }
+    if (t.id === 'png') {
+      var HEX = { podcast: '#8c9bff', audio: '#b39cff', video: '#67e0ee', mudo: '#5ee0a0', doc: '#ffcf70', foto: '#ff9fc0' };
+      var items = teams().map(function (tm) {
+        var pos = posOf(tm);
+        if (pos < 0) return { badge: tm, name: 'Equipo ' + tm, head: 'Pendiente de sorteo', color: '#93a0cf' };
+        var R = reto(pos), p = state.picks[pos];
+        return { badge: tm, name: 'Equipo ' + tm, tag: TYPES[R.type].label + ' · máx. 2 min', color: HEX[R.type], head: R.t, body: R.p, list: R.r, foot: p.who ? 'Eligió: ' + p.who : '' };
+      });
+      var go = function () { offerImage(drawSummary('Sorteo de retos de producción', 'El reto de cada equipo', items), 'resumen-retos-de-produccion.png', document.getElementById('copyMsg'), document.getElementById('preview')); };
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(go); else go();
+      return;
+    }
+    if (t.id === 'copy') {
+      var msg = document.getElementById('copyMsg');
+      try {
+        navigator.clipboard.writeText(summaryText()).then(function () { msg.textContent = 'Resumen copiado.'; }, function () { msg.textContent = 'No se pudo copiar; seleccionen el texto de las tarjetas.'; });
+      } catch (err) { msg.textContent = 'No se pudo copiar; seleccionen el texto de las tarjetas.'; }
+      return;
+    }
+    var turn = t.closest('.turn');
+    if (turn && !turn.classList.contains('has')) { state.sel = turn.dataset.team; var w = document.getElementById('who'); who = w ? w.value : ''; render(); return; }
+    var card = t.closest('.card');
+    if (card && card.getAttribute('aria-disabled') !== 'true') { pick(+card.dataset.pos); return; }
+    if (t.dataset.preset) { clearInterval(timer.id); timer.id = null; timer.total = timer.left = +t.dataset.preset; render(); return; }
+    if (t.id === 'play') {
+      if (timer.id) { clearInterval(timer.id); timer.id = null; t.textContent = 'Iniciar'; }
+      else { if (timer.left === 0) timer.left = timer.total; timer.id = setInterval(tick, 1000); t.textContent = 'Pausar'; var bx = document.getElementById('timerBox'); if (bx) bx.classList.remove('end'); }
+      return;
+    }
+    if (t.id === 'restart') { clearInterval(timer.id); timer.id = null; timer.left = timer.total; render(); return; }
+  });
+  view.addEventListener('keydown', function (e) {
+    var card = e.target.closest && e.target.closest('.card');
+    if (card && (e.key === 'Enter' || e.key === ' ') && e.target === card && card.getAttribute('aria-disabled') !== 'true') { e.preventDefault(); pick(+card.dataset.pos); }
+  });
+  view.addEventListener('input', function (e) { if (e.target.id === 'who') who = e.target.value; });
+
+  render();
+})();
+</script>
+
+</body></html>

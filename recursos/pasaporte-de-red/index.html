@@ -1,0 +1,606 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script src="../../assets/js/descargas.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pasaporte de Red</title>
+<meta name="description" content="Actividad interactiva de la Semana 10 · Networking digital · Marca Personal Digital">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* Layout: una columna tipo pasaporte; barra fija con progreso, pestañas de misiones y tarjetas de reto. */
+:root{
+  --paper:#F4F6FB; --surface:#FFFFFF; --ink:#0B1B3F; --muted:#56637F; --line:#DCE3F1;
+  --accent:#2F5BEA; --accent-soft:rgba(47,91,234,.10); --stamp:#6C4AD8; --stamp-soft:rgba(108,74,216,.10); --cyan:#14B8C9;
+  --f-display:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0A1430; --surface:#122150; --ink:#E8EDF8; --muted:#9FAAC8; --line:#253A72;
+  --accent:#7FA0FF; --accent-soft:rgba(127,160,255,.15); --stamp:#B9A4FF; --stamp-soft:rgba(185,164,255,.15); --cyan:#5FD3E6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0A1430; --surface:#122150; --ink:#E8EDF8; --muted:#9FAAC8; --line:#253A72;
+  --accent:#7FA0FF; --accent-soft:rgba(127,160,255,.15); --stamp:#B9A4FF; --stamp-soft:rgba(185,164,255,.15); --cyan:#5FD3E6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:20px 64px;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding-block:10px;border-bottom:1px solid var(--line)}
+.bar-in{max-width:880px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.bar-name{font-family:var(--f-display);font-weight:800;font-size:18px}
+.xp{flex:1;min-width:180px;display:flex;align-items:center;gap:10px}
+.xp-track{flex:1;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.xp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--stamp),var(--cyan));border-radius:99px;transition:width .4s ease}
+.xp-num{font-family:var(--f-mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.level{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:99px;background:var(--stamp-soft);color:var(--stamp);white-space:nowrap}
+
+.cover{background:linear-gradient(135deg,var(--surface) 55%,var(--accent-soft) 80%,var(--stamp-soft));border:1px solid var(--line);border-radius:16px;padding:24px;display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+.cover h1{font-size:clamp(30px,6vw,44px);font-weight:800;letter-spacing:-.01em}
+.cover .lead{color:var(--muted);margin-top:10px;max-width:56ch}
+.q-central{margin-top:16px;padding:12px 14px;border-left:3px solid var(--cyan);background:var(--accent-soft);border-radius:0 8px 8px 0;font-weight:600}
+.idcard{display:flex;flex-direction:column;gap:10px;min-width:0}
+.idcard label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);font-family:var(--f-mono);text-transform:uppercase;letter-spacing:.05em}
+.idcard input{font:inherit;font-size:16px;font-family:var(--f-body);text-transform:none;letter-spacing:0;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.stamps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:6px}
+.stamp{aspect-ratio:1;max-width:100%;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-family:var(--f-mono);font-size:11px;color:var(--muted);text-align:center;line-height:1.1}
+.stamp.on{border:2px solid var(--stamp);color:var(--stamp);background:var(--stamp-soft);transform:rotate(-8deg);font-weight:700}
+@media (max-width:680px){.cover{grid-template-columns:1fr}}
+
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:8px 14px;font-size:14px;display:flex;align-items:center;gap:8px}
+.tab .n{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tab.cur{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.tab.done .dot{width:8px;height:8px;border-radius:50%;background:var(--stamp)}
+
+.mission{display:flex;flex-direction:column;gap:16px}
+.m-head{display:flex;flex-direction:column;gap:6px}
+.m-head h2{font-size:clamp(24px,4.5vw,32px);font-weight:800}
+.m-head .intro{color:var(--muted);max-width:62ch}
+.chip{font-family:var(--f-mono);font-size:12px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted)}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.item .qhead{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.item .q{font-weight:600}
+.item .xpb{font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap}
+.item .xpb.on{color:var(--stamp)}
+.context{background:transparent;border:0;padding:0}
+.case{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--cyan);border-radius:var(--radius);padding:18px;display:flex;flex-direction:column;gap:8px}
+.case h3{font-size:19px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opts.row{flex-direction:row;flex-wrap:wrap}
+.opt{text-align:left;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start}
+.opts.row .opt{flex:1;min-width:130px;justify-content:center;font-weight:600}
+.opt .k{font-family:var(--f-mono);font-size:13px;color:var(--muted);padding-top:2px}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt[disabled]{cursor:default}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.opt.dim{opacity:.6}
+.saved{font-size:14px;color:var(--muted)}
+textarea,.in{font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%;resize:vertical}
+textarea:focus,.in:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.count{font-family:var(--f-mono);font-size:12px;color:var(--muted);text-align:right}
+.count.met{color:var(--stamp)}
+.checks{display:flex;flex-direction:column;gap:6px}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:6px 4px}
+.checks input{margin-top:5px;width:18px;height:18px;accent-color:var(--accent)}
+.grid-rows{overflow-x:auto}
+.grid-rows table{width:100%;border-collapse:collapse;min-width:520px}
+.grid-rows th{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:left;padding:6px}
+.grid-rows td{padding:4px}
+.goal{display:grid;grid-template-columns:2fr 1.2fr 1fr;gap:8px;align-items:end}
+.goal label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-family:var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;min-width:0}
+.goal + .goal{padding-top:10px;border-top:1px dashed var(--line)}
+@media (max-width:620px){.goal{grid-template-columns:1fr}}
+
+.inbox{display:flex;flex-direction:column;gap:10px}
+.msg{display:grid;grid-template-columns:40px 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-size:13px;background:var(--accent-soft);color:var(--accent);font-weight:700}
+.msg .who{font-weight:700}
+.msg .meta{font-size:13px;color:var(--muted)}
+.msg .body{margin-top:6px;font-style:italic;min-width:0}
+.msg .tag{font-family:var(--f-mono);font-size:12px;color:var(--stamp)}
+
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:10px 16px;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.done-banner{display:flex;gap:12px;align-items:center;background:var(--stamp-soft);border:1px solid var(--stamp);border-radius:var(--radius);padding:12px 14px}
+.done-banner .seal{font-family:var(--f-display);font-weight:800;color:var(--stamp);font-size:20px;transform:rotate(-6deg);border:2px solid var(--stamp);border-radius:8px;padding:2px 8px;white-space:nowrap}
+
+.final{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.score{display:flex;gap:16px;flex-wrap:wrap;align-items:baseline}
+.score .big{font-family:var(--f-display);font-weight:800;font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.badge{border:1px solid var(--line);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;gap:2px}
+.badge.on{border-color:var(--stamp);background:var(--stamp-soft)}
+.badge .bn{font-weight:700}
+.badge .bs{font-size:13px;color:var(--muted)}
+.pending{font-size:15px;color:var(--muted)}
+.pending li{margin-block:2px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.notice{font-size:15px;padding:10px 12px;border-radius:8px;background:var(--accent-soft)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:8px;font-size:15px;z-index:20;max-width:calc(100% - 32px)}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:15px}
+.foot{font-size:13px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}.stamp.on{transform:none}}
+</style>
+
+<div class="bar" role="banner">
+  <div class="bar-in">
+    <span class="bar-name">Pasaporte de Red</span>
+    <div class="xp" aria-label="Progreso de experiencia">
+      <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
+      <span class="xp-num" id="xpNum">0 XP</span>
+    </div>
+    <span class="level" id="levelTag">Nivel: Contacto</span>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="cover">
+    <div>
+      <p class="eyebrow">Marca Personal Digital · Semana 10 · Networking digital</p>
+      <h1>Pasaporte de Red</h1>
+      <p class="lead">Seis misiones para pasar de tener contactos a construir relaciones. Cada misión completada sella tu pasaporte y suma experiencia. Al final descargas tus respuestas en PDF para entregarlas.</p>
+      <p class="q-central">¿Quiénes deberían conocer mi trabajo y por qué?</p>
+    </div>
+    <div class="idcard">
+      <label for="stName">Nombre completo<input id="stName" class="id-in" data-meta="name" autocomplete="name" placeholder="Escribe tu nombre"></label>
+      <label for="stProg">Programa académico<input id="stProg" class="id-in" data-meta="prog" placeholder="Ej.: Comunicación Social"></label>
+      <div class="stamps" id="stamps" aria-label="Sellos de misiones"></div>
+    </div>
+  </section>
+
+  <nav class="tabs" id="tabs" aria-label="Misiones"></nav>
+  <section id="panel" aria-live="polite"></section>
+  <p class="foot">Tus respuestas se guardan en este navegador mientras trabajas. Las preguntas de opción tienen un solo intento.</p>
+</main>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="../../assets/libs/jspdf/jspdf.umd.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ===================== CONTENIDO ===================== */
+const MISSIONS = [
+ {
+  id:"m1", short:"Mitos", badge:"Desmitificador", badgeSub:"Contacto vs. relación",
+  title:"Misión 1 · Rompe los mitos",
+  block:"Bloque 1 · Del contacto a la relación",
+  intro:"Decide si cada afirmación es verdadera o falsa según lo visto en clase. Varias mezclan autores y matices: lee con cuidado. Un solo intento por pregunta.",
+  items:[
+   {id:"m1q1",type:"tf",pts:1,q:"Según Granovetter (1973), los amigos cercanos son la fuente más frecuente de información sobre nuevas oportunidades laborales."},
+   {id:"m1q2",type:"tf",pts:1,q:"En el estudio de Rajkumar et al. (2022) con datos de LinkedIn, los vínculos más débiles de todos fueron los que más favorecieron la movilidad laboral."},
+   {id:"m1q3",type:"tf",pts:1,q:"Para Putnam (2000), el capital social que une genera apoyo entre personas semejantes, y el que tiende puentes facilita el acceso a información de otros grupos."},
+   {id:"m1q4",type:"tf",pts:1,q:"Casciaro, Gino y Kouchaki (2014) asocian la incomodidad moral del networking sobre todo con su uso puramente instrumental."},
+   {id:"m1q5",type:"tf",pts:1,q:"En el sentido de Burt (1992), quien conecta dos grupos que no se comunican entre sí suele quedar aislado de ambos."},
+   {id:"m1o1",type:"open",pts:2,q:"Explica con un ejemplo propio la diferencia entre tener un contacto y tener una relación profesional.",min:60,rows:3,placeholder:"Por ejemplo…"}
+  ]
+ },
+ {
+  id:"m2", short:"Caso", badge:"Estratega", badgeSub:"Networking estratégico",
+  title:"Misión 2 · El caso de Valentina",
+  block:"Bloque 2 · Networking estratégico",
+  intro:"Analiza el caso como su mentor o mentora. Varias opciones son parcialmente ciertas: elige la que mejor responde a lo que pregunta cada enunciado.",
+  items:[
+   {id:"m2c",type:"context",html:'<div class="case"><span class="eyebrow">Estudio de caso</span><h3>850 contactos y ninguna respuesta</h3><p>Valentina cursa octavo semestre de Comunicación. Tiene 850 contactos en LinkedIn: aceptó casi todas las solicitudes que recibió y agregó desconocidos para «hacer crecer la red». No comenta ni publica. Lleva tres meses enviando hojas de vida sin respuesta. Le interesa el marketing digital para organizaciones sociales.</p></div>'},
+   {id:"m2q1",type:"mc",pts:2,q:"Según los conceptos de la clase, ¿cuál es el principal problema de su red?",options:["Tiene pocos vínculos fuertes que puedan recomendarla de forma directa.","Sus contactos no la asocian con un tema ni conocen su trabajo.","Concentra su actividad en LinkedIn y descuida redes con más alcance.","Envía la misma hoja de vida sin adaptarla a cada organización."]},
+   {id:"m2q2",type:"mc",pts:2,q:"¿Qué acción tiene mayor probabilidad de generarle oportunidades en los próximos 30 días?",options:["Depurar su red y conservar solo contactos del sector social.","Publicar contenido diario de marketing para ganar visibilidad.","Escribir a cinco reclutadores de ONG adjuntando su hoja de vida.","Aportar comentarios útiles cada semana en dos comunidades del sector."]},
+   {id:"m2q3",type:"mc",pts:2,q:"En un webinar conoce a una egresada que trabaja en una fundación. ¿Cómo se clasifica ese vínculo y por qué es valioso?",options:["Débil; puede darle acceso a información fuera de su círculo cercano.","Fuerte; comparten universidad y un interés profesional común.","Débil; todavía no aporta valor porque no existe confianza mutua.","Fuerte en potencial; será útil solo cuando la relación sea cercana."]},
+   {id:"m2o1",type:"open",pts:4,q:"Escribe para Valentina un plan de tres acciones concretas. Usa al menos un concepto de clase (capital social, lazos débiles, marca relacional).",min:120,rows:4,placeholder:"1. …\n2. …\n3. …"}
+  ]
+ },
+ {
+  id:"m3", short:"Roles", badge:"Guardián de la netiqueta", badgeSub:"Netiqueta profesional",
+  title:"Misión 3 · Juego de roles: la bandeja de entrada",
+  block:"Bloque 4 · Netiqueta profesional",
+  intro:"Ponte en el lugar de quien recibe los mensajes. Fíjate en los detalles: algunas opciones describen cosas que el mensaje no hace. Después cambias de rol y escribes tú.",
+  items:[
+   {id:"m3c",type:"context",html:'<div class="case"><span class="eyebrow">Tu rol</span><h3>Eres Laura Méndez</h3><p>Egresada, líder de marketing en una agencia de Bucaramanga. Recibes muchas solicitudes a la semana y tienes poco tiempo. Esta mañana llegaron tres.</p></div><div class="inbox"><div class="msg"><div class="avatar">AR</div><div><span class="tag">Mensaje A</span><div class="who">Andrés R.</div><div class="meta">Estudiante · sin foto de perfil</div><p class="body">«Hola.»</p></div></div><div class="msg"><div class="avatar">JP</div><div><span class="tag">Mensaje B</span><div class="who">Juliana P.</div><div class="meta">Estudiante de Administración</div><p class="body">«Buenas, vi que trabajas en una agencia. ¿Me puedes pasar mi hoja de vida a tu jefe? La adjunto. Gracias.»</p></div></div><div class="msg"><div class="avatar">SG</div><div><span class="tag">Mensaje C</span><div class="who">Santiago G.</div><div class="meta">Estudiante de Comunicación</div><p class="body">«Hola, Laura. Vi tu charla en el encuentro de egresados sobre campañas para emprendimientos locales. Me interesó cómo midieron resultados con poco presupuesto. Estoy explorando el marketing para pequeñas marcas y me gustaría seguir tu trabajo. Gracias por compartir lo que aprendes.»</p></div></div></div>'},
+   {id:"m3q1",type:"mc",pts:2,q:"Mensaje A: ¿qué principio de netiqueta falla principalmente?",options:["Seguimiento: no indica cuándo volverá a escribir.","Profesionalismo: su perfil no tiene foto.","Claridad: no dice quién es ni por qué quiere conectar.","Respeto: el saludo es demasiado informal."]},
+   {id:"m3q2",type:"mc",pts:2,q:"Mensaje B: ¿cuál es el error más grave?",options:["Pide un favor de alto compromiso a alguien que no la conoce.","Adjunta un archivo que nadie le había solicitado.","Usa un saludo informal en un primer contacto.","No especifica qué cargo busca ni en qué área."]},
+   {id:"m3q3",type:"mc",pts:2,q:"Mensaje C: ¿por qué tiene más probabilidad de recibir respuesta?",options:["Porque es más extenso y demuestra mayor esfuerzo.","Porque menciona que estudia una carrera afín a la de Laura.","Porque propone una reunión concreta y fácil de agendar.","Porque aporta contexto específico y no exige nada a cambio."]},
+   {id:"m3o1",type:"open",pts:4,q:"Cambio de rol: ahora eres Juliana. Reescribe el mensaje B para que Laura quiera responder.",min:150,rows:5,placeholder:"Hola, Laura. …"},
+   {id:"m3k1",type:"checklist",ptsEach:0.5,q:"Revisa tu mensaje: marca cada parte que incluiste.",options:["Saludo con nombre","Contexto: cómo llegaste a esa persona","Conexión específica con su trabajo","Motivo o aporte: por qué te importa","Petición pequeña y fácil de aceptar (o ninguna)","Cierre con agradecimiento"]}
+  ]
+ },
+ {
+  id:"m4", short:"Dilemas", badge:"Marca confiable", badgeSub:"Marca relacional",
+  title:"Misión 4 · Dilemas de marca relacional",
+  block:"Bloque 3 · Marca relacional",
+  intro:"Todas las opciones son cosas que una persona razonable haría. Elige la que mejor construye confianza, colaboración y respeto por los demás.",
+  items:[
+   {id:"m4q1",type:"mc",pts:2,tag:"Colaboración",q:"En un proyecto grupal, un compañero hizo la parte más fuerte del diseño. Al publicar el resultado en LinkedIn, tú…",options:["Publicas el resultado y agradeces al equipo de forma general.","Esperas a que él publique y compartes su publicación.","Publicas y etiquetas a cada integrante describiendo su aporte.","Publicas solo tu parte para no atribuirte trabajo ajeno."]},
+   {id:"m4q2",type:"mc",pts:2,tag:"Confiabilidad",q:"Prometiste a un egresado enviarle un artículo después de una conversación. Ya pasaron 10 días.",options:["Lo envías con una disculpa extensa que explique la demora.","Lo envías, reconoces la demora en una línea y agradeces de nuevo.","Esperas una nueva ocasión para entregarlo con mejor contexto.","Le envías solo el enlace para no ocupar más su tiempo."]},
+   {id:"m4q3",type:"mc",pts:2,tag:"Privacidad",q:"Un compañero te pide el WhatsApp personal de un profesor para «una consulta rápida» sobre un trabajo.",options:["Le sugieres escribir por el canal institucional o pides permiso al profesor.","Se lo compartes, porque el fin es académico y el profesor atiende consultas.","Le sugieres buscarlo en grupos de estudiantes de semestres anteriores.","Le respondes que no puedes ayudarlo y das por cerrada la conversación."]}
+  ]
+ },
+ {
+  id:"m5", short:"Pitch", badge:"Pitch relacional", badgeSub:"Speed networking virtual",
+  title:"Misión 5 · Speed networking virtual",
+  block:"Bloque 5 · Speed networking",
+  intro:"Prepara tu pitch antes de entrar a las salas. Cada encuentro dura 3 minutos: minuto y medio para ti y minuto y medio para escuchar. Al volver, registra a quién conociste.",
+  items:[
+   {id:"m5a",type:"short",pts:1,q:"Quién soy: nombre, carrera e interés profesional.",min:30,placeholder:"Soy … estudio … me interesa …"},
+   {id:"m5b",type:"short",pts:1,q:"Qué aporto: el problema que quiero ayudar a resolver y el valor que puedo ofrecer.",min:40,placeholder:"Me gustaría ayudar a … porque sé / puedo …"},
+   {id:"m5c",type:"short",pts:1,q:"Con quién busco conectar: qué tipo de profesionales o comunidades.",min:30,placeholder:"Busco conectar con …"},
+   {id:"m5r",type:"rows",ptsEach:1,q:"Registro de encuentros: completa una fila por cada sala.",n:3,cols:["Compañero o compañera","Su interés profesional","Posible punto de colaboración"]},
+   {id:"m5k",type:"checklist",ptsEach:1,q:"Seguimiento digital",options:["Envié invitación de LinkedIn con nota personalizada a la primera persona","Envié invitación de LinkedIn con nota personalizada a la segunda persona"]}
+  ]
+ },
+ {
+  id:"m6", short:"Mapa", badge:"Cartógrafo de red", badgeSub:"Red profesional inicial",
+  title:"Misión 6 · Mapa de tu red profesional",
+  block:"Bloque 6 · Construcción de red profesional inicial",
+  intro:"Construye tu red inicial. Para cada persona escribe: nombre o rol, tipo de vínculo (fuerte o débil) y qué puedes aportarle. Una por línea.",
+  items:[
+   {id:"m6a",type:"open",pts:2,q:"Personas que ya conozco (profesores, compañeros, egresados). Mínimo 3.",min:60,rows:3,placeholder:"Prof. Ana Ruiz — fuerte — puedo compartirle recursos de mi semillero"},
+   {id:"m6b",type:"open",pts:2,q:"Personas que me gustaría conocer (líderes, investigadores, reclutadores). Mínimo 3.",min:60,rows:3,placeholder:"Líder de marketing en una fundación local — débil — puedo comentar sus publicaciones con aportes"},
+   {id:"m6c",type:"open",pts:2,q:"Comunidades de interés (grupos de LinkedIn, eventos, asociaciones, semilleros). Mínimo 2.",min:40,rows:2,placeholder:"Grupo de LinkedIn sobre … — participaré comentando cada semana"},
+   {id:"m6d",type:"open",pts:3,q:"Análisis de brechas: ¿qué tipo de red o de vínculo te falta para llegar a las personas correctas según tu posicionamiento?",min:100,rows:3,placeholder:"Hoy mi red es sobre todo … me falta …"},
+   {id:"m6g",type:"goals",ptsEach:2,q:"Próximos pasos: tres metas SMART para los próximos 30 días.",n:3}
+  ]
+ }
+];
+
+/* Registro cifrado de respuestas esperadas (no visible para el estudiante) */
+const K = {"m1q1":"15b73a8d","m1q2":"c6073068","m1q3":"70fcdd4a","m1q4":"f3e6c895","m1q5":"8e0d2901","m2q1":"d2ee8878","m2q2":"112d0877","m2q3":"c6936af1","m3q1":"f19b32ae","m3q2":"cd888a55","m3q3":"bd6a044b","m4q1":"ea79f937","m4q2":"26743f67","m4q3":"b2682ddf"};
+function fh(s){ let x = 0x811c9dc5; for(const c of s){ x ^= c.codePointAt(0); x = Math.imul(x, 0x01000193) >>> 0; } return x.toString(16).padStart(8,"0"); }
+
+const XP_SCALE = 10;
+const LEVELS = [[0,"Contacto"],[0.25,"Conexión"],[0.5,"Relación"],[0.75,"Aliado estratégico"]];
+const STORE_KEY = "pasaporte-red-s10-v2";
+
+/* ===================== ESTADO ===================== */
+let state = {meta:{name:"",prog:""}, ans:{}, cur:0};
+try{ const raw = localStorage.getItem(STORE_KEY); if(raw){ const s = JSON.parse(raw); if(s && s.ans) state = Object.assign(state, s); } }catch(e){}
+function persist(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const len = s => (s||"").trim().length;
+
+/* ===================== PUNTOS ===================== */
+function itemMax(it){
+  switch(it.type){
+    case "tf": case "mc": case "open": case "short": return it.pts;
+    case "checklist": return it.ptsEach*it.options.length;
+    case "rows": case "goals": return it.ptsEach*it.n;
+    default: return 0;
+  }
+}
+function goalOk(g){ return g && len(g.accion)>=10 && len(g.indicador)>=3 && !!g.fecha; }
+function rowOk(r){ return r && r.every(c => len(c)>=2); }
+/* Puntos de participación: lo que se muestra en pantalla como XP */
+function itemDonePts(it){
+  const a = state.ans[it.id];
+  switch(it.type){
+    case "tf": case "mc": return a && a.v!==undefined ? it.pts : 0;
+    case "open": case "short": return len(a)>=it.min ? it.pts : 0;
+    case "checklist": return (a||[]).filter(Boolean).length*it.ptsEach;
+    case "rows": return Math.min((a||[]).filter(rowOk).length, it.n)*it.ptsEach;
+    case "goals": return Math.min((a||[]).filter(goalOk).length, it.n)*it.ptsEach;
+    default: return 0;
+  }
+}
+/* Puntos de desempeño: solo se usan en el PDF exportado */
+function itemScore(it){
+  if(it.type==="tf"||it.type==="mc"){
+    const a = state.ans[it.id];
+    if(!a || a.v===undefined) return 0;
+    return fh(it.id+"|"+String(a.v)+"|pdr10")===K[it.id] ? it.pts : 0;
+  }
+  return itemDonePts(it);
+}
+function itemDone(it){
+  const a = state.ans[it.id];
+  switch(it.type){
+    case "context": return true;
+    case "tf": case "mc": return !!(a && a.v!==undefined);
+    case "open": case "short": return len(a)>=it.min;
+    case "checklist": return (a||[]).some(Boolean);
+    case "rows": return (a||[]).filter(rowOk).length>=1;
+    case "goals": return (a||[]).filter(goalOk).length>=it.n;
+    default: return true;
+  }
+}
+const missionDone = m => m.items.every(itemDone);
+function progress(){ let p=0,max=0; MISSIONS.forEach(m=>m.items.forEach(it=>{p+=itemDonePts(it);max+=itemMax(it);})); return {p,max}; }
+function levelFor(p,max){ const r = max? p/max : 0; let name = LEVELS[0][1]; LEVELS.forEach(([t,n])=>{ if(r>=t) name=n; }); return name; }
+const fmtXP = n => Math.round(n*XP_SCALE);
+
+/* ===================== RENDER ===================== */
+function renderChrome(){
+  const {p,max} = progress();
+  $("#xpFill").style.width = (max? Math.round(p/max*100):0)+"%";
+  $("#xpNum").textContent = fmtXP(p)+" / "+fmtXP(max)+" XP";
+  $("#levelTag").textContent = "Nivel: "+levelFor(p,max);
+  $("#stamps").innerHTML = MISSIONS.map((m,i)=>`<div class="stamp ${missionDone(m)?"on":""}" title="${esc(m.badge)}">${missionDone(m)?"M"+(i+1)+"<br>✓":"M"+(i+1)}</div>`).join("");
+  const tabs = MISSIONS.map((m,i)=>`<button class="tab ${state.cur===i?"cur":""} ${missionDone(m)?"done":""}" data-go="${i}" ${state.cur===i?'aria-current="step"':""}><span class="n">M${i+1}</span>${esc(m.short)}<span class="dot"></span></button>`);
+  tabs.push(`<button class="tab ${state.cur===MISSIONS.length?"cur":""}" data-go="${MISSIONS.length}"><span class="n">Fin</span>Entrega</button>`);
+  $("#tabs").innerHTML = tabs.join("");
+}
+
+function optsHTML(it){
+  const a = state.ans[it.id] || {};
+  const locked = a.v!==undefined;
+  const list = it.type==="tf" ? [[true,"Verdadero"],[false,"Falso"]] : it.options.map((o,i)=>[i,o]);
+  const letters = "ABCD";
+  const btns = list.map(([val,label],i)=>{
+    const sel = locked && a.v===val;
+    return `<button class="opt ${sel?"sel":""} ${locked&&!sel?"dim":""}" data-choice="${it.id}" data-val="${it.type==="tf"?String(val):i}" ${locked?"disabled":""} aria-pressed="${sel}">${it.type==="mc"?`<span class="k">${letters[i]}</span>`:""}<span>${esc(label)}</span></button>`;
+  }).join("");
+  return `<div class="opts ${it.type==="tf"?"row":""}">${btns}</div>${locked?'<p class="saved">Respuesta registrada.</p>':""}`;
+}
+
+function itemHTML(it){
+  if(it.type==="context") return `<div class="item context" id="item-${it.id}">${it.html}</div>`;
+  const a = state.ans[it.id];
+  const got = itemDonePts(it), max = itemMax(it);
+  const head = `<div class="qhead"><p class="q">${it.tag?`<span class="chip">${esc(it.tag)}</span> `:""}${esc(it.q)}</p><span class="xpb ${got>=max?"on":""}">${fmtXP(got)}/${fmtXP(max)} XP</span></div>`;
+  let body = "";
+  if(it.type==="tf"||it.type==="mc") body = optsHTML(it);
+  else if(it.type==="open"||it.type==="short"){
+    const n = len(a);
+    body = `<textarea id="f-${it.id}" data-field="${it.id}" rows="${it.rows||2}" placeholder="${esc(it.placeholder||"")}" aria-label="${esc(it.q)}">${esc(a||"")}</textarea><div class="count ${n>=it.min?"met":""}" id="c-${it.id}">${n} / ${it.min} caracteres mínimos</div>`;
+  }
+  else if(it.type==="checklist"){
+    const v = a||[];
+    body = `<div class="checks">${it.options.map((o,i)=>`<label><input type="checkbox" id="k-${it.id}-${i}" data-check="${it.id}" data-i="${i}" ${v[i]?"checked":""}><span>${esc(o)}</span></label>`).join("")}</div>`;
+  }
+  else if(it.type==="rows"){
+    const v = a||[];
+    body = `<div class="grid-rows"><table><thead><tr>${it.cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${Array.from({length:it.n},(_,r)=>`<tr>${it.cols.map((c,ci)=>`<td><input class="in" id="r-${it.id}-${r}-${ci}" data-row="${it.id}" data-r="${r}" data-c="${ci}" aria-label="${esc(c)} ${r+1}" value="${esc((v[r]||[])[ci]||"")}"></td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  else if(it.type==="goals"){
+    const v = a||[];
+    body = Array.from({length:it.n},(_,g)=>{ const x=v[g]||{}; return `<div class="goal"><label for="g-${it.id}-${g}-accion">Meta ${g+1}: acción concreta<input class="in" id="g-${it.id}-${g}-accion" data-goal="${it.id}" data-g="${g}" data-k="accion" value="${esc(x.accion||"")}" placeholder="Comentar con aportes en 4 publicaciones de egresados"></label><label for="g-${it.id}-${g}-indicador">Cómo la mido<input class="in" id="g-${it.id}-${g}-indicador" data-goal="${it.id}" data-g="${g}" data-k="indicador" value="${esc(x.indicador||"")}" placeholder="4 comentarios"></label><label for="g-${it.id}-${g}-fecha">Fecha límite<input class="in" type="date" id="g-${it.id}-${g}-fecha" data-goal="${it.id}" data-g="${g}" data-k="fecha" value="${esc(x.fecha||"")}"></label></div>`; }).join("");
+  }
+  return `<div class="item" id="item-${it.id}">${head}${body}</div>`;
+}
+
+function bannerHTML(m){
+  return missionDone(m) ? `<div class="done-banner"><span class="seal">Sellado</span><span>Misión completa. Ganaste la insignia <strong>${esc(m.badge)}</strong>.</span></div>` : "";
+}
+function missionHTML(i){
+  const m = MISSIONS[i];
+  return `<div class="mission">
+    <div class="m-head"><span class="eyebrow">Misión ${i+1} de ${MISSIONS.length} · ${esc(m.block)}</span><h2>${esc(m.title.replace(/^Misión \d+ · /,""))}</h2><p class="intro">${esc(m.intro)}</p></div>
+    <div id="banner-${m.id}">${bannerHTML(m)}</div>
+    ${m.items.map(itemHTML).join("")}
+    <div class="nav"><button class="btn" data-go="${i-1}" ${i===0?"disabled":""}>← Anterior</button><button class="btn primary" data-go="${i+1}">${i===MISSIONS.length-1?"Ir a la entrega →":"Siguiente misión →"}</button></div>
+  </div>`;
+}
+
+function pendingList(){
+  const out=[];
+  if(!len(state.meta.name)) out.push("Escribe tu nombre en la portada.");
+  MISSIONS.forEach((m,i)=>{ const miss = m.items.filter(it=>!itemDone(it)).length; if(miss) out.push(`Misión ${i+1} (${m.short}): ${miss} ${miss===1?"reto pendiente":"retos pendientes"}.`); });
+  return out;
+}
+function finalHTML(){
+  const {p,max} = progress();
+  const pend = pendingList();
+  return `<div class="final">
+    <span class="eyebrow">Entrega · Evidencia de la Semana 10</span>
+    <h2>${pend.length?"Casi listo":"Pasaporte completo"}</h2>
+    <div class="score"><span class="big">${fmtXP(p)}</span><span>de ${fmtXP(max)} XP · Nivel <strong>${esc(levelFor(p,max))}</strong></span></div>
+    <div class="badges">${MISSIONS.map(m=>`<div class="badge ${missionDone(m)?"on":""}"><span class="bn">${esc(m.badge)}</span><span class="bs">${missionDone(m)?"Obtenida":"Pendiente"} · ${esc(m.badgeSub)}</span></div>`).join("")}</div>
+    ${pend.length?`<div class="pending"><p>Puedes descargar tu avance, pero aún falta:</p><ul>${pend.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:`<p class="notice">Todo listo. Descarga tu pasaporte en PDF y súbelo a la plataforma del curso sin editarlo.</p>`}
+    <div class="actions"><button class="btn primary" id="dlPdf">Descargar PDF</button></div>
+    <div id="resetZone"><button class="btn" id="resetBtn">Borrar respuestas y empezar de nuevo</button></div>
+  </div>`;
+}
+function renderPanel(){ $("#panel").innerHTML = state.cur>=MISSIONS.length ? finalHTML() : missionHTML(state.cur); }
+function refreshItem(it){ const el = document.getElementById("item-"+it.id); if(el) el.outerHTML = itemHTML(it); }
+function refreshXPBadge(it){ const el = document.querySelector(`#item-${it.id} .xpb`); if(el){ const g=itemDonePts(it), m=itemMax(it); el.textContent = fmtXP(g)+"/"+fmtXP(m)+" XP"; el.classList.toggle("on", g>=m); } }
+function refreshBanner(){ if(state.cur>=MISSIONS.length) return; const m = MISSIONS[state.cur]; const b = document.getElementById("banner-"+m.id); if(b) b.innerHTML = bannerHTML(m); }
+function findItem(id){ for(const m of MISSIONS) for(const it of m.items) if(it.id===id) return it; return null; }
+function update(){ persist(); renderChrome(); refreshBanner(); }
+
+/* ===================== EVENTOS ===================== */
+document.addEventListener("click", e=>{
+  const go = e.target.closest("[data-go]");
+  if(go && !go.disabled){ const n = +go.dataset.go; if(n>=0 && n<=MISSIONS.length){ state.cur=n; persist(); renderChrome(); renderPanel(); $("#tabs").scrollIntoView({behavior:"smooth",block:"start"}); } return; }
+  const ch = e.target.closest("[data-choice]");
+  if(ch && !ch.disabled){
+    const it = findItem(ch.dataset.choice); const a = state.ans[it.id];
+    if(a && a.v!==undefined) return;
+    state.ans[it.id] = {v: it.type==="tf" ? ch.dataset.val==="true" : +ch.dataset.val};
+    refreshItem(it); update(); return;
+  }
+  if(e.target.id==="dlPdf") return exportPDF();
+  if(e.target.id==="resetBtn"){ $("#resetZone").innerHTML = `<div class="confirm"><span>¿Seguro? Se borrarán todas tus respuestas de este navegador.</span><button class="btn" id="resetYes">Sí, borrar</button><button class="btn" id="resetNo">Cancelar</button></div>`; return; }
+  if(e.target.id==="resetNo"){ renderPanel(); return; }
+  if(e.target.id==="resetYes"){ state = {meta:{name:"",prog:""}, ans:{}, cur:0}; persist(); syncMeta(); renderChrome(); renderPanel(); toast("Respuestas borradas"); return; }
+});
+document.addEventListener("input", e=>{
+  const t = e.target;
+  if(t.dataset.meta){ state.meta[t.dataset.meta] = t.value; persist(); return; }
+  if(t.dataset.field){
+    const it = findItem(t.dataset.field); state.ans[it.id] = t.value;
+    const c = document.getElementById("c-"+it.id); const n = len(t.value);
+    if(c){ c.textContent = n+" / "+it.min+" caracteres mínimos"; c.classList.toggle("met", n>=it.min); }
+    refreshXPBadge(it); update(); return;
+  }
+  if(t.dataset.row){
+    const it = findItem(t.dataset.row); const rows = state.ans[it.id] || [];
+    while(rows.length<it.n) rows.push(it.cols.map(()=>""));
+    rows[+t.dataset.r][+t.dataset.c] = t.value; state.ans[it.id] = rows; refreshXPBadge(it); update(); return;
+  }
+  if(t.dataset.goal){
+    const it = findItem(t.dataset.goal); const gs = state.ans[it.id] || [];
+    const g = +t.dataset.g; gs[g] = Object.assign({}, gs[g], {[t.dataset.k]: t.value}); state.ans[it.id] = gs; refreshXPBadge(it); update(); return;
+  }
+});
+document.addEventListener("change", e=>{
+  const t = e.target;
+  if(t.dataset.check){
+    const it = findItem(t.dataset.check); const v = state.ans[it.id] || it.options.map(()=>false);
+    v[+t.dataset.i] = t.checked; state.ans[it.id] = v; refreshXPBadge(it); update();
+  }
+});
+function syncMeta(){ $("#stName").value = state.meta.name||""; $("#stProg").value = state.meta.prog||""; }
+
+let toastTimer;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ t.hidden = true; }, 3500); }
+
+/* ===================== EXPORTACIÓN PDF ===================== */
+function grade(){
+  let pts=0, max=0, closed=0, closedMax=0, nClosed=0, nRight=0;
+  MISSIONS.forEach(m=>m.items.forEach(it=>{
+    const s = itemScore(it), mx = itemMax(it);
+    pts += s; max += mx;
+    if(it.type==="tf"||it.type==="mc"){ closed += s; closedMax += mx; nClosed++; if(s>0) nRight++; }
+  }));
+  const nota = Math.round((max? 5*pts/max : 0)*10)/10;
+  return {pts, max, closed, closedMax, nClosed, nRight, nota};
+}
+function registro(){
+  return MISSIONS.filter(m=>m.items.some(it=>it.type==="tf"||it.type==="mc")).map(m=>{
+    const s = m.items.filter(it=>it.type==="tf"||it.type==="mc").map(it=>{
+      const a = state.ans[it.id];
+      if(!a || a.v===undefined) return "-";
+      return it.type==="tf" ? (a.v?"V":"F") : "ABCD"[a.v];
+    }).join("");
+    return m.id.toUpperCase()+" "+s;
+  }).join(" · ");
+}
+function fileBase(){
+  const n = (state.meta.name||"estudiante").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-|-$/g,"").toLowerCase() || "estudiante";
+  return "pasaporte-de-red-"+n;
+}
+
+let downloadsNS = null;
+try{ if(window.claude && typeof window.claude.use==="function"){ window.claude.use("downloads").then(d=>{ downloadsNS = d; }).catch(()=>{}); } }catch(e){}
+
+async function saveFile(filename, blob){
+  if(downloadsNS){
+    try{ await downloadsNS.save({filename, data: blob}); toast("PDF descargado"); }
+    catch(err){ const c = err && err.code; toast(c==="declined" ? "Descarga cancelada" : c==="rate_limited" ? "Ya hay una descarga abierta. Intenta de nuevo en un momento." : "No se pudo descargar el archivo en esta vista."); }
+    return;
+  }
+  const url = URL.createObjectURL(blob); const a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 5000); toast("PDF descargado");
+}
+
+function needName(){
+  if(len(state.meta.name)) return false;
+  toast("Escribe tu nombre en la portada antes de descargar.");
+  state.cur = 0; persist(); renderChrome(); renderPanel(); setTimeout(()=>$("#stName").focus(),50); window.scrollTo({top:0,behavior:"smooth"});
+  return true;
+}
+function pdfSafe(s){
+  return String(s||"").replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/[–—]/g,"-").replace(/…/g,"...").replace(/[→]/g,"->").replace(/[^\x00-\xFF]/g,"");
+}
+
+async function exportPDF(){
+  if(needName()) return;
+  if(!window.jspdf){ toast("No se pudo cargar el generador de PDF. Revisa tu conexión."); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:"pt", format:"a4"});
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 48;
+  let y = M;
+  const ink=[11,27,63], muted=[86,99,127], accent=[47,91,234], violet=[108,74,216];
+  function ensure(h){ if(y+h > H-M-10){ doc.addPage(); y = M; } }
+  function text(t, {size=11, bold=false, color=ink, indent=0, gap=4}={}){
+    doc.setFont("helvetica", bold?"bold":"normal"); doc.setFontSize(size); doc.setTextColor(...color);
+    const lines = doc.splitTextToSize(pdfSafe(t), W-2*M-indent); const lh = size*1.35;
+    lines.forEach(l=>{ ensure(lh); doc.text(l, M+indent, y+size); y += lh; });
+    y += gap;
+  }
+  function boxText(t){
+    doc.setFont("helvetica","normal"); doc.setFontSize(10.5);
+    const lines = doc.splitTextToSize(pdfSafe(t), W-2*M-26); const lh = 14;
+    let i=0;
+    while(i<lines.length){
+      const room = Math.floor((H-M-10-y-12)/lh);
+      if(room<2){ doc.addPage(); y=M; continue; }
+      const chunk = lines.slice(i, i+room); const bh = chunk.length*lh+10;
+      doc.setDrawColor(220,227,241); doc.roundedRect(M+12, y, W-2*M-12, bh, 4, 4);
+      doc.setTextColor(...ink); chunk.forEach((l,k)=>doc.text(l, M+20, y+16+k*lh));
+      y += bh+6; i += chunk.length;
+    }
+  }
+  function table(cols, rows, widths){
+    const total = W-2*M-12; const ws = widths.map(w=>w*total);
+    doc.setFontSize(9.5);
+    const drawRow = (cells, header)=>{
+      doc.setFont("helvetica", header?"bold":"normal");
+      const wrapped = cells.map((c,i)=>doc.splitTextToSize(pdfSafe(c||""), ws[i]-8));
+      const h = Math.max(...wrapped.map(w=>w.length))*12+8;
+      ensure(h);
+      let x = M+12;
+      wrapped.forEach((w,i)=>{ doc.setDrawColor(220,227,241); doc.rect(x,y,ws[i],h); doc.setTextColor(...(header?muted:ink)); w.forEach((l,k)=>doc.text(l, x+4, y+13+k*12)); x+=ws[i]; });
+      y += h;
+    };
+    drawRow(cols, true); rows.forEach(r=>drawRow(r,false)); y += 8;
+  }
+
+  const g = grade(); const reg = registro();
+  const today = new Date().toLocaleDateString("es-CO",{year:"numeric",month:"long",day:"numeric"});
+  text("MARCA PERSONAL DIGITAL · SEMANA 10 · NETWORKING DIGITAL", {size:9, color:muted, gap:2});
+  text("Pasaporte de Red", {size:24, bold:true, gap:6});
+  text(`Estudiante: ${state.meta.name||"-"}   |   Programa: ${state.meta.prog||"-"}`, {size:11});
+  text(`Fecha de descarga: ${today}`, {size:10, color:muted, gap:10});
+
+  // Bloque de nota
+  ensure(78);
+  doc.setFillColor(11,27,63); doc.roundedRect(M, y, W-2*M, 70, 6, 6, "F");
+  doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(30); doc.text(g.nota.toFixed(1), M+20, y+46);
+  doc.setFontSize(11); doc.text("Nota automática (0 a 5)", M+90, y+28);
+  doc.setFont("helvetica","normal"); doc.setFontSize(9.5);
+  doc.text(pdfSafe(`Puntos: ${g.pts} de ${g.max}  ·  Preguntas cerradas correctas: ${g.nRight} de ${g.nClosed}  ·  Respuestas abiertas evaluadas por completitud`), M+90, y+46);
+  y += 82;
+  const earned = MISSIONS.filter(missionDone).map(m=>m.badge);
+  text("Insignias: "+(earned.length? earned.join(", ") : "ninguna todavía"), {size:10.5, bold:true, color:violet, gap:10});
+
+  MISSIONS.forEach(m=>{
+    ensure(40); y += 6;
+    doc.setDrawColor(...accent); doc.setLineWidth(1.5); doc.line(M, y+22, W-M, y+22); doc.setLineWidth(0.5);
+    text(m.title, {size:14, bold:true, gap:10});
+    m.items.forEach(it=>{
+      if(it.type==="context") return;
+      text(it.q, {size:11, bold:true, gap:3});
+      const a = state.ans[it.id];
+      if(it.type==="tf"||it.type==="mc"){
+        const list = it.type==="tf" ? [[true,"Verdadero"],[false,"Falso"]] : it.options.map((o,i)=>[i,o]);
+        list.forEach(([val,label],i)=>{ const sel = a && a.v===val; text(`${sel?"[X]":"[  ]"} ${it.type==="mc"?"ABCD"[i]+". ":""}${label}`, {size:10.5, indent:12, gap:1, bold:sel}); });
+        if(!a || a.v===undefined) text("Sin responder", {size:10.5, indent:12, gap:1, color:muted});
+        y += 6;
+      } else if(it.type==="open"||it.type==="short"){
+        boxText((a||"").trim() || "Sin responder"); y += 4;
+      } else if(it.type==="checklist"){
+        it.options.forEach((o,i)=>text(`${(a||[])[i]?"[X]":"[  ]"} ${o}`, {size:10.5, indent:12, gap:1, bold:!!(a||[])[i]})); y += 6;
+      } else if(it.type==="rows"){
+        const v = a||[]; table(it.cols, Array.from({length:it.n},(_,r)=>it.cols.map((c,ci)=>(v[r]||[])[ci]||"")), [0.3,0.33,0.37]);
+      } else if(it.type==="goals"){
+        const v = a||[]; table(["#","Acción","Indicador","Fecha"], Array.from({length:it.n},(_,k)=>{const x=v[k]||{}; return [String(k+1), x.accion||"", x.indicador||"", x.fecha||""];}), [0.06,0.5,0.26,0.18]);
+      }
+    });
+  });
+
+  ensure(60); y += 8;
+  text("Registro de respuestas cerradas", {size:12, bold:true, gap:3});
+  text(reg, {size:11, color:accent, gap:3});
+  text("Este registro se repite en el pie de cada página. Si no coincide con las opciones marcadas en el cuerpo, el documento fue modificado.", {size:9, color:muted});
+
+  const pages = doc.getNumberOfPages();
+  for(let pg=1; pg<=pages; pg++){ doc.setPage(pg); doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(...muted); doc.text(pdfSafe(`${state.meta.name||""} · Registro: ${reg} · Página ${pg} de ${pages}`), M, H-24); }
+  await saveFile(fileBase()+".pdf", doc.output("blob"));
+}
+
+/* ===================== INICIO ===================== */
+syncMeta(); renderChrome(); renderPanel();
+})();
+</script>
+
+</body></html>

@@ -1,0 +1,898 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>¿Quién quiere mejorar su nota?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Línea gráfica Interacción Digital: navy, azul eléctrico, violeta y cian.
+   Layout: escenario de concurso — columna principal (comodines, cronómetro, pregunta en barra hexagonal, opciones) y escalera de 5 niveles a la derecha */
+:root {
+  color-scheme: dark;
+  --bg-0: #0b1636;
+  --bg-1: #172b5b;
+  --panel: #1b3068;
+  --panel-2: #22397a;
+  --indigo: #2456a6;
+  --violet: #4330bc;
+  --deep: #172b5b;
+  --petrol: #155e75;
+  --cyan: #00a9d6;
+  --cyan-soft: #5fd3f0;
+  --lilac: #9a8cff;
+  --fg: #f5f7ff;
+  --fg-soft: #c7d0ee;
+  --fg-muted: #8f9bcb;
+  --line: rgba(95, 211, 240, 0.5);
+  --hair: rgba(199, 208, 238, 0.16);
+  --ok: #5ee0a0;
+  --half: #ffcf70;
+  --bad: #ff8f8f;
+  --ink-on-cyan: #06112f;
+  --font-display: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--bg-0);
+  background-image:
+    radial-gradient(1100px 620px at 50% -12%, rgba(67, 48, 188, 0.55), transparent 62%),
+    radial-gradient(900px 500px at 50% 115%, rgba(0, 169, 214, 0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 40px); padding-block: 22px 48px; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--cyan-soft); outline-offset: 3px; }
+.brand { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan-soft); margin: 0 0 18px; }
+.brand::before { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--cyan); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Botones ---------- */
+.btn { border-radius: 12px; padding: 12px 20px; border: 1px solid var(--hair); background: rgba(255,255,255,0.06); cursor: pointer; font-weight: 600; font-size: 15px; }
+.btn:hover { background: rgba(255,255,255,0.12); }
+.btn.primary { background: linear-gradient(180deg, var(--cyan-soft), var(--cyan)); color: var(--ink-on-cyan); border-color: transparent; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn.warn { color: var(--half); border-color: rgba(255, 207, 112, 0.5); }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; filter: none; }
+.btn.lg { padding: 16px 28px; font-size: 17px; border-radius: 14px; }
+
+/* ---------- Hexágonos estilo concurso ---------- */
+.hexrow { position: relative; display: block; width: 100%; background: none; border: 0; padding: 0; text-align: left; }
+.hexrow::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--line); opacity: 0.55; }
+.hex { display: block; position: relative; margin-inline: clamp(8px, 2.6vw, 30px); padding: 2px; background: linear-gradient(90deg, var(--cyan-soft), var(--lilac) 50%, var(--cyan-soft));
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 22px 100%, 0 50%); }
+.hex-in { clip-path: polygon(21px 0, calc(100% - 21px) 0, 100% 50%, calc(100% - 21px) 100%, 21px 100%, 0 50%);
+  background: linear-gradient(180deg, #23407e 0%, #122453 100%); padding: 14px 40px; display: flex; align-items: center; gap: 14px; min-height: 58px; }
+.opt { cursor: pointer; }
+.opt .letter { font-family: var(--font-display); font-weight: 800; color: var(--cyan-soft); min-width: 1.6em; }
+.opt .txt { font-size: 16.5px; line-height: 1.35; }
+.opt:hover .hex-in { background: linear-gradient(180deg, #2c4fa0 0%, #1a3270 100%); }
+.opt[aria-pressed="true"] .hex { background: linear-gradient(90deg, #fff, var(--cyan-soft), #fff); }
+.opt[aria-pressed="true"] .hex-in { background: linear-gradient(180deg, var(--cyan-soft) 0%, var(--cyan) 100%); color: var(--ink-on-cyan); }
+.opt[aria-pressed="true"] .letter { color: var(--ink-on-cyan); }
+.opt.gone { cursor: default; opacity: 0.22; }
+.opt.gone .txt { visibility: hidden; }
+.opt:focus-visible { outline: none; }
+.opt:focus-visible .hex { background: linear-gradient(90deg, #fff, #fff); }
+
+.qbar .hex-in { padding: 20px 46px; min-height: 96px; flex-direction: column; align-items: flex-start; gap: 6px; }
+.qbar .tag { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--cyan-soft); }
+.qbar .q { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 2vw, 23px); line-height: 1.3; text-wrap: balance; margin: 0; }
+
+/* ---------- Inicio ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+@media (max-width: 920px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+.title { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 5vw, 62px); line-height: 1.02; letter-spacing: -0.02em; margin: 6px 0 12px; text-wrap: balance; }
+.title em { font-style: normal; background: linear-gradient(90deg, var(--cyan-soft), var(--lilac)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--fg-soft); font-size: 17px; max-width: 58ch; margin: 0 0 22px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.rule { background: rgba(27, 48, 104, 0.72); border: 1px solid var(--hair); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.rule h3 { margin: 0; font-family: var(--font-display); font-size: 17px; }
+.rule p { margin: 0; color: var(--fg-soft); font-size: 14.5px; }
+.rule .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.timechips { display: flex; flex-direction: column; gap: 6px; }
+.timechips span { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; color: var(--fg-soft); border-bottom: 1px dashed var(--hair); padding-bottom: 4px; }
+.timechips b { color: var(--fg); font-variant-numeric: tabular-nums; }
+.lifelist { display: flex; flex-direction: column; gap: 10px; }
+.lifelist div { display: flex; gap: 12px; align-items: flex-start; }
+.lifelist .mini { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--cyan-soft); display: grid; place-items: center; font: 800 11px var(--font-display); color: var(--cyan-soft); }
+.lifelist .mini svg { width: 18px; height: 18px; }
+.lifelist p { margin: 0; font-size: 14px; color: var(--fg-soft); }
+.lifelist b { color: var(--fg); }
+
+.card { background: rgba(27, 48, 104, 0.82); border: 1px solid var(--hair); border-radius: 20px; padding: clamp(18px, 2.4vw, 28px); display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 50px rgba(3, 7, 30, 0.45); }
+.card h2 { margin: 0; font-family: var(--font-display); font-size: 22px; }
+label.f { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--fg-soft); font-weight: 500; }
+input[type="text"], input[type="password"], select { font: 500 16px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.07); border: 1px solid var(--hair); border-radius: 12px; padding: 13px 14px; width: 100%; }
+select option { background: #1b3068; color: var(--fg); }
+input::placeholder { color: var(--fg-muted); }
+.err { color: var(--bad); font-size: 14px; margin: 0; }
+.note { font-size: 13.5px; color: var(--fg-muted); margin: 0; }
+.cap { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(0, 169, 214, 0.1); border: 1px solid rgba(95, 211, 240, 0.3); font-size: 14.5px; }
+.cap b { font-variant-numeric: tabular-nums; }
+.cap.empty { background: rgba(255, 207, 112, 0.1); border-color: rgba(255, 207, 112, 0.4); color: var(--half); }
+.resume { border: 1px solid rgba(255, 207, 112, 0.45); background: rgba(255, 207, 112, 0.08); border-radius: 14px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.resume p { margin: 0; }
+.foot { display: flex; justify-content: flex-end; margin-top: 24px; }
+.emblem { width: 100%; max-width: 120px; height: auto; margin-bottom: 4px; }
+
+/* ---------- Juego ---------- */
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+@media (max-width: 1000px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.player { display: flex; flex-direction: column; }
+.player small { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); font-weight: 600; }
+.player b { font-family: var(--font-display); font-size: 20px; }
+.lifelines { display: flex; gap: 14px; }
+.life { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: 0; cursor: pointer; padding: 0; }
+.life .orb { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--cyan-soft); background: radial-gradient(circle at 50% 35%, #2456a6, #122453); color: var(--fg); position: relative; box-shadow: 0 0 18px rgba(95, 211, 240, 0.25); }
+.life .orb svg { width: 28px; height: 28px; }
+.life .orb .ff { font: 800 16px var(--font-display); letter-spacing: -0.02em; }
+.life .lab { font-size: 12px; color: var(--fg-soft); font-weight: 600; }
+.life:hover:not([disabled]) .orb { box-shadow: 0 0 26px rgba(95, 211, 240, 0.55); }
+.life[disabled] { cursor: not-allowed; }
+.life[disabled] .orb { opacity: 0.35; box-shadow: none; }
+.life.used .orb::after { content: ""; position: absolute; width: 74px; height: 3px; background: var(--bad); transform: rotate(-40deg); border-radius: 2px; }
+.life.used .lab::after { content: " · usado"; color: var(--bad); }
+
+.timer { position: relative; width: 92px; height: 92px; flex: none; }
+.timer svg { width: 92px; height: 92px; transform: rotate(-90deg); }
+.timer .track { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+.timer .bar { fill: none; stroke: var(--cyan-soft); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear, stroke 0.3s; }
+.timer.low .bar { stroke: var(--half); }
+.timer .num { position: absolute; inset: 0; display: grid; place-items: center; font: 800 28px var(--font-display); font-variant-numeric: tabular-nums; }
+.timer.low .num { color: var(--half); }
+
+.casebox { border: 1px solid rgba(154, 140, 255, 0.4); background: linear-gradient(180deg, rgba(67, 48, 188, 0.28), rgba(23, 43, 91, 0.6)); border-radius: 16px; padding: 16px 20px; }
+.casebox .k { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac); font-weight: 700; }
+.casebox h3 { margin: 2px 0 6px; font-family: var(--font-display); font-size: 19px; }
+.casebox p { margin: 0; color: var(--fg-soft); font-size: 15.5px; max-width: 95ch; }
+.notice { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--hair); background: rgba(255,255,255,0.05); }
+.pill.cyan { border-color: rgba(95, 211, 240, 0.5); color: var(--cyan-soft); }
+.pill.gold { border-color: rgba(255, 207, 112, 0.5); color: var(--half); }
+.audience { display: flex; gap: 14px; align-items: center; border-radius: 14px; padding: 12px 16px; background: rgba(0, 169, 214, 0.12); border: 1px solid rgba(95, 211, 240, 0.4); }
+.audience svg { width: 30px; height: 30px; flex: none; color: var(--cyan-soft); }
+.audience p { margin: 0; }
+.opts { display: grid; gap: 12px; }
+.opts.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .opts.two { grid-template-columns: minmax(0, 1fr); } }
+.opts.two .hex-in { justify-content: center; min-height: 72px; }
+.opts.two .txt { font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-top: 4px; }
+.flash { font-size: 14px; color: var(--half); min-height: 1.4em; margin: 0; }
+
+/* Ordenar */
+.order { display: flex; flex-direction: column; gap: 10px; }
+.oitem { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.oitem .slot { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--cyan-soft); font: 800 17px var(--font-display); color: var(--cyan-soft); }
+.oitem .hexrow { cursor: grab; }
+.oitem .hexrow:active { cursor: grabbing; }
+.oitem .hex-in { padding: 12px 38px; min-height: 54px; }
+.oitem .grip { color: var(--fg-muted); flex: none; }
+.oitem.drag .hex { opacity: 0.4; }
+.oitem.over .hex { background: linear-gradient(90deg, #fff, var(--cyan-soft), #fff); }
+.arrows { display: flex; flex-direction: column; gap: 4px; }
+.arrows button { width: 38px; height: 26px; border-radius: 8px; border: 1px solid var(--hair); background: rgba(255,255,255,0.06); cursor: pointer; display: grid; place-items: center; padding: 0; }
+.arrows button:hover:not([disabled]) { background: rgba(255,255,255,0.14); }
+.arrows button[disabled] { opacity: 0.25; cursor: default; }
+.arrows svg { width: 14px; height: 14px; }
+
+/* Escalera */
+.ladder { background: rgba(14, 27, 70, 0.85); border: 1px solid var(--hair); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 6px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+.ladder h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; }
+.rung { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 12px; border-radius: 10px; font-size: 14px; color: var(--fg-soft); }
+.rung .n { font: 800 14px var(--font-display); color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.rung .pt { font-size: 12.5px; color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.rung.now { background: linear-gradient(90deg, var(--cyan-soft), var(--cyan)); color: var(--ink-on-cyan); font-weight: 700; }
+.rung.now .n, .rung.now .pt { color: var(--ink-on-cyan); }
+.rung.done { color: var(--fg); }
+.rung.done .n::after { content: "✓"; color: var(--cyan-soft); margin-left: 2px; font-size: 11px; }
+.ladder .tot { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--hair); font-size: 13px; color: var(--fg-muted); }
+@media (max-width: 1000px) {
+  .ladder { position: static; order: -1; flex-direction: row; flex-wrap: wrap; padding: 10px; }
+  .ladder h3, .ladder .tot { display: none; }
+  .rung { grid-template-columns: auto auto; padding: 6px 10px; }
+  .rung .pt { display: none; }
+}
+
+/* Transición */
+.veil { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(6, 10, 36, 0.72); backdrop-filter: blur(4px); z-index: 20; padding: 16px; }
+.veil .box { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.veil .big { font: 800 clamp(30px, 5vw, 52px)/1.1 var(--font-display); }
+.veil .sub { color: var(--fg-soft); font-size: 17px; }
+.veil .big.time { color: var(--half); }
+
+/* ---------- Resumen ---------- */
+.sumhead { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: center; margin-bottom: 24px; }
+@media (max-width: 640px) { .sumhead { grid-template-columns: minmax(0, 1fr); } }
+.grade { width: 190px; height: 190px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 30%, #2456a6, #122453 70%); border: 3px solid var(--cyan-soft); box-shadow: 0 0 40px rgba(95, 211, 240, 0.35); }
+.grade b { display: block; font: 800 64px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.grade span { font-size: 14px; color: var(--fg-soft); }
+.sumhead h2 { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 40px); margin: 4px 0 8px; line-height: 1.1; }
+.sumhead p { margin: 0; color: var(--fg-soft); max-width: 62ch; }
+.reviews { display: flex; flex-direction: column; gap: 14px; }
+.rev { background: rgba(27, 48, 104, 0.78); border: 1px solid var(--hair); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.rev header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.rev .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.rev h3 { margin: 0; font-family: var(--font-display); font-size: 17.5px; line-height: 1.35; }
+.rev .ctx { margin: 0; font-size: 14px; color: var(--fg-muted); }
+.score { font: 800 14px var(--font-display); padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.score.s1 { background: rgba(94, 224, 160, 0.16); color: var(--ok); border: 1px solid rgba(94, 224, 160, 0.45); }
+.score.s05 { background: rgba(255, 207, 112, 0.14); color: var(--half); border: 1px solid rgba(255, 207, 112, 0.45); }
+.score.s0 { background: rgba(255, 143, 143, 0.12); color: var(--bad); border: 1px solid rgba(255, 143, 143, 0.4); }
+.cmp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 700px) { .cmp { grid-template-columns: minmax(0, 1fr); } }
+.cmp div { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px 14px; }
+.cmp small { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; margin-bottom: 4px; }
+.cmp ul, .cmp ol { margin: 0; padding-left: 20px; }
+.cmp li { margin: 2px 0; }
+.cmp p { margin: 0; }
+.why { margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(0, 169, 214, 0.09); border-left: 3px solid var(--cyan); color: var(--fg); }
+.why b { color: var(--cyan-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---------- Panel docente ---------- */
+.modal { position: fixed; inset: 0; z-index: 30; background: rgba(6, 10, 36, 0.78); backdrop-filter: blur(4px); display: grid; place-items: start center; overflow-y: auto; padding: 40px 16px; }
+.modal .card { width: min(820px, 100%); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 14px; }
+.stat small { display: block; font-size: 12px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+.stat b { font: 800 24px var(--font-display); font-variant-numeric: tabular-nums; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--hair); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted); background: rgba(255,255,255,0.03); }
+td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; color: var(--fg-soft); }
+.check input { width: 18px; height: 18px; accent-color: var(--cyan); }
+.danger { border: 1px solid rgba(255, 207, 112, 0.35); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.danger h3 { margin: 0; font-size: 16px; font-family: var(--font-display); }
+
+@media (prefers-reduced-motion: reduce) { .timer .bar { transition: none; } .veil { backdrop-filter: none; } }
+</style>
+
+<div class="wrap" id="app"></div>
+<div id="layer"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* =================== CONFIGURACIÓN =================== */
+var TIME = { tf: 30, mc: 90, ord: 90 };   // segundos por tipo de pregunta
+var AUDIENCE_BONUS = 30;                    // segundos extra del comodín "Pregunta al público"
+var KEY_FP = 'fd0d6456-d74ecf53';           // huella de la clave de reinicio
+var STORE = 'quiz-recuperacion-colaborar-digitalmente-v1';
+
+/* =================== BANCO 1: VERDADERO O FALSO (20) =================== */
+var TF = [
+  { id: 'tf01', q: 'Según la clase, colaborar implica un objetivo compartido, coordinación, interdependencia y responsabilidad individual.', a: true, why: 'Es la fórmula trabajada en clase: objetivo compartido + coordinación + interdependencia + responsabilidad individual = colaboración digital.' },
+  { id: 'tf02', q: 'Si cuatro integrantes editan el mismo documento de Google Docs, ya están colaborando.', a: false, why: 'Google Docs + cuatro personas es solo un documento compartido. La colaboración aparece cuando se suman roles, comentarios, revisión, acuerdos, historial y responsabilidad.' },
+  { id: 'tf03', q: 'Un grupo puede trabajar sobre un mismo proyecto y, aun así, funcionar como personas haciendo tareas independientes.', a: true, why: 'Por eso trabajar juntos no es lo mismo que colaborar: compartir un proyecto no garantiza que las partes se relacionen.' },
+  { id: 'tf04', q: 'Al elegir herramientas colaborativas, lo recomendable es escoger primero la plataforma y luego ajustar las necesidades del equipo a ella.', a: false, why: 'Es al revés: primero se identifica qué necesita el equipo (escribir, gestionar tareas, comunicarse…) y después se elige la herramienta.' },
+  { id: 'tf05', q: '«Localizar tres fuentes académicas sobre IA generativa en educación y registrar autor, año, título y enlace» es una tarea concreta y verificable.', a: true, why: 'Dice qué hacer, cuánto y qué evidencia entregar. «Investigar sobre el tema», en cambio, no se puede verificar.' },
+  { id: 'tf06', q: 'El coordinador funciona como jefe del equipo: decide por los demás y asume las tareas que otros no terminan.', a: false, why: 'El coordinador organiza, distribuye tareas, controla tiempos y facilita decisiones. No es el jefe ni hace el trabajo de los demás.' },
+  { id: 'tf07', q: 'El editor integra los aportes y cuida la coherencia, pero no debería borrar arbitrariamente lo que aportan los demás.', a: true, why: 'Integrar no es reemplazar: el editor organiza el documento respetando los aportes, y cualquier cambio debe quedar trazable.' },
+  { id: 'tf08', q: 'Como cada rol tiene una frontera estricta, el presentador no necesita conocer el contenido que preparó el investigador.', a: false, why: 'El rol define una responsabilidad principal, no una frontera absoluta. El presentador debe conocer todo el producto para representarlo.' },
+  { id: 'tf09', q: 'El versionamiento es el proceso de identificar, controlar y recuperar los diferentes estados de un producto a medida que se modifica.', a: true, why: 'Esa es la definición de la clase. Incluye historial de cambios, comentarios, control y recuperación de versiones anteriores.' },
+  { id: 'tf10', q: 'Nombrar los archivos como «trabajo_final», «trabajo_final2» y «trabajo_final_definitivo» es una forma adecuada de versionamiento.', a: false, why: 'Ese es el «pasado caótico»: nadie sabe con certeza cuál es la última versión. El estándar es el historial de cambios y la recuperación de versiones.' },
+  { id: 'tf11', q: 'En un trabajo colaborativo, el equipo responde por el producto final y cada integrante responde por su participación.', a: true, why: 'Es la idea central de la responsabilidad individual: el producto es colectivo, pero cada aporte tiene un responsable.' },
+  { id: 'tf12', q: 'En un trabajo grupal, la responsabilidad recae solo en el equipo, sin importar quién hizo o dejó de hacer cada parte.', a: false, why: 'Decir «era un trabajo grupal» no basta. Cada integrante responde por su participación, y la trazabilidad lo hace visible.' },
+  { id: 'tf13', q: 'Si el investigador incorpora una fuente falsa al trabajo, el verificador debería detectarla antes de la entrega.', a: true, why: 'Comprobar fuentes y detectar errores es la responsabilidad principal del verificador.' },
+  { id: 'tf14', q: 'Todo cambio que se hace en un documento compartido lo mejora, por eso no es necesario registrar quién lo hizo.', a: false, why: 'No todo cambio mejora un documento. Por eso hay que saber qué cambió, quién lo cambió y poder recuperar una versión anterior.' },
+  { id: 'tf15', q: 'Trello, Planner, Asana y Notion son herramientas que sirven para gestionar las tareas de un equipo.', a: true, why: 'En la tabla de herramientas aparecen para la necesidad «gestionar tareas».' },
+  { id: 'tf16', q: 'Miro y FigJam son, sobre todo, herramientas para gestionar las referencias bibliográficas del equipo.', a: false, why: 'Miro y FigJam sirven para recopilar ideas. Para gestionar información y referencias, la clase propuso Zotero, Drive o Notion.' },
+  { id: 'tf17', q: 'En el trabajo colaborativo existe mayor trazabilidad de los aportes individuales que en el simple trabajo en grupo.', a: true, why: 'En el trabajo en grupo el producto puede ocultar los aportes individuales; en el colaborativo cada aporte queda registrado.' },
+  { id: 'tf18', q: 'Dividir el trabajo en partes y unirlas diez minutos antes de la entrega es una forma de trabajo colaborativo.', a: false, why: 'Eso es trabajo en grupo: se divide y se une al final. En la colaboración el producto se construye conjuntamente y con interacción constante.' },
+  { id: 'tf19', q: 'Una tarea bien gestionada registra responsable, estado, fecha y evidencia de cumplimiento.', a: true, why: 'Es la estructura de tablero vista en clase: tarea, responsable, estado, fecha y evidencia.' },
+  { id: 'tf20', q: 'Según la frase de cierre de la clase, el principal beneficio de colaborar es reducir la carga individual de cada integrante.', a: false, why: 'La frase dice lo contrario: dividir un trabajo reduce la carga individual; colaborar aumenta la capacidad del equipo.' }
+];
+
+/* =================== BANCO 2: CASOS DE SELECCIÓN MÚLTIPLE (10 × 5) =================== */
+var CASES = [
+  { id: 'c01', title: 'Equipo Delta', text: 'Equipo Delta tiene cuatro integrantes y debe entregar un informe sobre movilidad en Bucaramanga. Valentina creó el documento, Julián buscó información, Sara hizo la presentación y Andrés revisó todo diez minutos antes de la entrega. Nunca se reunieron, nadie comentó el trabajo de otro y el informe tenía datos contradictorios entre secciones. Aun así, dicen que «colaboraron» porque usaron el mismo archivo.',
+    qs: [
+      { id: 'c01q1', q: '¿Por qué lo que hizo Equipo Delta no es colaboración, sino trabajo en grupo?', o: [['Cada uno hizo una parte sin relacionarla con las de los demás.', 1], ['Las partes se unieron al final, sin construirlas conjuntamente.', 1], ['Usaron un documento en línea en vez de un archivo local.', 0], ['Fueron cuatro integrantes y la colaboración exige que sean menos.', 0], ['Andrés revisó el trabajo, y revisar no hace parte de colaborar.', 0]], why: 'En el trabajo en grupo se divide el trabajo y se une todo al final; en la colaboración las partes se relacionan y el producto se construye conjuntamente.' },
+      { id: 'c01q2', q: '¿Qué componentes de la colaboración faltaron?', o: [['Comunicación para coordinarse y tomar decisiones.', 1], ['Seguimiento de lo que estaba hecho y de lo que faltaba.', 1], ['Verificación de la coherencia entre las secciones del informe.', 1], ['Un documento al que todos pudieran acceder desde su computador.', 0], ['Una herramienta de diseño para que las diapositivas se vieran mejor.', 0]], why: 'Tuvieron coautoría técnica (un archivo compartido), pero no comunicación, seguimiento ni verificación: por eso aparecieron datos contradictorios.' },
+      { id: 'c01q3', q: 'Andrés revisó todo diez minutos antes. ¿Qué cambiarías de la forma en que se verifica?', o: [['Revisar las fuentes y la coherencia mientras se construye el informe.', 1], ['Dejar comentarios en el documento para que cada autor corrija lo suyo.', 1], ['Que Andrés reescriba por su cuenta las secciones con errores sin consultar a nadie.', 0], ['Eliminar la revisión para ganar tiempo y entregar más temprano.', 0], ['Que cada integrante revise solo su parte y no la de los demás.', 0]], why: 'El verificador detecta errores y comprueba fuentes durante el proceso, dejando comentarios. Reescribir sin consultar borra aportes y rompe la trazabilidad.' },
+      { id: 'c01q4', q: '¿Qué fórmula describe mejor lo que necesitaba el equipo?', o: [['Objetivo compartido + coordinación + interdependencia + responsabilidad individual.', 1], ['Google Docs + roles + comentarios + revisión + acuerdos + historial + responsabilidad.', 1], ['Google Docs + cuatro personas = colaboración.', 0], ['Un archivo compartido por todos + una fecha de entrega clara = colaboración entre todos los integrantes.', 0], ['Más herramientas digitales + menos reuniones = colaboración efectiva.', 0]], why: 'Las dos fórmulas de la clase: la colaboración exige objetivo, coordinación, interdependencia y responsabilidad, y la herramienta solo funciona con roles, revisión e historial.' },
+      { id: 'c01q5', q: 'El equipo dice: «Usamos el mismo archivo, así que colaboramos». ¿Qué le responderías?', o: [['Una herramienta colaborativa no crea colaboración automáticamente.', 1], ['Las herramientas no colaboran; las personas sí, según cómo se organizan.', 1], ['Tienen razón: compartir un archivo ya es colaborar.', 0], ['Tienen razón, siempre que todos hayan podido editar el documento al mismo tiempo.', 0], ['Les faltó una herramienta más completa que hiciera la integración.', 0]], why: 'Una herramienta puede conectar personas, pero la colaboración depende de cómo esas personas se organizan.' }
+    ] },
+  { id: 'c02', title: 'Revista Raíces', text: 'Revista Raíces es una publicación digital de cinco estudiantes de comunicación. Escriben en Google Docs, se coordinan por un grupo de WhatsApp con más de 300 mensajes por semana y guardan las fotos en el celular de cada uno. Esta semana dos integrantes escribieron la misma nota sin saberlo y nadie encontró las fotos aprobadas para la portada.',
+    qs: [
+      { id: 'c02q1', q: '¿Qué necesidades del equipo no están bien cubiertas por sus herramientas actuales?', o: [['Gestionar tareas para saber quién está haciendo cada nota.', 1], ['Almacenar los archivos en un lugar común y organizado.', 1], ['Escribir conjuntamente sobre un mismo documento.', 0], ['Comunicarse en tiempo real con todos los integrantes del equipo editorial.', 0], ['Recopilar ideas en una pizarra digital.', 0]], why: 'Ya escriben juntos y ya se comunican. Les falta gestionar tareas (por eso duplicaron la nota) y almacenar archivos en común (por eso perdieron las fotos).' },
+      { id: 'c02q2', q: 'Según la tabla de herramientas de la clase, ¿cuáles resolverían esas necesidades?', o: [['Trello o Planner para gestionar las tareas.', 1], ['Google Drive u OneDrive para almacenar archivos.', 1], ['Notion para organizar tareas e información.', 1], ['Miro para guardar las fotos aprobadas.', 0], ['Zoom para asignar quién escribe cada nota.', 0]], why: 'Trello, Planner, Asana y Notion gestionan tareas; Drive y OneDrive almacenan archivos. Miro sirve para recopilar ideas y Zoom para comunicarse.' },
+      { id: 'c02q3', q: '¿Qué principio debería guiar su elección de herramientas?', o: [['Primero identificar qué necesita el equipo y después elegir la herramienta.', 1], ['Elegir herramientas que cubran necesidades concretas, no por moda.', 1], ['Usar todas las herramientas posibles para no quedarse cortos.', 0], ['Elegir la herramienta más popular del curso, aunque no cubra lo que el equipo necesita.', 0], ['Mantener solo WhatsApp, porque todos ya lo usan a diario.', 0]], why: 'La idea central de la tabla: la necesidad del equipo decide la herramienta, no al revés.' },
+      { id: 'c02q4', q: '¿Qué tareas están bien formuladas para el tablero del equipo?', o: [['Escribir la nota sobre el mercado campesino (800 palabras) y subirla al Drive el jueves.', 1], ['Seleccionar 3 fotos para la portada y dejarlas en la carpeta «Portada».', 1], ['Encargarse de todo lo relacionado con las fotos de la revista durante el resto del semestre.', 0], ['Ayudar con lo que haga falta para la próxima edición.', 0], ['Mejorar la calidad general de las notas de este mes.', 0]], why: 'Una tarea concreta y verificable dice qué entregar, cuánto, dónde y cuándo. «Ayudar» o «mejorar» no se pueden comprobar.' },
+      { id: 'c02q5', q: 'Además de cambiar herramientas, ¿qué componentes de la colaboración deberían fortalecer?', o: [['Roles, para que cada integrante sepa cuál es su responsabilidad.', 1], ['Seguimiento, para saber qué se ha hecho y qué falta.', 1], ['Más mensajes en WhatsApp para estar siempre informados.', 0], ['Un solo integrante que haga todo para evitar duplicados.', 0], ['Reuniones diarias de dos horas para revisar cada nota.', 0]], why: 'La duplicación muestra que faltan roles claros y seguimiento. Más mensajes o concentrar el trabajo en una persona no lo resuelven.' }
+    ] },
+  { id: 'c03', title: 'Proyecto Nodo', text: 'Proyecto Nodo es un equipo que diseña una propuesta de app para el campus. En su carpeta hay archivos llamados propuesta.docx, propuesta_final.docx, propuesta_final2.docx y propuesta_final_ahora_si.docx. Ayer alguien borró la sección de presupuesto y nadie sabe quién fue ni en cuál archivo estaba la versión correcta. La entrega es mañana a las 8:00 a. m.',
+    qs: [
+      { id: 'c03q1', q: '¿Qué problemas muestra la forma en que nombran y guardan los archivos?', o: [['Nadie puede saber con certeza cuál es la última versión.', 1], ['No hay registro de qué cambió ni de quién hizo cada cambio.', 1], ['Usan formato .docx en lugar de PDF para la propuesta.', 0], ['Guardan demasiadas copias de seguridad del mismo trabajo.', 0], ['Los nombres de los archivos están en español y no en inglés.', 0]], why: 'Es el «pasado caótico» de la clase: muchas versiones sin control impiden saber cuál es la última y quién hizo cada cambio.' },
+      { id: 'c03q2', q: '¿Qué prácticas de versionamiento les habrían evitado perder el presupuesto?', o: [['Trabajar en un solo documento con historial de cambios.', 1], ['Recuperar una versión anterior desde el historial del documento.', 1], ['Dejar comentarios que expliquen los cambios importantes.', 1], ['Crear un archivo nuevo con «final» en el nombre cada día.', 0], ['Enviar el documento por correo cada vez que alguien lo edita.', 0]], why: 'El estándar profesional es historial de cambios, comentarios y recuperación de versiones, no copias con nombres distintos.' },
+      { id: 'c03q3', q: '¿Por qué no basta con que «todos editen libremente» el documento?', o: [['Porque no todo cambio que se hace mejora un documento.', 1], ['Porque hay que poder saber qué cambió, quién y cuándo.', 1], ['Porque editar en línea siempre daña el formato del archivo.', 0], ['Porque solo el coordinador debería poder escribir en él.', 0], ['Porque los cambios automáticos borran las secciones antiguas.', 0]], why: 'La regla de la clase: no todo cambio mejora un documento, por eso se necesita saber qué cambió y quién lo cambió y poder recuperar versiones.' },
+      { id: 'c03q4', q: 'Si se confirma que el editor borró el presupuesto, ¿qué es correcto?', o: [['El editor integra aportes, pero no debería borrar arbitrariamente los de otros.', 1], ['La trazabilidad del cambio permite saber qué pasó y corregirlo.', 1], ['El editor tiene derecho a borrar cualquier sección que no le guste, porque es quien integra el documento.', 0], ['Como el trabajo es grupal, no importa quién borró la sección.', 0], ['Hay que expulsar al editor del equipo antes de la entrega.', 0]], why: 'Si el editor elimina información importante, debe existir trazabilidad del cambio. El equipo responde por el producto y cada uno por su participación.' },
+      { id: 'c03q5', q: '¿Qué elementos hacen parte del versionamiento en herramientas colaborativas?', o: [['Historial de cambios', 1], ['Registro de modificaciones', 1], ['Recuperación de versiones anteriores', 1], ['Plantillas de diseño predeterminadas', 0], ['Notificaciones de cumpleaños', 0]], why: 'La clase listó historial de cambios, comentarios, control de versiones, registro de modificaciones y recuperación de versiones anteriores.' }
+    ] },
+  { id: 'c04', title: 'Laboratorio Andina', text: 'Laboratorio Andina es un equipo de cinco integrantes que prepara una exposición sobre energías renovables. Camila es la coordinadora y terminó haciendo casi todo: buscó fuentes, escribió y diseñó. Mateo, el presentador, no leyó el documento y solo memorizó las diapositivas. Laura, la verificadora, dice que no le toca proponer cambios porque «su rol es solo revisar».',
+    qs: [
+      { id: 'c04q1', q: '¿Qué errores cometió Camila como coordinadora?', o: [['Hizo el trabajo de los demás en lugar de coordinarlos.', 1], ['No distribuyó las tareas entre los integrantes del equipo.', 1], ['Controló los tiempos de entrega del equipo.', 0], ['Facilitó que el equipo tomara decisiones conjuntas.', 0], ['Organizó el trabajo antes de empezar a producir.', 0]], why: 'El coordinador organiza, distribuye tareas, controla tiempos y facilita decisiones; su función es coordinar, no hacer el trabajo de los demás.' },
+      { id: 'c04q2', q: 'Sobre Mateo, el presentador, ¿qué es correcto?', o: [['Debe conocer el producto final, no solo las diapositivas.', 1], ['Representa al equipo en la socialización y prepara la explicación.', 1], ['Su único trabajo es diseñar diapositivas atractivas.', 0], ['No necesita leer el documento porque no lo escribió.', 0], ['Puede improvisar el contenido de la exposición si las diapositivas están claras.', 0]], why: 'El presentador conoce el producto final, prepara la explicación y representa al equipo. Por eso necesita dominar todo el contenido.' },
+      { id: 'c04q3', q: 'Laura dice que no le toca proponer cambios. ¿Qué le responderías?', o: [['El rol define una responsabilidad principal, no una frontera absoluta.', 1], ['El verificador también puede proponer cambios cuando detecta problemas.', 1], ['Tiene razón: cada rol tiene límites estrictos que no se deben cruzar.', 0], ['Tiene razón: proponer cambios es tarea exclusiva del coordinador.', 0], ['Debería cambiar de rol con el editor, que es el único que puede proponer cambios.', 0]], why: 'Los roles no significan que solo una persona pueda hacer cada cosa. Todos aportan y todos revisan; el verificador puede proponer cambios.' },
+      { id: 'c04q4', q: '¿Qué funciones le corresponden al investigador del equipo?', o: [['Buscar información y seleccionar fuentes.', 1], ['Aportar evidencias al trabajo del equipo.', 1], ['Registrar las fuentes que se utilizaron.', 1], ['Integrar los aportes y cuidar la coherencia.', 0], ['Representar al equipo en la socialización.', 0]], why: 'El investigador busca, selecciona, aporta evidencias y registra fuentes. Integrar es del editor y representar al equipo, del presentador.' },
+      { id: 'c04q5', q: '¿Qué funciones corresponden al editor y cuáles al verificador? Marca las que están bien asignadas.', o: [['Editor: integrar los aportes y cuidar la coherencia del documento.', 1], ['Verificador: detectar errores y comprobar las fuentes utilizadas.', 1], ['Editor: buscar fuentes nuevas cuando faltan datos en el informe.', 0], ['Verificador: preparar la explicación del producto para la socialización final.', 0], ['Editor: distribuir las tareas y controlar los tiempos del equipo.', 0]], why: 'El editor integra y organiza; el verificador revisa, detecta errores y comprueba fuentes. Las otras funciones son del investigador, el presentador y el coordinador.' }
+    ] },
+  { id: 'c05', title: 'Feria Emprende', text: 'Un equipo organiza su stand para la Feria Emprende de la universidad. Su tablero en Trello tiene tareas como «Investigar sobre el tema», «Hacer lo del diseño» y «Ver lo de la logística». Ninguna tiene responsable ni fecha. A tres días de la feria, cada integrante cree que otro se encargó del pendón y nadie compró los materiales.',
+    qs: [
+      { id: 'c05q1', q: '¿Por qué tareas como «Hacer lo del diseño» generan problemas?', o: [['No son concretas: no dicen qué se debe entregar exactamente.', 1], ['No son verificables: no hay forma de saber si se cumplieron.', 1], ['Están escritas en un tablero digital en vez de en papel.', 0], ['Son demasiado cortas para ser entendidas por el equipo.', 0], ['Están en Trello, que no sirve para gestionar tareas.', 0]], why: 'Una tarea digital efectiva debe ser concreta y verificable. Trello sí sirve para gestionar tareas; el problema es cómo están redactadas.' },
+      { id: 'c05q2', q: '¿Qué datos le faltan a cada tarea del tablero?', o: [['Responsable', 1], ['Fecha límite', 1], ['Evidencia de cumplimiento', 1], ['Color de la tarjeta', 0], ['Número de comentarios', 0]], why: 'La estructura vista en clase es tarea, responsable, estado, fecha y evidencia.' },
+      { id: 'c05q3', q: '¿Cuáles son reformulaciones correctas de «Hacer lo del diseño»?', o: [['Diseñar el pendón de 80 × 180 cm y subir el archivo final al Drive el martes.', 1], ['Entregar tres propuestas de logo en PDF a la coordinadora antes del lunes.', 1], ['Hacer el diseño del stand con mucha creatividad y buen gusto para que se vea profesional.', 0], ['Encargarse de todo lo visual de la feria durante esta semana.', 0], ['Pensar en ideas de diseño y comentarlas cuando haya tiempo.', 0]], why: 'Las reformulaciones correctas precisan producto, cantidad, formato, destino y fecha. Las otras siguen siendo vagas y no verificables.' },
+      { id: 'c05q4', q: '«Cada uno cree que otro se encargó del pendón.» ¿Qué componentes de la colaboración fallaron?', o: [['Roles: nadie sabía qué responsabilidad tenía cada uno.', 1], ['Seguimiento: no era posible ver qué estaba hecho y qué faltaba.', 1], ['Coautoría: el pendón debía diseñarlo una sola persona sin la opinión del resto.', 0], ['Versionamiento: les faltó guardar copias del pendón.', 0], ['Objetivo común: no querían participar en la feria.', 0]], why: 'Sin roles claros nadie asume la tarea, y sin seguimiento nadie nota que está pendiente.' },
+      { id: 'c05q5', q: '¿Qué estados permiten hacer seguimiento a las tareas en el tablero?', o: [['Pendiente', 1], ['En proceso', 1], ['Terminada', 1], ['Importante para mí', 0], ['Lo hace otro', 0]], why: 'El estado de la tarea muestra su avance: pendiente, en proceso o terminada. Así se sabe qué se ha hecho y qué falta.' }
+    ] },
+  { id: 'c06', title: 'Semillero Datos Abiertos', text: 'El Semillero Datos Abiertos prepara un informe sobre calidad del aire. Tomás, el investigador, incluyó una cifra de un blog sin autor que nadie revisó. Durante la socialización, el docente preguntó por la fuente y el equipo no supo responder. Tomás dice que no es su culpa porque «el trabajo era de todos», y Natalia, la verificadora, dice que nadie le avisó que debía revisar las cifras.',
+    qs: [
+      { id: 'c06q1', q: '¿Quién responde por qué en esta situación?', o: [['El equipo responde por el producto final presentado.', 1], ['Tomás responde por la fuente que incorporó al informe.', 1], ['Nadie, porque el error fue de todos por igual.', 0], ['Solo el docente, por no avisar que revisaría las fuentes.', 0], ['Solo el presentador, porque fue quien lo dijo en voz alta.', 0]], why: 'El equipo responde por el producto, pero cada integrante debe responder por su participación.' },
+      { id: 'c06q2', q: '¿Qué debió hacer Natalia como verificadora?', o: [['Comprobar las fuentes de las cifras del informe.', 1], ['Detectar el dato sin autor antes de la socialización.', 1], ['Esperar a que alguien le indicara qué revisar.', 0], ['Revisar solo la ortografía y el formato del informe antes de enviarlo al docente.', 0], ['Reemplazar la cifra por otra sin consultar a nadie.', 0]], why: 'El verificador revisa información, detecta errores y comprueba fuentes; es su responsabilidad principal, no algo que deban pedirle.' },
+      { id: 'c06q3', q: '¿Por qué la frase «el trabajo era de todos» no es suficiente?', o: [['Porque cada integrante responde por su propia participación.', 1], ['Porque la trazabilidad permite ver quién hizo cada aporte y cuándo.', 1], ['Porque los trabajos grupales se califican siempre de forma individual.', 0], ['Porque el investigador es el jefe del equipo en todo semillero.', 0], ['Porque solo cuenta lo que se dice en la socialización final.', 0]], why: 'Si un trabajo es grupal, no basta con decir «era grupal»: cada uno responde por su parte y el historial muestra quién hizo qué.' },
+      { id: 'c06q4', q: '¿Qué prácticas habrían evitado el problema?', o: [['Registrar en el documento la fuente de cada dato.', 1], ['Que el verificador revisara las fuentes antes de la entrega.', 1], ['Dejar comentarios sobre los datos dudosos para resolverlos.', 1], ['Usar solamente cifras que aparezcan en blogs muy populares.', 0], ['Eliminar todas las cifras para no correr riesgos.', 0]], why: 'Registrar fuentes, verificarlas y comentar las dudas son parte del sistema colaborativo: verificación, comunicación y trazabilidad.' },
+      { id: 'c06q5', q: '¿Qué herramientas de la clase ayudan a gestionar la información y las fuentes del equipo?', o: [['Zotero', 1], ['Notion', 1], ['Canva', 0], ['Zoom', 0], ['FigJam', 0]], why: 'Para gestionar información la clase propuso Zotero, Drive y Notion. Canva es para presentaciones, Zoom para comunicarse y FigJam para recopilar ideas.' }
+    ] },
+  { id: 'c07', title: 'Colectivo Eco Campus', text: 'El Colectivo Eco Campus quiere organizar una campaña de reciclaje. En la primera reunión, cada integrante propuso su aplicación favorita: Notion, Asana, Trello, Miro, Slack y Canva. Pasaron una hora discutiendo herramientas y no definieron qué querían lograr, quién haría qué ni para cuándo. Al final abrieron cuentas en las seis aplicaciones.',
+    qs: [
+      { id: 'c07q1', q: '¿Cuál fue el error principal de la primera reunión?', o: [['Eligieron herramientas antes de identificar lo que necesitaba el equipo.', 1], ['No definieron el objetivo común del equipo antes de organizarse.', 1], ['Usaron herramientas gratuitas en lugar de herramientas de pago.', 0], ['Se reunieron en persona en lugar de hacerlo de manera virtual.', 0], ['Propusieron muy pocas herramientas para una campaña grande.', 0]], why: 'Primero se identifica qué necesita el equipo y después se elige la herramienta. Y todo empieza por el objetivo común.' },
+      { id: 'c07q2', q: '¿Con qué debería comenzar su organización, según la cadena de cierre de la clase?', o: [['Con el objetivo: que todos sepan qué intentan conseguir.', 1], ['Con los roles: que cada uno sepa qué responsabilidad tiene.', 1], ['Con la trazabilidad: revisar quién abrió cada cuenta.', 0], ['Con la coautoría: escribir juntos el informe final.', 0], ['Con la verificación: revisar los diseños antes de hacerlos.', 0]], why: 'La cadena va de objetivo a roles, tareas, comunicación, coautoría, verificación, trazabilidad y responsabilidad.' },
+      { id: 'c07q3', q: 'Abrieron seis aplicaciones. ¿Qué riesgos tiene esa decisión?', o: [['La información queda dispersa y nadie sabe dónde está cada cosa.', 1], ['Varias herramientas cumplen la misma necesidad y se duplican.', 1], ['Las aplicaciones colaboran solas cuando hay muchas conectadas.', 0], ['Tener más herramientas abiertas garantiza una mejor colaboración entre los integrantes.', 0], ['Notion y Asana no se pueden usar en el mismo semestre.', 0]], why: 'Tener muchas herramientas no crea colaboración; dispersa la información y duplica funciones. Las herramientas no colaboran, las personas sí.' },
+      { id: 'c07q4', q: 'Si su necesidad principal es gestionar las tareas de la campaña, ¿qué opciones son coherentes?', o: [['Elegir solo una entre Trello, Asana o Notion para el tablero.', 1], ['Registrar en ella cada tarea con responsable y fecha.', 1], ['Usar Canva como tablero principal de tareas del equipo.', 0], ['Mantener las seis aplicaciones activas por si acaso.', 0], ['Gestionar las tareas solo por mensajes de voz.', 0]], why: 'Una herramienta de gestión de tareas bien usada, con responsable y fecha, es mejor que seis abiertas sin criterio.' },
+      { id: 'c07q5', q: '¿Qué frases de la clase resumen la lección para este colectivo?', o: [['«Una herramienta puede conectar personas, pero la colaboración depende de cómo se organizan.»', 1], ['«Primero identificamos qué necesita el equipo, después elegimos la herramienta.»', 1], ['«Entre más aplicaciones use un equipo, más colaborativo será su trabajo.»', 0], ['«Una buena herramienta digital reemplaza la necesidad de definir roles y tareas en el equipo de trabajo.»', 0], ['«La colaboración empieza el día en que todos abren una cuenta en común.»', 0]], why: 'La colaboración depende de la organización de las personas, y las herramientas se eligen según las necesidades del equipo.' }
+    ] },
+  { id: 'c08', title: 'Equipo Kuna', text: 'Equipo Kuna desarrolla una guía digital para estudiantes de primer semestre. Han pasado tres semanas y Diego no ha hecho ningún aporte: en el historial del documento no aparece ningún cambio suyo y sus tareas en el tablero siguen en «Pendiente». El día de la entrega, Diego le dice al docente que sí trabajó, pero que «todo se hizo en grupo».',
+    qs: [
+      { id: 'c08q1', q: '¿Qué evidencias permiten conocer la participación real de Diego?', o: [['El historial de cambios del documento compartido.', 1], ['El estado de sus tareas en el tablero del equipo.', 1], ['Lo que Diego diga el día de la entrega.', 0], ['El número de mensajes que leyó en el grupo de WhatsApp del equipo.', 0], ['La nota que obtuvo en el trabajo anterior.', 0]], why: 'Si un integrante no participa, debe existir evidencia en la plataforma: el historial y el estado de las tareas dan trazabilidad.' },
+      { id: 'c08q2', q: '¿Qué principio de la clase aplica a la situación de Diego?', o: [['El equipo responde por el producto, pero cada uno por su participación.', 1], ['No basta con decir «pero era un trabajo grupal» para justificarse.', 1], ['En un trabajo grupal todos merecen siempre la misma nota.', 0], ['La responsabilidad individual desaparece en los equipos grandes.', 0], ['Solo el coordinador responde por la inactividad de los demás.', 0]], why: 'La responsabilidad individual no se diluye en el grupo. Decir que el trabajo era grupal no justifica la falta de participación.' },
+      { id: 'c08q3', q: '¿Qué debió hacer la coordinadora al notar que Diego no avanzaba?', o: [['Revisar el tablero y hablar con Diego sobre sus tareas pendientes.', 1], ['Redistribuir o reprogramar las tareas para no afectar la entrega.', 1], ['Hacer en silencio las tareas de Diego para cubrirlo.', 0], ['Esperar hasta el día de la entrega para ver si Diego se ponía al día por su cuenta.', 0], ['Borrar el nombre de Diego del documento sin hablar con él.', 0]], why: 'El coordinador controla tiempos y distribuye tareas. Hacer el trabajo de otros o esperar sin actuar no es coordinar.' },
+      { id: 'c08q4', q: '¿Qué característica del trabajo colaborativo, frente al trabajo en grupo, hace visible el caso de Diego?', o: [['Existe mayor trazabilidad de los aportes individuales.', 1], ['Hay interacción constante, así que la ausencia se nota.', 1], ['El producto final oculta los aportes individuales.', 0], ['Se puede unir todo al final sin revisar quién hizo qué.', 0], ['Cada uno puede hacer su parte sin relacionarla con otras.', 0]], why: 'En el trabajo en grupo el producto puede ocultar los aportes individuales; en el colaborativo hay trazabilidad e interacción constante.' },
+      { id: 'c08q5', q: '¿Qué componentes del ecosistema colaborativo permiten actuar a tiempo ante un integrante inactivo?', o: [['Seguimiento', 1], ['Comunicación', 1], ['Responsabilidad individual', 1], ['Coautoría sin registro', 0], ['Diseño visual', 0]], why: 'El seguimiento muestra lo pendiente, la comunicación permite hablarlo y la responsabilidad individual define quién responde por cada tarea.' }
+    ] },
+  { id: 'c09', title: 'Guía Primíparos', text: 'Cuatro estudiantes que viven en Bucaramanga, Cúcuta y Barrancabermeja crean una guía digital para primíparos sin poder reunirse en persona. Usan Google Docs para escribir, Meet para reunirse los martes y Planner para las tareas. Cada uno tiene un rol, comentan los aportes de los demás y toman las decisiones importantes en la reunión semanal.',
+    qs: [
+      { id: 'c09q1', q: '¿Qué hace que este equipo realmente colabore aunque no esté junto?', o: [['Las partes se relacionan porque comentan los aportes de los demás.', 1], ['Se coordinan responsabilidades mediante roles definidos.', 1], ['Toman las decisiones importantes de forma conjunta.', 1], ['Cada uno trabaja aislado y une su parte al final del semestre.', 0], ['Usan tres herramientas, que es el número ideal para colaborar.', 0]], why: 'Las partes se relacionan, hay roles y decisiones conjuntas. El número de herramientas no define la colaboración.' },
+      { id: 'c09q2', q: '¿Qué necesidad cubre cada herramienta que usan?', o: [['Google Docs: escribir conjuntamente.', 1], ['Meet: comunicarse y tomar decisiones.', 1], ['Planner: gestionar las tareas.', 1], ['Meet: almacenar los archivos de la guía.', 0], ['Planner: recopilar ideas en una pizarra.', 0]], why: 'Según la tabla: Docs para escribir juntos, Meet para comunicarse y Planner para gestionar tareas.' },
+      { id: 'c09q3', q: 'Para recopilar ideas sobre el diseño de la guía, ¿qué herramientas serían adecuadas?', o: [['Miro', 1], ['FigJam', 1], ['Zotero', 0], ['OneDrive', 0], ['Planner', 0]], why: 'Miro y FigJam son las herramientas propuestas para recopilar ideas. Zotero gestiona información y OneDrive almacena archivos.' },
+      { id: 'c09q4', q: '¿Qué componentes del ecosistema colaborativo se observan en el caso?', o: [['Roles', 1], ['Comunicación', 1], ['Coautoría', 1], ['Competencia entre integrantes', 0], ['Trabajo aislado', 0]], why: 'Tienen roles definidos, se comunican cada semana y construyen la guía en coautoría.' },
+      { id: 'c09q5', q: '¿Qué afirmaciones sobre este equipo son correctas?', o: [['Muestra que sí se puede trabajar juntos sin estar juntos físicamente.', 1], ['Su producto funciona como un todo, no como partes sueltas.', 1], ['Colaboran porque usan herramientas, sin importar cómo se organizan.', 0], ['No necesitan versionamiento porque se reúnen cada semana.', 0], ['Al estar en ciudades distintas, su trabajo es en grupo y no colaborativo.', 0]], why: 'La colaboración depende de cómo se organizan, no del lugar: su trabajo funciona como un todo aunque estén lejos.' }
+    ] },
+  { id: 'c10', title: 'Hackatón Verde', text: 'En la Hackatón Verde, dos equipos tuvieron 48 horas para proponer una solución ambiental. El equipo Sol dividió el reto en cinco partes, cada uno trabajó por separado y unieron todo en la última hora. El equipo Río definió un objetivo, asignó roles, revisó los aportes de los demás en un tablero y un documento compartido, y decidió cada cambio importante en conjunto.',
+    qs: [
+      { id: 'c10q1', q: '¿Qué rasgos del equipo Sol corresponden al trabajo en grupo?', o: [['Se dividió el trabajo entre los integrantes.', 1], ['Se unió todo al final del reto.', 1], ['Pudo existir poca interacción entre ellos.', 1], ['Construyeron sobre el trabajo de otros.', 0], ['Hubo interacción constante durante el reto.', 0]], why: 'Dividir el trabajo, unir al final y tener poca interacción son rasgos del trabajo en grupo según la tabla de la clase.' },
+      { id: 'c10q2', q: '¿Qué rasgos del equipo Río corresponden al trabajo colaborativo?', o: [['Se coordinaron responsabilidades con roles.', 1], ['El producto se construyó conjuntamente.', 1], ['Hubo mayor trazabilidad de los aportes.', 1], ['Cada uno hizo una parte sin relacionarla.', 0], ['El producto ocultó los aportes individuales.', 0]], why: 'Coordinar responsabilidades, construir juntos y tener trazabilidad son rasgos del trabajo colaborativo.' },
+      { id: 'c10q3', q: '¿Qué frase diría cada equipo al terminar? Marca las que están bien asignadas.', o: [['Sol: «Yo hice mi parte».', 1], ['Río: «Nuestro trabajo funciona como un todo».', 1], ['Sol: «Construimos sobre el trabajo de otros».', 0], ['Río: «Cada uno hizo su parte por separado».', 0], ['Sol: «Revisamos los aportes de todos».', 0]], why: 'En el trabajo en grupo se dice «yo hice mi parte»; en el colaborativo, «nuestro trabajo funciona como un todo».' },
+      { id: 'c10q4', q: 'Según la frase final de la clase, ¿qué logró cada equipo con su forma de trabajar?', o: [['Sol, al dividir el trabajo, redujo la carga individual de cada uno.', 1], ['Río, al colaborar, aumentó la capacidad del equipo para resolver el reto.', 1], ['Sol, al dividir el trabajo, aumentó la capacidad del equipo para innovar.', 0], ['Río, al colaborar, redujo la carga de trabajo de cada integrante a cero.', 0], ['Ambos lograron lo mismo, porque los dos usaron herramientas digitales.', 0]], why: '«Dividir un trabajo reduce la carga individual. Colaborar aumenta la capacidad del equipo.»' },
+      { id: 'c10q5', q: '¿Qué elementos de la cadena de cierre aplicó el equipo Río?', o: [['Objetivo', 1], ['Roles', 1], ['Verificación', 1], ['Competencia', 0], ['Improvisación', 0]], why: 'Río definió un objetivo, asignó roles y revisó los aportes de los demás (verificación), como propone la cadena de la clase.' }
+    ] }
+];
+
+/* =================== BANCO 3: ORDENAR (10) =================== */
+var ORD = [
+  { id: 'o01', sit: 'Según la cadena de cierre de la clase, ordena cómo empieza a organizarse un equipo colaborativo.', steps: ['Definir el objetivo común que todos quieren conseguir', 'Asignar los roles y la responsabilidad principal de cada uno', 'Dividir el objetivo en tareas concretas y verificables', 'Acordar cómo se van a comunicar y a tomar decisiones'], why: 'La cadena de la clase empieza así: objetivo, roles, tareas y comunicación. Sin objetivo no se pueden definir roles, y sin roles no hay a quién asignar tareas.' },
+  { id: 'o02', sit: 'Según la cadena de cierre de la clase, ordena cómo termina el trabajo de un equipo colaborativo.', steps: ['Construir el producto en coautoría sobre un documento compartido', 'Verificar las fuentes, los errores y los requisitos del producto', 'Revisar la trazabilidad: qué cambió, quién lo cambió y cuándo', 'Asumir cada integrante la responsabilidad por su participación'], why: 'La segunda mitad de la cadena: coautoría, verificación, trazabilidad y responsabilidad.' },
+  { id: 'o03', sit: 'Tu equipo necesita una herramienta para organizar su trabajo. Ordena el proceso.', steps: ['Identificar la necesidad del equipo, por ejemplo, gestionar tareas', 'Revisar qué herramientas cubren esa necesidad', 'Elegir una sola herramienta y acordar cómo se usará', 'Registrar en ella las tareas con responsable y fecha'], why: 'Primero identificamos qué necesita el equipo y después elegimos la herramienta; solo entonces se empieza a usar.' },
+  { id: 'o04', sit: 'En el tablero aparece la tarea «Investigar sobre el tema». Ordena cómo convertirla en una tarea útil y cumplirla.', steps: ['Reconocer que la tarea es vaga y no se puede verificar', 'Reescribirla: localizar tres fuentes académicas y registrar autor, año, título y enlace', 'Registrarla en el tablero con responsable, fecha y estado «Pendiente»', 'Cambiar el estado a «En proceso» cuando el responsable empieza', 'Adjuntar la evidencia y marcar la tarea como terminada'], why: 'Una tarea efectiva es concreta y verificable, tiene responsable, fecha y estado, y se cierra con evidencia.' },
+  { id: 'o05', sit: 'Ordena el recorrido de una fuente desde que se encuentra hasta que se presenta, según los roles de la clase.', steps: ['El investigador busca la fuente y la registra', 'El verificador comprueba que la fuente sea confiable', 'El editor integra la información al documento con coherencia', 'El presentador la explica al grupo en la socialización'], why: 'Cada rol aporta en su momento: investigar, verificar, integrar y presentar.' },
+  { id: 'o06', sit: 'Al abrir el documento compartido notas que desapareció la sección de presupuesto. Ordena cómo actuar.', steps: ['Abrir el historial de versiones del documento', 'Identificar qué cambió, quién lo hizo y cuándo', 'Restaurar la versión anterior con la sección completa', 'Dejar un comentario al equipo explicando lo que se recuperó'], why: 'El versionamiento permite saber qué cambió y quién lo cambió y recuperar una versión anterior; luego se comunica al equipo.' },
+  { id: 'o07', sit: 'El investigador incorporó una cifra sin fuente confiable. Ordena cómo debería resolverse en un equipo colaborativo.', steps: ['El verificador detecta la cifra sin fuente confiable', 'Deja un comentario en el documento señalando el problema', 'El investigador busca una fuente confiable y corrige el dato', 'El verificador confirma la corrección y cierra el comentario'], why: 'El verificador detecta y comenta, el responsable corrige y el verificador confirma: así queda trazabilidad del cambio.' },
+  { id: 'o08', sit: 'Un integrante lleva dos semanas sin aportar. Ordena cómo debería actuar el equipo.', steps: ['Revisar el tablero y el historial para confirmar que no hay aportes', 'La coordinadora habla con el integrante sobre sus tareas pendientes', 'Acordar una nueva fecha o redistribuir las tareas', 'Si la situación persiste, informar al docente con la evidencia de la plataforma'], why: 'Primero se confirma con evidencia, luego se conversa, se reorganiza y, si persiste, se informa con la trazabilidad de la plataforma.' },
+  { id: 'o09', sit: 'Cuatro estudiantes quieren pasar de «dividir el trabajo» a colaborar en su informe. Ordena su sesión de trabajo.', steps: ['Acordar el objetivo y los requisitos del informe', 'Repartir los roles y las tareas de cada integrante', 'Escribir cada uno en el documento compartido, consultando las fuentes de los demás', 'Revisar y comentar los aportes de los compañeros', 'Tomar juntos las decisiones finales y entregar'], why: 'Es el equipo de «La alternativa»: responsabilidades distintas, fuentes mutuas, comentarios, revisión y decisiones conjuntas.' },
+  { id: 'o10', sit: 'Tu equipo debe socializar su producto ante el grupo. Ordena el cierre del trabajo.', steps: ['El editor integra los aportes en la versión final del documento', 'El verificador revisa la coherencia y el cumplimiento de los requisitos', 'El presentador estudia el producto final y prepara la explicación', 'El presentador representa al equipo en la socialización'], why: 'Primero se integra, luego se verifica la versión final y solo entonces el presentador la prepara y la expone.' }
+];
+
+/* =================== UTILIDADES =================== */
+var MCMAP = {}; CASES.forEach(function (c) { c.qs.forEach(function (q) { MCMAP[q.id] = { c: c, q: q }; }); });
+var TFMAP = {}; TF.forEach(function (q) { TFMAP[q.id] = q; });
+var ORDMAP = {}; ORD.forEach(function (q) { ORDMAP[q.id] = q; });
+var CASEMAP = {}; CASES.forEach(function (c) { CASEMAP[c.id] = c; });
+var LETTERS = 'ABCDE';
+var TYPE_LABEL = { tf: 'Verdadero o falso', mc: 'Caso', ord: 'Ordenar' };
+
+function rnd(n) {
+  try { var a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; } catch (e) { return Math.floor(Math.random() * n); }
+}
+function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function fp(s) { var a = 0x811c9dc5, b = 0x9e3779b1; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); a ^= c; a = Math.imul(a, 16777619) >>> 0; b = Math.imul(b ^ c, 0x5bd1e995) >>> 0; b = (b ^ (b >>> 15)) >>> 0; } return a.toString(16) + '-' + b.toString(16); }
+function fmtPts(p) { return (Math.round(p * 10) / 10).toFixed(1).replace('.', ','); }
+
+/* =================== ESTADO (en este navegador) =================== */
+var S;
+function blank() { return { used: {}, results: [], current: null }; }
+try { S = JSON.parse(localStorage.getItem(STORE)); } catch (e) { S = null; }
+if (!S || typeof S !== 'object' || !S.used) S = blank();
+var storageOk = true;
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) { storageOk = false; } }
+
+function availTF() { return TF.filter(function (q) { return !S.used[q.id]; }); }
+function availCase(c) { return c.qs.filter(function (q) { return !S.used[q.id]; }); }
+function availORD() { return ORD.filter(function (q) { return !S.used[q.id]; }); }
+function capacity() {
+  var tf = Math.floor(availTF().length / 2), ord = availORD().length;
+  var mc = CASES.reduce(function (s, c) { return s + Math.floor(availCase(c).length / 2); }, 0);
+  return Math.min(tf, ord, mc);
+}
+
+/* =================== VISTAS =================== */
+var app = document.getElementById('app');
+var layer = document.getElementById('layer');
+var view = 'home';
+var lastGame = null;
+var formName = '', formCase = 'random', formErr = '';
+var admin = { open: false, unlocked: false, err: '', confirm: false, wipe: false, done: '' };
+var flashMsg = '';
+var dragFrom = null;
+var busy = false;
+
+var ICON = {
+  people: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.8 14.2c2.3.2 4 1.8 4.6 4.8"/></svg>',
+  swap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3.5-3.5"/><path d="M20 16H7l3.5 3.5"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+  grip: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>'
+};
+var EMBLEM = '<svg class="emblem" viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5fd3f0"/><stop offset="1" stop-color="#9a8cff"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="none" stroke="url(#eg)" stroke-width="2.5"/><circle cx="60" cy="60" r="42" fill="none" stroke="#5fd3f0" stroke-opacity=".35" stroke-width="1.5"/><g stroke="#5fd3f0" stroke-width="1.6" fill="none" stroke-opacity=".85"><path d="M30 78 L48 62 L66 70 L88 44 M48 62 L56 40 L76 32 M56 40 L66 70"/></g><g fill="#5fd3f0"><circle cx="30" cy="78" r="3.5"/><circle cx="48" cy="62" r="4.5"/><circle cx="66" cy="70" r="3.5"/><circle cx="88" cy="44" r="5"/><circle cx="56" cy="40" r="3.5"/><circle cx="76" cy="32" r="3.5"/></g></svg>';
+
+function render() {
+  if (view === 'game' && S.current) renderGame();
+  else if (view === 'summary' && lastGame) renderSummary();
+  else { view = 'home'; renderHome(); }
+  renderLayer();
+}
+
+/* ---------- Inicio ---------- */
+function renderHome() {
+  var cap = capacity();
+  var cur = S.current;
+  var caseOpts = '<option value="random"' + (formCase === 'random' ? ' selected' : '') + '>Asignar al azar</option>' + CASES.map(function (c, i) {
+    var n = availCase(c).length;
+    return '<option value="' + c.id + '"' + (formCase === c.id ? ' selected' : '') + (n < 2 ? ' disabled' : '') + '>Caso ' + (i + 1) + ': ' + esc(c.title) + ' (' + n + ' de 5 disponibles)</option>';
+  }).join('');
+  var chosenOk = formCase === 'random' || (CASEMAP[formCase] && availCase(CASEMAP[formCase]).length >= 2);
+  app.innerHTML =
+    '<p class="brand">Quiz de recuperación</p>' +
+    '<div class="hero">' +
+      '<section>' + EMBLEM +
+        '<h1 class="title">¿Quién quiere <em>mejorar su nota?</em></h1>' +
+        '<p class="lead">Interacción Digital · Trabajar juntos sin estar juntos. Cinco preguntas, tiempo en contra y tres comodines para demostrar que sabes colaborar digitalmente.</p>' +
+        '<div class="rules">' +
+          '<article class="rule"><span class="k">La partida</span><h3>5 preguntas, 1 punto cada una</h3><p>Dos de verdadero o falso, dos de un caso de selección múltiple y una de ordenar. La nota final va de 0 a 5.</p></article>' +
+          '<article class="rule"><span class="k">El reloj</span><div class="timechips"><span>Verdadero o falso <b>' + TIME.tf + ' s</b></span><span>Caso (selección múltiple) <b>' + TIME.mc + ' s</b></span><span>Ordenar <b>' + TIME.ord + ' s</b></span></div><p>Si se acaba el tiempo, queda lo que hayas marcado. Sin respuesta, la pregunta vale 0.</p></article>' +
+          '<article class="rule"><span class="k">Comodines · uno de cada uno</span><div class="lifelist">' +
+            '<div><span class="mini">' + ICON.people + '</span><p><b>Pregunta al público.</b> Tus compañeros te ayudan y ganas ' + AUDIENCE_BONUS + ' segundos.</p></div>' +
+            '<div><span class="mini">50:50</span><p><b>50:50.</b> Elimina la mitad de las opciones incorrectas. Solo en preguntas de caso; si aciertas, vale 0,5.</p></div>' +
+            '<div><span class="mini">' + ICON.swap + '</span><p><b>Cambiar pregunta.</b> Otra del mismo tipo; en los casos, otra del mismo caso.</p></div>' +
+          '</div></article>' +
+        '</div>' +
+      '</section>' +
+      '<section class="card" aria-labelledby="startTitle">' +
+        (cur ? '<div class="resume"><p>Hay una partida en curso de <b>' + esc(cur.name) + '</b>.</p><button class="btn primary" data-act="resume">Continuar partida</button></div>' : '') +
+        '<h2 id="startTitle">Nuevo jugador</h2>' +
+        '<label class="f" for="pname">Nombre del estudiante<input type="text" id="pname" maxlength="60" autocomplete="off" placeholder="Nombre y apellido" value="' + esc(formName) + '"></label>' +
+        '<label class="f" for="pcase">Caso asignado<select id="pcase">' + caseOpts + '</select></label>' +
+        (formErr ? '<p class="err" role="alert">' + esc(formErr) + '</p>' : '') +
+        (cap > 0
+          ? '<div class="cap">Quedan preguntas para <b>' + cap + '</b> ' + (cap === 1 ? 'jugador' : 'jugadores') + ' en esta ronda.</div>'
+          : '<div class="cap empty">Se agotaron las preguntas de esta ronda. Reinicia el juego desde el panel docente.</div>') +
+        '<button class="btn primary lg" data-act="start"' + (cap > 0 && chosenOk && !cur ? '' : ' disabled') + '>Comenzar</button>' +
+        (cur ? '<p class="note">Termina la partida en curso antes de empezar otra.</p>' : '<p class="note">Las preguntas que recibe cada jugador quedan marcadas como usadas y no se repiten hasta reiniciar el juego.</p>') +
+        (!storageOk ? '<p class="err">Este navegador no está guardando el progreso. Usa una ventana normal (no privada).</p>' : '') +
+      '</section>' +
+    '</div>' +
+    '<div class="foot"><button class="btn ghost" data-act="admin">Panel docente</button></div>';
+}
+
+/* ---------- Juego ---------- */
+function cur() { var g = S.current; return g ? g.qs[g.idx] : null; }
+function qOf(a) { return a.type === 'tf' ? TFMAP[a.id] : a.type === 'mc' ? MCMAP[a.id].q : ORDMAP[a.id]; }
+function needOf(q) { return q.o.filter(function (o) { return o[1]; }).length; }
+
+function renderGame() {
+  var g = S.current, a = cur(), q = qOf(a);
+  var life = g.life;
+  var swapAvail = swapPool(a).length > 0;
+  var fiftyOk = a.type === 'mc' && !life.fifty;
+  var lifeBtn = function (key, inner, label, enabled, title) {
+    var used = life[key];
+    return '<button class="life' + (used ? ' used' : '') + '" data-act="life" data-k="' + key + '"' + (!used && enabled ? '' : ' disabled') + ' title="' + esc(title) + '"><span class="orb">' + inner + '</span><span class="lab">' + label + '</span></button>';
+  };
+  var lifelines = '<div class="lifelines" role="group" aria-label="Comodines">' +
+    lifeBtn('audience', ICON.people, 'Público', true, 'Pregunta al público: +' + AUDIENCE_BONUS + ' segundos para que tus compañeros te ayuden') +
+    lifeBtn('fifty', '<span class="ff">50:50</span>', '50:50', fiftyOk, a.type === 'mc' ? 'Elimina la mitad de las opciones incorrectas; la pregunta vale 0,5' : 'Solo disponible en preguntas de caso') +
+    lifeBtn('swap', ICON.swap, 'Cambiar', swapAvail, swapAvail ? 'Cambia por otra pregunta del mismo tipo' : 'No quedan preguntas disponibles de este tipo') +
+    '</div>';
+  var total = a.total;
+  var timer = '<div class="timer" id="timer" role="timer" aria-label="Tiempo restante"><svg viewBox="0 0 92 92"><circle class="track" cx="46" cy="46" r="40"/><circle class="bar" id="ring" cx="46" cy="46" r="40" stroke-dasharray="251.33" stroke-dashoffset="0"/></svg><span class="num" id="secs">' + total + '</span></div>';
+  var head = '<div class="topbar"><div class="player"><small>Jugador</small><b>' + esc(g.name) + '</b></div>' + lifelines + timer + '</div>';
+
+  var caseBox = '';
+  if (a.type === 'mc') { var c = MCMAP[a.id].c; caseBox = '<section class="casebox" aria-label="Caso"><span class="k">Caso</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.text) + '</p></section>'; }
+
+  var qText = a.type === 'ord' ? q.sit : q.q;
+  var tag = 'Pregunta ' + (g.idx + 1) + ' de 5 · ' + TYPE_LABEL[a.type] + (a.type === 'mc' ? ' · selecciona ' + needOf(q) : '') + (a.type === 'ord' ? ' · del primero al último' : '');
+  var qbar = '<div class="hexrow qbar"><div class="hex"><div class="hex-in"><span class="tag">' + tag + '</span><p class="q">' + esc(qText) + '</p></div></div></div>';
+
+  var notes = [];
+  if (a.audience) notes.push('<div class="audience" role="status">' + ICON.people + '<p><b>El público tiene la palabra.</b> Tus compañeros pueden ayudarte: sumaste ' + AUDIENCE_BONUS + ' segundos.</p></div>');
+  var pills = [];
+  if (a.fifty) pills.push('<span class="pill gold">50:50 usado · esta pregunta vale 0,5</span>');
+  if (a.swapped) pills.push('<span class="pill cyan">Pregunta cambiada</span>');
+  if (a.type === 'mc') pills.push('<span class="pill">Debes marcar ' + needOf(q) + ' respuestas</span>');
+  if (a.type === 'ord') pills.push('<span class="pill">Arrastra las tarjetas o usa las flechas</span>');
+  var noteHtml = notes.join('') + (pills.length ? '<div class="notice">' + pills.join('') + '</div>' : '');
+
+  var body = '';
+  if (a.type === 'tf') {
+    body = '<div class="opts two" role="group" aria-label="Respuestas">' + [['true', 'Verdadero', 'A'], ['false', 'Falso', 'B']].map(function (o) {
+      var pressed = a.resp !== null && String(a.resp) === o[0];
+      return '<button class="opt hexrow" data-act="tf" data-v="' + o[0] + '" aria-pressed="' + pressed + '"><span class="hex"><span class="hex-in"><span class="letter">' + o[2] + ':</span><span class="txt">' + o[1] + '</span></span></span></button>';
+    }).join('') + '</div>';
+  } else if (a.type === 'mc') {
+    var sel = a.resp || [];
+    body = '<div class="opts" role="group" aria-label="Respuestas">' + a.perm.map(function (oi, pos) {
+      var gone = a.removed.indexOf(oi) > -1, pressed = sel.indexOf(oi) > -1;
+      return '<button class="opt hexrow' + (gone ? ' gone' : '') + '" data-act="mc" data-i="' + oi + '" aria-pressed="' + pressed + '"' + (gone ? ' disabled aria-label="Opción eliminada"' : '') + '><span class="hex"><span class="hex-in"><span class="letter">' + LETTERS[pos] + ':</span><span class="txt">' + esc(q.o[oi][0]) + '</span></span></span></button>';
+    }).join('') + '</div>';
+  } else {
+    var n = a.cur.length;
+    body = '<ol class="order" aria-label="Pasos para ordenar">' + a.cur.map(function (si, pos) {
+      return '<li class="oitem" data-pos="' + pos + '"><span class="slot" aria-hidden="true">' + (pos + 1) + '</span>' +
+        '<div class="hexrow" draggable="true" data-pos="' + pos + '"><span class="hex"><span class="hex-in"><span class="grip">' + ICON.grip + '</span><span class="txt">' + esc(q.steps[si]) + '</span></span></span></div>' +
+        '<span class="arrows"><button data-act="up" data-pos="' + pos + '" aria-label="Subir paso"' + (pos === 0 ? ' disabled' : '') + '>' + ICON.up + '</button><button data-act="down" data-pos="' + pos + '" aria-label="Bajar paso"' + (pos === n - 1 ? ' disabled' : '') + '>' + ICON.down + '</button></span></li>';
+    }).join('') + '</ol>';
+  }
+
+  var canSubmit = a.type === 'ord' || (a.type === 'tf' ? a.resp !== null : (a.resp && a.resp.length > 0));
+  var actions = '<div class="actions"><p class="flash" id="flash" aria-live="polite">' + esc(flashMsg) + '</p><button class="btn primary lg" data-act="submit"' + (canSubmit ? '' : ' disabled') + '>Responder</button></div>';
+
+  var rungs = [];
+  var labels = ['Verdadero o falso', 'Verdadero o falso', 'Caso · pregunta 1', 'Caso · pregunta 2', 'Ordenar'];
+  for (var i = 4; i >= 0; i--) {
+    var cls = i === g.idx ? 'now' : (i < g.idx ? 'done' : '');
+    rungs.push('<div class="rung ' + cls + '"' + (i === g.idx ? ' aria-current="step"' : '') + '><span class="n">' + (i + 1) + '</span><span>' + labels[i] + '</span><span class="pt">1 pt</span></div>');
+  }
+  var ladder = '<aside class="ladder" aria-label="Progreso"><h3>Escalera</h3>' + rungs.join('') + '<p class="tot">Los resultados se revelan al final de la partida.</p></aside>';
+
+  app.innerHTML = '<p class="brand">Quiz de recuperación</p><div class="stage"><div class="main">' + head + caseBox + qbar + noteHtml + body + actions + '</div>' + ladder + '</div>';
+  tick();
+}
+
+function swapPool(a) {
+  if (a.type === 'tf') return availTF();
+  if (a.type === 'ord') return availORD();
+  return availCase(CASEMAP[a.caseId]);
+}
+
+function mk(type, q, caseId) {
+  var o = { type: type, id: q.id, caseId: caseId || null, resp: null, touched: false, fifty: false, audience: false, swapped: false, removed: [], points: 0, done: false, timeout: false, total: TIME[type], deadline: 0 };
+  if (type === 'mc') { o.perm = shuffle(q.o.map(function (_, i) { return i; })); o.resp = []; }
+  if (type === 'ord') {
+    var idx = q.steps.map(function (_, i) { return i; }), p;
+    do { p = shuffle(idx); } while (p.every(function (v, i) { return v === i; }));
+    o.cur = p;
+  }
+  return o;
+}
+
+function startGame() {
+  var name = (document.getElementById('pname').value || '').trim();
+  formName = name;
+  if (!name) { formErr = 'Escribe el nombre del estudiante para comenzar.'; render(); document.getElementById('pname').focus(); return; }
+  if (capacity() < 1) { formErr = 'No quedan preguntas suficientes. Reinicia el juego desde el panel docente.'; render(); return; }
+  var c;
+  if (formCase === 'random') {
+    var ok = CASES.filter(function (x) { return availCase(x).length >= 2; });
+    var max = Math.max.apply(null, ok.map(function (x) { return availCase(x).length; }));
+    var top = ok.filter(function (x) { return availCase(x).length === max; });
+    c = top[rnd(top.length)];
+  } else c = CASEMAP[formCase];
+  if (!c || availCase(c).length < 2) { formErr = 'Ese caso ya no tiene preguntas suficientes. Elige otro.'; render(); return; }
+  var tfs = shuffle(availTF()).slice(0, 2);
+  var mcs = shuffle(availCase(c)).slice(0, 2);
+  var ord = shuffle(availORD())[0];
+  var qs = tfs.map(function (q) { return mk('tf', q); }).concat(mcs.map(function (q) { return mk('mc', q, c.id); }), [mk('ord', ord)]);
+  qs.forEach(function (a) { S.used[a.id] = true; });
+  S.current = { name: name, caseId: c.id, qs: qs, idx: 0, life: { audience: false, fifty: false, swap: false }, started: Date.now() };
+  formName = ''; formErr = ''; formCase = 'random'; flashMsg = '';
+  beginQuestion();
+}
+
+function beginQuestion() {
+  var a = cur();
+  a.total = TIME[a.type];
+  a.deadline = Date.now() + a.total * 1000;
+  save();
+  view = 'game';
+  flashMsg = '';
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function tick() {
+  if (view !== 'game' || !S.current || busy) return;
+  var a = cur(); if (!a || a.done) return;
+  var left = Math.max(0, a.deadline - Date.now());
+  var secs = Math.ceil(left / 1000);
+  var ring = document.getElementById('ring'), num = document.getElementById('secs'), box = document.getElementById('timer');
+  if (ring) ring.setAttribute('stroke-dashoffset', String(251.33 * (1 - left / (a.total * 1000))));
+  if (num) num.textContent = secs;
+  if (box) box.classList.toggle('low', secs <= 5);
+  if (left <= 0) finalize(true);
+}
+setInterval(tick, 200);
+
+function grade(a) {
+  var q = qOf(a);
+  if (a.type === 'tf') a.points = a.resp === null ? 0 : (a.resp === q.a ? 1 : 0);
+  else if (a.type === 'mc') {
+    var correct = q.o.map(function (o, i) { return o[1] ? i : -1; }).filter(function (i) { return i > -1; }).sort().join(',');
+    var mine = (a.resp || []).slice().sort().join(',');
+    a.points = mine && mine === correct ? (a.fifty ? 0.5 : 1) : 0;
+  } else {
+    a.points = a.resp && a.resp.every(function (v, i) { return v === i; }) ? 1 : 0;
+  }
+}
+
+function finalize(timeout) {
+  var g = S.current, a = cur();
+  if (!a || a.done || busy) return;
+  busy = true;
+  if (a.type === 'ord') a.resp = (a.touched || !timeout) ? a.cur.slice() : null;
+  if (a.type === 'mc' && a.resp && !a.resp.length) a.resp = null;
+  a.timeout = timeout;
+  grade(a);
+  a.done = true;
+  save();
+  var last = g.idx >= g.qs.length - 1;
+  var nextLabel = last ? 'Preparando tu resultado…' : 'Siguiente: pregunta ' + (g.idx + 2) + ' · ' + TYPE_LABEL[g.qs[g.idx + 1].type];
+  layer.innerHTML = '<div class="veil" role="status"><div class="box"><span class="big' + (timeout ? ' time' : '') + '">' + (timeout ? '¡Se acabó el tiempo!' : 'Respuesta registrada') + '</span><span class="sub">' + nextLabel + '</span></div></div>';
+  setTimeout(function () {
+    layer.innerHTML = '';
+    busy = false;
+    if (last) endGame();
+    else { g.idx++; beginQuestion(); }
+  }, 1500);
+}
+
+function endGame() {
+  var g = S.current;
+  var total = g.qs.reduce(function (s, a) { return s + a.points; }, 0);
+  g.total = total; g.ended = Date.now();
+  S.results.push({ name: g.name, caso: CASEMAP[g.caseId].title, nota: total, fecha: g.ended, det: g.qs.map(function (a) { return a.points; }) });
+  lastGame = g;
+  S.current = null;
+  save();
+  view = 'summary';
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function useLife(k) {
+  var g = S.current, a = cur();
+  if (!a || a.done || g.life[k]) return;
+  if (k === 'audience') {
+    g.life.audience = true; a.audience = true; a.deadline += AUDIENCE_BONUS * 1000; a.total += AUDIENCE_BONUS;
+  } else if (k === 'fifty') {
+    if (a.type !== 'mc') return;
+    var q = qOf(a);
+    var wrong = q.o.map(function (o, i) { return o[1] ? -1 : i; }).filter(function (i) { return i > -1; });
+    var remove = shuffle(wrong).slice(0, Math.ceil(wrong.length / 2));
+    g.life.fifty = true; a.fifty = true; a.removed = remove;
+    a.resp = (a.resp || []).filter(function (i) { return remove.indexOf(i) < 0; });
+  } else if (k === 'swap') {
+    var pool = swapPool(a);
+    if (!pool.length) return;
+    var nq = pool[rnd(pool.length)];
+    S.used[nq.id] = true;
+    var na = mk(a.type, nq, a.caseId);
+    na.swapped = true; na.replaced = a.id;
+    g.life.swap = true;
+    g.qs[g.idx] = na;
+    flashMsg = '';
+    beginQuestion();
+    return;
+  }
+  save();
+  render();
+}
+
+function moveStep(from, to) {
+  var a = cur();
+  if (!a || a.type !== 'ord' || to < 0 || to >= a.cur.length || from === to) return;
+  var item = a.cur.splice(from, 1)[0];
+  a.cur.splice(to, 0, item);
+  a.touched = true;
+  save();
+  render();
+}
+
+/* ---------- Resumen ---------- */
+function feedback(n) {
+  if (n >= 4.5) return 'Excelente. Entiendes que colaborar es coordinar personas, roles, tareas y versiones, no solo compartir un archivo.';
+  if (n >= 3.5) return 'Muy bien. Dominas la mayoría de los conceptos; revisa la retroalimentación de las preguntas que fallaste.';
+  if (n >= 3) return 'Aprobaste. Repasa en la presentación los temas de las preguntas que no acertaste: roles, tareas, versionamiento o responsabilidad.';
+  return 'Aún hay conceptos por reforzar. Repasa la presentación de la clase, sobre todo los temas de las preguntas que fallaste.';
+}
+function lifeChips(a) {
+  var c = [];
+  if (a.audience) c.push('<span class="pill cyan">Pregunta al público</span>');
+  if (a.fifty) c.push('<span class="pill gold">50:50 · valía 0,5</span>');
+  if (a.swapped) c.push('<span class="pill cyan">Pregunta cambiada</span>');
+  if (a.timeout) c.push('<span class="pill gold">Tiempo agotado</span>');
+  return c.length ? '<div class="chips">' + c.join('') + '</div>' : '';
+}
+function renderSummary() {
+  var g = lastGame;
+  var cards = g.qs.map(function (a, i) {
+    var q = qOf(a);
+    var sc = a.points === 1 ? 's1' : a.points > 0 ? 's05' : 's0';
+    var scTxt = a.points === 1 ? '1 punto · correcta' : a.points > 0 ? '0,5 puntos · correcta con 50:50' : '0 puntos · ' + (a.resp === null ? 'sin respuesta' : 'incorrecta');
+    var title, ctx = '', mine, right;
+    if (a.type === 'tf') {
+      title = q.q;
+      mine = '<p>' + (a.resp === null ? 'Sin respuesta' : a.resp ? 'Verdadero' : 'Falso') + '</p>';
+      right = '<p>' + (q.a ? 'Verdadero' : 'Falso') + '</p>';
+    } else if (a.type === 'mc') {
+      title = q.q; ctx = '<p class="ctx">Caso: ' + esc(MCMAP[a.id].c.title) + '</p>';
+      mine = a.resp && a.resp.length ? '<ul>' + a.resp.map(function (oi) { return '<li>' + esc(q.o[oi][0]) + '</li>'; }).join('') + '</ul>' : '<p>Sin respuesta</p>';
+      right = '<ul>' + q.o.filter(function (o) { return o[1]; }).map(function (o) { return '<li>' + esc(o[0]) + '</li>'; }).join('') + '</ul>';
+    } else {
+      title = q.sit;
+      mine = a.resp ? '<ol>' + a.resp.map(function (si) { return '<li>' + esc(q.steps[si]) + '</li>'; }).join('') + '</ol>' : '<p>Sin respuesta (no se movió ningún paso)</p>';
+      right = '<ol>' + q.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+    }
+    return '<article class="rev"><header><span class="k">Pregunta ' + (i + 1) + ' · ' + TYPE_LABEL[a.type] + '</span><span class="score ' + sc + '">' + scTxt + '</span></header>' + ctx +
+      '<h3>' + esc(title) + '</h3>' + lifeChips(a) +
+      '<div class="cmp"><div><small>Tu respuesta</small>' + mine + '</div><div><small>Respuesta correcta</small>' + right + '</div></div>' +
+      '<p class="why"><b>Por qué:</b> ' + esc(q.why) + '</p></article>';
+  }).join('');
+  app.innerHTML = '<p class="brand">Quiz de recuperación · Resultado</p>' +
+    '<div class="sumhead"><div class="grade" role="img" aria-label="Nota ' + fmtPts(g.total) + ' de 5,0"><div><b>' + fmtPts(g.total) + '</b><span>de 5,0</span></div></div>' +
+    '<div><span class="pill cyan">Caso ' + esc(CASEMAP[g.caseId].title) + '</span><h2>' + esc(g.name) + ', tu nota definitiva es ' + fmtPts(g.total) + '</h2><p>' + feedback(g.total) + '</p></div></div>' +
+    '<div class="reviews">' + cards + '</div>' +
+    '<div class="foot"><button class="btn primary lg" data-act="next">Siguiente jugador</button></div>';
+}
+
+/* ---------- Panel docente ---------- */
+function renderLayer() {
+  if (!admin.open) { if (!busy) layer.innerHTML = ''; return; }
+  var html;
+  if (!admin.unlocked) {
+    html = '<div class="card" id="keyform"><h2>Panel docente</h2><p class="note">Escribe la clave para ver los resultados o reiniciar el juego.</p>' +
+      '<label class="f" for="key">Clave<input type="password" id="key" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+      (admin.err ? '<p class="err" role="alert">' + esc(admin.err) + '</p>' : '') +
+      '<div class="row"><button class="btn primary" type="button" data-act="unlock">Entrar</button><button class="btn" type="button" data-act="close">Cancelar</button></div></div>';
+  } else {
+    var usedTF = TF.length - availTF().length, usedORD = ORD.length - availORD().length;
+    var mcTotal = CASES.length * 5, mcAvail = CASES.reduce(function (s, c) { return s + availCase(c).length; }, 0);
+    var rows = S.results.slice().reverse().map(function (r) {
+      var d = new Date(r.fecha);
+      return '<tr><td>' + esc(r.name) + '</td><td>' + esc(r.caso) + '</td><td class="num">' + fmtPts(r.nota) + '</td><td>' + d.toLocaleDateString('es-CO') + ' ' + d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) + '</td></tr>';
+    }).join('');
+    var caseRows = CASES.map(function (c, i) { return '<tr><td>Caso ' + (i + 1) + '</td><td>' + esc(c.title) + '</td><td class="num">' + availCase(c).length + ' de 5</td></tr>'; }).join('');
+    html = '<div class="card"><div class="row" style="justify-content:space-between"><h2>Panel docente</h2><button class="btn" data-act="close">Cerrar</button></div>' +
+      '<div class="stats"><div class="stat"><small>Verdadero o falso</small><b>' + (TF.length - usedTF) + '</b> de ' + TF.length + '</div><div class="stat"><small>Casos</small><b>' + mcAvail + '</b> de ' + mcTotal + '</div><div class="stat"><small>Ordenar</small><b>' + (ORD.length - usedORD) + '</b> de ' + ORD.length + '</div><div class="stat"><small>Alcanza para</small><b>' + capacity() + '</b> jugadores</div></div>' +
+      '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Resultados de la ronda</h3>' +
+      (rows ? '<div class="tablewrap"><table><thead><tr><th>Estudiante</th><th>Caso</th><th>Nota</th><th>Fecha</th></tr></thead><tbody>' + rows + '</tbody></table></div>' : '<p class="note">Aún no hay resultados. Aparecerán aquí cuando cada estudiante termine su partida.</p>') +
+      '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Preguntas disponibles por caso</h3>' +
+      '<div class="tablewrap"><table><thead><tr><th>Caso</th><th>Nombre</th><th>Disponibles</th></tr></thead><tbody>' + caseRows + '</tbody></table></div>' +
+      '<section class="danger"><h3>Reiniciar el juego</h3><p class="note">Todas las preguntas vuelven a estar disponibles y se cancela cualquier partida en curso.</p>' +
+      '<label class="check" for="wipe"><input type="checkbox" id="wipe"' + (admin.wipe ? ' checked' : '') + '> Borrar también los resultados registrados</label>' +
+      (admin.confirm ? '<div class="row"><span>¿Confirmas el reinicio?</span><button class="btn warn" data-act="resetYes">Sí, reiniciar</button><button class="btn" data-act="resetNo">Cancelar</button></div>' : '<div class="row"><button class="btn warn" data-act="reset">Reiniciar juego</button></div>') +
+      (admin.done ? '<p class="note" role="status">' + esc(admin.done) + '</p>' : '') +
+      '</section></div>';
+  }
+  layer.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-label="Panel docente">' + html + '</div>';
+  var k = document.getElementById('key'); if (k) k.focus();
+}
+
+/* =================== EVENTOS =================== */
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-act]');
+  if (!t || t.disabled) return;
+  var act = t.dataset.act;
+  if (act === 'start') { formCase = document.getElementById('pcase').value; startGame(); }
+  else if (act === 'resume') {
+    var a = cur();
+    if (a && a.done) {
+      if (S.current.idx >= S.current.qs.length - 1) { endGame(); return; }
+      S.current.idx++; beginQuestion(); return;
+    }
+    view = 'game'; render();
+    if (a && Date.now() >= a.deadline) finalize(true);
+  }
+  else if (act === 'tf') { var a1 = cur(); if (a1.done || busy) return; a1.resp = t.dataset.v === 'true'; save(); render(); }
+  else if (act === 'mc') {
+    var a2 = cur(); if (a2.done || busy) return;
+    var i = +t.dataset.i, need = needOf(qOf(a2));
+    var sel = a2.resp || [];
+    var at = sel.indexOf(i);
+    if (at > -1) { sel.splice(at, 1); flashMsg = ''; }
+    else if (sel.length >= need) { flashMsg = 'Ya marcaste ' + need + '. Quita una para elegir otra.'; render(); return; }
+    else { sel.push(i); flashMsg = ''; }
+    a2.resp = sel; save(); render();
+  }
+  else if (act === 'up') moveStep(+t.dataset.pos, +t.dataset.pos - 1);
+  else if (act === 'down') moveStep(+t.dataset.pos, +t.dataset.pos + 1);
+  else if (act === 'submit') finalize(false);
+  else if (act === 'unlock') tryUnlock();
+  else if (act === 'life') useLife(t.dataset.k);
+  else if (act === 'next') { lastGame = null; view = 'home'; render(); window.scrollTo({ top: 0 }); }
+  else if (act === 'admin') { admin = { open: true, unlocked: false, err: '', confirm: false, wipe: false, done: '' }; renderLayer(); }
+  else if (act === 'close') { admin.open = false; renderLayer(); if (view === 'home') render(); }
+  else if (act === 'reset') { admin.wipe = document.getElementById('wipe').checked; admin.confirm = true; admin.done = ''; renderLayer(); }
+  else if (act === 'resetNo') { admin.confirm = false; renderLayer(); }
+  else if (act === 'resetYes') {
+    var keep = admin.wipe ? [] : S.results;
+    S = blank(); S.results = keep; save();
+    lastGame = null; view = 'home';
+    admin.confirm = false; admin.done = 'Juego reiniciado. Todas las preguntas están disponibles de nuevo.';
+    render();
+  }
+});
+function tryUnlock() {
+  var k = document.getElementById('key');
+  var v = k ? k.value.trim() : '';
+  if (fp(v) === KEY_FP) { admin.unlocked = true; admin.err = ''; }
+  else admin.err = 'Clave incorrecta. Revisa mayúsculas y minúsculas.';
+  renderLayer();
+}
+document.addEventListener('input', function (e) {
+  if (e.target.id === 'pname') formName = e.target.value;
+});
+document.addEventListener('change', function (e) {
+  if (e.target.id === 'pcase') { formCase = e.target.value; formName = document.getElementById('pname').value; formErr = ''; render(); }
+  if (e.target.id === 'wipe') admin.wipe = e.target.checked;
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && admin.open) { admin.open = false; renderLayer(); }
+  if (e.key === 'Enter' && e.target.id === 'key') { e.preventDefault(); tryUnlock(); return; }
+  if (e.key === 'Enter' && e.target.id === 'pname') { formCase = document.getElementById('pcase').value; startGame(); }
+});
+
+/* Arrastrar y soltar (ordenar) */
+document.addEventListener('dragstart', function (e) {
+  var h = e.target.closest && e.target.closest('.oitem .hexrow'); if (!h) return;
+  dragFrom = +h.dataset.pos;
+  h.closest('.oitem').classList.add('drag');
+  try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragFrom)); } catch (err) {}
+});
+document.addEventListener('dragover', function (e) {
+  var li = e.target.closest && e.target.closest('.oitem'); if (!li || dragFrom === null) return;
+  e.preventDefault();
+  document.querySelectorAll('.oitem.over').forEach(function (x) { if (x !== li) x.classList.remove('over'); });
+  li.classList.add('over');
+});
+document.addEventListener('drop', function (e) {
+  var li = e.target.closest && e.target.closest('.oitem'); if (!li || dragFrom === null) return;
+  e.preventDefault();
+  var to = +li.dataset.pos, from = dragFrom; dragFrom = null;
+  moveStep(from, to);
+});
+document.addEventListener('dragend', function () {
+  dragFrom = null;
+  document.querySelectorAll('.oitem.drag, .oitem.over').forEach(function (x) { x.classList.remove('drag', 'over'); });
+});
+
+render();
+})();
+</script>
+
+</body></html>

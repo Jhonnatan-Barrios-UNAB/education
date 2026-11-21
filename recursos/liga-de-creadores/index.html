@@ -1,0 +1,906 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script src="../../assets/js/descargas.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Liga de Creadores</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: banda de marca arriba, pestañas de trabajo y una arena de dos columnas (ruleta | equipos) que se apila en móvil */
+:root{
+  --bg:#F5F7FC; --surface:#FFFFFF; --surface-2:#EEF2FB; --line:#DCE3F1;
+  --fg:#0B1B3F; --text:#3B4766; --muted:#6B7794;
+  --royal:#2F5BEA; --violet:#6C4AD8; --cyan:#14B8C9; --cyan-soft:#5FD3E6;
+  --gold:#D9981C; --silver:#8A97AE; --bronze:#B8703F; --danger:#C93C3C; --ok:#178A61;
+  --on-accent:#FFFFFF; --shadow:0 1px 2px rgba(11,27,63,.06),0 8px 24px rgba(11,27,63,.06);
+  --band-1:#0B1B3F; --band-2:#1C3A8C; --band-3:#5B3FC4;
+  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#070F24; --surface:#0E1B3B; --surface-2:#14254D; --line:#233664;
+  --fg:#EEF2FB; --text:#C4CEE6; --muted:#8C9ABB;
+  --royal:#6E8DFF; --violet:#A08BF3; --cyan:#3FD2E2; --cyan-soft:#7FE2EE;
+  --gold:#F0B848; --silver:#B4C0D4; --bronze:#DB9466; --danger:#F07272; --ok:#48C996;
+  --on-accent:#07102A; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#070F24; --surface:#0E1B3B; --surface-2:#14254D; --line:#233664;
+  --fg:#EEF2FB; --text:#C4CEE6; --muted:#8C9ABB;
+  --royal:#6E8DFF; --violet:#A08BF3; --cyan:#3FD2E2; --cyan-soft:#7FE2EE;
+  --gold:#F0B848; --silver:#B4C0D4; --bronze:#DB9466; --danger:#F07272; --ok:#48C996;
+  --on-accent:#07102A; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5}
+h1,h2,h3{color:var(--fg);margin:0;text-wrap:balance;line-height:1.15}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* banda */
+.band{background:linear-gradient(135deg,var(--band-1) 0%,var(--band-2) 58%,var(--band-3) 100%);color:#fff;position:relative;overflow:hidden}
+.band .wrap{padding-block:22px 18px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;position:relative;z-index:1}
+.band svg.nodes{position:absolute;right:-30px;top:-40px;width:340px;height:240px;opacity:.55;pointer-events:none}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7FE2EE}
+.band h1{color:#fff;font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.02em}
+.band p{margin:4px 0 0;color:#D6DEF5;max-width:60ch}
+.status{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#7FE2EE}
+.dot.warn{background:#F0B848}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tab{border:0;background:none;padding:14px 14px 12px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--royal)}
+.tab .count{font-family:var(--mono);font-size:12px;margin-left:6px;color:var(--muted)}
+
+main .wrap{padding-block:24px 60px}
+.view{display:flex;flex-direction:column;gap:20px}
+.section-head{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
+.section-head h2{font-size:24px;font-weight:800}
+.lead{margin:4px 0 0;color:var(--muted);max-width:70ch}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.grid-2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:20px}
+@media (max-width:900px){.grid-2{grid-template-columns:minmax(0,1fr)}}
+.label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--violet)}
+.muted{color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--fg);transition:transform .08s ease,background .15s}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--royal);border-color:var(--royal);color:var(--on-accent)}
+.btn.primary:hover{filter:brightness(1.07);background:var(--royal)}
+.btn.violet{background:var(--violet);border-color:var(--violet);color:var(--on-accent)}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger);border-color:color-mix(in srgb,var(--danger) 40%,var(--line))}
+.btn.sm{padding:6px 10px;font-size:13px;border-radius:8px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+input[type=text],textarea,select{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:84px}
+.file{position:relative;overflow:hidden}
+.file input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* equipos */
+.teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.team{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.team-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.team-name{font-weight:800;color:var(--fg);display:flex;align-items:center;gap:8px;min-width:0}
+.swatch{width:12px;height:12px;border-radius:4px;flex:none}
+.slots{font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.slots.full{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.member{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:6px 8px;border-radius:8px;background:var(--surface-2);min-width:0}
+.member span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--fg);font-weight:600}
+.member small{color:var(--muted);font-weight:500}
+.member select{width:auto;padding:4px 6px;font-size:12px;border-radius:6px}
+.empty-slot{padding:6px 8px;border:1px dashed var(--line);border-radius:8px;color:var(--muted);font-size:13px}
+.icon-btn{border:0;background:none;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:6px;font-size:16px;line-height:1}
+.icon-btn:hover{color:var(--danger);background:var(--surface)}
+
+/* arena */
+.rounds{display:flex;gap:8px;flex-wrap:wrap}
+.rpill{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 12px;cursor:pointer;text-align:left;min-width:0}
+.rpill b{display:block;color:var(--fg);font-size:14px}
+.rpill small{color:var(--muted);font-size:12px}
+.rpill[aria-current="true"]{border-color:var(--royal);box-shadow:inset 0 0 0 1px var(--royal)}
+.rpill.done{background:var(--surface-2)}
+.rpill.done small::before{content:"✓ ";color:var(--ok);font-weight:800}
+.wheel-box{display:flex;flex-direction:column;gap:14px;align-items:center}
+.wheel-wrap{position:relative;width:min(100%,380px);aspect-ratio:1;max-width:100%}
+.wheel-wrap canvas{width:100%;height:100%;display:block}
+.pointer{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:28px solid var(--fg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.hub{position:absolute;inset:0;margin:auto;width:22%;height:22%;border-radius:50%;background:var(--surface);border:4px solid var(--fg);display:grid;place-items:center;font-weight:800;font-size:12px;color:var(--fg);text-align:center;line-height:1.1}
+.spin-ctrl{display:flex;gap:8px;width:100%;max-width:380px}
+.spin-ctrl select{flex:1}
+.concept{border-left:3px solid var(--violet);padding:8px 12px;background:color-mix(in srgb,var(--violet) 8%,transparent);border-radius:0 10px 10px 0;color:var(--fg)}
+
+.arena-teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;align-content:start}
+.ateam{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0;position:relative}
+.ateam.alarm{border-color:var(--danger);box-shadow:0 0 0 2px color-mix(in srgb,var(--danger) 35%,transparent)}
+.ateam .who{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.challenge{display:flex;flex-direction:column;gap:4px;padding:10px;border-radius:10px;background:var(--surface-2)}
+.challenge b{color:var(--fg)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--royal) 12%,transparent);color:var(--royal);width:max-content}
+.chip.flash{background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold)}
+.timer{font-family:var(--mono);font-weight:700;font-size:28px;color:var(--fg);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.timer.low{color:var(--gold)}
+.timer.out{color:var(--danger)}
+.bar{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--royal),var(--violet));border-radius:999px}
+.score{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:10px}
+.crit{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.crit span{font-size:13px;color:var(--text)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex:none}
+.seg button{border:0;background:var(--surface);padding:4px 9px;font-family:var(--mono);font-size:13px;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--royal);color:var(--on-accent);font-weight:700}
+.total{font-family:var(--mono);font-weight:700;color:var(--fg)}
+
+.pick-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:480px){.pick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pcard{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:12px;border:0;padding:10px;cursor:pointer;overflow:hidden;
+  background:linear-gradient(135deg,var(--band-1),var(--band-2) 58%,var(--band-3));color:#fff;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;gap:4px;transition:transform .15s ease}
+.pcard:not(.taken):not([disabled]):hover{transform:translateY(-3px) rotate(-1deg)}
+.pcard[disabled]{cursor:default;opacity:.6}
+.pcard .pnum{position:absolute;top:8px;left:10px;font-family:var(--mono);font-weight:700;font-size:22px}
+.pcard .pback{position:absolute;inset:0;background:
+  radial-gradient(circle at 50% 55%,rgba(95,211,230,.9) 0 5px,transparent 6px),
+  radial-gradient(circle at 50% 30%,rgba(95,211,230,.7) 0 3px,transparent 4px),
+  radial-gradient(circle at 75% 70%,rgba(95,211,230,.7) 0 3px,transparent 4px),
+  radial-gradient(circle at 25% 70%,rgba(95,211,230,.7) 0 3px,transparent 4px),
+  radial-gradient(circle at 50% 55%,rgba(108,74,216,.35) 0 34%,transparent 35%)}
+.pcard.taken{background:var(--surface-2);color:var(--fg);border:2px solid var(--tc);cursor:default}
+.pcard.flipnow{animation:flip .45s ease}
+.pcard.taken .pnum{color:var(--tc)}
+.pcard.taken b{font-size:13px;line-height:1.25}
+.pcard.taken small{font-size:12px;font-weight:700;color:var(--tc)}
+@keyframes flip{from{transform:rotateY(90deg)}to{transform:none}}
+.dilemma{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.dilemma{grid-template-columns:minmax(0,1fr)}}
+.dilemma .card{border-color:var(--violet)}
+.dilemma .btn{margin-top:auto}
+
+/* overlay */
+.overlay{position:fixed;inset:0;z-index:20;background:rgba(5,10,28,.72);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.reveal{width:min(980px,100%);max-height:100%;overflow:auto;border-radius:22px;background:var(--surface);border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.45);display:flex;flex-direction:column}
+.reveal-top{background:linear-gradient(135deg,var(--band-1),var(--band-2) 58%,var(--band-3));color:#fff;padding:22px 28px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.reveal-top h3{color:#fff;font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-.02em}
+.reveal-body{padding:24px 28px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:24px}
+@media (max-width:760px){.reveal-body{grid-template-columns:minmax(0,1fr)}}
+.reveal-body p.cons{font-size:clamp(17px,2vw,22px);color:var(--fg);margin:6px 0 0;line-height:1.45}
+.big-timer{font-family:var(--mono);font-size:clamp(56px,9vw,96px);font-weight:700;color:var(--fg);line-height:1;font-variant-numeric:tabular-nums}
+.deliver{padding:12px 14px;border-radius:12px;background:var(--surface-2);color:var(--fg)}
+.pop{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+
+/* marcador */
+.board{display:flex;flex-direction:column;gap:10px}
+.brow{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px}
+.rank{font-family:var(--mono);font-weight:700;font-size:22px;color:var(--muted);text-align:center}
+.brow.p1{border-color:var(--gold)} .brow.p1 .rank{color:var(--gold)}
+.brow.p2 .rank{color:var(--silver)} .brow.p3 .rank{color:var(--bronze)}
+.bname{font-weight:800;color:var(--fg);display:flex;gap:8px;align-items:center;min-width:0}
+.bmem{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bpts{font-family:var(--mono);font-weight:700;font-size:26px;color:var(--fg);text-align:right}
+.bpts small{display:block;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.04em}
+.rbars{display:flex;gap:3px;margin-top:6px}
+.rbars i{height:8px;flex:1;border-radius:3px;background:var(--surface-2);position:relative;overflow:hidden}
+.rbars i b{position:absolute;inset:0 auto 0 0;background:var(--royal)}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end}
+.pod{border-radius:16px 16px 6px 6px;padding:16px;text-align:center;color:var(--fg);background:var(--surface);border:1px solid var(--line)}
+.pod .medal{font-family:var(--mono);font-size:30px;font-weight:700}
+.pod.g1{min-height:200px;border-color:var(--gold)} .pod.g1 .medal{color:var(--gold)}
+.pod.g2{min-height:160px} .pod.g2 .medal{color:var(--silver)}
+.pod.g3{min-height:130px} .pod.g3 .medal{color:var(--bronze)}
+.hidden-board{padding:40px;text-align:center;border:2px dashed var(--line);border-radius:var(--r);color:var(--muted)}
+
+/* tablas */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+td.num{font-family:var(--mono)}
+.grade{font-family:var(--mono);font-weight:700;font-size:16px;color:var(--fg)}
+.tag{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.tag.win{background:color-mix(in srgb,var(--gold) 20%,transparent);color:var(--gold)}
+.tag.full{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.tag.part{background:color-mix(in srgb,var(--violet) 14%,transparent);color:var(--violet)}
+.stepper{display:inline-flex;align-items:center;gap:6px}
+.stepper button{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);background:var(--surface);cursor:pointer}
+
+/* retos */
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.card b{color:var(--fg)}
+.card p{margin:0;font-size:14px}
+details.round{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:4px 16px}
+details.round summary{cursor:pointer;padding:12px 0;font-weight:800;color:var(--fg)}
+details.round[open]{padding-bottom:16px}
+
+.empty{padding:28px;border:2px dashed var(--line);border-radius:var(--r);display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;z-index:30;box-shadow:var(--shadow)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.rule{padding:12px;border-radius:12px;background:var(--surface-2)}
+.rule b{display:block;color:var(--fg);font-family:var(--mono);font-size:20px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="band">
+  <svg class="nodes" viewBox="0 0 340 240" aria-hidden="true"><g stroke="#5FD3E6" stroke-opacity=".55" stroke-width="1.2" fill="none"><path d="M200 120 L200 30 M200 120 L290 90 M200 120 L260 210 M200 120 L130 205 M200 120 L110 80"/></g><circle cx="200" cy="120" r="80" fill="#6C4AD8" fill-opacity=".22"/><circle cx="200" cy="120" r="10" fill="#fff"/><g fill="#5FD3E6"><circle cx="200" cy="30" r="5"/><circle cx="290" cy="90" r="5"/><circle cx="260" cy="210" r="5"/><circle cx="130" cy="205" r="5"/><circle cx="110" cy="80" r="5"/></g></svg>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Marca Personal Digital · Contenido profesional y productividad</div>
+      <h1>Liga de Creadores</h1>
+      <p>Cinco rondas, retos al azar y equipos que crean contra reloj.</p>
+    </div>
+    <div class="status">
+      <span class="pill" id="roundPill">Ronda 1 de 5</span>
+      <span class="pill" id="peoplePill">0 participantes</span>
+      <span class="pill" id="savePill"><i class="dot"></i><span>Cargando…</span></span>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Secciones">
+  <div class="wrap" role="tablist">
+    <button class="tab" role="tab" data-tab="equipos" aria-selected="true">Equipos<span class="count" id="cTeams"></span></button>
+    <button class="tab" role="tab" data-tab="arena" aria-selected="false">Arena</button>
+    <button class="tab" role="tab" data-tab="marcador" aria-selected="false">Marcador</button>
+    <button class="tab" role="tab" data-tab="notas" aria-selected="false">Notas</button>
+    <button class="tab" role="tab" data-tab="retos" aria-selected="false">Banco de retos</button>
+  </div>
+</nav>
+
+<main><div class="wrap" id="app"></div></main>
+<div id="overlayRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- Contenido ---------------- */
+const TYPES = {
+  video:{l:"Video"}, foto:{l:"Fotografía"}, entrevista:{l:"Entrevista"}, debate:{l:"Debate"},
+  texto:{l:"Escritura"}, diseno:{l:"Diseño"}, ia:{l:"Con IA"}
+};
+const ROUNDS = [
+ {n:"Cazadores de contenido", tema:"Tipos de contenido", mode:"cartas",
+  idea:"Educativo enseña, reflexivo hace pensar, experiencial muestra procesos y relacional conecta. Lo define la función, no el tema.",
+  cards:[
+   {t:"entrevista",n:"Entrevista relámpago",m:4,c:"Salgan del salón y entrevisten a alguien que no sea del equipo: «¿A quién sigues en redes para aprender de tu carrera y por qué?». Clasifiquen ese contenido en uno de los cuatro tipos.",e:"Video de 30 a 45 s + el tipo de contenido y por qué"},
+   {t:"texto",n:"Un tema, cuatro funciones",m:5,c:"Elijan un tema de la carrera de uno de ustedes y escriban cuatro titulares, uno por cada tipo de contenido. Argumenten cuál le daría más confianza a un reclutador.",e:"Los 4 titulares + la argumentación en 2 líneas"},
+   {t:"foto",n:"Foto experiencial",m:4,c:"Tomen una foto que documente un proceso real: apuntes, un prototipo, un laboratorio, una pantalla con código o un plano. Escriban las tres líneas que la conviertan en contenido experiencial.",e:"Foto + texto de 3 líneas"},
+   {t:"debate",n:"¿Hay que ser experto?",m:3,c:"Debate exprés: uno defiende que hay que ser experto para publicar, otro que no, y el tercero modera y concluye con un ejemplo. Grábenlo.",e:"Video de 60 s con la conclusión"},
+   {t:"foto",n:"Detective de feed",m:4,c:"Abran el perfil de un referente de su área. Capturen tres publicaciones y clasifíquenlas. ¿Qué tipo predomina y cuál le falta?",e:"3 capturas + clasificación + qué le falta"},
+   {t:"texto",n:"Gracias con valor",m:4,c:"Escriban un post relacional para agradecer a alguien de la universidad (docente, monitor, compañero). No basta con «gracias»: debe contar qué aprendieron con esa persona.",e:"Post de 60 a 100 palabras"},
+   {t:"video",n:"Aprender en público",m:3,c:"Graben un video explicando por qué documentar lo que uno aprende puede generar más valor que aparentar experiencia. Usen un ejemplo propio.",e:"Video de 30 s"},
+   {t:"texto",n:"Un logro, dos miradas",m:5,c:"Tomen un logro real del equipo (aprobar un proyecto, ganar un concurso, terminar una práctica) y conviértanlo en un contenido educativo y en uno reflexivo. Expliquen la diferencia.",e:"Los dos textos + la diferencia en 1 línea"},
+   {t:"video",n:"Reportero de evento",m:4,c:"Graben una nota de 30 segundos como si cubrieran un evento de la universidad (una charla, una feria, un semillero). Debe ser contenido relacional: mencionen a quién conocieron o con quién colaboraron.",e:"Video de 30 s"},
+   {t:"debate",n:"¿Qué tipo es?",m:3,c:"Cada integrante busca en su feed una publicación de alguien de su carrera. Clasifiquen las publicaciones en los cuatro tipos y defiendan la clasificación ante el grupo.",e:"Capturas + clasificación argumentada"},
+   {t:"diseno",n:"Mapa de contenidos",m:5,c:"Dibujen un cuadro con los cuatro tipos de contenido y escriban en cada uno una idea de publicación real para alguien del equipo. Marquen con cuál empezarían y por qué.",e:"Foto del cuadro"},
+   {t:"ia",n:"La IA propone, ustedes deciden",m:4,c:"Pidan a ChatGPT o Copilot cinco ideas de publicación para su carrera. Clasifiquen cada una en los cuatro tipos y descarten la que obligaría a inventar una experiencia que no han tenido.",e:"Las 5 ideas clasificadas + la descartada"}
+  ]},
+ {n:"Taller de hooks", tema:"El post profesional", mode:"ruleta",
+  idea:"Hook, contexto, aprendizaje y cierre. La prueba de todo post: ¿qué aprenderá alguien al leer esto?",
+  cards:[
+   {t:"entrevista",n:"Hook en la calle",m:5,c:"Escriban tres hooks distintos para un post sobre su carrera. Salgan y pregunten a tres personas cuál las haría seguir leyendo. Reporten el ganador y por qué ganó.",e:"Los 3 hooks + el ganador + evidencia (audio, video o foto)"},
+   {t:"texto",n:"Rescate de post",m:4,c:"Reescriban este post con las cuatro partes: «Hoy terminé el semestre. Fue duro pero lo logré. ¡Nunca se rindan!»",e:"Post reescrito con hook, contexto, aprendizaje y cierre"},
+   {t:"texto",n:"Post en voz alta",m:3,c:"Uno cuenta en voz alta una experiencia de clase durante un minuto. Los otros dos la convierten en un post con las cuatro partes antes de que acabe el tiempo.",e:"Post completo"},
+   {t:"debate",n:"El cierre que conversa",m:4,c:"Escriban un post corto y tres cierres diferentes: una pregunta, una invitación y un reto. Argumenten cuál generaría más conversación con su audiencia.",e:"Post + 3 cierres + argumento"},
+   {t:"foto",n:"Antes y después",m:5,c:"Abran el perfil de uno del equipo y busquen su titular, su «Acerca de» o una publicación. Mejoren el gancho y muestren el cambio.",e:"Captura del antes + texto del después"},
+   {t:"foto",n:"Foto con historia",m:5,c:"Tomen en el campus una foto que represente un aprendizaje de su carrera y escriban el post completo que la acompaña.",e:"Foto + post con las 4 partes"},
+   {t:"texto",n:"Del cliché al valor",m:4,c:"Conviertan la frase «El éxito es la suma de pequeños esfuerzos» en un post con un aprendizaje concreto y verificable de alguno de ustedes.",e:"Post de 80 a 150 palabras"},
+   {t:"video",n:"Creía X, descubrí Y",m:3,c:"Escriban cinco hooks con la fórmula «Creía…, descubrí…» sobre su carrera. Elijan el mejor y léanlo a cámara con intención.",e:"5 hooks + video de 15 s"},
+   {t:"entrevista",n:"El post de otro",m:5,c:"Entrevisten durante un minuto a alguien fuera del equipo sobre algo que aprendió este semestre. Conviértanlo en un post con las cuatro partes, escrito como si lo publicara esa persona.",e:"Post + foto o audio de la entrevista"},
+   {t:"texto",n:"Comentar también es publicar",m:3,c:"Escriban un post de tres líneas y luego tres comentarios con aporte que otros podrían dejarle: un dato, una pregunta y una experiencia.",e:"Post + 3 comentarios"},
+   {t:"video",n:"Post leído a cámara",m:4,c:"Escriban un post corto con las cuatro partes y grábenlo leído a cámara, marcando con la voz el hook y el cierre.",e:"Video de 30 a 45 s"},
+   {t:"debate",n:"Juicio al hook",m:4,c:"Cada integrante escribe un hook. El equipo los juzga con tres preguntas: ¿genera curiosidad?, ¿es concreto?, ¿cabe antes del «ver más»? Graben el veredicto.",e:"Hooks + video del veredicto"}
+  ]},
+ {n:"Estudio de producción", tema:"Artículo, video corto y carrusel", mode:"comun",
+  idea:"El post captura atención, el artículo da profundidad, el video corto explica en segundos y el carrusel es una narrativa visual.",
+  cards:[
+   {t:"video",n:"Explícalo en 30 segundos",m:5,c:"Graben un video corto con hook, idea principal y cierre que explique un concepto de su carrera a alguien de primer semestre.",e:"Video de 30 s"},
+   {t:"diseno",n:"Carrusel de cinco láminas",m:5,c:"Boceten en Canva o en papel un carrusel de cinco láminas: portada con promesa, tres ideas (una por lámina) y cierre con invitación.",e:"Captura o foto del boceto"},
+   {t:"texto",n:"Esqueleto de artículo",m:5,c:"Armen la estructura de un artículo sobre una tendencia de su área: título, tesis, tres argumentos con una posible fuente cada uno y conclusión.",e:"Estructura completa"},
+   {t:"debate",n:"Un tema, tres formatos",m:5,c:"Elijan un tema y escriban el hook que tendría como post, como carrusel y como video. Argumenten cuál publicarían primero y por qué.",e:"3 hooks + decisión argumentada"},
+   {t:"video",n:"Tutorial exprés",m:4,c:"Graben un tutorial de 45 segundos enseñando un truco de una herramienta que usen (Excel, Canva, una app de su carrera o una IA).",e:"Video de 45 s"},
+   {t:"entrevista",n:"La voz de la experiencia",m:5,c:"Entrevisten a un docente o a un estudiante de semestres avanzados con una pregunta sobre la profesión. Propongan cómo convertir su respuesta en un carrusel de tres láminas.",e:"Video de 45 s + texto de las 3 láminas"},
+   {t:"ia",n:"Remix con IA",m:4,c:"Pidan a ChatGPT o Copilot tres ideas de carrusel a partir de una experiencia real del equipo. Elijan una, mejórenla y digan qué aportó la IA y qué aportaron ustedes.",e:"Idea final + declaración de uso de IA"},
+   {t:"debate",n:"Formato equivocado",m:3,c:"Alguien quiere publicar «un análisis de la reforma laboral» en un video de 15 segundos. Argumenten por qué no encaja y propongan el formato correcto con su estructura.",e:"Argumento + propuesta de formato"},
+   {t:"diseno",n:"Portada que detiene el scroll",m:4,c:"Diseñen en Canva o en papel solo la portada de un carrusel sobre su carrera: una promesa clara, pocas palabras y una imagen.",e:"Captura o foto de la portada"},
+   {t:"video",n:"Detrás de cámaras",m:5,c:"Graben un video corto que muestre el proceso de algo que estén haciendo en una materia: hook, proceso y resultado.",e:"Video de 30 a 45 s"},
+   {t:"texto",n:"Del post al artículo",m:5,c:"Tomen una idea de post y conviértanla en el arranque de un artículo: título, tesis clara y un párrafo que explique por qué el tema importa ahora.",e:"Título + párrafo de apertura"},
+   {t:"ia",n:"Guion con IA",m:4,c:"Pidan a una IA un guion de video de 30 segundos sobre un tema de su carrera. Corríjanlo: cambien lo genérico por una experiencia real del equipo y declaren qué cambiaron.",e:"Guion final + lista de cambios"}
+  ]},
+ {n:"Laboratorio del tiempo", tema:"GTD, time blocking y deep work", mode:"dilema",
+  idea:"Capturar, procesar, organizar, ejecutar y revisar. Administrar tiempo, no listas. La atención es un recurso escaso.",
+  cards:[
+   {t:"foto",n:"Bandeja GTD real",m:5,c:"Cada uno escribe en un minuto todos sus pendientes. Luego procesen juntos cada uno: hazlo ya, agéndalo, delégalo, próxima acción, algún día o elimínalo.",e:"Foto de la clasificación"},
+   {t:"foto",n:"Semana de creador",m:5,c:"En el calendario real de uno del equipo, bloqueen para la próxima semana: creación (45 min), interacción (15 min), revisión semanal (15 min) y deep work (60 min).",e:"Captura del calendario"},
+   {t:"entrevista",n:"¿Cómo organizas tu semana?",m:5,c:"Entrevisten a alguien fuera del salón: «¿Cómo organizas tu semana?». Identifiquen qué principio aplica (GTD, time blocking o deep work) y cuál le falta.",e:"Video de 45 s + análisis"},
+   {t:"debate",n:"Prueba de deep work",m:4,c:"Dos leen un mismo párrafo durante un minuto: uno en silencio, otro con interrupciones del tercero. Comparen cuánto recordó cada uno y argumenten qué pasó.",e:"Resultados + conclusión"},
+   {t:"video",n:"Comercial del time blocking",m:4,c:"Graben un comercial de 30 segundos que le venda el time blocking a un estudiante que siempre dice «no me da el tiempo».",e:"Video de 30 s"},
+   {t:"texto",n:"Rescate de agenda",m:5,c:"Sofía tiene clases de 7 a 12, trabaja de 2 a 6, debe entregar un informe el viernes y quiere publicar una vez por semana. Organicen su martes con bloques y justifiquen cada decisión.",e:"Agenda por bloques + justificación"},
+   {t:"foto",n:"Regla de los dos minutos",m:3,c:"Resuelvan ya todas las tareas de menos de dos minutos que tengan pendientes: responder un mensaje, agendar una cita, enviar un archivo. Gana evidencia quien cierre más.",e:"Capturas de lo cerrado"},
+   {t:"diseno",n:"Carrusel «GTD para estudiantes»",m:5,c:"Boceten un carrusel de cinco láminas que explique GTD a un estudiante de primer semestre.",e:"Captura o foto del boceto"},
+   {t:"texto",n:"Revisión semanal",m:4,c:"Diseñen la revisión semanal de un estudiante creador: cinco preguntas que se respondan en 15 minutos (por ejemplo, ¿qué publiqué?, ¿qué quedó pendiente?).",e:"Las 5 preguntas + día y hora para hacerla"},
+   {t:"video",n:"Antes y después del caos",m:5,c:"Graben dos escenas de 15 segundos: un estudiante que trabaja con la mente llena de pendientes y el mismo estudiante después de capturarlos todos en una lista.",e:"Video de 30 s"},
+   {t:"debate",n:"¿Lista o calendario?",m:3,c:"Debate exprés: uno defiende la lista de tareas, otro el time blocking y un tercero concluye cuándo sirve cada uno. Grábenlo.",e:"Video de 60 s"},
+   {t:"entrevista",n:"Cazador de distracciones",m:5,c:"Pregunten a dos personas qué las interrumpe cuando estudian y cuánto tardan en volver a concentrarse. Propongan una regla de deep work para cada una.",e:"Respuestas + 2 reglas"}
+  ]},
+ {n:"Modo enfoque", tema:"Hábitos digitales e integración", mode:"ruleta",
+  idea:"El contenido hace visible el valor y la productividad permite sostenerlo.",
+  cards:[
+   {t:"foto",n:"Auditoría de notificaciones",m:4,c:"Revisen la configuración de notificaciones de un celular del equipo. Desactiven tres que no sean esenciales y expliquen por qué cada una.",e:"Capturas del antes y el después"},
+   {t:"video",n:"Si…, entonces…",m:3,c:"Cada uno escribe una regla digital con la fórmula «si…, entonces…» (por ejemplo: si me siento a estudiar, entonces dejo el celular en otra habitación). Grábenlas.",e:"Video de 30 s con las 3 reglas"},
+   {t:"entrevista",n:"Encuesta de pasillo",m:5,c:"Pregunten a tres personas cuántas veces creen que desbloquean el celular al día y qué app las distrae más. Conviertan el hallazgo en un post.",e:"Respuestas + post con el hallazgo"},
+   {t:"foto",n:"Rincón sin distracciones",m:4,c:"Encuentren en el campus un lugar que sirva para hacer deep work. Tómenle una foto y definan tres reglas para usarlo.",e:"Foto + 3 reglas"},
+   {t:"video",n:"Mensaje de servicio",m:5,c:"Graben un mensaje de servicio público de 30 a 45 segundos sobre consumo consciente de información para estudiantes.",e:"Video de 30 a 45 s"},
+   {t:"texto",n:"Sistema de cuatro semanas",m:5,c:"Diseñen el plan mínimo para que uno de ustedes publique durante cuatro semanas sin agobiarse: tema y formato por semana, bloques de calendario y una regla digital.",e:"Plan de 4 semanas"},
+   {t:"foto",n:"Pantalla de inicio enfocada",m:4,c:"Reorganicen la pantalla de inicio de un celular del equipo: lo productivo a mano, lo que distrae lejos o en carpetas.",e:"Foto del antes y el después"},
+   {t:"video",n:"Pitch integrador",m:4,c:"Graben un pitch de 60 segundos sobre por qué el contenido hace visible el valor y la productividad lo sostiene, con un ejemplo de su carrera.",e:"Video de 60 s"},
+   {t:"diseno",n:"Carrusel de hábitos",m:5,c:"Boceten un carrusel de cinco láminas con cinco hábitos digitales para estudiantes, uno por lámina y cada uno con una acción concreta.",e:"Captura o foto del boceto"},
+   {t:"debate",n:"¿Se puede desconectar?",m:3,c:"Debate exprés: uno defiende que un creador debe estar siempre conectado y otro que no. Un tercero concluye con una regla concreta. Grábenlo.",e:"Video de 60 s"},
+   {t:"foto",n:"Mi semana sin agobio",m:5,c:"En el calendario de alguien del equipo, combinen un bloque de creación, uno de interacción, uno de deep work y uno de descanso sin pantallas.",e:"Captura del calendario"},
+   {t:"texto",n:"El post de cierre",m:4,c:"Escriban el post con el que cerrarían esta clase en LinkedIn: qué aprendieron sobre crear contenido y sostenerlo, con las cuatro partes.",e:"Post completo"}
+  ]}
+];
+const CRITERIA = [
+  {k:"c",l:"Cumplió el reto",max:4},
+  {k:"a",l:"Aplica el concepto",max:3},
+  {k:"r",l:"Creatividad",max:2},
+  {k:"t",l:"Entregó a tiempo",max:1}
+];
+const MAX_ROUND = CRITERIA.reduce((s,c)=>s+c.max,0);
+const MODES = {
+  cartas:{l:"Cartas boca abajo", d:"Un integrante del equipo elige una carta sin ver qué tiene. La carta elegida queda ocupada para los demás."},
+  ruleta:{l:"Ruleta", d:"Cada equipo gira. La casilla que cae queda ocupada y la ruleta no la vuelve a dar en esta ronda."},
+  comun:{l:"Reto común", d:"Todos los equipos reciben el mismo reto al mismo tiempo. Gana la ejecución más creativa."},
+  dilema:{l:"Dilema", d:"El equipo saca dos cartas y elige cuál resolver. La otra vuelve al mazo."}
+};
+const TEAM_NAMES = ["Hook","Carrusel","Deep Work","Time Block","Storytellers","Feed","Insight","Algoritmo","Pixel","Engagement","Podcast","Viral","Branding","Trending","Prime Time","Remix"];
+const TEAM_COLORS = ["#2F5BEA","#6C4AD8","#14B8C9","#D9981C","#178A61","#C94F8A","#3B7DD8","#8A5CF6","#0E9AA7","#B8703F","#5468FF","#2BA36B","#A23FBF","#D46A2E","#1F8FD6","#7A62E8"];
+const EXAMPLE = "Ana Gómez, Juan Pérez, Laura Rincón, Andrés Díaz, Sofía Mantilla, Camilo Rojas, Valentina Ortiz, Mateo Silva, Daniela Pardo, Santiago Ruiz, Isabella Mora, Nicolás Duarte";
+
+/* ---------------- Estado ---------------- */
+const CLIENT = Math.random().toString(36).slice(2,10);
+const blankRounds = ()=>ROUNDS.map(()=>({status:"idle",assign:{},scores:{}}));
+let S = {v:1, rev:0, participants:[], teams:[], current:0, rounds:blankRounds(), winners:1, size:3};
+let tab = "equipos";
+let spinTeam = "";
+let dilemma = null; // {team, round, options:[i,j]}
+let commonPick = 0;
+let justPicked = -1;
+let wheelRot = 0, spinning = false;
+let overlay = null; // {teamId, round}
+let pendingConfirm = null;
+let hideBoard = false;
+const alerted = new Set();
+let store = null, unsub = null, saveTimer = null, saveState = "local";
+
+const $ = s=>document.querySelector(s);
+const app = $("#app");
+const uid = ()=>Math.random().toString(36).slice(2,9);
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function normalize(x){
+  const d = Object.assign({v:1,rev:0,participants:[],teams:[],current:0,rounds:blankRounds(),winners:1,size:3}, x||{});
+  while(d.rounds.length<ROUNDS.length) d.rounds.push({status:"idle",assign:{},scores:{}});
+  d.rounds.forEach(r=>{r.assign=r.assign||{};r.scores=r.scores||{};r.status=r.status||"idle"});
+  return d;
+}
+
+/* ---------------- Guardado ---------------- */
+function setSave(state){
+  saveState = state;
+  const el = $("#savePill");
+  const map = {saving:["Guardando…",""],saved:["Guardado",""],local:["Guardado en este navegador","warn"],error:["No se pudo guardar","warn"],loading:["Cargando…",""]};
+  const [t,cls] = map[state]||map.local;
+  el.innerHTML = `<i class="dot ${cls}"></i><span>${t}</span>`;
+}
+function commit(){
+  S.rev = (S.rev||0)+1; S.by = CLIENT;
+  render();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(persist, 400);
+}
+async function persist(){
+  const body = JSON.parse(JSON.stringify(S));
+  try{ localStorage.setItem("liga-creadores", JSON.stringify(body)); }catch(e){}
+  if(!store){ setSave("local"); return; }
+  setSave("saving");
+  try{ await store.doc("partida/actual").set(body); setSave("saved"); }
+  catch(e){
+    if(e && e.code==="unavailable"){ setTimeout(persist, 800+Math.random()*600); return; }
+    setSave("error");
+  }
+}
+function loadLocal(){
+  try{ const raw = localStorage.getItem("liga-creadores"); if(raw) S = normalize(JSON.parse(raw)); }catch(e){}
+}
+async function connect(){
+  loadLocal(); render(); setSave("loading");
+  let db = null;
+  try{ db = window.claude && window.claude.use ? await window.claude.use("db") : null; }catch(e){ db = null; }
+  if(!db){ setSave("local"); return; }
+  store = db;
+  try{
+    const snap = await db.doc("partida/actual").get();
+    if(snap.exists){ const d = snap.data(); if(!S.rev || (d.rev||0) >= (S.rev||0)) S = normalize(JSON.parse(JSON.stringify(d))); }
+    else if(S.participants.length){ persist(); }
+    setSave("saved"); render();
+  }catch(e){ setSave("error"); }
+  try{
+    unsub = db.doc("partida/actual").onSnapshot(snap=>{
+      if(!snap.exists) return;
+      const d = snap.data();
+      if(d.by===CLIENT) return;
+      if((d.rev||0) > (S.rev||0)){ S = normalize(JSON.parse(JSON.stringify(d))); render(); }
+    }, ()=>{});
+  }catch(e){}
+}
+
+/* ---------------- Utilidades de juego ---------------- */
+const teamById = id=>S.teams.find(t=>t.id===id);
+const membersOf = id=>S.participants.filter(p=>p.teamId===id);
+function newTeam(){
+  const used = new Set(S.teams.map(t=>t.name));
+  let i = 0, name;
+  do{ name = TEAM_NAMES[i % TEAM_NAMES.length] + (i>=TEAM_NAMES.length? " "+(Math.floor(i/TEAM_NAMES.length)+1):""); i++; }while(used.has(name));
+  const t = {id:uid(), name, color:TEAM_COLORS[S.teams.length % TEAM_COLORS.length]};
+  S.teams.push(t); return t;
+}
+function parseNames(text){
+  const seen = new Set(S.participants.map(p=>p.name.toLowerCase()));
+  const out = [];
+  String(text).split(/[,;\n\r\t]+/).map(s=>s.replace(/\s+/g," ").trim()).filter(Boolean).forEach(n=>{
+    const k = n.toLowerCase(); if(!seen.has(k)){ seen.add(k); out.push(n); }
+  });
+  return out;
+}
+function addParticipants(names, autoAssign){
+  names.forEach(name=>{
+    const p = {id:uid(), name, teamId:null, joined:S.current, adj:0};
+    S.participants.push(p);
+    if(autoAssign) placeLate(p);
+  });
+}
+function placeLate(p){
+  const open = S.teams.map(t=>({t,n:membersOf(t.id).length})).filter(x=>x.n<S.size).sort((a,b)=>b.n-a.n)[0];
+  p.teamId = open ? open.t.id : newTeam().id;
+}
+function formTeams(){
+  const pool = S.participants.filter(p=>!p.teamId);
+  for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  // primero completa equipos incompletos
+  S.teams.forEach(t=>{ while(membersOf(t.id).length<S.size && pool.length) pool.shift().teamId = t.id; });
+  while(pool.length){ const t = newTeam(); for(let k=0;k<S.size && pool.length;k++) pool.shift().teamId = t.id; }
+}
+function cleanEmptyTeams(){
+  S.teams = S.teams.filter(t=>membersOf(t.id).length>0 || Object.values(S.rounds).some(r=>r.assign[t.id]||r.scores[t.id]));
+}
+function assignCard(teamId, i){
+  const card = ROUNDS[S.current].cards[i];
+  S.rounds[S.current].assign[teamId] = {card:i, dur:card.m*60, used:0, startedAt:null};
+}
+function remaining(a){
+  if(!a) return 0;
+  const run = a.startedAt ? (Date.now()-a.startedAt)/1000 : 0;
+  return Math.max(0, a.dur - (a.used||0) - run);
+}
+function fmt(sec){ sec = Math.ceil(sec); const m = Math.floor(sec/60), s = sec%60; return m+":"+String(s).padStart(2,"0"); }
+function roundPoints(r, teamId){ const sc = S.rounds[r].scores[teamId]; if(!sc) return null; return CRITERIA.reduce((s,c)=>s+(sc[c.k]||0),0); }
+function teamTotal(teamId){ let s=0; S.rounds.forEach((r,i)=>{ const p=roundPoints(i,teamId); if(p!=null) s+=p; }); return s; }
+function ranking(){
+  const list = S.teams.filter(t=>membersOf(t.id).length).map(t=>({t,total:teamTotal(t.id)}));
+  list.sort((a,b)=>b.total-a.total || a.t.name.localeCompare(b.t.name));
+  let pos=0, last=null;
+  list.forEach((x,i)=>{ if(x.total!==last){ pos=i+1; last=x.total; } x.pos=pos; });
+  return list;
+}
+const closedCount = ()=>S.rounds.filter(r=>r.status==="done").length;
+function playedRounds(p){
+  let n=0; S.rounds.forEach((r,i)=>{ if(r.status==="done" && i>=p.joined) n++; });
+  return Math.max(0, Math.min(closedCount(), n + (p.adj||0)));
+}
+function grades(){
+  const rk = ranking(), closed = closedCount();
+  const winners = new Set(rk.filter(x=>x.pos<=S.winners && x.total>0).map(x=>x.t.id));
+  const posOf = {}; rk.forEach(x=>posOf[x.t.id]=x.pos);
+  return S.participants.map(p=>{
+    const played = playedRounds(p), team = teamById(p.teamId);
+    let grade=null, kind="none";
+    if(closed>0 && played>0){
+      if(played<closed){ grade = Math.round((3 + 0.8*played/closed)*10)/10; kind="part"; }
+      else if(winners.has(p.teamId)){ grade=5; kind="win"; }
+      else { grade=4; kind="full"; }
+    }
+    return {p, team, played, closed, pts: team?teamTotal(team.id):0, pos: team?posOf[team.id]:null, grade, kind};
+  });
+}
+
+/* ---------------- Render ---------------- */
+function render(){
+  $("#roundPill").textContent = closedCount()===ROUNDS.length ? "Liga terminada" : `Ronda ${S.current+1} de ${ROUNDS.length}`;
+  $("#peoplePill").textContent = `${S.participants.length} participante${S.participants.length===1?"":"s"}`;
+  $("#cTeams").textContent = S.teams.length ? String(S.teams.filter(t=>membersOf(t.id).length).length) : "";
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected", String(b.dataset.tab===tab)));
+  const fn = {equipos:vEquipos, arena:vArena, marcador:vMarcador, notas:vNotas, retos:vRetos}[tab];
+  app.innerHTML = `<section class="view">${fn()}</section>`;
+  if(tab==="arena") drawWheel();
+  renderOverlay();
+  tick();
+}
+function confirmBtn(key, label, yes){
+  if(pendingConfirm===key) return `<span class="confirm"><span>${esc(yes)}</span><button class="btn sm danger" data-act="confirm" data-key="${key}">Sí</button><button class="btn sm" data-act="cancel">No</button></span>`;
+  return `<button class="btn sm ghost danger" data-act="ask" data-key="${key}">${esc(label)}</button>`;
+}
+
+function vEquipos(){
+  const unassigned = S.participants.filter(p=>!p.teamId);
+  const teams = S.teams.filter(t=>membersOf(t.id).length || true);
+  const opts = id=>`<option value="">Sin equipo</option>`+S.teams.map(t=>`<option value="${t.id}" ${t.id===id?"selected":""}>${esc(t.name)}</option>`).join("")+`<option value="__new">Equipo nuevo</option>`;
+  const member = p=>`<div class="member"><span title="${esc(p.name)}">${esc(p.name)}${p.joined>0?` <small>· llegó en R${p.joined+1}</small>`:""}</span><span class="row" style="gap:4px;flex:none"><select aria-label="Mover a ${esc(p.name)}" data-act="move" data-id="${p.id}">${opts(p.teamId)}</select><button class="icon-btn" title="Quitar" aria-label="Quitar a ${esc(p.name)}" data-act="ask" data-key="del:${p.id}">×</button></span></div>`;
+  const delConfirm = pendingConfirm && pendingConfirm.startsWith("del:") ? S.participants.find(p=>"del:"+p.id===pendingConfirm) : null;
+  return `
+  <div class="section-head"><div><h2>Participantes y equipos</h2><p class="lead">Elige cuántos integrantes tendrá cada equipo, carga el archivo <b>participantes.txt</b> con los nombres separados por comas y forma los equipos. Quien llegue tarde se suma en cualquier momento: el sistema lo ubica en el equipo que esté incompleto.</p></div>
+  <div class="row">${confirmBtn("reset","Reiniciar liga","¿Borrar participantes, equipos y puntos?")}</div></div>
+  <div class="grid-2">
+    <div class="panel" style="display:flex;flex-direction:column;gap:14px">
+      <div class="label">1 · Integrantes por equipo</div>
+      <div class="row" style="flex-wrap:nowrap"><select id="sizeSel" aria-label="Integrantes por equipo" style="width:auto">${[2,3,4,5,6].map(n=>`<option value="${n}" ${S.size===n?"selected":""}>${n} integrantes</option>`).join("")}</select><span class="muted" style="font-size:13px">${S.teams.length?"Aplica a los equipos que se formen y a quienes lleguen desde ahora.":"Se aplica al formar los equipos y al sumar a quienes lleguen."}</span></div>
+      <div class="label" style="margin-top:6px">2 · Cargar la lista</div>
+      <div class="row"><label class="btn primary file">Subir participantes.txt<input type="file" id="fileIn" accept=".txt,.csv,text/plain"></label><button class="btn ghost" data-act="example">Probar con lista de ejemplo</button></div>
+      <label for="pasteIn" class="muted" style="font-size:13px">O pega los nombres separados por comas</label>
+      <textarea id="pasteIn" placeholder="Ana Gómez, Juan Pérez, Laura Rincón…"></textarea>
+      <div class="row"><button class="btn" data-act="paste">Agregar nombres</button></div>
+      <div class="label" style="margin-top:6px">3 · Llegó alguien tarde</div>
+      <form class="row" id="lateForm" style="flex-wrap:nowrap"><input type="text" id="lateIn" placeholder="Nombre y apellido" aria-label="Nombre del participante" autocomplete="off"><button class="btn violet" type="submit">Sumar</button></form>
+      <p class="muted" style="margin:0;font-size:13px">Se une al equipo incompleto que tenga más integrantes, o abre uno nuevo. Queda registrado en qué ronda llegó para calcular su nota.</p>
+      <div class="label" style="margin-top:6px">4 · Formar equipos</div>
+      <div class="row"><button class="btn primary" data-act="form" ${unassigned.length?"":"disabled"}>Formar equipos de ${S.size} al azar${unassigned.length?` (${unassigned.length} sin equipo)`:""}</button></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      ${delConfirm?`<div class="panel row" style="justify-content:space-between">¿Quitar a <b>${esc(delConfirm.name)}</b> de la liga?<span class="row"><button class="btn sm danger" data-act="confirm" data-key="${pendingConfirm}">Quitar</button><button class="btn sm" data-act="cancel">Cancelar</button></span></div>`:""}
+      ${!S.participants.length?`<div class="empty"><b style="color:var(--fg);font-size:18px">Todavía no hay participantes</b><span class="muted">Sube tu archivo participantes.txt o usa la lista de ejemplo para ver cómo funciona.</span></div>`:""}
+      ${unassigned.length?`<div class="team"><div class="team-head"><span class="team-name">Sin equipo</span><span class="slots">${unassigned.length}</span></div>${unassigned.map(member).join("")}</div>`:""}
+      <div class="teams">${teams.filter(t=>membersOf(t.id).length).map(t=>{
+        const m = membersOf(t.id);
+        return `<div class="team"><div class="team-head"><span class="team-name"><i class="swatch" style="background:${t.color}"></i>${esc(t.name)}</span><span class="slots ${m.length>=S.size?"full":""}">${m.length}/${S.size}</span></div>${m.map(member).join("")}${m.length<S.size?Array.from({length:S.size-m.length},()=>`<div class="empty-slot">Cupo libre</div>`).join(""):""}</div>`;
+      }).join("")}</div>
+    </div>
+  </div>
+  <div class="panel"><div class="label">Cómo se gana</div>
+    <div class="rules" style="margin-top:10px">
+      <div class="rule"><b>5 rondas</b>Cartas boca abajo, ruleta, reto común, dilema y ruleta final. Un tema por ronda.</div>
+      <div class="rule"><b>3 a 5 min</b>Cada reto corre contra reloj. Los ⚡ duran 3 minutos.</div>
+      <div class="rule"><b>${MAX_ROUND} pts</b>Por ronda: cumplió (4), aplica el concepto (3), creatividad (2) y a tiempo (1).</div>
+      <div class="rule"><b>5,0 · 4,0 · 3–4</b>Equipo ganador 5,0. Quien jugó todo 4,0. Participación parcial entre 3,2 y 3,8.</div>
+    </div>
+  </div>`;
+}
+
+function vArena(){
+  const r = S.current, R = ROUNDS[r], st = S.rounds[r];
+  const active = S.teams.filter(t=>membersOf(t.id).length);
+  if(!active.length) return `<div class="empty"><b style="color:var(--fg);font-size:18px">Primero forma los equipos</b><span class="muted">En la pestaña Equipos carga la lista y forma los grupos de tres.</span><button class="btn primary" data-act="tab" data-tab="equipos">Ir a Equipos</button></div>`;
+  const waiting = active.filter(t=>!st.assign[t.id]);
+  if(!spinTeam || !waiting.find(t=>t.id===spinTeam)) spinTeam = waiting[0] ? waiting[0].id : "";
+  const pills = ROUNDS.map((x,i)=>`<button class="rpill ${S.rounds[i].status==="done"?"done":""}" aria-current="${i===r}" data-act="round" data-r="${i}"><b>Ronda ${i+1}</b><small>${esc(x.tema)}</small></button>`).join("");
+  const allScored = active.every(t=>st.scores[t.id]);
+  return `
+  <div class="rounds">${pills}</div>
+  <div class="section-head"><div><div class="label">Ronda ${r+1} · ${esc(R.tema)} · <span style="color:var(--royal)">${MODES[R.mode].l}</span></div><h2>${esc(R.n)}</h2><p class="muted" style="margin:4px 0 0;max-width:70ch">${MODES[R.mode].d}</p><p class="concept" style="margin-top:10px">${esc(R.idea)}</p></div>
+    <div class="row">${st.status==="done"?`<span class="tag full">Ronda cerrada</span><button class="btn sm" data-act="reopen">Reabrir</button>`:`<button class="btn sm" data-act="startAll" ${active.some(t=>st.assign[t.id]&&!st.assign[t.id].startedAt&&remaining(st.assign[t.id])>0)?"":"disabled"}>Iniciar todos los cronómetros</button><button class="btn ${allScored?"primary":""}" data-act="close">${r===ROUNDS.length-1?"Cerrar ronda final":"Cerrar ronda y seguir"}</button>`}</div></div>
+  <div class="grid-2">
+    ${leftPanel(r, waiting, st)}
+    <div class="arena-teams">${active.map(t=>teamCard(t,r)).join("")}</div>
+  </div>`;
+}
+function teamSelect(waiting, label){
+  return `<select id="spinSel" aria-label="${label}">${waiting.map(t=>`<option value="${t.id}" ${t.id===spinTeam?"selected":""}>${esc(t.name)}</option>`).join("")}</select>`;
+}
+function takenBy(r){ const m = {}; Object.entries(S.rounds[r].assign).forEach(([tid,a])=>{ m[a.card]=tid; }); return m; }
+function chipFor(c){ return `<span class="chip ${c.m<=3?"flash":""}">${c.m<=3?"⚡ ":""}${TYPES[c.t].l} · ${c.m} min</span>`; }
+function leftPanel(r, waiting, st){
+  const R = ROUNDS[r], closed = st.status==="done", mode = R.mode;
+  const left = `${waiting.length} equipo${waiting.length===1?"":"s"} sin reto`;
+  const doneMsg = `<p class="muted" style="margin:0;text-align:center">${closed?"Ronda cerrada.":"Todos los equipos tienen reto. Califica cuando terminen."}</p>`;
+  if(mode==="ruleta"){
+    return `<div class="panel wheel-box">
+      <div class="wheel-wrap"><canvas id="wheel" width="760" height="760" aria-label="Ruleta de retos de la ronda ${r+1}"></canvas><div class="pointer"></div><div class="hub">RONDA<br>${r+1}</div></div>
+      ${waiting.length && !closed?`<div class="spin-ctrl">${teamSelect(waiting,"Equipo que gira")}<button class="btn primary" data-act="spin" ${spinning?"disabled":""}>Girar</button></div>
+      <p class="muted" style="margin:0;font-size:13px;text-align:center">${left}. Las casillas grises ya están ocupadas.</p>`:doneMsg}</div>`;
+  }
+  if(mode==="cartas"){
+    const tk = takenBy(r);
+    return `<div class="panel" style="display:flex;flex-direction:column;gap:14px">
+      ${waiting.length && !closed?`<div class="row" style="flex-wrap:nowrap"><span class="muted" style="font-size:13px;white-space:nowrap">Elige carta:</span>${teamSelect(waiting,"Equipo que elige carta")}</div>`:""}
+      <div class="pick-grid">${R.cards.map((c,i)=>{ const t = tk[i]!=null ? teamById(tk[i]) : null;
+        return t ? `<div class="pcard taken ${i===justPicked?"flipnow":""}" style="--tc:${t.color}"><span class="pnum">${i+1}</span><b>${esc(c.n)}</b><small>${esc(t.name)}</small></div>`
+                 : `<button class="pcard" data-act="pick" data-i="${i}" ${(!waiting.length||closed)?"disabled":""} aria-label="Carta ${i+1}"><span class="pnum">${i+1}</span><span class="pback" aria-hidden="true"></span></button>`; }).join("")}</div>
+      ${waiting.length && !closed?`<p class="muted" style="margin:0;font-size:13px">${left}. Un integrante del equipo dice el número de la carta.</p>`:doneMsg}</div>`;
+  }
+  if(mode==="dilema"){
+    const d = dilemma && dilemma.round===r && waiting.find(t=>t.id===dilemma.team) ? dilemma : null;
+    return `<div class="panel" style="display:flex;flex-direction:column;gap:14px">
+      ${waiting.length && !closed?`<div class="row" style="flex-wrap:nowrap">${teamSelect(waiting,"Equipo que saca cartas")}<button class="btn primary" data-act="draw2" style="white-space:nowrap">${d?"Sacar otras dos":"Sacar dos cartas"}</button></div>`:""}
+      ${d?`<div class="label">${esc(teamById(d.team).name)} elige uno de estos retos</div><div class="dilemma">${d.options.map(i=>{const c=R.cards[i];return `<div class="card pop">${chipFor(c)}<b>${esc(c.n)}</b><p>${esc(c.c)}</p><button class="btn violet" data-act="choose" data-i="${i}">Elegir este reto</button></div>`}).join("")}</div>`
+        : (waiting.length && !closed?`<div class="empty" style="align-items:center;text-align:center"><b style="color:var(--fg)">Dos cartas, una decisión</b><span class="muted">Saca dos cartas para el equipo. Tienen 20 segundos para escoger.</span></div>`:"")}
+      ${waiting.length && !closed?`<p class="muted" style="margin:0;font-size:13px">${left}. La carta que no eligen vuelve al mazo.</p>`:doneMsg}</div>`;
+  }
+  // comun
+  const any = Object.values(st.assign)[0];
+  if(any){
+    const c = R.cards[any.card];
+    return `<div class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="label">Reto común para todos</div><div class="card" style="border-color:var(--royal)">${chipFor(c)}<b style="font-size:18px">${esc(c.n)}</b><p>${esc(c.c)}</p></div>
+      <div class="row"><button class="btn primary" data-act="openCommon">Ver en pantalla completa</button>${waiting.length && !closed?`<button class="btn" data-act="assignCommon" data-i="${any.card}">Dar el reto a ${waiting.length} equipo${waiting.length===1?"":"s"} nuevo${waiting.length===1?"":"s"}</button>`:""}</div></div>`;
+  }
+  return `<div class="panel" style="display:flex;flex-direction:column;gap:14px"><div class="label">Elige el reto común</div>
+    <select id="commonSel" aria-label="Reto común">${R.cards.map((c,i)=>`<option value="${i}" ${i===commonPick?"selected":""}>${esc(c.n)} · ${c.m} min</option>`).join("")}</select>
+    <div class="card">${chipFor(R.cards[commonPick])}<b>${esc(R.cards[commonPick].n)}</b><p>${esc(R.cards[commonPick].c)}</p></div>
+    <div class="row"><button class="btn" data-act="drawCommon">Sortear</button><button class="btn primary" data-act="assignCommon" data-i="${commonPick}" ${closed?"disabled":""}>Dar este reto a todos</button></div></div>`;
+}
+function teamCard(t, r){
+  const st = S.rounds[r], a = st.assign[t.id], sc = st.scores[t.id]||{};
+  const m = membersOf(t.id).map(p=>p.name.split(" ")[0]).join(", ");
+  let body = `<div class="challenge"><span class="muted" style="font-size:13px">${{cartas:"Sin reto todavía. Elige una carta para este equipo.",ruleta:"Sin reto todavía. Gira la ruleta para este equipo.",dilema:"Sin reto todavía. Saca dos cartas para este equipo.",comun:"Sin reto todavía. Asigna el reto común."}[ROUNDS[r].mode]}</span></div>`;
+  if(a){
+    const c = ROUNDS[r].cards[a.card], rem = remaining(a), running = !!a.startedAt;
+    body = `<div class="challenge"><span class="chip ${c.m<=3?"flash":""}">${c.m<=3?"⚡ ":""}${TYPES[c.t].l} · ${c.m} min</span><b>${esc(c.n)}</b>
+      <button class="btn sm ghost" style="align-self:flex-start;padding-left:0" data-act="open" data-team="${t.id}">Ver reto en pantalla completa</button></div>
+      <div class="row" style="justify-content:space-between"><span class="timer" data-timer="${t.id}">${fmt(rem)}</span>
+      <span class="row" style="gap:6px">${rem<=0?"":running?`<button class="btn sm" data-act="pause" data-team="${t.id}">Pausar</button>`:`<button class="btn sm primary" data-act="start" data-team="${t.id}">${a.used?"Seguir":"Iniciar"}</button>`}<button class="btn sm" data-act="plus" data-team="${t.id}" title="Agregar un minuto">+1 min</button></span></div>
+      <div class="bar"><i data-bar="${t.id}" style="width:${100*rem/a.dur}%"></i></div>`;
+  }
+  const scoring = `<div class="score">${CRITERIA.map(c=>`<div class="crit"><span>${c.l}</span><span class="seg" role="group" aria-label="${c.l}">${Array.from({length:c.max+1},(_,v)=>`<button aria-pressed="${sc[c.k]===v}" data-act="score" data-team="${t.id}" data-k="${c.k}" data-v="${v}">${v}</button>`).join("")}</span></div>`).join("")}
+    <div class="crit"><span class="muted">Puntos de la ronda</span><span class="total">${st.scores[t.id]?roundPoints(r,t.id):"–"} / ${MAX_ROUND}</span></div></div>`;
+  return `<div class="ateam" data-card="${t.id}"><div class="team-head"><span class="team-name"><i class="swatch" style="background:${t.color}"></i>${esc(t.name)}</span><span class="total">${teamTotal(t.id)} pts</span></div><div class="who" title="${esc(m)}">${esc(m)}</div>${body}${a?scoring:""}</div>`;
+}
+
+function vMarcador(){
+  const rk = ranking(), closed = closedCount(), done = closed===ROUNDS.length;
+  if(!rk.length) return `<div class="empty"><b style="color:var(--fg);font-size:18px">Aún no hay equipos</b><span class="muted">El marcador aparece cuando formes los equipos.</span></div>`;
+  const head = `<div class="section-head"><div><h2>${done?"Podio final":"Marcador"}</h2><p class="lead">${closed} de ${ROUNDS.length} rondas cerradas · máximo ${MAX_ROUND} puntos por ronda.</p></div><div class="row"><button class="btn" data-act="hide">${hideBoard?"Mostrar marcador":"Ocultar para la final"}</button></div></div>`;
+  if(hideBoard) return head + `<div class="hidden-board"><b style="font-size:22px;color:var(--fg)">Marcador oculto</b><br>Se revela al final de la última ronda.</div>`;
+  const podium = done ? (()=>{ const top = [rk[1],rk[0],rk[2]]; return `<div class="podium">${top.map((x,i)=>x?`<div class="pod g${[2,1,3][i]} pop"><div class="medal">${["2.º","1.º","3.º"][i]}</div><div style="font-weight:800;font-size:18px">${esc(x.t.name)}</div><div class="muted" style="font-size:13px">${esc(membersOf(x.t.id).map(p=>p.name).join(", "))}</div><div class="total" style="font-size:22px;margin-top:6px">${x.total} pts</div></div>`:"<div></div>").join("")}</div>`; })() : "";
+  const rows = rk.map(x=>`<div class="brow ${x.pos<=3?"p"+x.pos:""}"><div class="rank">${x.pos}</div><div style="min-width:0"><div class="bname"><i class="swatch" style="background:${x.t.color}"></i>${esc(x.t.name)}</div><div class="bmem">${esc(membersOf(x.t.id).map(p=>p.name).join(" · "))}</div>
+    <div class="rbars" aria-hidden="true">${ROUNDS.map((_,i)=>{const p=roundPoints(i,x.t.id);return `<i title="Ronda ${i+1}: ${p==null?"sin puntos":p}"><b style="width:${p==null?0:100*p/MAX_ROUND}%"></b></i>`}).join("")}</div></div>
+    <div class="bpts">${x.total}<small>PUNTOS</small></div></div>`).join("");
+  return head + podium + `<div class="board">${rows}</div>`;
+}
+
+function vNotas(){
+  const g = grades(), closed = closedCount();
+  const label = {win:"Equipo ganador",full:"Jugó todas",part:"Parcial",none:"Sin rondas"};
+  return `
+  <div class="section-head"><div><h2>Notas</h2><p class="lead">${closed===ROUNDS.length?"Notas finales de la liga.":"Notas provisionales: se calculan con las rondas cerradas hasta ahora ("+closed+" de "+ROUNDS.length+")."} El equipo en primer lugar saca 5,0; quien jugó todas las rondas, 4,0; quien jugó parte, entre 3,2 y 3,8 según las rondas jugadas.</p></div>
+  <div class="row"><label class="muted" for="winSel" style="font-size:13px">Equipos que sacan 5,0</label><select id="winSel" style="width:auto">${[1,2,3].map(n=>`<option value="${n}" ${S.winners===n?"selected":""}>${n===1?"Solo el primero":"Los "+n+" primeros"}</option>`).join("")}</select><button class="btn primary" data-act="csv" ${S.participants.length?"":"disabled"}>Descargar notas (CSV)</button></div></div>
+  <div class="tbl-wrap"><table><thead><tr><th>Estudiante</th><th>Equipo</th><th>Rondas jugadas</th><th>Puntos del equipo</th><th>Puesto</th><th>Estado</th><th>Nota</th></tr></thead><tbody>
+  ${g.length?g.sort((a,b)=>(b.grade||0)-(a.grade||0)||a.p.name.localeCompare(b.p.name)).map(x=>`<tr><td style="color:var(--fg);font-weight:600">${esc(x.p.name)}</td><td>${x.team?esc(x.team.name):"—"}</td>
+  <td><span class="stepper"><button data-act="adj" data-id="${x.p.id}" data-d="-1" aria-label="Restar una ronda a ${esc(x.p.name)}">−</button><span class="num" style="font-family:var(--mono)">${x.played} / ${x.closed}</span><button data-act="adj" data-id="${x.p.id}" data-d="1" aria-label="Sumar una ronda a ${esc(x.p.name)}">+</button></span></td>
+  <td class="num">${x.pts}</td><td class="num">${x.pos||"—"}</td><td><span class="tag ${x.kind}">${label[x.kind]}</span></td><td class="grade">${x.grade==null?"—":x.grade.toFixed(1).replace(".",",")}</td></tr>`).join(""):`<tr><td colspan="7" class="muted">Sin participantes.</td></tr>`}
+  </tbody></table></div>
+  <p class="muted" style="margin:0;font-size:13px">Usa − y + para corregir las rondas de alguien que se ausentó un rato o que llegó antes de registrarse. Si hay empate en el primer lugar, todos los equipos empatados sacan 5,0.</p>
+  <div id="csvFallback"></div>`;
+}
+
+function vRetos(){
+  return `<div class="section-head"><div><h2>Banco de retos</h2><p class="lead">Doce retos por ronda y una mecánica distinta en cada una. Un reto que ya tomó un equipo queda ocupado mientras haya otros disponibles. Los marcados con ⚡ son contra reloj de 3 minutos.</p></div></div>
+  ${ROUNDS.map((R,i)=>`<details class="round" ${i===S.current?"open":""}><summary>Ronda ${i+1} · ${esc(R.n)} <span class="muted" style="font-weight:500">· ${esc(R.tema)} · ${MODES[R.mode].l}</span></summary><p class="muted" style="margin:0 0 12px">${MODES[R.mode].d}</p><div class="deck">${R.cards.map(c=>`<div class="card"><span class="chip ${c.m<=3?"flash":""}">${c.m<=3?"⚡ ":""}${TYPES[c.t].l} · ${c.m} min</span><b>${esc(c.n)}</b><p>${esc(c.c)}</p><p class="muted"><b style="color:var(--violet);font-size:12px;letter-spacing:.06em;text-transform:uppercase">Entregable</b><br>${esc(c.e)}</p></div>`).join("")}</div></details>`).join("")}`;
+}
+
+function renderOverlay(){
+  const root = $("#overlayRoot");
+  if(!overlay){ root.innerHTML=""; return; }
+  const t = teamById(overlay.team), a = S.rounds[overlay.round].assign[overlay.team];
+  if(!t || !a){ overlay=null; root.innerHTML=""; return; }
+  const c = ROUNDS[overlay.round].cards[a.card], rem = remaining(a), com = !!overlay.common;
+  const sfx = com ? "All" : "";
+  const controls = `${rem<=0?"":a.startedAt?`<button class="btn" data-act="pause${sfx}" data-team="${t.id}">Pausar</button>`:`<button class="btn primary" data-act="start${sfx}" data-team="${t.id}">${a.used?"Seguir":com?"Iniciar para todos":"Iniciar reto"}</button>`}<button class="btn" data-act="plus${sfx}" data-team="${t.id}">+1 min</button>${!com&&ROUNDS[overlay.round].mode==="ruleta"&&!a.startedAt&&!a.used?`<button class="btn ghost" data-act="respin" data-team="${t.id}">Volver a girar</button>`:""}<button class="btn ghost" data-act="closeOv">Cerrar</button>`;
+  const who = com ? S.teams.filter(x=>S.rounds[overlay.round].assign[x.id]).map(x=>x.name).join(" · ") : membersOf(t.id).map(p=>p.name).join(" · ");
+  root.innerHTML = `<div class="overlay" data-act="closeOv"><div class="reveal pop" role="dialog" aria-modal="true" aria-label="Reto de ${com?"todos los equipos":esc(t.name)}">
+    <div class="reveal-top"><div><div class="eyebrow">Ronda ${overlay.round+1} · ${esc(ROUNDS[overlay.round].tema)} · ${com?"Reto común para todos los equipos":"Equipo "+esc(t.name)}</div><h3>${esc(c.n)}</h3></div><span class="pill">${c.m<=3?"⚡ Contra reloj · ":""}${TYPES[c.t].l} · ${c.m} min</span></div>
+    <div class="reveal-body">
+      <div><div class="label">El reto</div><p class="cons">${esc(c.c)}</p><div class="deliver" style="margin-top:16px"><div class="label">Entregable</div>${esc(c.e)}<div class="muted" style="font-size:13px;margin-top:6px">Súbanlo al canal de la clase con el nombre del equipo.</div></div></div>
+      <div style="display:flex;flex-direction:column;gap:14px;justify-content:center"><div class="big-timer" data-timer="${t.id}">${fmt(rem)}</div><div class="bar"><i data-bar="${t.id}" style="width:${100*rem/a.dur}%"></i></div>
+        <div class="row">${controls}</div>
+        <div class="muted" style="font-size:13px">${esc(who)}</div>${com?`<div class="muted" style="font-size:13px">Califica la creatividad comparando las versiones de todos los equipos.</div>`:""}</div>
+    </div></div></div>`;
+}
+
+/* ---------------- Ruleta ---------------- */
+function drawWheel(){
+  const cv = $("#wheel"); if(!cv) return;
+  const ctx = cv.getContext("2d"), W = cv.width, R = W/2 - 10, cards = ROUNDS[S.current].cards, n = cards.length;
+  const used = new Set(Object.values(S.rounds[S.current].assign).map(a=>a.card));
+  const css = getComputedStyle(document.documentElement);
+  const palette = [css.getPropertyValue("--royal"),css.getPropertyValue("--violet"),css.getPropertyValue("--cyan"),"#1C3A8C"].map(s=>s.trim());
+  const fg = css.getPropertyValue("--fg").trim(), surf = css.getPropertyValue("--surface-2").trim();
+  ctx.clearRect(0,0,W,W);
+  ctx.save(); ctx.translate(W/2,W/2); ctx.rotate(wheelRot);
+  const a = 2*Math.PI/n;
+  for(let i=0;i<n;i++){
+    const s = -Math.PI/2 + i*a;
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,R,s,s+a); ctx.closePath();
+    ctx.fillStyle = used.has(i) ? surf : palette[i%palette.length]; ctx.fill();
+    ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.stroke();
+    ctx.save(); ctx.rotate(s + a/2); ctx.textAlign="right"; ctx.textBaseline="middle";
+    ctx.fillStyle = used.has(i) ? fg : "#FFFFFF"; ctx.globalAlpha = used.has(i)? .45 : 1;
+    ctx.font = (n>8?"700 20px":"700 24px")+" 'Plus Jakarta Sans', system-ui, sans-serif";
+    const label = (cards[i].m<=3?"⚡ ":"") + cards[i].n;
+    wrapText(ctx, label, R-22, 0, R*0.6, n>8?21:26);
+    ctx.restore();
+  }
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(W/2,W/2,R,0,2*Math.PI); ctx.lineWidth=8; ctx.strokeStyle=fg; ctx.stroke();
+}
+function wrapText(ctx, text, x, y, maxW, lh){
+  const words = text.split(" "), lines = []; let line = "";
+  words.forEach(w=>{ const t = line? line+" "+w : w; if(ctx.measureText(t).width>maxW && line){ lines.push(line); line=w; } else line=t; });
+  lines.push(line);
+  const shown = lines.slice(0,2); if(lines.length>2) shown[1] = shown[1].replace(/\s*\S*$/,"")+"…";
+  const off = (shown.length-1)*lh/2;
+  shown.forEach((l,i)=>ctx.fillText(l, x, y - off + i*lh));
+}
+function spin(teamId, reroll){
+  if(spinning) return;
+  const r = S.current, st = S.rounds[r], n = ROUNDS[r].cards.length;
+  const prev = st.assign[teamId] ? st.assign[teamId].card : null;
+  const used = new Set(Object.entries(st.assign).filter(([k])=>k!==teamId).map(([,a])=>a.card));
+  let pool = [...Array(n).keys()].filter(i=>!used.has(i) && i!==prev);
+  if(!pool.length) pool = [...Array(n).keys()].filter(i=>i!==prev);
+  const pick = pool[Math.floor(Math.random()*pool.length)];
+  if(reroll) delete st.assign[teamId];
+  overlay = null; renderOverlay();
+  const a = 2*Math.PI/n, target = -(pick+0.5)*a;
+  const base = wheelRot - (wheelRot % (2*Math.PI));
+  const end = base + 2*Math.PI*6 + ((target % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+  const start = wheelRot, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, D = reduce? 500 : 3600, t0 = performance.now();
+  spinning = true; const btn = document.querySelector('[data-act="spin"]'); if(btn) btn.disabled = true;
+  tone(520,.05);
+  (function frame(now){
+    const p = Math.min(1,(now-t0)/D), e = 1-Math.pow(1-p,4);
+    wheelRot = start + (end-start)*e; drawWheel();
+    if(p<1) requestAnimationFrame(frame);
+    else{
+      spinning = false; wheelRot = end % (2*Math.PI);
+      const card = ROUNDS[r].cards[pick];
+      st.assign[teamId] = {card:pick, dur:card.m*60, used:0, startedAt:null};
+      overlay = {team:teamId, round:r}; tone(880,.12); setTimeout(()=>tone(1175,.14),120);
+      commit();
+    }
+  })(t0);
+}
+
+/* ---------------- Cronómetros ---------------- */
+let actx = null;
+function tone(f, d){
+  try{ actx = actx || new (window.AudioContext||window.webkitAudioContext)(); const o = actx.createOscillator(), g = actx.createGain();
+    o.frequency.value=f; o.type="sine"; g.gain.setValueAtTime(.18,actx.currentTime); g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+d);
+    o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime+d); }catch(e){}
+}
+function tick(){
+  const st = S.rounds[S.current];
+  Object.entries(st.assign).forEach(([tid,a])=>{
+    const rem = remaining(a);
+    document.querySelectorAll(`[data-timer="${tid}"]`).forEach(el=>{ el.textContent = fmt(rem); el.classList.toggle("low", rem>0 && rem<=30); el.classList.toggle("out", rem<=0); });
+    document.querySelectorAll(`[data-bar="${tid}"]`).forEach(el=>el.style.width = (100*rem/a.dur)+"%");
+    const key = S.current+":"+tid+":"+a.dur;
+    const card = document.querySelector(`[data-card="${tid}"]`);
+    if(a.startedAt && rem<=0){
+      if(card) card.classList.add("alarm");
+      if(!alerted.has(key)){ alerted.add(key); if(Date.now()-(tick.lb||0)>1500){ tick.lb=Date.now(); [0,250,500].forEach(t=>setTimeout(()=>tone(660,.2),t)); } a.used = a.dur; a.startedAt = null; toast(`Tiempo para ${teamById(tid)?teamById(tid).name:"el equipo"}`); commit(); }
+    }else if(card) card.classList.remove("alarm");
+  });
+}
+setInterval(tick, 250);
+
+/* ---------------- Exportar ---------------- */
+async function exportCSV(){
+  const g = grades();
+  const rows = [["Estudiante","Equipo","Rondas jugadas","Rondas cerradas","Puntos del equipo","Puesto","Nota"]].concat(
+    g.map(x=>[x.p.name, x.team?x.team.name:"", x.played, x.closed, x.pts, x.pos||"", x.grade==null?"":x.grade.toFixed(1).replace(".",",")]));
+  const csv = "﻿" + rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(";")).join("\r\n");
+  let dl = null;
+  try{ dl = window.claude && window.claude.use ? await window.claude.use("downloads") : null; }catch(e){}
+  if(dl){
+    try{ await dl.save({filename:"notas-liga-de-creadores.csv", data:csv}); toast("Archivo listo"); return; }
+    catch(e){ if(e && e.code==="declined") return; }
+  }
+  const box = $("#csvFallback");
+  if(box){ box.innerHTML = `<div class="panel"><div class="label">Copia las notas</div><p class="muted" style="margin:6px 0">La descarga no está disponible aquí. Copia este texto y pégalo en Excel.</p><textarea id="csvText" rows="6" readonly>${esc(csv.slice(1))}</textarea><div class="row" style="margin-top:8px"><button class="btn" data-act="copy">Copiar</button></div></div>`; }
+}
+function toast(msg){
+  const r = $("#toastRoot"); r.innerHTML = `<div class="toast" role="status">${esc(msg)}</div>`;
+  clearTimeout(toast.t); toast.t = setTimeout(()=>r.innerHTML="", 2400);
+}
+
+/* ---------------- Eventos ---------------- */
+document.addEventListener("click", e=>{
+  const tabBtn = e.target.closest(".tab");
+  if(tabBtn){ tab = tabBtn.dataset.tab; pendingConfirm=null; render(); return; }
+  const el = e.target.closest("[data-act]"); if(!el) return;
+  const act = el.dataset.act, tid = el.dataset.team, r = S.current;
+  if(act==="closeOv"){ if(e.target!==el) return; overlay=null; renderOverlay(); return; }
+  switch(act){
+    case "tab": tab = el.dataset.tab; render(); break;
+    case "example": addParticipants(parseNames(EXAMPLE), false); toast("Lista de ejemplo cargada"); commit(); break;
+    case "paste": { const v = $("#pasteIn").value, names = parseNames(v); if(!names.length){ toast("No encontré nombres nuevos"); break; } addParticipants(names, S.teams.length>0); toast(`${names.length} agregados`); commit(); break; }
+    case "form": formTeams(); toast("Equipos formados"); commit(); break;
+    case "ask": pendingConfirm = el.dataset.key; render(); break;
+    case "cancel": pendingConfirm = null; render(); break;
+    case "confirm": {
+      const k = el.dataset.key; pendingConfirm = null;
+      if(k==="reset"){ S = normalize({rev:S.rev}); overlay=null; alerted.clear(); toast("Liga reiniciada"); }
+      else if(k.startsWith("del:")){ const id = k.slice(4); S.participants = S.participants.filter(p=>p.id!==id); cleanEmptyTeams(); }
+      commit(); break;
+    }
+    case "round": S.current = +el.dataset.r; overlay=null; commit(); break;
+    case "spin": { const sel = $("#spinSel"); if(sel) spinTeam = sel.value; if(spinTeam) spin(spinTeam,false); break; }
+    case "respin": spin(tid,true); break;
+    case "open": overlay = {team:tid, round:r}; renderOverlay(); tick(); break;
+    case "start": { const a = S.rounds[r].assign[tid]; if(a && !a.startedAt && remaining(a)>0){ a.startedAt = Date.now(); tone(700,.08); commit(); } break; }
+    case "pause": { const a = S.rounds[r].assign[tid]; if(a && a.startedAt){ a.used = (a.used||0) + (Date.now()-a.startedAt)/1000; a.startedAt=null; commit(); } break; }
+    case "plus": { const a = S.rounds[r].assign[tid]; if(a){ a.dur += 60; if(remaining(a)>0) alerted.delete(r+":"+tid+":"+(a.dur-60)); if(!a.startedAt && a.used>=a.dur-60){ a.used = a.dur-60; } commit(); } break; }
+    case "pick": { const sel = $("#spinSel"); const team = sel ? sel.value : ""; const i = +el.dataset.i; if(!team || takenBy(r)[i]!=null) break; assignCard(team, i); justPicked = i; setTimeout(()=>{justPicked=-1},700); tone(880,.12); setTimeout(()=>tone(1175,.14),120); overlay = {team, round:r}; commit(); break; }
+    case "draw2": { const sel = $("#spinSel"); const team = sel ? sel.value : ""; if(!team) break; const tk = takenBy(r), n = ROUNDS[r].cards.length;
+      let pool = [...Array(n).keys()].filter(i=>tk[i]==null); if(pool.length<2) pool = [...Array(n).keys()];
+      for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+      dilemma = {team, round:r, options:pool.slice(0,2)}; spinTeam = team; tone(620,.08); render(); break; }
+    case "choose": { if(!dilemma) break; const team = dilemma.team; assignCard(team, +el.dataset.i); dilemma = null; overlay = {team, round:r}; tone(880,.12); commit(); break; }
+    case "drawCommon": { commonPick = Math.floor(Math.random()*ROUNDS[r].cards.length); tone(620,.08); render(); break; }
+    case "assignCommon": { const i = +el.dataset.i, card = ROUNDS[r].cards[i]; S.teams.filter(t=>membersOf(t.id).length && !S.rounds[r].assign[t.id]).forEach(t=>{ S.rounds[r].assign[t.id] = {card:i, dur:card.m*60, used:0, startedAt:null}; });
+      const first = S.teams.find(t=>S.rounds[r].assign[t.id]); if(first) overlay = {team:first.id, round:r, common:true}; tone(880,.12); commit(); break; }
+    case "openCommon": { const first = S.teams.find(t=>S.rounds[r].assign[t.id]); if(first){ overlay = {team:first.id, round:r, common:true}; renderOverlay(); tick(); } break; }
+    case "pauseAll": { const now = Date.now(); Object.values(S.rounds[r].assign).forEach(a=>{ if(a.startedAt){ a.used = (a.used||0) + (now-a.startedAt)/1000; a.startedAt=null; } }); commit(); break; }
+    case "plusAll": { Object.entries(S.rounds[r].assign).forEach(([k,a])=>{ a.dur += 60; alerted.delete(r+":"+k+":"+(a.dur-60)); if(!a.startedAt && a.used>=a.dur-60) a.used = a.dur-60; }); commit(); break; }
+    case "startAll": { const now = Date.now(); Object.values(S.rounds[r].assign).forEach(a=>{ if(!a.startedAt && remaining(a)>0) a.startedAt = now; }); tone(700,.1); commit(); break; }
+    case "score": { const sc = S.rounds[r].scores[tid] = S.rounds[r].scores[tid] || {c:0,a:0,r:0,t:0}; sc[el.dataset.k] = +el.dataset.v; commit(); break; }
+    case "close": S.rounds[r].status = "done"; overlay=null; if(r<ROUNDS.length-1){ S.current = r+1; toast(`Comienza la ronda ${r+2}`); } else { tab="marcador"; hideBoard=false; toast("¡Liga terminada!"); } commit(); break;
+    case "reopen": S.rounds[r].status = "idle"; commit(); break;
+    case "hide": hideBoard = !hideBoard; render(); break;
+    case "adj": { const p = S.participants.find(x=>x.id===el.dataset.id); if(p){ p.adj = (p.adj||0) + (+el.dataset.d); const pl = playedRounds(p); const base = pl - p.adj; p.adj = Math.max(-base, Math.min(closedCount()-base, p.adj)); commit(); } break; }
+    case "csv": exportCSV(); break;
+    case "copy": { const ta = $("#csvText"); if(!ta) break; const txt = ta.value; if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(()=>toast("Copiado"),()=>{ta.select();}); } else ta.select(); break; }
+  }
+});
+document.addEventListener("change", e=>{
+  if(e.target.id==="fileIn"){
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    const rd = new FileReader();
+    rd.onload = ()=>{ const names = parseNames(rd.result); if(!names.length){ toast("El archivo no tiene nombres nuevos"); return; } addParticipants(names, S.teams.length>0); toast(`${names.length} participantes cargados`); commit(); };
+    rd.readAsText(f, "utf-8");
+  }
+  if(e.target.dataset && e.target.dataset.act==="move"){
+    const p = S.participants.find(x=>x.id===e.target.dataset.id); if(!p) return;
+    const v = e.target.value; p.teamId = v==="__new" ? newTeam().id : (v||null); cleanEmptyTeams(); commit();
+  }
+  if(e.target.id==="spinSel"){ spinTeam = e.target.value; if(dilemma && dilemma.team!==spinTeam){ dilemma=null; render(); } }
+  if(e.target.id==="commonSel"){ commonPick = +e.target.value; render(); }
+  if(e.target.id==="winSel"){ S.winners = +e.target.value; commit(); }
+  if(e.target.id==="sizeSel"){ S.size = +e.target.value; commit(); }
+});
+document.addEventListener("submit", e=>{
+  if(e.target.id!=="lateForm") return; e.preventDefault();
+  const names = parseNames($("#lateIn").value); if(!names.length){ toast("Escribe un nombre nuevo"); return; }
+  addParticipants(names, true);
+  const p = S.participants[S.participants.length-1], t = teamById(p.teamId);
+  toast(`${p.name} se une a ${t?t.name:"un equipo"}`); commit();
+  setTimeout(()=>{ const i = $("#lateIn"); if(i) i.focus(); }, 0);
+});
+document.addEventListener("keydown", e=>{ if(e.key==="Escape" && overlay){ overlay=null; renderOverlay(); } });
+
+connect();
+})();
+</script>
+
+</body></html>

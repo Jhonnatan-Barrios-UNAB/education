@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Apertura: buen diseño vs. diseño saturado</title>
+<style>
+  :root{
+    --page-bg:#f4f4f2; --card-bg:#ffffff; --ink:#222;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html{scroll-padding-top: env(safe-area-inset-top, 0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--page-bg);font-family:Arial,Helvetica,sans-serif;color:var(--ink);padding:24px;}
+  h1.page-title{text-align:center;font-size:20px;font-weight:700;margin:0 0 6px;}
+  p.page-sub{text-align:center;color:#666;font-size:14px;margin:0 0 24px;}
+  .wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
+  .col{flex:1 1 380px;max-width:460px;}
+  .label{text-align:center;font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px;padding:6px;border-radius:6px;}
+  .label.good{background:#dff3ea;color:#0f6e56;}
+  .label.bad{background:#fde3e3;color:#a32d2d;}
+
+  /* ---------- INFOGRAFÍA A: BUEN DISEÑO ---------- */
+  .infA{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+  .infA .head{background:#1d6fa5;color:#fff;padding:22px 20px;text-align:center;}
+  .infA .head .icon{font-size:34px;display:block;margin-bottom:6px;}
+  .infA .head h2{margin:0;font-size:19px;font-weight:700;}
+  .infA .body{padding:20px 22px;display:flex;flex-direction:column;gap:16px;}
+  .infA .item{display:flex;align-items:flex-start;gap:14px;}
+  .infA .item .ic{width:38px;height:38px;flex:0 0 38px;border-radius:50%;background:#e6f1fb;display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .infA .item .txt h3{margin:0 0 3px;font-size:14.5px;font-weight:700;color:#0c447c;}
+  .infA .item .txt p{margin:0;font-size:13px;color:#555;line-height:1.4;}
+  .infA .foot{background:#f4f9fd;padding:10px;text-align:center;font-size:11px;color:#1d6fa5;font-weight:700;}
+
+  /* ---------- INFOGRAFÍA B: SATURADA / MAL DISEÑO ---------- */
+  .infB{background:#fffbe0;border:4px dashed #ff00aa;border-radius:0;padding:14px;position:relative;overflow:hidden;}
+  .infB h2{font-family:"Comic Sans MS",cursive;color:#ff6a00;font-size:26px;text-align:center;text-shadow:1px 1px #00f2ff;margin:0 0 10px;transform:rotate(-2deg);}
+  .infB .grid{display:flex;flex-wrap:wrap;gap:4px;}
+  .infB .item{width:47%;padding:8px;margin-bottom:4px;border:2px solid;font-weight:700;line-height:1.15;}
+  .infB .item:nth-child(1){background:#39ff14;color:#fff;font-family:Georgia,serif;font-size:11px;transform:rotate(3deg);border-color:#000;}
+  .infB .item:nth-child(2){background:#7b2fff;color:#ffd400;font-family:"Courier New",monospace;font-size:19px;transform:rotate(-4deg);border-color:#ff0000;}
+  .infB .item:nth-child(3){background:#ff0000;color:#8b0000;font-family:Arial;font-size:13px;transform:rotate(1deg);border-color:#00ffea;}
+  .infB .item:nth-child(4){background:#00e5ff;color:#003366;font-family:"Comic Sans MS",cursive;font-size:16px;transform:rotate(-2deg);border-color:#ffea00;text-transform:uppercase;}
+  .infB .item:nth-child(5){background:#ffea00;color:#ffffff;font-family:Georgia,serif;font-size:22px;transform:rotate(5deg);border-color:#000;margin:0 auto;width:70%;}
+  .infB .stamp{position:absolute;top:6px;right:6px;background:#ff0000;color:#fff;border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;transform:rotate(15deg);text-align:center;}
+</style>
+</head>
+<body>
+  <h1 class="page-title">Momento de apertura — ¿qué falla aquí?</h1>
+  <p class="page-sub">Mismo tema, dos tratamientos visuales: "Beneficios de tomar agua"</p>
+
+  <div class="wrap">
+    <div class="col">
+      <div class="label good">Infografía A</div>
+      <div class="infA">
+        <div class="head"><span class="icon">💧</span><h2>Beneficios de tomar agua</h2></div>
+        <div class="body">
+          <div class="item"><div class="ic">🧠</div><div class="txt"><h3>Mejora la concentración</h3><p>La hidratación favorece la función cognitiva.</p></div></div>
+          <div class="item"><div class="ic">🌡️</div><div class="txt"><h3>Regula la temperatura</h3><p>Ayuda al cuerpo a mantener su equilibrio térmico.</p></div></div>
+          <div class="item"><div class="ic">🍽️</div><div class="txt"><h3>Favorece la digestión</h3><p>Facilita el transporte de nutrientes.</p></div></div>
+          <div class="item"><div class="ic">✨</div><div class="txt"><h3>Piel más saludable</h3><p>Mantiene la elasticidad e hidratación de la piel.</p></div></div>
+          <div class="item"><div class="ic">🧪</div><div class="txt"><h3>Elimina toxinas</h3><p>Apoya la función renal en la depuración del cuerpo.</p></div></div>
+        </div>
+        <div class="foot">Toma agua durante todo el día</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label bad">Infografía B</div>
+      <div class="infB">
+        <div class="stamp">¡100%<br>SALUD!</div>
+        <h2>¡¡TOMA AGUA YA!!</h2>
+        <div class="grid">
+          <div class="item">mejora tu concentracion mental durante el dia</div>
+          <div class="item">REGULA TEMPERATURA</div>
+          <div class="item">ayuda digestion</div>
+          <div class="item">PIEL SALUDABLE!!</div>
+          <div class="item">elimina toxinas del cuerpo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -11,7 +11,7 @@
       "convivencia"
     ],
     "descripcion": "Clase sobre cómo nos comportamos en línea y por qué detrás de cada mensaje hay una persona.",
-    "enlace": "https://claude.ai/artifact/33Vgsw6CJhU1ZeS3KCyj3V",
+    "enlace": "recursos/netiqueta-el-otro-lado-de-la-pantalla/",
     "fecha": "2026-10-09"
   },
   {
@@ -26,7 +26,7 @@
       "redes sociales"
     ],
     "descripcion": "Tablero proyectable en el que la clase decide, caso por caso, si publicaría o no un contenido.",
-    "enlace": "https://claude.ai/artifact/PJKpahuGuvmK58Y8cM3JMM",
+    "enlace": "recursos/lo-publicarias/",
     "fecha": "2026-10-09"
   },
   {
@@ -41,7 +41,7 @@
       "trabajo en equipo"
     ],
     "descripcion": "Simulador para el tablero: la clase vota cómo responder en un chat de equipo y ve cómo el conflicto escala o se calma.",
-    "enlace": "https://claude.ai/artifact/TEJVEVPyLLruYb58U5w97Y",
+    "enlace": "recursos/termometro-del-conflicto/",
     "fecha": "2026-10-09"
   },
   {
@@ -55,7 +55,7 @@
       "recuperación"
     ],
     "descripcion": "Quiz de recuperación tipo concurso con panel docente para revisar preguntas y respuestas.",
-    "enlace": "https://claude.ai/artifact/HJxm2jQi5iBmhurrkEfGEL",
+    "enlace": "recursos/quien-quiere-mejorar-su-nota-netiqueta/",
     "fecha": "2026-11-09"
   },
   {
@@ -69,7 +69,7 @@
       "recuperación"
     ],
     "descripcion": "Concurso de recuperación con comodines, cronómetro y panel docente sobre colaboración a distancia.",
-    "enlace": "https://claude.ai/artifact/SfkfkEuaxKToMPmBSxyLJX",
+    "enlace": "recursos/quien-quiere-mejorar-su-nota-trabajar-juntos-sin-estar-junto/",
     "fecha": "2026-10-12"
   },
   {
@@ -84,7 +84,7 @@
       "contraseñas"
     ],
     "descripcion": "Clase sobre hábitos para proteger cuentas, datos y dispositivos en la vida universitaria.",
-    "enlace": "https://claude.ai/artifact/SSqW97mj471zyG6tXsoagv",
+    "enlace": "recursos/mi-vida-digital-tambien-necesita-seguridad/",
     "fecha": "2026-11-04"
   },
   {
@@ -99,7 +99,7 @@
       "privacidad"
     ],
     "descripcion": "Competencia por equipos: cada equipo investiga un perfil ficticio y descubre cuánto revela su huella digital.",
-    "enlace": "https://claude.ai/artifact/6Hx5ggu1x1EG8Znzp3zuXE",
+    "enlace": "recursos/hackea-al-estudiante/",
     "fecha": "2026-11-04"
   },
   {
@@ -114,7 +114,7 @@
       "creative commons"
     ],
     "descripcion": "Clase sobre derechos de autor y licencias para usar bien imágenes, música y textos de internet.",
-    "enlace": "https://claude.ai/artifact/KfyCDnmLp5zVzJjPv2yHNa",
+    "enlace": "recursos/internet-no-significa-gratis-para-usar/",
     "fecha": "2026-11-04"
   },
   {
@@ -128,7 +128,7 @@
       "licencias"
     ],
     "descripcion": "Concurso por equipos que clasifica usos de recursos en verde, amarillo o rojo, con tabla de posiciones y nota.",
-    "enlace": "https://claude.ai/artifact/9ZAaVJmDFV83MUqmBjbmCz",
+    "enlace": "recursos/semaforo-de-derechos-de-autor/",
     "fecha": "2026-11-04"
   },
   {
@@ -141,27 +141,27 @@
       "repaso"
     ],
     "descripcion": "Concurso de recuperación con la línea gráfica de Interacción Digital, comodines y escalera de cinco niveles.",
-    "enlace": "https://claude.ai/artifact/JhhEStgGtxexUVF86hPCCd",
+    "enlace": "recursos/quien-quiere-mejorar-su-nota/",
     "fecha": "2026-11-11"
   },
   {
     "id": "mi-semana-universitaria",
-    "titulo": "Mi semana universitaria",
-    "curso": "interaccion-digital",
-    "tipo": "guia",
+    "titulo": "Ficha: Mi semana universitaria",
+    "curso": "marca-personal-digital",
+    "tipo": "plantilla",
     "temas": [
       "organización",
       "productividad",
       "herramientas digitales"
     ],
-    "descripcion": "Guía para planear la semana con herramientas digitales y llegar a tiempo a entregas y clases.",
-    "enlace": "https://claude.ai/artifact/TUnHkLa6aqNYQq2nkaMyd9",
+    "descripcion": "Ficha para llenar en pantalla: organiza tu semana con documentos, tableros, tareas y calendario, marca lo que vas cumpliendo y descárgala en PDF.",
+    "enlace": "recursos/mi-semana-universitaria/",
     "fecha": "2026-10-27"
   },
   {
     "id": "herramientas-digitales-y-dashboard-personal",
     "titulo": "Herramientas digitales y dashboard personal",
-    "curso": "interaccion-digital",
+    "curso": "marca-personal-digital",
     "tipo": "presentacion",
     "temas": [
       "herramientas digitales",
@@ -169,7 +169,7 @@
       "organización"
     ],
     "descripcion": "Clase para armar un tablero personal que reúna calendario, tareas y archivos.",
-    "enlace": "https://claude.ai/artifact/BonTV6ScKNVjAQTWV9QFN9",
+    "enlace": "recursos/herramientas-digitales-y-dashboard-personal/",
     "fecha": "2026-10-27"
   },
   {
@@ -183,7 +183,7 @@
       "experiencia de usuario"
     ],
     "descripcion": "Clase sobre cómo diseñar experiencias digitales a partir de las necesidades reales de quien las usa.",
-    "enlace": "https://claude.ai/artifact/Bjc4dPvJGgZt8P1KMDUcJX",
+    "enlace": "recursos/disenar-pensando-en-las-personas/",
     "fecha": "2026-11-09"
   },
   {
@@ -196,36 +196,22 @@
       "propuesta de valor",
       "identidad visual"
     ],
-    "descripcion": "Plantilla para que cada estudiante defina los elementos de su marca personal en un solo sistema.",
-    "enlace": "https://claude.ai/artifact/U7Zf4QEH8iZ2RR2E2cXcYH",
+    "descripcion": "Plantilla para que cada estudiante defina los elementos de su marca personal en un solo sistema. Se llena en pantalla y se descarga en PDF para entregar.",
+    "enlace": "recursos/plantilla-mi-sistema-de-marca/",
     "fecha": "2026-10-13"
-  },
-  {
-    "id": "tras-el-rastro-digital-de-un-referente",
-    "titulo": "Tras el rastro digital de un referente",
-    "curso": "marca-personal-digital",
-    "tipo": "guia",
-    "temas": [
-      "huella digital",
-      "posicionamiento",
-      "referentes"
-    ],
-    "descripcion": "Ficha de actividad para analizar la presencia en línea de un profesional que admiran.",
-    "enlace": "https://claude.ai/artifact/BaxyKosp1tTwVPLhqHTD6Y",
-    "fecha": "2026-10-14"
   },
   {
     "id": "plantilla-auditoria-digital-de-un-referente",
     "titulo": "Plantilla: Auditoría digital de un referente",
-    "curso": "marca-personal-digital",
+    "curso": "interaccion-digital",
     "tipo": "plantilla",
     "temas": [
       "huella digital",
       "posicionamiento",
       "referentes"
     ],
-    "descripcion": "Diapositivas guía para presentar los hallazgos de la auditoría del referente.",
-    "enlace": "https://claude.ai/artifact/LryxAwWSr9LfGHbNaTEoE2",
+    "descripcion": "Plantilla para llenar en pantalla con las búsquedas, la evidencia, el conteo y el análisis de la auditoría a un referente. Se guarda en tu navegador y se descarga en PDF.",
+    "enlace": "recursos/plantilla-auditoria-digital-de-un-referente/",
     "fecha": "2026-10-16"
   },
   {
@@ -240,7 +226,7 @@
       "relaciones profesionales"
     ],
     "descripcion": "Clase sobre cómo construir y cuidar una red profesional en línea.",
-    "enlace": "https://claude.ai/artifact/DbzgjS4peVAL5b1oCfhUPX",
+    "enlace": "recursos/networking-digital/",
     "fecha": "2026-10-06"
   },
   {
@@ -254,7 +240,7 @@
       "relaciones profesionales"
     ],
     "descripcion": "Actividad interactiva en la que los estudiantes recogen sellos al conectar con sus compañeros.",
-    "enlace": "https://claude.ai/artifact/PNK2FguctixvFPcEzcVL4d",
+    "enlace": "recursos/pasaporte-de-red/",
     "fecha": "2026-10-06"
   },
   {
@@ -268,7 +254,7 @@
       "recuperación"
     ],
     "descripcion": "Concurso de recuperación con comodines, reloj y panel docente sobre networking digital.",
-    "enlace": "https://claude.ai/artifact/WV6X4MmKS958LcsEtJaCnH",
+    "enlace": "recursos/quien-quiere-mejorar-su-nota-networking/",
     "fecha": "2026-10-12"
   },
   {
@@ -283,7 +269,7 @@
       "canales"
     ],
     "descripcion": "Clase doble sobre qué decir, a quién y en qué canal para que la marca personal sea coherente.",
-    "enlace": "https://claude.ai/artifact/SazoQALHqRnrCoY8uuqmt6",
+    "enlace": "recursos/comunicacion-estrategica-y-ecosistema-digital/",
     "fecha": "2026-10-13"
   },
   {
@@ -298,7 +284,7 @@
       "gestión del tiempo"
     ],
     "descripcion": "Clase doble sobre crear contenido que aporte a la marca y organizar el tiempo para sostenerlo.",
-    "enlace": "https://claude.ai/artifact/FKcBX7DNn7XFZM43wrnTZJ",
+    "enlace": "recursos/contenido-profesional-y-productividad-digital/",
     "fecha": "2026-10-20"
   },
   {
@@ -313,7 +299,7 @@
       "trabajo en equipo"
     ],
     "descripcion": "Liga por equipos con ruleta de retos y tabla de posiciones para crear contenido en clase.",
-    "enlace": "https://claude.ai/artifact/ApMs4CuzCQaLDQHnzsM3Fw",
+    "enlace": "recursos/liga-de-creadores/",
     "fecha": "2026-10-19"
   },
   {
@@ -328,7 +314,7 @@
       "recuperación"
     ],
     "descripcion": "Quiz de recuperación con preguntas de verdadero o falso, casos y ordenar pasos.",
-    "enlace": "https://claude.ai/artifact/Lhxf6u5oMPBSGyC7uaDLqz",
+    "enlace": "recursos/quien-quiere-mejorar-su-nota-contenido-profesional/",
     "fecha": "2026-10-20"
   },
   {
@@ -342,7 +328,7 @@
       "jerarquía visual"
     ],
     "descripcion": "Comparación para abrir la clase: la misma pieza bien diseñada y saturada.",
-    "enlace": "https://claude.ai/artifact/G2CVCzcsfyFmfKjcbEEuTF",
+    "enlace": "recursos/apertura-buen-diseno-vs-saturado/",
     "fecha": "2026-09-24"
   },
   {
@@ -357,7 +343,7 @@
       "alineación"
     ],
     "descripcion": "Contraste, repetición, alineación y proximidad mostrados con ejemplos.",
-    "enlace": "https://claude.ai/artifact/QUcE3KsgSmhmwaCnJaeK9P",
+    "enlace": "recursos/principios-de-diseno/",
     "fecha": "2026-09-24"
   },
   {
@@ -372,7 +358,7 @@
       "accesibilidad"
     ],
     "descripcion": "Dos versiones de una pieza para discutir por qué una combinación de color funciona y otra no.",
-    "enlace": "https://claude.ai/artifact/W5wShoHWbSpMm5oaHvCs1R",
+    "enlace": "recursos/color-mala-vs-buena-combinacion/",
     "fecha": "2026-09-24"
   },
   {
@@ -386,7 +372,7 @@
       "tipografía"
     ],
     "descripcion": "Ejemplo para ver cómo el tamaño, el peso y el orden guían la lectura.",
-    "enlace": "https://claude.ai/artifact/KW88wc9Vk7kymopTwtadR4",
+    "enlace": "recursos/jerarquia-visual-mala-vs-buena-lectura/",
     "fecha": "2026-09-24"
   },
   {
@@ -400,7 +386,7 @@
       "diseño visual"
     ],
     "descripcion": "Infografía con errores a propósito para la actividad de rediseño en clase.",
-    "enlace": "https://claude.ai/artifact/AVWEHHLHuopJNGJ9nmYFd2",
+    "enlace": "recursos/infografia-para-redisenar/",
     "fecha": "2026-09-24"
   },
   {
@@ -414,7 +400,7 @@
       "tipos de infografía"
     ],
     "descripcion": "Muestra de infografía temática con contenido regional.",
-    "enlace": "https://claude.ai/artifact/WHxuVLACsePEFj6cZjqnAS",
+    "enlace": "recursos/infografia-informativa-sabores-de-santander/",
     "fecha": "2026-09-24"
   },
   {
@@ -428,7 +414,7 @@
       "tipos de infografía"
     ],
     "descripcion": "Muestra de infografía que compara dos opciones lado a lado.",
-    "enlace": "https://claude.ai/artifact/TfKhoa4C2JqGFFUEuUL7fg",
+    "enlace": "recursos/infografia-comparativa-renovables-vs-no-renovables/",
     "fecha": "2026-09-24"
   },
   {
@@ -442,7 +428,7 @@
       "tipos de infografía"
     ],
     "descripcion": "Muestra de línea de tiempo con los hitos de internet.",
-    "enlace": "https://claude.ai/artifact/Ftbn286kQvvMtE5x5gGDdb",
+    "enlace": "recursos/infografia-cronologica-historia-de-internet/",
     "fecha": "2026-09-24"
   },
   {
@@ -456,7 +442,7 @@
       "tipos de infografía"
     ],
     "descripcion": "Muestra de infografía paso a paso para un presupuesto personal.",
-    "enlace": "https://claude.ai/artifact/Ub8Mbz1yK3REfNgAdpE3xH",
+    "enlace": "recursos/infografia-de-proceso-arma-tu-presupuesto/",
     "fecha": "2026-09-24"
   },
   {
@@ -471,7 +457,7 @@
       "visualización de datos"
     ],
     "descripcion": "Muestra de infografía con datos distribuidos por región.",
-    "enlace": "https://claude.ai/artifact/49X3UfmaABgvSwGsKxMAEH",
+    "enlace": "recursos/infografia-geografica-fraude-en-compras-en-linea/",
     "fecha": "2026-09-24"
   },
   {
@@ -486,7 +472,7 @@
       "visualización de datos"
     ],
     "descripcion": "Muestra de infografía construida a partir de cifras.",
-    "enlace": "https://claude.ai/artifact/TCs1N1bSSFwYACHtxbZj4Z",
+    "enlace": "recursos/infografia-estadistica-habitos-de-consumo-digital/",
     "fecha": "2026-09-24"
   },
   {
@@ -501,7 +487,7 @@
       "prompts"
     ],
     "descripcion": "Pieza vertical sobre el uso responsable de la IA en trabajos académicos, hecha a partir de un prompt de clase.",
-    "enlace": "https://claude.ai/artifact/TtdrF8PNQZKe91DtoxPGey",
+    "enlace": "recursos/la-ia-te-ayuda-tu-firmas-el-trabajo/",
     "fecha": "2026-10-01"
   },
   {
@@ -517,7 +503,7 @@
       "bienestar"
     ],
     "descripcion": "Segunda pieza del mismo prompt: hábitos de sueño para estudiantes universitarios.",
-    "enlace": "https://claude.ai/artifact/V3Fxj3U4czg9V1ywYAdLrr",
+    "enlace": "recursos/tu-noche-empieza-a-las-3-p-m/",
     "fecha": "2026-10-01"
   },
   {
@@ -532,7 +518,7 @@
       "prompts"
     ],
     "descripcion": "Tercer ejemplo del prompt: pieza vertical para un negocio local con sorteo y plan de referidos.",
-    "enlace": "https://claude.ai/artifact/MKtijR6uhaYCMBFcPqvS5e",
+    "enlace": "recursos/aura-salon-pieza-publicitaria/",
     "fecha": "2026-10-01"
   },
   {
@@ -547,21 +533,7 @@
       "storytelling"
     ],
     "descripcion": "Clase sobre calendario editorial, storytelling y storydoing para pasar de ideas sueltas a una secuencia.",
-    "enlace": "https://claude.ai/artifact/6jcvdsmkE7mGWGqTu5S7zV",
-    "fecha": "2026-10-07"
-  },
-  {
-    "id": "taller-parrilla-editorial-mensual",
-    "titulo": "Taller: parrilla editorial mensual",
-    "curso": "creacion-de-contenidos",
-    "tipo": "guia",
-    "semana": 8,
-    "temas": [
-      "planeación de contenidos",
-      "calendario editorial"
-    ],
-    "descripcion": "Guía de taller para diseñar la parrilla de contenidos de un mes.",
-    "enlace": "https://claude.ai/artifact/DtaUtSWVBDWzhg2Bg4w2ri",
+    "enlace": "recursos/de-la-idea-a-la-secuencia-planeacion-de-contenidos/",
     "fecha": "2026-10-07"
   },
   {
@@ -575,7 +547,7 @@
       "creatividad"
     ],
     "descripcion": "Juego de storytelling improvisado en el que cada equipo continúa la historia del anterior.",
-    "enlace": "https://claude.ai/artifact/QDajVDPNC1yv1juRvbGeYf",
+    "enlace": "recursos/la-historia-en-cadena/",
     "fecha": "2026-10-07"
   },
   {
@@ -589,7 +561,7 @@
       "canales"
     ],
     "descripcion": "Concurso tipo millonario para repasar público, objetivos, canales y formatos.",
-    "enlace": "https://claude.ai/artifact/2yFBzGxCr3BVFiU9DCJc6d",
+    "enlace": "recursos/quien-quiere-ser-estratega/",
     "fecha": "2026-10-11"
   },
   {
@@ -603,7 +575,7 @@
       "encuadre"
     ],
     "descripcion": "Clase sobre regla de tercios, encuadres y luz para fotos que comunican.",
-    "enlace": "https://claude.ai/artifact/CeKuJebqNC9FXPmTDbzSyV",
+    "enlace": "recursos/composicion-fotografica-para-contenidos-digitales/",
     "fecha": "2026-10-28"
   },
   {
@@ -617,7 +589,7 @@
       "gamificación"
     ],
     "descripcion": "Ruleta que asigna a cada equipo un reto de foto para resolver en el campus.",
-    "enlace": "https://claude.ai/artifact/WoS2j8UYbG1xwEkVGpKx8v",
+    "enlace": "recursos/ruleta-de-retos-fotograficos/",
     "fecha": "2026-10-29"
   },
   {
@@ -631,7 +603,7 @@
       "planos"
     ],
     "descripcion": "Clase sobre planos, movimientos de cámara, sonido y etapas de la producción.",
-    "enlace": "https://claude.ai/artifact/5zgcrwUSYx9TgbSAyF61kJ",
+    "enlace": "recursos/produccion-audiovisual/",
     "fecha": "2026-10-21"
   },
   {
@@ -646,7 +618,7 @@
       "narrativa"
     ],
     "descripcion": "Clase sobre narrativa y preproducción: cómo convertir un guion en un storyboard.",
-    "enlace": "https://claude.ai/artifact/YCjnLkDy32LBEHfqqnTyjE",
+    "enlace": "recursos/del-guion-al-storyboard/",
     "fecha": "2026-10-21"
   },
   {
@@ -660,7 +632,7 @@
       "gamificación"
     ],
     "descripcion": "Sorteo que asigna a cada equipo el reto de su pieza audiovisual.",
-    "enlace": "https://claude.ai/artifact/JsE3qohLq1NgoMr6v5fsS9",
+    "enlace": "recursos/sorteo-de-retos-de-produccion/",
     "fecha": "2026-10-22"
   },
   {
@@ -675,22 +647,7 @@
       "guion"
     ],
     "descripcion": "Presentación interactiva de la formación: cada diapositiva se construye sola y los elementos con + abren ventanas.",
-    "enlace": "https://claude.ai/artifact/9qDE3e7mZFPvxkyQLnhWeH",
+    "enlace": "recursos/de-la-idea-al-video/",
     "fecha": "2026-11-07"
-  },
-  {
-    "id": "video-cinematografico-realista-con-ia-de-cero-a-experto",
-    "titulo": "Video cinematográfico realista con IA, de cero a experto",
-    "curso": "de-la-idea-al-video",
-    "tipo": "guia",
-    "temas": [
-      "IA generativa",
-      "video",
-      "prompts",
-      "storyboard"
-    ],
-    "descripcion": "Ruta de aprendizaje para producir video de estilo cinematográfico con herramientas de IA.",
-    "enlace": "https://claude.ai/artifact/94UguGPnEYoGV9TA5LhPJr",
-    "fecha": "2026-11-12"
   }
 ]

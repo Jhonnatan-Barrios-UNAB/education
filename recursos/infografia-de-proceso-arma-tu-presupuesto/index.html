@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tipo: proceso / paso a paso</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  .badge{display:block;width:fit-content;margin:0 auto 14px;background:#e1f5ee;color:#085041;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:6px 14px;border-radius:20px;}
+  .stage{max-width:460px;margin:0 auto;}
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+  .head{background:#0f6e56;color:#fff;padding:26px 24px;text-align:center;}
+  .head h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  .head p{margin:0;font-size:13px;opacity:.85;}
+  .steps{padding:24px 24px 8px;}
+  .step{display:flex;gap:14px;position:relative;padding-bottom:26px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:#9fe1cb;}
+  .step:last-child::before{display:none;}
+  .num{width:40px;height:40px;flex:0 0 40px;border-radius:50%;background:#e1f5ee;border:2px solid #1d9e75;color:#085041;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:1;}
+  .txt{padding-top:6px;}
+  .txt h3{margin:0 0 3px;font-size:14px;font-weight:700;color:#085041;}
+  .txt p{margin:0;font-size:12.5px;color:#555;line-height:1.4;}
+  .foot{background:#e1f5ee;padding:12px;text-align:center;font-size:11px;color:#085041;font-weight:700;}
+</style>
+</head>
+<body>
+  <div class="badge">Tipo: proceso / paso a paso — finanzas personales</div>
+  <div class="stage">
+    <div class="card">
+      <div class="head">
+        <h1>Arma tu presupuesto personal</h1>
+        <p>4 pasos, en orden, para tomar control de tu dinero</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><div class="txt"><h3>Calcula tus ingresos</h3><p>Suma todo lo que recibes al mes: salario, extras y otros ingresos.</p></div></div>
+        <div class="step"><div class="num">2</div><div class="txt"><h3>Clasifica tus gastos</h3><p>Separa gastos fijos (arriendo, servicios) de los variables (ocio, salidas).</p></div></div>
+        <div class="step"><div class="num">3</div><div class="txt"><h3>Define tu ahorro</h3><p>Aparta un porcentaje fijo antes de gastar, aunque sea pequeño.</p></div></div>
+        <div class="step"><div class="num">4</div><div class="txt"><h3>Revisa y ajusta</h3><p>Compara lo planeado con lo real cada mes y corrige lo necesario.</p></div></div>
+      </div>
+      <div class="foot">El orden importa: cada paso prepara el siguiente</div>
+    </div>
+  </div>
+</body>
+</html>

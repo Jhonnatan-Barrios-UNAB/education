@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Principios de diseño</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  h1.page-title{text-align:center;font-size:20px;font-weight:700;margin:0 0 6px;}
+  p.page-sub{text-align:center;color:#666;font-size:14px;margin:0 0 24px;}
+  .stage{max-width:640px;margin:0 auto;position:relative;}
+
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+  .head{background:#26215c;color:#fff;padding:26px 24px;text-align:center;}
+  .head h2{margin:0 0 4px;font-size:22px;font-weight:700;}
+  .head p{margin:0;font-size:13px;opacity:.85;}
+  .body{padding:28px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .step{display:flex;gap:14px;align-items:flex-start;}
+  .step .num{width:36px;height:36px;flex:0 0 36px;border-radius:50%;background:#eeedfe;color:#3c3489;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .step .txt h3{margin:0 0 4px;font-size:14.5px;font-weight:700;color:#26215c;}
+  .step .txt p{margin:0;font-size:12.5px;color:#555;line-height:1.45;}
+  .foot{background:#f0f0fb;padding:12px;text-align:center;font-size:11px;color:#534ab7;font-weight:700;letter-spacing:.02em;}
+
+  .flag{position:absolute;background:#26215c;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px;white-space:nowrap;}
+  .flag::after{content:"";position:absolute;width:8px;height:8px;background:#26215c;bottom:-4px;left:16px;transform:rotate(45deg);}
+  .f1{top:-14px;left:24px;}
+  .f2{top:118px;right:-58px;}
+  .f3{bottom:96px;left:-70px;}
+  .f4{bottom:96px;right:-64px;}
+  .f5{bottom:-14px;left:24px;}
+
+  .legend{max-width:640px;margin:60px auto 0;background:#fff;border-radius:12px;padding:16px 20px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .legend h3{margin:0 0 10px;font-size:14px;}
+  .legend ul{margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#444;}
+  .legend b{color:#26215c;}
+</style>
+</head>
+<body>
+  <h1 class="page-title">Principios de diseño en acción</h1>
+  <p class="page-sub">Tema: rutina de mañana productiva</p>
+
+  <div class="stage">
+    <div class="flag f1">① Contraste</div>
+    <div class="flag f2">② Repetición</div>
+    <div class="flag f3">③ Alineación</div>
+    <div class="flag f4">④ Proximidad</div>
+    <div class="flag f5">⑤ Whitespace</div>
+
+    <div class="card">
+      <div class="head">
+        <h2>Rutina de mañana productiva</h2>
+        <p>4 pasos simples para empezar bien el día</p>
+      </div>
+      <div class="body">
+        <div class="step"><div class="num">1</div><div class="txt"><h3>Despierta temprano</h3><p>Levántate a la misma hora todos los días.</p></div></div>
+        <div class="step"><div class="num">2</div><div class="txt"><h3>Hidrátate</h3><p>Toma un vaso de agua al despertar.</p></div></div>
+        <div class="step"><div class="num">3</div><div class="txt"><h3>Muévete</h3><p>Dedica 10 minutos a estirar o caminar.</p></div></div>
+        <div class="step"><div class="num">4</div><div class="txt"><h3>Planifica</h3><p>Define tus 3 tareas prioritarias del día.</p></div></div>
+      </div>
+      <div class="foot">Pequeños hábitos, grandes resultados</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <h3>Dónde está cada principio</h3>
+    <ul>
+      <li><b>① Contraste:</b> el encabezado oscuro resalta frente al cuerpo claro; el número de cada paso resalta sobre su círculo de color.</li>
+      <li><b>② Repetición:</b> los 4 pasos comparten la misma estructura (círculo + título + descripción), el mismo radio de esquina y la misma paleta.</li>
+      <li><b>③ Alineación:</b> los textos de cada paso comparten una línea invisible a la izquierda; el título y el pie están centrados de forma consistente.</li>
+      <li><b>④ Proximidad:</b> el número, el título y la descripción de cada paso están agrupados y separados de los demás pasos por espacio.</li>
+      <li><b>⑤ Whitespace:</b> el aire entre encabezado, cuerpo y pie evita saturación y guía la lectura de arriba hacia abajo.</li>
+    </ul>
+  </div>
+</body>
+</html>

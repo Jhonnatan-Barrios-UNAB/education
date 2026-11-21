@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La IA te ayuda. Tú firmas el trabajo.</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Poppins:wght@600;700;800&display=swap">
+<style>
+:root{--page:#E9E6DC;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#0E1320}}
+:root[data-theme="dark"]{--page:#0E1320}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--page)}
+#w{margin:0 auto;overflow:hidden}
+#s{position:relative;width:1080px;height:1920px;background:#F7F5EF;transform-origin:0 0;overflow:hidden;color:#121826;font-family:Inter,Arial,sans-serif;
+background-image:linear-gradient(rgba(27,42,73,.04) 2px,transparent 2px),linear-gradient(90deg,rgba(27,42,73,.04) 2px,transparent 2px);background-size:48px 48px}
+#s *{box-sizing:border-box;margin:0}
+.a{position:absolute}
+.pp{font-family:Poppins,Arial,sans-serif}
+svg.i{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.chip{left:72px;top:226px;height:52px;padding:0 22px 0 14px;border-radius:26px;background:#FFB000;color:#1B2A49;font:600 28px/52px Poppins,Arial,sans-serif;display:flex;align-items:center;gap:10px;white-space:nowrap}
+h1{left:72px;top:296px;width:936px;font:800 92px/98px Poppins,Arial,sans-serif;color:#1B2A49;letter-spacing:-.01em}
+.f{position:relative;display:inline-block}
+.f svg{position:absolute;left:-6px;bottom:-24px;width:108%;height:34px}
+.lead{left:72px;top:604px;width:936px;font:500 32px/44px Inter,Arial,sans-serif}
+.card{top:676px;width:450px;height:346px;border-radius:28px;padding:28px;color:#fff}
+.c1{left:72px;background:#0F766E}.c2{left:558px;background:#1B2A49}
+.hd{height:84px;display:flex;align-items:center;gap:12px;font:700 36px/40px Poppins,Arial,sans-serif}
+.ring{flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center}
+.c1 .ring{background:#fff;color:#0F766E}.c2 .ring{background:#FFB000;color:#1B2A49}
+.ring svg{width:32px;height:32px;stroke-width:4}
+ul{list-style:none;padding:0;margin:10px 0 0}
+li{display:flex;align-items:center;gap:12px}
+.c1 li{height:46px;font:600 32px/1 Inter,Arial,sans-serif}
+.c1 li svg{flex:none;width:34px;height:34px;stroke-width:2.6}
+.c2 li{font:500 30px/36px Inter,Arial,sans-serif;margin-bottom:14px}
+.c2 li svg{flex:none;width:40px;height:40px;color:#FFB000;stroke-width:2.6}
+.hc{left:72px;top:1050px;width:936px;font:700 38px/48px Poppins,Arial,sans-serif;color:#1B2A49;text-transform:uppercase;letter-spacing:.01em}
+.spine{left:118px;top:1112px;width:5px;height:340px;background:#1B2A49}
+.row{left:72px;width:936px;height:116px;display:flex;align-items:center;gap:24px}
+.box{flex:none;width:92px;height:92px;border:5px solid #1B2A49;border-radius:20px;background:#F7F5EF;display:grid;place-items:center;font:800 56px/1 Poppins,Arial,sans-serif;color:#1B2A49}
+.tx{flex:1}
+.tx b{display:block;font:700 35px/40px Poppins,Arial,sans-serif;color:#1B2A49;white-space:nowrap}
+.tx span{display:block;margin-top:4px;font:500 28px/35px Inter,Arial,sans-serif}
+.ic{flex:none;width:64px;height:64px;border-radius:50%;background:#1B2A49;color:#FFB000;display:grid;place-items:center}
+.ic svg{width:34px;height:34px}
+.con{left:72px;top:1466px;width:936px;height:36px;padding-left:20px;border-left:6px solid #FFB000;font:700 28px/36px Inter,Arial,sans-serif;color:#1B2A49;white-space:nowrap}
+.cta{left:0;top:1510px;width:1080px;height:152px;background:#FFB000;color:#1B2A49;padding:0 72px;display:flex;align-items:center;gap:24px}
+.ck{flex:none;width:72px;height:72px;border-radius:18px;background:#1B2A49;color:#FFB000;display:grid;place-items:center}
+.ck svg{width:44px;height:44px;stroke-width:4.5}
+.cta b{display:block;font:800 32px/37px Poppins,Arial,sans-serif;white-space:nowrap}
+.cta span{display:block;margin-top:6px;font:600 28px/34px Inter,Arial,sans-serif}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></symbol>
+<symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/></symbol>
+<symbol id="doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/><circle cx="11.5" cy="14" r="2.5"/><path d="M13.5 16l2 2"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M4 5h16v11h-9.5L5 20v-4H4z"/></symbol>
+<symbol id="skip" viewBox="0 0 24 24"><path d="M5 7l6 5-6 5M12 7l6 5-6 5M3 21L21 3"/></symbol>
+<symbol id="stamp" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 14h6M9 17h4M3 21L21 3"/></symbol>
+<symbol id="lupa" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l6 6"/></symbol>
+<symbol id="edu" viewBox="0 0 24 24"><path d="M3 10l9-6 9 6M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"/></symbol>
+<symbol id="spark" viewBox="0 0 24 24"><path d="M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z" fill="currentColor" stroke="none"/></symbol>
+</defs></svg>
+
+<div id="w"><div id="s" role="img" aria-label="Infografía: La IA te ayuda. Tú firmas el trabajo. Úsala para generar ideas, entender conceptos, revisar tus textos y crear ejemplos. No la uses para reemplazar tu proceso de aprendizaje ni entregar como tuyo lo que hizo la herramienta. Antes de entregar, marca 3 casillas: 1 Verifica la información, 2 Revisa las reglas de tu institución, 3 Comprueba que sea tu proceso. La responsabilidad del producto final siempre es tuya.">
+
+<div class="a chip"><svg class="i" width="26" height="26"><use href="#spark"/></svg>IA GENERATIVA · TRABAJOS ACADÉMICOS</div>
+
+<h1 class="a">La IA te ayuda.<br>Tú <span class="f">firmas<svg viewBox="0 0 400 36" preserveAspectRatio="none"><path d="M3 24C40 4 70 34 110 16S190 30 240 12 310 28 397 9" fill="none" stroke="#FFB000" stroke-width="8" stroke-linecap="round"/></svg></span><br>el trabajo.</h1>
+
+<p class="a lead">Si entregas sin revisar, tú respondes por lo que dice.</p>
+
+<section class="a card c1">
+<div class="hd"><span class="ring"><svg class="i"><use href="#ck"/></svg></span>ÚSALA PARA</div>
+<ul>
+<li><svg class="i"><use href="#bulb"/></svg>Generar ideas</li>
+<li><svg class="i"><use href="#book"/></svg>Entender conceptos</li>
+<li><svg class="i"><use href="#doc"/></svg>Revisar tus textos</li>
+<li><svg class="i"><use href="#chat"/></svg>Crear ejemplos</li>
+</ul>
+</section>
+
+<section class="a card c2">
+<div class="hd"><span class="ring"><svg class="i"><use href="#x"/></svg></span>NO LA USES<br>PARA</div>
+<ul>
+<li><svg class="i"><use href="#skip"/></svg>Reemplazar tu proceso de aprendizaje</li>
+<li><svg class="i"><use href="#stamp"/></svg>Entregar como tuyo lo que hizo la herramienta</li>
+</ul>
+</section>
+
+<h2 class="a hc">Antes de entregar, marca 3 casillas</h2>
+<div class="a spine"></div>
+
+<div class="a row" style="top:1108px">
+<div class="box">1</div>
+<div class="tx"><b>Verifica la información.</b><span>La IA puede cometer errores o inventar datos: contrasta y revisa con ojo crítico.</span></div>
+<div class="ic"><svg class="i"><use href="#lupa"/></svg></div>
+</div>
+<div class="a row" style="top:1224px">
+<div class="box">2</div>
+<div class="tx"><b>Revisa las reglas de tu institución.</b><span>Cumple sus políticas y reconoce el uso de IA cuando corresponda.</span></div>
+<div class="ic"><svg class="i"><use href="#edu"/></svg></div>
+</div>
+<div class="a row" style="top:1340px">
+<div class="box">3</div>
+<div class="tx"><b>Comprueba que sea tu proceso.</b><span>¿Puedes explicarlo con tus palabras? Tú respondes por el producto final.</span></div>
+<div class="ic"><svg class="i"><use href="#chat"/></svg></div>
+</div>
+
+<p class="a con">La responsabilidad del producto final siempre es tuya.</p>
+
+<div class="a cta">
+<div class="ck"><svg class="i"><use href="#ck"/></svg></div>
+<div><b>Antes de entregar, marca las 3 casillas.<br>Si falta una, aún no entregues.</b><span>Guarda esta guía y úsala en cada entrega.</span></div>
+</div>
+
+</div></div>
+<script>
+(function(){var w=document.getElementById('w'),s=document.getElementById('s');
+function f(){var k=Math.min(1,window.innerWidth/1080);s.style.transform='scale('+k+')';w.style.width=1080*k+'px';w.style.height=1920*k+'px'}
+f();window.addEventListener('resize',f)})();
+</script>
+</body>
+</html>

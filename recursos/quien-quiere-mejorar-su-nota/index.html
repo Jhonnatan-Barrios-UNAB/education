@@ -1,0 +1,1038 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>¿Quién quiere mejorar su nota?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Línea gráfica Interacción Digital: navy, azul eléctrico, violeta y cian.
+   Layout: escenario de concurso — columna principal (comodines, cronómetro, pregunta en barra hexagonal, opciones) y escalera de 5 niveles a la derecha */
+:root {
+  color-scheme: dark;
+  --bg-0: #0b1636;
+  --bg-1: #172b5b;
+  --panel: #1b3068;
+  --panel-2: #22397a;
+  --indigo: #2456a6;
+  --violet: #4330bc;
+  --deep: #172b5b;
+  --petrol: #155e75;
+  --cyan: #00a9d6;
+  --cyan-soft: #5fd3f0;
+  --lilac: #9a8cff;
+  --fg: #f5f7ff;
+  --fg-soft: #c7d0ee;
+  --fg-muted: #8f9bcb;
+  --line: rgba(95, 211, 240, 0.5);
+  --hair: rgba(199, 208, 238, 0.16);
+  --ok: #5ee0a0;
+  --half: #ffcf70;
+  --bad: #ff8f8f;
+  --ink-on-cyan: #06112f;
+  --font-display: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--bg-0);
+  background-image:
+    radial-gradient(1100px 620px at 50% -12%, rgba(67, 48, 188, 0.55), transparent 62%),
+    radial-gradient(900px 500px at 50% 115%, rgba(0, 169, 214, 0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 40px); padding-block: 22px 48px; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--cyan-soft); outline-offset: 3px; }
+.brand { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan-soft); margin: 0 0 18px; }
+.brand::before { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--cyan); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Botones ---------- */
+.btn { border-radius: 12px; padding: 12px 20px; border: 1px solid var(--hair); background: rgba(255,255,255,0.06); cursor: pointer; font-weight: 600; font-size: 15px; }
+.btn:hover { background: rgba(255,255,255,0.12); }
+.btn.primary { background: linear-gradient(180deg, var(--cyan-soft), var(--cyan)); color: var(--ink-on-cyan); border-color: transparent; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn.warn { color: var(--half); border-color: rgba(255, 207, 112, 0.5); }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; filter: none; }
+.btn.lg { padding: 16px 28px; font-size: 17px; border-radius: 14px; }
+
+/* ---------- Hexágonos estilo concurso ---------- */
+.hexrow { position: relative; display: block; width: 100%; background: none; border: 0; padding: 0; text-align: left; }
+.hexrow::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--line); opacity: 0.55; }
+.hex { display: block; position: relative; margin-inline: clamp(8px, 2.6vw, 30px); padding: 2px; background: linear-gradient(90deg, var(--cyan-soft), var(--lilac) 50%, var(--cyan-soft));
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 22px 100%, 0 50%); }
+.hex-in { clip-path: polygon(21px 0, calc(100% - 21px) 0, 100% 50%, calc(100% - 21px) 100%, 21px 100%, 0 50%);
+  background: linear-gradient(180deg, #23407e 0%, #122453 100%); padding: 14px 40px; display: flex; align-items: center; gap: 14px; min-height: 58px; }
+.opt { cursor: pointer; }
+.opt .letter { font-family: var(--font-display); font-weight: 800; color: var(--cyan-soft); min-width: 1.6em; }
+.opt .txt { font-size: 16.5px; line-height: 1.35; }
+.opt:hover .hex-in { background: linear-gradient(180deg, #2c4fa0 0%, #1a3270 100%); }
+.opt[aria-pressed="true"] .hex { background: linear-gradient(90deg, #fff, var(--cyan-soft), #fff); }
+.opt[aria-pressed="true"] .hex-in { background: linear-gradient(180deg, var(--cyan-soft) 0%, var(--cyan) 100%); color: var(--ink-on-cyan); }
+.opt[aria-pressed="true"] .letter { color: var(--ink-on-cyan); }
+.opt.gone { cursor: default; opacity: 0.22; }
+.opt.gone .txt { visibility: hidden; }
+.opt:focus-visible { outline: none; }
+.opt:focus-visible .hex { background: linear-gradient(90deg, #fff, #fff); }
+
+.qbar .hex-in { padding: 20px 46px; min-height: 96px; flex-direction: column; align-items: flex-start; gap: 6px; }
+.qbar .tag { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--cyan-soft); }
+.qbar .q { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 2vw, 23px); line-height: 1.3; text-wrap: balance; margin: 0; }
+
+/* ---------- Inicio ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+@media (max-width: 920px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+.title { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 5vw, 62px); line-height: 1.02; letter-spacing: -0.02em; margin: 6px 0 12px; text-wrap: balance; }
+.title em { font-style: normal; background: linear-gradient(90deg, var(--cyan-soft), var(--lilac)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--fg-soft); font-size: 17px; max-width: 58ch; margin: 0 0 22px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.rule { background: rgba(27, 48, 104, 0.72); border: 1px solid var(--hair); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.rule h3 { margin: 0; font-family: var(--font-display); font-size: 17px; }
+.rule p { margin: 0; color: var(--fg-soft); font-size: 14.5px; }
+.rule .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.timechips { display: flex; flex-direction: column; gap: 6px; }
+.timechips span { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; color: var(--fg-soft); border-bottom: 1px dashed var(--hair); padding-bottom: 4px; }
+.timechips b { color: var(--fg); font-variant-numeric: tabular-nums; }
+.lifelist { display: flex; flex-direction: column; gap: 10px; }
+.lifelist div { display: flex; gap: 12px; align-items: flex-start; }
+.lifelist .mini { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--cyan-soft); display: grid; place-items: center; font: 800 11px var(--font-display); color: var(--cyan-soft); }
+.lifelist .mini svg { width: 18px; height: 18px; }
+.lifelist p { margin: 0; font-size: 14px; color: var(--fg-soft); }
+.lifelist b { color: var(--fg); }
+
+.card { background: rgba(27, 48, 104, 0.82); border: 1px solid var(--hair); border-radius: 20px; padding: clamp(18px, 2.4vw, 28px); display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 50px rgba(3, 7, 30, 0.45); }
+.card h2 { margin: 0; font-family: var(--font-display); font-size: 22px; }
+label.f { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--fg-soft); font-weight: 500; }
+input[type="text"], input[type="password"], select { font: 500 16px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.07); border: 1px solid var(--hair); border-radius: 12px; padding: 13px 14px; width: 100%; }
+select option { background: #1b3068; color: var(--fg); }
+input::placeholder { color: var(--fg-muted); }
+.err { color: var(--bad); font-size: 14px; margin: 0; }
+.note { font-size: 13.5px; color: var(--fg-muted); margin: 0; }
+.cap { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(0, 169, 214, 0.1); border: 1px solid rgba(95, 211, 240, 0.3); font-size: 14.5px; }
+.cap b { font-variant-numeric: tabular-nums; }
+.cap.empty { background: rgba(255, 207, 112, 0.1); border-color: rgba(255, 207, 112, 0.4); color: var(--half); }
+.resume { border: 1px solid rgba(255, 207, 112, 0.45); background: rgba(255, 207, 112, 0.08); border-radius: 14px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.resume p { margin: 0; }
+.foot { display: flex; justify-content: flex-end; margin-top: 24px; }
+.emblem { width: 100%; max-width: 120px; height: auto; margin-bottom: 4px; }
+
+/* ---------- Juego ---------- */
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+@media (max-width: 1000px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.player { display: flex; flex-direction: column; }
+.player small { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); font-weight: 600; }
+.player b { font-family: var(--font-display); font-size: 20px; }
+.lifelines { display: flex; gap: 14px; }
+.life { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: 0; cursor: pointer; padding: 0; }
+.life .orb { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--cyan-soft); background: radial-gradient(circle at 50% 35%, #2456a6, #122453); color: var(--fg); position: relative; box-shadow: 0 0 18px rgba(95, 211, 240, 0.25); }
+.life .orb svg { width: 28px; height: 28px; }
+.life .orb .ff { font: 800 16px var(--font-display); letter-spacing: -0.02em; }
+.life .lab { font-size: 12px; color: var(--fg-soft); font-weight: 600; }
+.life:hover:not([disabled]) .orb { box-shadow: 0 0 26px rgba(95, 211, 240, 0.55); }
+.life[disabled] { cursor: not-allowed; }
+.life[disabled] .orb { opacity: 0.35; box-shadow: none; }
+.life.used .orb::after { content: ""; position: absolute; width: 74px; height: 3px; background: var(--bad); transform: rotate(-40deg); border-radius: 2px; }
+.life.used .lab::after { content: " · usado"; color: var(--bad); }
+
+.timer { position: relative; width: 92px; height: 92px; flex: none; }
+.timer svg { width: 92px; height: 92px; transform: rotate(-90deg); }
+.timer .track { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+.timer .bar { fill: none; stroke: var(--cyan-soft); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear, stroke 0.3s; }
+.timer.low .bar { stroke: var(--half); }
+.timer .num { position: absolute; inset: 0; display: grid; place-items: center; font: 800 28px var(--font-display); font-variant-numeric: tabular-nums; }
+.timer.low .num { color: var(--half); }
+
+.casebox { border: 1px solid rgba(154, 140, 255, 0.4); background: linear-gradient(180deg, rgba(67, 48, 188, 0.28), rgba(23, 43, 91, 0.6)); border-radius: 16px; padding: 16px 20px; }
+.casebox .k { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac); font-weight: 700; }
+.casebox h3 { margin: 2px 0 6px; font-family: var(--font-display); font-size: 19px; }
+.casebox p { margin: 0; color: var(--fg-soft); font-size: 15.5px; max-width: 95ch; }
+.notice { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--hair); background: rgba(255,255,255,0.05); }
+.pill.cyan { border-color: rgba(95, 211, 240, 0.5); color: var(--cyan-soft); }
+.pill.gold { border-color: rgba(255, 207, 112, 0.5); color: var(--half); }
+.audience { display: flex; gap: 14px; align-items: center; border-radius: 14px; padding: 12px 16px; background: rgba(0, 169, 214, 0.12); border: 1px solid rgba(95, 211, 240, 0.4); }
+.audience svg { width: 30px; height: 30px; flex: none; color: var(--cyan-soft); }
+.audience p { margin: 0; }
+.opts { display: grid; gap: 12px; }
+.opts.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .opts.two { grid-template-columns: minmax(0, 1fr); } }
+.opts.two .hex-in { justify-content: center; min-height: 72px; }
+.opts.two .txt { font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-top: 4px; }
+.flash { font-size: 14px; color: var(--half); min-height: 1.4em; margin: 0; }
+
+/* Ordenar */
+.order { display: flex; flex-direction: column; gap: 10px; }
+.oitem { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.oitem .slot { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--cyan-soft); font: 800 17px var(--font-display); color: var(--cyan-soft); }
+.oitem .hexrow { cursor: grab; }
+.oitem .hexrow:active { cursor: grabbing; }
+.oitem .hex-in { padding: 12px 38px; min-height: 54px; }
+.oitem .grip { color: var(--fg-muted); flex: none; }
+.oitem.drag .hex { opacity: 0.4; }
+.oitem.over .hex { background: linear-gradient(90deg, #fff, var(--cyan-soft), #fff); }
+.arrows { display: flex; flex-direction: column; gap: 4px; }
+.arrows button { width: 38px; height: 26px; border-radius: 8px; border: 1px solid var(--hair); background: rgba(255,255,255,0.06); cursor: pointer; display: grid; place-items: center; padding: 0; }
+.arrows button:hover:not([disabled]) { background: rgba(255,255,255,0.14); }
+.arrows button[disabled] { opacity: 0.25; cursor: default; }
+.arrows svg { width: 14px; height: 14px; }
+
+/* Escalera */
+.ladder { background: rgba(14, 27, 70, 0.85); border: 1px solid var(--hair); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 6px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+.ladder h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; }
+.rung { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 12px; border-radius: 10px; font-size: 14px; color: var(--fg-soft); }
+.rung .n { font: 800 14px var(--font-display); color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.rung .pt { font-size: 12.5px; color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.rung.now { background: linear-gradient(90deg, var(--cyan-soft), var(--cyan)); color: var(--ink-on-cyan); font-weight: 700; }
+.rung.now .n, .rung.now .pt { color: var(--ink-on-cyan); }
+.rung.done { color: var(--fg); }
+.rung.done .n::after { content: "✓"; color: var(--cyan-soft); margin-left: 2px; font-size: 11px; }
+.ladder .tot { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--hair); font-size: 13px; color: var(--fg-muted); }
+@media (max-width: 1000px) {
+  .ladder { position: static; order: -1; flex-direction: row; flex-wrap: wrap; padding: 10px; }
+  .ladder h3, .ladder .tot { display: none; }
+  .rung { grid-template-columns: auto auto; padding: 6px 10px; }
+  .rung .pt { display: none; }
+}
+
+/* Transición */
+.veil { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(6, 10, 36, 0.72); backdrop-filter: blur(4px); z-index: 20; padding: 16px; }
+.veil .box { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.veil .big { font: 800 clamp(30px, 5vw, 52px)/1.1 var(--font-display); }
+.veil .sub { color: var(--fg-soft); font-size: 17px; }
+.veil .big.time { color: var(--half); }
+
+/* ---------- Resumen ---------- */
+.sumhead { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: center; margin-bottom: 24px; }
+@media (max-width: 640px) { .sumhead { grid-template-columns: minmax(0, 1fr); } }
+.grade { width: 190px; height: 190px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 30%, #2456a6, #122453 70%); border: 3px solid var(--cyan-soft); box-shadow: 0 0 40px rgba(95, 211, 240, 0.35); }
+.grade b { display: block; font: 800 64px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.grade span { font-size: 14px; color: var(--fg-soft); }
+.sumhead h2 { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 40px); margin: 4px 0 8px; line-height: 1.1; }
+.sumhead p { margin: 0; color: var(--fg-soft); max-width: 62ch; }
+.reviews { display: flex; flex-direction: column; gap: 14px; }
+.rev { background: rgba(27, 48, 104, 0.78); border: 1px solid var(--hair); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.rev header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.rev .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.rev h3 { margin: 0; font-family: var(--font-display); font-size: 17.5px; line-height: 1.35; }
+.rev .ctx { margin: 0; font-size: 14px; color: var(--fg-muted); }
+.score { font: 800 14px var(--font-display); padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.score.s1 { background: rgba(94, 224, 160, 0.16); color: var(--ok); border: 1px solid rgba(94, 224, 160, 0.45); }
+.score.s05 { background: rgba(255, 207, 112, 0.14); color: var(--half); border: 1px solid rgba(255, 207, 112, 0.45); }
+.score.s0 { background: rgba(255, 143, 143, 0.12); color: var(--bad); border: 1px solid rgba(255, 143, 143, 0.4); }
+.cmp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 700px) { .cmp { grid-template-columns: minmax(0, 1fr); } }
+.cmp div { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px 14px; }
+.cmp small { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; margin-bottom: 4px; }
+.cmp ul, .cmp ol { margin: 0; padding-left: 20px; }
+.cmp li { margin: 2px 0; }
+.cmp p { margin: 0; }
+.why { margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(0, 169, 214, 0.09); border-left: 3px solid var(--cyan); color: var(--fg); }
+.why b { color: var(--cyan-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---------- Panel docente ---------- */
+.modal { position: fixed; inset: 0; z-index: 30; background: rgba(6, 10, 36, 0.78); backdrop-filter: blur(4px); display: grid; place-items: start center; overflow-y: auto; padding: 40px 16px; }
+.modal .card { width: min(820px, 100%); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 14px; }
+.stat small { display: block; font-size: 12px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+.stat b { font: 800 24px var(--font-display); font-variant-numeric: tabular-nums; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--hair); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted); background: rgba(255,255,255,0.03); }
+td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; color: var(--fg-soft); }
+.check input { width: 18px; height: 18px; accent-color: var(--cyan); }
+.danger { border: 1px solid rgba(255, 207, 112, 0.35); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.danger h3 { margin: 0; font-size: 16px; font-family: var(--font-display); }
+
+
+/* ---------- Revisión de preguntas (panel docente) ---------- */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--hair); padding-bottom: 10px; }
+.tab { font: 700 14px var(--font-body); color: var(--fg-soft); background: transparent; border: 1px solid var(--hair); border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+.tab[aria-pressed="true"] { background: var(--cyan); color: var(--ink-on-cyan); border-color: var(--cyan); }
+.tab:focus-visible { outline: 2px solid var(--cyan-soft); outline-offset: 2px; }
+.rvtools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.rvtools input[type=search] { flex: 1 1 220px; min-width: 0; font: 15px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.06); border: 1px solid var(--hair); border-radius: 10px; padding: 9px 12px; }
+.rvtools input[type=search]:focus { outline: 2px solid var(--cyan); outline-offset: 1px; }
+.progress { display: flex; flex-direction: column; gap: 6px; }
+.progress .track { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.progress .fill { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--lilac)); border-radius: 99px; }
+.audit { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.audit li { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px 12px; font-size: 14px; color: var(--fg-soft); border-left: 3px solid var(--ok); }
+.audit li.warn { border-left-color: var(--half); }
+.audit li b { display: block; color: var(--fg); font-size: 13px; margin-bottom: 2px; }
+.rvlist { display: flex; flex-direction: column; gap: 12px; }
+.qcase { border: 1px solid var(--hair); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; background: rgba(36, 86, 166, 0.12); }
+.qcase h4 { margin: 0; font: 800 16px var(--font-display); }
+.qcase > p { margin: 0; font-size: 14.5px; color: var(--fg-soft); line-height: 1.5; }
+.qrev { background: rgba(27, 48, 104, 0.78); border: 1px solid var(--hair); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.qrev.done { border-color: rgba(94, 224, 160, 0.45); }
+.qrev header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.qrev .k { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.qrev h5 { margin: 0; font: 700 16px/1.4 var(--font-display); }
+.qrev .used { font-size: 12px; color: var(--fg-muted); }
+.ans { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.ans li { display: flex; gap: 10px; align-items: flex-start; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,0.04); font-size: 14.5px; color: var(--fg-soft); }
+.ans li .l { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 800 12px var(--font-display); border: 1px solid var(--hair); }
+.ans li.ok { background: rgba(94, 224, 160, 0.12); color: var(--fg); }
+.ans li.ok .l { background: var(--ok); color: #06231a; border-color: var(--ok); }
+.ans li .tag { margin-left: auto; flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--ok); }
+.ans li span.t { min-width: 0; }
+ol.ans { counter-reset: st; }
+.tfans { display: inline-flex; gap: 8px; align-items: center; font-weight: 700; color: var(--ok); }
+.rvempty { color: var(--fg-muted); margin: 0; }
+
+@media (prefers-reduced-motion: reduce) { .timer .bar { transition: none; } .veil { backdrop-filter: none; } }
+</style>
+
+<div class="wrap" id="app"></div>
+<div id="layer"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* =================== CONFIGURACIÓN =================== */
+var TIME = { tf: 30, mc: 90, ord: 90 };   // segundos por tipo de pregunta
+var AUDIENCE_BONUS = 30;                    // segundos extra del comodín "Pregunta al público"
+var KEY_FP = 'fd0d6456-d74ecf53';           // huella de la clave de reinicio
+var STORE = 'quiz-recuperacion-seguridad-derechos-v1';
+
+/* =================== BANCO 1: VERDADERO O FALSO (20) =================== */
+var TF = [
+  { id: 'tf01', q: 'La seguridad digital comprende las prácticas, herramientas y medidas que protegen dispositivos, cuentas, información y actividades en entornos digitales.', a: true, why: 'Es la definición de la clase: no se limita a la contraseña, abarca dispositivos, cuentas, información y actividades.' },
+  { id: 'tf02', q: 'Según la clase, la seguridad digital es una responsabilidad que recae principalmente en los expertos en informática.', a: false, why: 'La clase insiste en lo contrario: depende tanto de la tecnología como de los hábitos y decisiones de cada persona.' },
+  { id: 'tf03', q: 'El principio de integridad busca que la información no sea modificada de manera no autorizada.', a: true, why: 'Integridad: nadie altera tu información sin permiso. En el ejemplo, nadie modifica tu trabajo final.' },
+  { id: 'tf04', q: 'Que los sistemas y la información estén accesibles cuando se necesitan corresponde al principio de confidencialidad.', a: false, why: 'Eso es disponibilidad. La confidencialidad es que solo las personas autorizadas accedan a la información.' },
+  { id: 'tf05', q: 'Una cuenta con contraseña larga y verificación en dos pasos puede, aun así, estar exponiendo demasiada información personal.', a: true, why: 'La seguridad protege el acceso; la privacidad decide qué compartimos, con quién y para qué. Son cosas relacionadas pero distintas.' },
+  { id: 'tf06', q: 'La universidad, el programa y los horarios de una persona no se consideran datos personales porque no incluyen su número de documento.', a: false, why: 'La tabla de la clase los incluye como datos académicos: también permiten identificar o hacer identificable a una persona.' },
+  { id: 'tf07', q: 'Datos que parecen inofensivos por separado pueden, al combinarse, revelar patrones de comportamiento de una persona.', a: true, why: 'Universidad, horarios, lugar de entrenamiento y viajes juntos muestran dónde estás y cuándo no estás.' },
+  { id: 'tf08', q: 'Pedir dos contraseñas distintas, una después de la otra, cumple con la autenticación multifactor.', a: false, why: 'Son dos factores del mismo tipo, «algo que sabes». La MFA combina factores de tipos diferentes.' },
+  { id: 'tf09', q: 'La huella dactilar y el reconocimiento facial corresponden al factor de autenticación «algo que eres».', a: true, why: 'Los tres factores son algo que sabes (contraseña o PIN), algo que tienes (teléfono, llave) y algo que eres (biometría).' },
+  { id: 'tf10', q: 'En el phishing, el atacante necesita vulnerar técnicamente un sistema para conseguir las credenciales de la víctima.', a: false, why: 'El phishing manipula a la persona: a veces el atacante consigue que la propia víctima le entregue la contraseña o el código.' },
+  { id: 'tf11', q: 'Un mensaje que exige actuar en pocos minutos para evitar el bloqueo de una cuenta muestra una señal de alerta de phishing.', a: true, why: 'La urgencia es la primera de las siete señales de alerta vistas en clase.' },
+  { id: 'tf12', q: 'Las cookies son programas maliciosos que los sitios web instalan para espiar la actividad del usuario.', a: false, why: 'Son pequeños datos que el sitio guarda en el navegador. No todas son maliciosas: algunas permiten funciones esenciales.' },
+  { id: 'tf13', q: 'Los permisos de una aplicación deben revisarse según la funcionalidad que realmente ofrece la aplicación.', a: true, why: 'Por eso una linterna no debería pedir contactos ni ubicación. Los permisos se pueden cambiar en la configuración.' },
+  { id: 'tf14', q: 'Copyright es una licencia universal que permite usar libremente una obra siempre que se mencione a su autor.', a: false, why: 'Copyright es el término anglosajón para los derechos de autor. No es una licencia ni un permiso libre.' },
+  { id: 'tf15', q: 'La propiedad industrial protege creaciones con aplicación industrial y comercial, como patentes, diseños industriales y marcas.', a: true, why: 'Es la segunda rama de la propiedad intelectual; la primera son los derechos de autor.' },
+  { id: 'tf16', q: 'Una fotografía publicada en internet sin el símbolo © puede usarse libremente porque no está protegida.', a: false, why: 'El símbolo no es necesario para que una obra esté protegida, y estar publicada en internet no le quita la protección.' },
+  { id: 'tf17', q: 'En las licencias Creative Commons, la condición ND impide compartir adaptaciones de la obra.', a: true, why: 'ND significa sin obras derivadas: la obra se puede compartir, pero no versiones modificadas.' },
+  { id: 'tf18', q: 'Una imagen con licencia CC BY-NC puede incorporarse a una campaña comercial si se atribuye correctamente a su autor.', a: false, why: 'NC prohíbe el uso comercial bajo esa licencia; la atribución no cambia esa condición.' },
+  { id: 'tf19', q: 'CC0 es una herramienta con la que el titular dedica la obra al dominio público en la medida que lo permite la ley.', a: true, why: 'Con CC0 el titular renuncia a sus derechos hasta donde la ley lo permite: se puede compartir, adaptar y usar comercialmente.' },
+  { id: 'tf20', q: 'Si se cita correctamente al autor de una obra, cualquier uso que se haga de ella queda autorizado.', a: false, why: 'Dar crédito no reemplaza la autorización: se puede atribuir bien y aun así usar la obra de una forma que la licencia no permite.' }
+];
+
+/* =================== BANCO 2: CASOS (10 x 5) =================== */
+var CASES = [
+  { id: 'c01', title: 'La nube de Valentina', text: 'Valentina, estudiante de Comunicación, guarda su trabajo de grado en una cuenta de almacenamiento en la nube y comparte el enlace con su asesor. Un compañero que también tenía el enlace editó por error la sección de resultados. Días después, el día de la entrega, el servicio falla y ella no logra abrir el documento. Revisando, descubre que el enlace estaba abierto para cualquier persona que lo tuviera.',
+    qs: [
+      { id: 'c01q1', q: '¿Qué afirmaciones describen bien lo que pasó con la sección de resultados? Marca 2.', o: [['Se afectó la integridad: la información se modificó sin autorización.', 1], ['El problema vino de un permiso de edición que no debía estar abierto.', 1], ['Se afectó la disponibilidad, porque el texto cambió de contenido.', 0], ['No es un problema de seguridad, porque el compañero no quiso hacer daño.', 0], ['Se afectó la confidencialidad, porque el texto quedó con errores.', 0]], why: 'Integridad es que la información no se modifique sin autorización, haya o no mala intención. Aquí el origen fue un permiso de edición mal configurado.' },
+      { id: 'c01q2', q: '¿Qué es correcto sobre lo que ocurrió el día de la entrega? Marca 2.', o: [['Se afectó la disponibilidad: no pudo abrir el documento cuando lo necesitaba.', 1], ['Muestra que la seguridad también incluye que la información esté accesible.', 1], ['Se afectó la integridad, porque el servicio estaba caído justo el día de la entrega.', 0], ['Se afectó la confidencialidad, porque nadie más podía abrirlo.', 0], ['No tiene relación con la seguridad, solo con la plataforma.', 0]], why: 'Disponibilidad: que sistemas e información estén accesibles cuando se necesitan. La seguridad no es solo la contraseña.' },
+      { id: 'c01q3', q: '¿Qué implica que el enlace estuviera abierto para cualquiera? Marca 2.', o: [['Pone en riesgo la confidencialidad del trabajo de grado.', 1], ['Permite que personas no autorizadas accedan al documento.', 1], ['Solo afecta la disponibilidad del archivo en la nube.', 0], ['No importa mientras ella no publique el enlace en sus redes.', 0], ['Mejora la integridad, porque más personas pueden revisarlo.', 0]], why: 'Confidencialidad es que solo las personas autorizadas accedan. Un enlace abierto deja ese control en manos de quien lo reciba.' },
+      { id: 'c01q4', q: '¿Qué acciones mejorarían la seguridad del trabajo de Valentina? Marca 3.', o: [['Limitar el acceso al documento a las personas autorizadas.', 1], ['Dar permiso de edición solo a quien realmente debe editar.', 1], ['Activar un segundo factor de autenticación en la cuenta.', 1], ['Compartir su contraseña con el asesor para que revise más rápido.', 0], ['Dejar el enlace abierto para no depender de permisos.', 0]], why: 'Controlar quién accede y quién edita protege confidencialidad e integridad; el segundo factor protege la cuenta. La contraseña no se comparte.' },
+      { id: 'c01q5', q: '¿Qué conclusiones sobre los tres principios son correctas? Marca 2.', o: [['Un mismo incidente puede afectar más de un principio a la vez.', 1], ['Incluyen confidencialidad, integridad y disponibilidad, no solo la clave.', 1], ['Los tres principios aplican a empresas, pero no a estudiantes.', 0], ['Con una contraseña fuerte y larga, los tres principios quedan garantizados por completo.', 0], ['La disponibilidad depende solo del comportamiento del usuario.', 0]], why: 'La clase mostró que los tres se conectan: perder una cuenta afecta la disponibilidad y, si otro la toma, también la confidencialidad y la integridad.' }
+    ] },
+  { id: 'c02', title: 'El perfil de Andrés', text: 'Andrés, estudiante de Ingeniería, protege su cuenta con una contraseña larga y verificación en dos pasos. En su perfil público aparecen su universidad y su programa, fotos en el gimnasio donde entrena los martes y jueves a las 6 p. m., su correo personal y una historia que anuncia que viaja este fin de semana. Cuando un amigo le advierte, responde: «Mi cuenta es segura, así que mi información está protegida».',
+    qs: [
+      { id: 'c02q1', q: '¿Qué problema tiene la respuesta de Andrés? Marca 2.', o: [['Confunde seguridad con privacidad: proteger el acceso no controla lo que expone.', 1], ['Una cuenta muy segura puede estar exponiendo demasiada información.', 1], ['Ninguno: la verificación en dos pasos protege también lo que publica.', 0], ['Que su contraseña necesita más caracteres para proteger su privacidad.', 0], ['Que la privacidad depende de la plataforma, no de lo que él publique.', 0]], why: 'La seguridad protege el acceso; la privacidad decide qué compartimos, con quién y para qué.' },
+      { id: 'c02q2', q: '¿Qué información de su perfil son datos personales? Marca 3.', o: [['Su universidad y su programa académico.', 1], ['El gimnasio que frecuenta y su horario.', 1], ['Su correo electrónico personal.', 1], ['Ninguna, porque no publicó su número de documento.', 0], ['Solo el correo, porque los demás datos ya son públicos.', 0]], why: 'Según la tabla de la clase son datos académicos, de ubicación y de contacto: identifican o permiten identificar a una persona.' },
+      { id: 'c02q3', q: '¿Qué podría inferir alguien combinando sus publicaciones? Marca 2.', o: [['Dónde estará y a qué hora los martes y jueves.', 1], ['En qué momento su vivienda podría quedar sola.', 1], ['Su contraseña, porque se ve en las fotos del gimnasio.', 0], ['Nada: cada dato por separado es inofensivo.', 0], ['Solo su información académica, que no implica riesgo.', 0]], why: 'Datos inofensivos por separado, juntos revelan un patrón de comportamiento: dónde estás y cuándo no estás.' },
+      { id: 'c02q4', q: '¿Qué afirmaciones sobre la exposición digital de Andrés son correctas? Marca 2.', o: [['Es la cantidad y el tipo de información que deja disponible.', 1], ['Aumenta cuando publica su ubicación y sus rutinas.', 1], ['Desaparece si activa la verificación en dos pasos.', 0], ['Solo existe cuando un atacante ya entró a su cuenta.', 0], ['Es otra forma de llamar a la integridad de sus datos.', 0]], why: 'La exposición digital es la cantidad y tipo de información que dejamos disponible en plataformas y servicios, no depende de la contraseña.' },
+      { id: 'c02q5', q: '¿Qué decisiones mejorarían su privacidad? Marca 3.', o: [['Revisar quién puede ver sus publicaciones.', 1], ['Evitar anunciar sus viajes mientras ocurren.', 1], ['No publicar sus rutinas con el lugar y la hora.', 1], ['Cambiar su contraseña una vez por semana.', 0], ['Publicar lo mismo, pero solo en las historias que duran un día.', 0]], why: 'La privacidad es controlar cómo se expone la información. Cambiar la contraseña protege el acceso, no lo que ya está publicado.' }
+    ] },
+  { id: 'c03', title: 'La clave de Mariana', text: 'Mariana usa la contraseña «Luna2005», el nombre de su perra y su año de nacimiento, para el correo institucional, su red social y una tienda en línea. Un día la tienda anuncia que sufrió una filtración de datos. Su hermano le sugiere agregar una segunda contraseña al ingresar; una amiga le recomienda activar una aplicación autenticadora en el celular. Mariana no sabe a quién hacerle caso.',
+    qs: [
+      { id: 'c03q1', q: '¿Qué problemas tiene la contraseña de Mariana? Marca 3.', o: [['Usa datos personales evidentes, como el nombre de su mascota.', 1], ['Es corta y fácil de adivinar para alguien que la conozca.', 1], ['La reutiliza en varios servicios diferentes.', 1], ['Mezcla letras y números, lo que la vuelve más débil.', 0], ['Empieza con mayúscula, lo que facilita adivinarla.', 0]], why: 'Las buenas prácticas piden contraseñas largas, sin datos personales evidentes y distintas para cada servicio.' },
+      { id: 'c03q2', q: '¿Qué riesgo le trae la filtración de la tienda? Marca 2.', o: [['Que usen esa contraseña para intentar entrar a su correo y a su red.', 1], ['Que caigan varias cuentas, porque la clave es la misma en todas.', 1], ['Ninguno, porque la filtración solo afecta a la tienda en línea.', 0], ['Que la universidad borre su cuenta institucional de inmediato por seguridad.', 0], ['Solo que empiece a recibir más publicidad de esa tienda.', 0]], why: 'Una contraseña distinta por servicio evita que, si una se filtra, caigan todas.' },
+      { id: 'c03q3', q: '¿Qué es correcto sobre la sugerencia del hermano? Marca 2.', o: [['Dos contraseñas son dos factores del mismo tipo: no es MFA.', 1], ['Ambas contraseñas pertenecen al factor «algo que sabes».', 1], ['Es MFA, porque exige dos comprobaciones al ingresar.', 0], ['Es más segura que usar una aplicación autenticadora en el celular.', 0], ['Corresponde al factor «algo que tienes».', 0]], why: 'La MFA exige factores de tipos diferentes. Dos contraseñas son el mismo tipo: algo que sabes.' },
+      { id: 'c03q4', q: '¿Qué es correcto sobre la aplicación autenticadora? Marca 2.', o: [['Corresponde al factor «algo que tienes».', 1], ['Con la contraseña, combina dos tipos de factores.', 1], ['Reemplaza por completo la necesidad de una contraseña.', 0], ['Corresponde al factor «algo que eres».', 0], ['Solo funciona si usa la misma clave en todo.', 0]], why: 'La aplicación vive en el teléfono (algo que tienes) y se suma a la contraseña (algo que sabes): eso es MFA.' },
+      { id: 'c03q5', q: '¿Qué prácticas debería adoptar Mariana? Marca 3.', o: [['Tener una contraseña distinta para cada servicio.', 1], ['Guardarlas en un administrador de contraseñas confiable.', 1], ['Preferir una frase larga en lugar de una palabra.', 1], ['Compartir la clave con su hermano por si algún día la olvida.', 0], ['Mantener la misma clave para no confundirse.', 0]], why: 'Son buenas prácticas de la clase: larga (mejor una frase), distinta por servicio, sin compartir y en un administrador confiable.' }
+    ] },
+  { id: 'c04', title: 'El mensaje de Camilo', text: 'Camilo recibe un SMS firmado por «Soporte Tecnológico»: su cuenta institucional será bloqueada en 30 minutos y debe responder con el código que acaba de llegar a su celular. Minutos después le llega un correo que anuncia que ganó una tableta y que debe abrir un archivo adjunto para reclamarla. El remitente usa una dirección parecida a la de la universidad, pero con una letra cambiada.',
+    qs: [
+      { id: 'c04q1', q: '¿Qué emociones busca provocar el SMS? Marca 2.', o: [['Miedo a perder el acceso a su cuenta institucional.', 1], ['Urgencia, por el plazo de solo 30 minutos.', 1], ['Tranquilidad, porque el mensaje viene del área de soporte.', 0], ['Indiferencia, para que lo lea sin prestar atención.', 0], ['Gratitud hacia la universidad.', 0]], why: 'La ingeniería social aprovecha la confianza, el miedo, la urgencia, la curiosidad o la distracción. Aquí: miedo y urgencia.' },
+      { id: 'c04q2', q: '¿Qué intenta obtener el atacante con el SMS? Marca 2.', o: [['El código del segundo factor de autenticación.', 1], ['El acceso a la cuenta institucional de Camilo.', 1], ['Solo confirmar que el número de celular existe.', 0], ['Que Camilo actualice la aplicación del celular.', 0], ['Información sobre sus horarios y sus clases.', 0]], why: 'Ese código es su segundo factor: con él, el atacante entra a la cuenta. Ningún servicio legítimo pide dictarlo.' },
+      { id: 'c04q3', q: '¿Qué señales de alerta aparecen en los dos mensajes? Marca 3.', o: [['Urgencia por un bloqueo que ocurrirá en minutos.', 1], ['Una dirección de remitente sospechosa.', 1], ['Un premio atractivo con un adjunto inesperado.', 1], ['Que el mensaje esté escrito en español.', 0], ['Que haya llegado en horario de oficina.', 0]], why: 'Urgencia, remitente sospechoso, premios demasiado buenos y adjuntos inesperados están entre las siete señales de la clase.' },
+      { id: 'c04q4', q: '¿Cómo debería verificar si los mensajes son auténticos? Marca 2.', o: [['Entrando al portal oficial sin usar los enlaces recibidos.', 1], ['Llamando a la mesa de ayuda al número publicado por la universidad.', 1], ['Respondiendo el mismo SMS para preguntar si de verdad lo envió la universidad.', 0], ['Abriendo el adjunto para revisar si es legítimo.', 0], ['Reenviando el código a un amigo para que lo valide.', 0]], why: 'Ante la duda, se verifica por otro canal oficial, nunca respondiendo al mensaje ni abriendo lo que envía.' },
+      { id: 'c04q5', q: 'Si Camilo ya compartió el código, ¿qué debe hacer? Marca 3.', o: [['Cambiar la contraseña de la cuenta.', 1], ['Avisar al área de soporte de la universidad.', 1], ['Reportar el mensaje que recibió.', 1], ['Esperar a ver si la cuenta se bloquea.', 0], ['Borrar el mensaje y no comentarlo con nadie.', 0]], why: 'Es la respuesta del caso analizado en clase: cambiar la contraseña, avisar a soporte y reportar el mensaje.' }
+    ] },
+  { id: 'c05', title: 'Las aplicaciones de Laura', text: 'Laura instala una aplicación de linterna que le pide acceso a sus contactos, su ubicación y su micrófono. Después entra a una tienda virtual a mirar unos audífonos y acepta todas las cookies sin leer. Al día siguiente ve anuncios de esos mismos audífonos en otras páginas y en sus redes. Un amigo le dice que todas las cookies son espías y que la única solución es bloquearlas todas.',
+    qs: [
+      { id: 'c05q1', q: '¿Qué es correcto sobre los permisos que pide la linterna? Marca 2.', o: [['No corresponden a la función real de la aplicación.', 1], ['Laura puede revisarlos y cambiarlos en la configuración.', 1], ['Son normales: cualquier aplicación necesita los contactos.', 0], ['Una vez concedidos, ya no se pueden modificar.', 0], ['Solo deberían preocuparle si la aplicación fuera de pago.', 0]], why: 'Los permisos se revisan según lo que la aplicación realmente necesita y se pueden cambiar desde la configuración del dispositivo.' },
+      { id: 'c05q2', q: '¿Qué explica los anuncios de los audífonos? Marca 2.', o: [['Es un ejemplo de rastreo digital de su actividad.', 1], ['Se relaciona con cookies publicitarias o de seguimiento.', 1], ['Demuestra que alguien entró a su celular sin permiso mientras dormía.', 0], ['Lo causan las cookies necesarias de la tienda.', 0], ['Es una falla de integridad en la tienda virtual.', 0]], why: 'Es el ejemplo de la clase: el rastreo recopila y analiza la actividad, y las cookies de seguimiento personalizan anuncios.' },
+      { id: 'c05q3', q: '¿Qué es correcto frente a lo que dice el amigo? Marca 2.', o: [['No todas las cookies son maliciosas.', 1], ['Algunas permiten funciones esenciales del sitio.', 1], ['Tiene razón: todas espían.', 0], ['Las cookies son programas que se instalan en el celular.', 0], ['Las cookies de preferencias venden sus datos.', 0]], why: 'Las cookies son pequeños datos guardados en el navegador; hay necesarias, de preferencias, analíticas y publicitarias.' },
+      { id: 'c05q4', q: '¿Qué descripciones de los tipos de cookies son correctas? Marca 3.', o: [['Las de preferencias recuerdan la configuración del usuario.', 1], ['Las analíticas ayudan a entender cómo se usa un sitio.', 1], ['Las necesarias permiten funciones esenciales del sitio.', 1], ['Las necesarias sirven para mostrar anuncios personalizados.', 0], ['Las analíticas recuerdan el idioma que eligió el usuario.', 0]], why: 'Son las categorías de la clase. Los anuncios corresponden a las publicitarias y la configuración a las de preferencias.' },
+      { id: 'c05q5', q: 'Según la clase, ¿qué es lo importante que Laura comprenda? Marca 2.', o: [['Qué información se recopila y para qué se utiliza.', 1], ['Qué controles tiene para decidir sobre esa recopilación.', 1], ['Que lo correcto es rechazar todo servicio gratuito.', 0], ['Que aceptar cookies no tiene ninguna consecuencia.', 0], ['Que el rastreo solo ocurre en aplicaciones de pago.', 0]], why: 'La clase no propone rechazar todo, sino entender qué se recopila, para qué se usa y qué controles tenemos.' }
+    ] },
+  { id: 'c06', title: 'Café Montaña', text: 'Sara coordina la campaña de lanzamiento de Café Montaña, una marca nueva. El equipo registró el nombre y el logo; un fotógrafo tomó las fotos de la campaña, y un compañero propuso la idea de un video sobre caficultores, que todavía no se ha grabado. Sara encontró en internet una foto sin el símbolo © y quiere usarla porque, según ella, «si no tiene copyright, es libre».',
+    qs: [
+      { id: 'c06q1', q: '¿Qué elementos protege la propiedad industrial? Marca 2.', o: [['El nombre de la marca Café Montaña.', 1], ['El logo, como signo distintivo de la marca.', 1], ['Las fotografías que tomó el fotógrafo.', 0], ['La idea del video sobre caficultores.', 0], ['La foto que Sara encontró en internet.', 0]], why: 'La propiedad industrial protege marcas y signos distintivos, patentes y diseños industriales.' },
+      { id: 'c06q2', q: '¿Qué está protegido por derechos de autor? Marca 2.', o: [['Las fotografías que tomó el fotógrafo.', 1], ['El video, una vez grabado y editado.', 1], ['La idea del video, aunque no se haya grabado.', 0], ['El nombre comercial de la marca.', 0], ['El logo, registrado como marca.', 0]], why: 'Se protege la obra, no la idea en abstracto: la idea del video no está protegida; el video grabado y editado, sí.' },
+      { id: 'c06q3', q: '¿Qué es correcto sobre la foto sin el símbolo ©? Marca 2.', o: [['El símbolo no es necesario para que una obra esté protegida.', 1], ['Que esté publicada en internet no le quita la protección.', 1], ['Si no tiene el símbolo, la foto pasa a ser de dominio público.', 0], ['Copyright es una licencia que permite usarla libremente.', 0], ['Basta con que aparezca en un buscador para poder usarla.', 0]], why: 'Es un error frecuente creer que sin © la obra es libre. Estar en internet no significa dejar de estar protegida.' },
+      { id: 'c06q4', q: '¿Qué afirmaciones sobre el copyright son correctas? Marca 2.', o: [['Es el término anglosajón para los derechos de autor.', 1], ['No equivale a un permiso libre para usar la obra.', 1], ['Es una de las ramas de la propiedad industrial.', 0], ['Es una licencia universal que cubre todas las obras publicadas.', 0], ['Solo aplica a las obras publicadas en inglés.', 0]], why: 'Copyright es la expresión de la tradición anglosajona para los derechos de autor; no es una licencia ni un permiso libre.' },
+      { id: 'c06q5', q: '¿Qué afirmaciones sobre la propiedad intelectual son correctas en este caso? Marca 2.', o: [['Es el concepto general de los derechos sobre las creaciones del intelecto.', 1], ['Abarca tanto las fotos de la campaña como la marca y su logo.', 1], ['Solo protege obras literarias y artísticas, no las marcas ni los logos comerciales.', 0], ['Es otro nombre para el copyright de la tradición anglosajona.', 0], ['Deja de aplicar cuando la obra se publica en internet.', 0]], why: 'La propiedad intelectual es el concepto general y tiene dos ramas: los derechos de autor (las fotos) y la propiedad industrial (la marca y el logo).' }
+    ] },
+  { id: 'c07', title: 'El video de Tomás', text: 'Tomás encontró una canción en una plataforma de música y una ilustración en un blog; puede escucharlas y descargarlas sin pagar. Quiere usar la canción en un video para la marca de ropa de su tía y modificar la ilustración para ponerla en los empaques. La ilustración tiene licencia CC BY-ND y la canción no indica ninguna licencia. Tomás piensa que, si algo se descarga gratis, se puede usar.',
+    qs: [
+      { id: 'c07q1', q: '¿Qué es correcto sobre lo que piensa Tomás? Marca 2.', o: [['Poder acceder o descargar no autoriza a usar comercialmente.', 1], ['Cada acción sobre una obra puede tener sus propias condiciones.', 1], ['Si se descarga gratis, se puede usar en cualquier contexto o proyecto.', 0], ['Descargar y distribuir tienen las mismas condiciones.', 0], ['Escuchar la canción le da derecho a ponerla en su video.', 0]], why: 'Acceder, descargar, compartir, reproducir, modificar, distribuir y usar comercialmente no tienen las mismas condiciones.' },
+      { id: 'c07q2', q: '¿Qué exige la licencia CC BY-ND de la ilustración? Marca 2.', o: [['Atribuir la autoría de la ilustración.', 1], ['No compartir una versión modificada de la obra.', 1], ['Nada más que citar al autor para poder modificarla.', 0], ['No usarla con fines comerciales.', 0], ['Nada, porque ND no exige reconocer al autor.', 0]], why: 'BY pide atribución y ND prohíbe compartir adaptaciones. CC BY-ND sí permite uso comercial sin modificar la obra.' },
+      { id: 'c07q3', q: '¿Qué es correcto sobre la canción sin licencia? Marca 2.', o: [['No puede asumir que la canción está libre para usarla.', 1], ['Necesita autorización del titular para el video de la marca.', 1], ['Puede usarla si escribe «no soy dueño de esta música».', 0], ['Puede usarla porque la plataforma no cobra por escucharla.', 0], ['Basta con nombrar al artista en la descripción del video.', 0]], why: 'Dar crédito no reemplaza la autorización. Frases como «no soy dueño de esta música» no dan ningún permiso.' },
+      { id: 'c07q4', q: '¿Qué acciones sobre una obra son las que regulan las licencias? Marca 3.', o: [['Modificarla y compartir la versión modificada.', 1], ['Distribuirla a otras personas.', 1], ['Usarla con fines comerciales.', 1], ['Tener una idea parecida sin copiar la obra.', 0], ['Mirarla en el sitio donde fue publicada.', 0]], why: 'Cuanto más se aleja del simple acceso, más condiciones aparecen: modificar, distribuir y usar comercialmente es lo que regulan las licencias.' },
+      { id: 'c07q5', q: '¿Con qué licencia podría modificar la ilustración y usarla en los empaques? Marca 2.', o: [['CC BY, atribuyendo al autor.', 1], ['CC BY-SA, compartiendo la adaptación con la misma licencia.', 1], ['CC BY-NC, atribuyendo al autor.', 0], ['CC BY-NC-ND, sin cambiar la obra.', 0], ['CC BY-ND, si cita bien al autor.', 0]], why: 'Para adaptar y usar comercialmente sirven CC BY y CC BY-SA. NC impide el uso comercial y ND impide adaptar.' }
+    ] },
+  { id: 'c08', title: 'Revista Raíces', text: 'Un semillero universitario publica Raíces, una revista digital gratuita, y también una edición impresa que venderá en una feria. Para ambas recopiló cinco recursos: una foto CC BY-NC, una ilustración CC BY-SA, un mapa CC BY-NC-ND, un ícono CC0 y una infografía CC BY. El equipo de diseño quiere adaptar varios de esos recursos para unificar el estilo gráfico de la revista en las dos versiones.',
+    qs: [
+      { id: 'c08q1', q: '¿Qué recursos pueden adaptar y usar en la edición impresa que se vende? Marca 3.', o: [['La ilustración CC BY-SA, con la misma licencia en la adaptación.', 1], ['El ícono CC0.', 1], ['La infografía CC BY, con atribución.', 1], ['La foto CC BY-NC, si la atribuyen.', 0], ['El mapa CC BY-NC-ND, sin modificarlo.', 0]], why: 'La venta es un uso comercial: lo permiten CC BY, CC BY-SA y CC0. NC no lo permite, y el mapa además prohíbe adaptar.' },
+      { id: 'c08q2', q: '¿Qué pueden hacer con el mapa CC BY-NC-ND en la revista gratuita? Marca 2.', o: [['Compartirlo sin modificarlo y con atribución.', 1], ['Usarlo, pero no cambiarle el estilo gráfico.', 1], ['Adaptarlo, porque la revista digital es gratuita.', 0], ['Usarlo sin atribución, porque no hay venta.', 0], ['Venderlo también en la edición impresa.', 0]], why: 'CC BY-NC-ND permite compartir sin modificar, sin fines comerciales y con atribución.' },
+      { id: 'c08q3', q: '¿Qué deben cumplir si adaptan la ilustración CC BY-SA? Marca 2.', o: [['Compartir la adaptación con la misma licencia o una compatible.', 1], ['Atribuir la obra a su autor original.', 1], ['Ponerle a la adaptación una licencia más restrictiva.', 0], ['Nada, si la modifican lo suficiente para que sea otra.', 0], ['No adaptarla, porque SA prohíbe las obras derivadas.', 0]], why: 'SA (compartir igual) pide que las adaptaciones se compartan con la misma licencia o una compatible, y BY pide atribución.' },
+      { id: 'c08q4', q: '¿Qué es correcto sobre el ícono CC0? Marca 2.', o: [['El titular lo dedicó al dominio público en la medida que permite la ley.', 1], ['Permite compartirlo, adaptarlo y usarlo comercialmente.', 1], ['Solo permite usarlo en la revista gratuita, nunca en la edición que se vende.', 0], ['Prohíbe modificar el ícono original.', 0], ['Exige compartir igual cualquier adaptación.', 0]], why: 'Con CC0 el titular renuncia a sus derechos en la medida que la ley lo permite: compartir, adaptar y uso comercial.' },
+      { id: 'c08q5', q: '¿Qué afirmaciones sobre la construcción de las licencias son correctas? Marca 2.', o: [['Todas las licencias Creative Commons incluyen la condición BY.', 1], ['SA y ND no aparecen juntas: SA regula adaptaciones y ND las prohíbe.', 1], ['NC y SA no pueden aparecer en la misma licencia.', 0], ['CC0 es una combinación de las condiciones BY y NC.', 0], ['Todas las licencias Creative Commons permiten el uso comercial.', 0]], why: 'BY está en todas; SA y ND son incompatibles. CC BY-NC-SA existe, y NC impide el uso comercial.' }
+    ] },
+  { id: 'c09', title: 'La infografía de Daniela', text: 'Daniela prepara una infografía para la página web de una fundación. Usa una foto con licencia CC BY 4.0, a la que recorta y le agrega texto, y una gráfica tomada de un blog que no muestra ninguna licencia. Al pie escribe: «Imágenes tomadas de internet. Créditos a sus autores». Sobre la gráfica piensa que, si menciona al autor, ya queda autorizada para usarla.',
+    qs: [
+      { id: 'c09q1', q: '¿Qué problemas tiene el pie de imagen de Daniela? Marca 2.', o: [['No indica el título, el autor, la fuente ni la licencia de cada recurso.', 1], ['No dice que la foto fue recortada y que se le añadió texto.', 1], ['Debió omitir los créditos, porque la foto es CC BY.', 0], ['Ninguno: basta con mencionar internet como la fuente.', 0], ['Que el crédito general debería ir al inicio de la infografía y no al pie.', 0]], why: 'Una buena atribución tiene título, autor, fuente y licencia, y si el recurso se modificó, se dice.' },
+      { id: 'c09q2', q: '¿Qué datos debe incluir la atribución de la foto? Marca 3.', o: [['El título de la obra.', 1], ['El nombre del autor, como pide ser citado.', 1], ['La licencia y, si se puede, su enlace.', 1], ['La fecha exacta en que Daniela la descargó.', 0], ['El número de visitas que tiene la foto.', 0]], why: 'Son cuatro datos: título, autor, fuente con enlace y licencia.' },
+      { id: 'c09q3', q: '¿Qué es correcto sobre la gráfica del blog? Marca 2.', o: [['Dar crédito no reemplaza la autorización.', 1], ['Sin licencia visible, primero debe saber si puede usarla.', 1], ['Si menciona al autor, el uso queda autorizado.', 0], ['Puede usarla porque la fundación no tiene ánimo de lucro.', 0], ['Puede usarla si la modifica hasta que se vea distinta.', 0]], why: 'Se puede atribuir correctamente y aun así usar la obra de una forma no permitida. La primera pregunta es: ¿puedo usarla?' },
+      { id: 'c09q4', q: '¿Cuáles de las cuatro preguntas de la clase debe hacerse antes de usar un recurso? Marca 3.', o: [['¿Puedo usarla para lo que quiero?', 1], ['¿Puedo modificarla?', 1], ['¿Debo atribuirla?', 1], ['¿Es popular en las redes sociales?', 0], ['¿Aparece en la primera página del buscador?', 0]], why: 'Las cuatro preguntas son: ¿puedo usarla?, ¿puedo modificarla?, ¿puedo usarla comercialmente? y ¿debo atribuirla?' },
+      { id: 'c09q5', q: '¿Qué es correcto sobre la foto CC BY que recortó? Marca 2.', o: [['Puede adaptarla y usarla, incluso con fines comerciales.', 1], ['En la atribución debe indicar los cambios que hizo.', 1], ['No puede modificarla, porque CC BY lo prohíbe.', 0], ['Debe publicar la infografía con licencia CC BY-SA.', 0], ['Ya no necesita atribuir, porque la modificó.', 0]], why: 'CC BY permite compartir y adaptar, incluso comercialmente, con atribución; si el recurso se modificó, se indica.' }
+    ] },
+  { id: 'c10', title: 'La exposición de Julián', text: 'Julián prepara una exposición para clase con un video educativo, fragmentos de un libro y un recurso que encontró en OER Commons. En una diapositiva copia tres páginas completas del libro y en otra pega un párrafo escrito por un compañero sin decir de quién es. Como la exposición le quedó bien, ahora quiere publicar la misma presentación en sus redes sociales para mostrar su trabajo.',
+    qs: [
+      { id: 'c10q1', q: '¿Qué es correcto sobre publicar la presentación en redes? Marca 2.', o: [['Usar recursos en una clase no es lo mismo que poder publicarlos.', 1], ['Antes de publicar debe verificar las condiciones de cada recurso.', 1], ['Si sirvió en clase, puede publicarse sin revisar nada más.', 0], ['Publicar en sus redes personales no cuenta como distribuir la obra de otros.', 0], ['El uso académico autoriza cualquier distribución posterior.', 0]], why: 'Una presentación proyectada en clase y otra publicada en redes no tienen las mismas condiciones: hay que verificar antes de publicar o distribuir.' },
+      { id: 'c10q2', q: '¿Qué es correcto sobre las tres páginas del libro? Marca 2.', o: [['Una cita académica no es lo mismo que reproducir la obra completa.', 1], ['Debe citar la fuente de los fragmentos que use.', 1], ['Copiar páginas completas es una cita si pone el autor.', 0], ['Los libros académicos no tienen derechos de autor.', 0], ['Puede copiar lo que quiera porque es para una clase.', 0]], why: 'En lo académico hay que citar las fuentes y distinguir una cita de la reproducción completa de una obra.' },
+      { id: 'c10q3', q: '¿Qué es correcto sobre el párrafo del compañero? Marca 2.', o: [['Julián está presentando una obra ajena como propia.', 1], ['Debe reconocer que el párrafo es de su compañero.', 1], ['No hay problema, porque es de alguien de la misma clase.', 0], ['Basta con cambiar algunas palabras del párrafo.', 0], ['Solo importa si el compañero lo publicó en internet.', 0]], why: 'Reconocer la autoría y no presentar obras ajenas como propias son prácticas del uso académico responsable.' },
+      { id: 'c10q4', q: '¿Qué es correcto sobre el recurso de OER Commons? Marca 2.', o: [['Es un recurso en dominio público o con licencia abierta.', 1], ['Aun así, debe revisar la licencia de ese recurso.', 1], ['Todos los recursos abiertos tienen la misma licencia.', 0], ['Los recursos educativos abiertos no requieren atribución.', 0], ['Solo sirven si se descargan en PDF.', 0]], why: 'Los REA están en dominio público o tienen licencias abiertas, pero no todos tienen la misma: hay que leer la licencia de cada uno.' },
+      { id: 'c10q5', q: '¿En qué sitios vistos en clase puede buscar recursos abiertos? Marca 3.', o: [['Openverse, un buscador de imágenes y audio abiertos.', 1], ['Wikimedia Commons, con la licencia en cada ficha.', 1], ['OER Commons, repositorio de recursos educativos.', 1], ['El primer resultado del buscador de imágenes.', 0], ['Cualquier perfil de redes con muchas descargas.', 0]], why: 'La clase presentó Openverse, Wikimedia Commons y OER Commons como lugares para buscar recursos abiertos.' }
+    ] }
+];
+
+/* =================== BANCO 3: ORDENAR (10) =================== */
+var ORD = [
+  { id: 'o01', sit: 'Recibes el SMS del «soporte» que pide el código de tu celular. Ordena el análisis del caso tal como se trabajó en clase.', steps: ['Identificar la emoción que el mensaje busca provocar', 'Identificar qué información intenta obtener', 'Verificar su autenticidad por un canal oficial distinto al mensaje', 'Decidir qué hacer: no compartir el código y reportar'], why: 'El análisis va de entender la manipulación (emoción e información buscada) a verificar por otro canal y actuar.' },
+  { id: 'o02', sit: 'Ordena cómo ingresas al correo institucional cuando tiene activada la autenticación multifactor.', steps: ['Escribir el usuario del correo institucional', 'Ingresar la contraseña: algo que sabes', 'Recibir la solicitud de confirmación en la aplicación autenticadora', 'Confirmar el acceso en el celular: algo que tienes', 'Entrar a la bandeja del correo'], why: 'Es el ejemplo de la clase: primero la contraseña y luego la confirmación en una aplicación autenticadora del celular.' },
+  { id: 'o03', sit: 'Ordena cómo publicaciones aparentemente inofensivas terminan exponiendo a una persona.', steps: ['Publicar datos sueltos: universidad, horarios, lugar de entrenamiento', 'Alguien reúne esos datos de distintas publicaciones', 'Al combinarlos, aparece un patrón de comportamiento', 'Ese patrón revela dónde está la persona y cuándo no está'], why: 'Datos inofensivos por separado, al combinarse, permiten construir un perfil detallado y un patrón de comportamiento.' },
+  { id: 'o04', sit: 'Ordena cómo revisar los permisos de una aplicación que acabas de instalar.', steps: ['Identificar para qué sirve realmente la aplicación', 'Abrir la configuración de permisos del dispositivo', 'Comparar cada permiso con la función de la aplicación', 'Desactivar los permisos que no corresponden a esa función'], why: 'Los permisos se revisan según la funcionalidad real de la aplicación y se modifican desde la configuración.' },
+  { id: 'o05', sit: 'Ordena cómo ocurre el ejemplo de rastreo digital visto en clase.', steps: ['Entrar a una tienda virtual y aceptar las cookies de seguimiento', 'Mirar un producto en esa tienda', 'El sitio registra esa actividad', 'Aparecen anuncios del mismo producto en otras páginas'], why: 'El rastreo digital recopila y analiza la actividad; las cookies de seguimiento permiten personalizar anuncios en otros sitios.' },
+  { id: 'o06', sit: 'Ordena cómo actúa un atacante en un caso de phishing para entrar a una cuenta.', steps: ['Se hace pasar por una entidad o persona confiable', 'Envía un mensaje que genera urgencia o miedo', 'La víctima le entrega su contraseña o su código', 'El atacante entra a la cuenta con esos datos'], why: 'El atacante no siempre necesita descubrir la contraseña: a veces consigue que la propia víctima se la entregue.' },
+  { id: 'o07', sit: 'Ordena estas opciones de la que permite más usos a la que permite menos.', steps: ['CC0', 'CC BY', 'CC BY-NC', 'CC BY-NC-ND'], why: 'CC0 no pone condiciones; CC BY exige atribución; NC agrega la prohibición comercial y ND la de adaptar.' },
+  { id: 'o08', sit: 'Ordena los elementos de una atribución según el modelo de la clase: «“Atardecer en el cañón”, de Lucía Prada…».', steps: ['Título de la obra', 'Autor, como pide ser citado', 'Fuente donde se encuentra, con enlace', 'Licencia de la obra', 'Cambios realizados, si se modificó'], why: 'El modelo de la clase sigue título, autor, fuente y licencia, y al final indica si el recurso se modificó.' },
+  { id: 'o09', sit: 'Ordena el proceso para usar correctamente un recurso que encontraste en internet.', steps: ['Ubicar el recurso y el sitio de donde proviene', 'Identificar su autor y su licencia', 'Comparar la licencia con el uso que quieres hacer', 'Decidir si puedes usarlo y en qué condiciones', 'Incluir la atribución completa al publicarlo'], why: 'Antes de usar una obra se revisan autor y licencia, se contrastan con el uso previsto y, si es posible, se atribuye.' },
+  { id: 'o10', sit: 'Quieres adaptar una ilustración con licencia CC BY-SA y publicarla. Ordena los pasos.', steps: ['Confirmar que la licencia BY-SA permite adaptar la obra', 'Crear la adaptación de la ilustración', 'Preparar la atribución al autor original indicando los cambios', 'Publicar la adaptación con la misma licencia o una compatible'], why: 'BY-SA permite adaptar con atribución, y la adaptación debe compartirse con la misma licencia o una compatible.' }
+];
+
+var MCMAP = {}; CASES.forEach(function (c) { c.qs.forEach(function (q) { MCMAP[q.id] = { c: c, q: q }; }); });
+var TFMAP = {}; TF.forEach(function (q) { TFMAP[q.id] = q; });
+var ORDMAP = {}; ORD.forEach(function (q) { ORDMAP[q.id] = q; });
+var CASEMAP = {}; CASES.forEach(function (c) { CASEMAP[c.id] = c; });
+var LETTERS = 'ABCDE';
+var TYPE_LABEL = { tf: 'Verdadero o falso', mc: 'Caso', ord: 'Ordenar' };
+
+function rnd(n) {
+  try { var a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; } catch (e) { return Math.floor(Math.random() * n); }
+}
+function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function fp(s) { var a = 0x811c9dc5, b = 0x9e3779b1; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); a ^= c; a = Math.imul(a, 16777619) >>> 0; b = Math.imul(b ^ c, 0x5bd1e995) >>> 0; b = (b ^ (b >>> 15)) >>> 0; } return a.toString(16) + '-' + b.toString(16); }
+function fmtPts(p) { return (Math.round(p * 10) / 10).toFixed(1).replace('.', ','); }
+
+/* =================== ESTADO (en este navegador) =================== */
+var S;
+function blank() { return { used: {}, results: [], current: null }; }
+try { S = JSON.parse(localStorage.getItem(STORE)); } catch (e) { S = null; }
+if (!S || typeof S !== 'object' || !S.used) S = blank();
+var storageOk = true;
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) { storageOk = false; } }
+
+function availTF() { return TF.filter(function (q) { return !S.used[q.id]; }); }
+function availCase(c) { return c.qs.filter(function (q) { return !S.used[q.id]; }); }
+function availORD() { return ORD.filter(function (q) { return !S.used[q.id]; }); }
+function capacity() {
+  var tf = Math.floor(availTF().length / 2), ord = availORD().length;
+  var mc = CASES.reduce(function (s, c) { return s + Math.floor(availCase(c).length / 2); }, 0);
+  return Math.min(tf, ord, mc);
+}
+
+/* =================== VISTAS =================== */
+var app = document.getElementById('app');
+var layer = document.getElementById('layer');
+var view = 'home';
+var lastGame = null;
+var formName = '', formCase = 'random', formErr = '';
+var admin = { open: false, unlocked: false, err: '', confirm: false, wipe: false, done: '', tab: 'panel' };
+var REVIEW_KEY = STORE + '-revision';
+var rv = { bank: 'all', q: '', pend: false, marks: {} };
+try { rv.marks = JSON.parse(localStorage.getItem(REVIEW_KEY)) || {}; } catch (e) { rv.marks = {}; }
+function saveMarks() { try { localStorage.setItem(REVIEW_KEY, JSON.stringify(rv.marks)); } catch (e) {} }
+var flashMsg = '';
+var dragFrom = null;
+var busy = false;
+
+var ICON = {
+  people: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.8 14.2c2.3.2 4 1.8 4.6 4.8"/></svg>',
+  swap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3.5-3.5"/><path d="M20 16H7l3.5 3.5"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+  grip: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>'
+};
+var EMBLEM = '<svg class="emblem" viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5fd3f0"/><stop offset="1" stop-color="#9a8cff"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="none" stroke="url(#eg)" stroke-width="2.5"/><circle cx="60" cy="60" r="42" fill="none" stroke="#5fd3f0" stroke-opacity=".35" stroke-width="1.5"/><g stroke="#5fd3f0" stroke-width="1.6" fill="none" stroke-opacity=".85"><path d="M30 78 L48 62 L66 70 L88 44 M48 62 L56 40 L76 32 M56 40 L66 70"/></g><g fill="#5fd3f0"><circle cx="30" cy="78" r="3.5"/><circle cx="48" cy="62" r="4.5"/><circle cx="66" cy="70" r="3.5"/><circle cx="88" cy="44" r="5"/><circle cx="56" cy="40" r="3.5"/><circle cx="76" cy="32" r="3.5"/></g></svg>';
+
+function render() {
+  if (view === 'game' && S.current) renderGame();
+  else if (view === 'summary' && lastGame) renderSummary();
+  else { view = 'home'; renderHome(); }
+  renderLayer();
+}
+
+/* ---------- Inicio ---------- */
+function renderHome() {
+  var cap = capacity();
+  var cur = S.current;
+  var caseOpts = '<option value="random"' + (formCase === 'random' ? ' selected' : '') + '>Asignar al azar</option>' + CASES.map(function (c, i) {
+    var n = availCase(c).length;
+    return '<option value="' + c.id + '"' + (formCase === c.id ? ' selected' : '') + (n < 2 ? ' disabled' : '') + '>Caso ' + (i + 1) + ': ' + esc(c.title) + ' (' + n + ' de 5 disponibles)</option>';
+  }).join('');
+  var chosenOk = formCase === 'random' || (CASEMAP[formCase] && availCase(CASEMAP[formCase]).length >= 2);
+  app.innerHTML =
+    '<p class="brand">Quiz de recuperación</p>' +
+    '<div class="hero">' +
+      '<section>' + EMBLEM +
+        '<h1 class="title">¿Quién quiere <em>mejorar su nota?</em></h1>' +
+        '<p class="lead">Interacción Digital · Seguridad digital y derechos de autor. Cinco preguntas, tiempo en contra y tres comodines para demostrar que sabes proteger tu vida digital y usar con responsabilidad el trabajo de otros.</p>' +
+        '<div class="rules">' +
+          '<article class="rule"><span class="k">La partida</span><h3>5 preguntas, 1 punto cada una</h3><p>Dos de verdadero o falso, dos de un caso de selección múltiple y una de ordenar. La nota final va de 0 a 5.</p></article>' +
+          '<article class="rule"><span class="k">El reloj</span><div class="timechips"><span>Verdadero o falso <b>' + TIME.tf + ' s</b></span><span>Caso (selección múltiple) <b>' + TIME.mc + ' s</b></span><span>Ordenar <b>' + TIME.ord + ' s</b></span></div><p>Si se acaba el tiempo, queda lo que hayas marcado. Sin respuesta, la pregunta vale 0.</p></article>' +
+          '<article class="rule"><span class="k">Comodines · uno de cada uno</span><div class="lifelist">' +
+            '<div><span class="mini">' + ICON.people + '</span><p><b>Pregunta al público.</b> Tus compañeros te ayudan y ganas ' + AUDIENCE_BONUS + ' segundos.</p></div>' +
+            '<div><span class="mini">50:50</span><p><b>50:50.</b> Elimina la mitad de las opciones incorrectas. Solo en preguntas de caso; si aciertas, vale 0,5.</p></div>' +
+            '<div><span class="mini">' + ICON.swap + '</span><p><b>Cambiar pregunta.</b> Otra del mismo tipo; en los casos, otra del mismo caso.</p></div>' +
+          '</div></article>' +
+        '</div>' +
+      '</section>' +
+      '<section class="card" aria-labelledby="startTitle">' +
+        (cur ? '<div class="resume"><p>Hay una partida en curso de <b>' + esc(cur.name) + '</b>.</p><button class="btn primary" data-act="resume">Continuar partida</button></div>' : '') +
+        '<h2 id="startTitle">Nuevo jugador</h2>' +
+        '<label class="f" for="pname">Nombre del estudiante<input type="text" id="pname" maxlength="60" autocomplete="off" placeholder="Nombre y apellido" value="' + esc(formName) + '"></label>' +
+        '<label class="f" for="pcase">Caso asignado<select id="pcase">' + caseOpts + '</select></label>' +
+        (formErr ? '<p class="err" role="alert">' + esc(formErr) + '</p>' : '') +
+        (cap > 0
+          ? '<div class="cap">Quedan preguntas para <b>' + cap + '</b> ' + (cap === 1 ? 'jugador' : 'jugadores') + ' en esta ronda.</div>'
+          : '<div class="cap empty">Se agotaron las preguntas de esta ronda. Reinicia el juego desde el panel docente.</div>') +
+        '<button class="btn primary lg" data-act="start"' + (cap > 0 && chosenOk && !cur ? '' : ' disabled') + '>Comenzar</button>' +
+        (cur ? '<p class="note">Termina la partida en curso antes de empezar otra.</p>' : '<p class="note">Las preguntas que recibe cada jugador quedan marcadas como usadas y no se repiten hasta reiniciar el juego.</p>') +
+        (!storageOk ? '<p class="err">Este navegador no está guardando el progreso. Usa una ventana normal (no privada).</p>' : '') +
+      '</section>' +
+    '</div>' +
+    '<div class="foot"><button class="btn ghost" data-act="admin">Panel docente</button></div>';
+}
+
+/* ---------- Juego ---------- */
+function cur() { var g = S.current; return g ? g.qs[g.idx] : null; }
+function qOf(a) { return a.type === 'tf' ? TFMAP[a.id] : a.type === 'mc' ? MCMAP[a.id].q : ORDMAP[a.id]; }
+function needOf(q) { return q.o.filter(function (o) { return o[1]; }).length; }
+
+function renderGame() {
+  var g = S.current, a = cur(), q = qOf(a);
+  var life = g.life;
+  var swapAvail = swapPool(a).length > 0;
+  var fiftyOk = a.type === 'mc' && !life.fifty;
+  var lifeBtn = function (key, inner, label, enabled, title) {
+    var used = life[key];
+    return '<button class="life' + (used ? ' used' : '') + '" data-act="life" data-k="' + key + '"' + (!used && enabled ? '' : ' disabled') + ' title="' + esc(title) + '"><span class="orb">' + inner + '</span><span class="lab">' + label + '</span></button>';
+  };
+  var lifelines = '<div class="lifelines" role="group" aria-label="Comodines">' +
+    lifeBtn('audience', ICON.people, 'Público', true, 'Pregunta al público: +' + AUDIENCE_BONUS + ' segundos para que tus compañeros te ayuden') +
+    lifeBtn('fifty', '<span class="ff">50:50</span>', '50:50', fiftyOk, a.type === 'mc' ? 'Elimina la mitad de las opciones incorrectas; la pregunta vale 0,5' : 'Solo disponible en preguntas de caso') +
+    lifeBtn('swap', ICON.swap, 'Cambiar', swapAvail, swapAvail ? 'Cambia por otra pregunta del mismo tipo' : 'No quedan preguntas disponibles de este tipo') +
+    '</div>';
+  var total = a.total;
+  var timer = '<div class="timer" id="timer" role="timer" aria-label="Tiempo restante"><svg viewBox="0 0 92 92"><circle class="track" cx="46" cy="46" r="40"/><circle class="bar" id="ring" cx="46" cy="46" r="40" stroke-dasharray="251.33" stroke-dashoffset="0"/></svg><span class="num" id="secs">' + total + '</span></div>';
+  var head = '<div class="topbar"><div class="player"><small>Jugador</small><b>' + esc(g.name) + '</b></div>' + lifelines + timer + '</div>';
+
+  var caseBox = '';
+  if (a.type === 'mc') { var c = MCMAP[a.id].c; caseBox = '<section class="casebox" aria-label="Caso"><span class="k">Caso</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.text) + '</p></section>'; }
+
+  var qText = a.type === 'ord' ? q.sit : q.q;
+  var tag = 'Pregunta ' + (g.idx + 1) + ' de 5 · ' + TYPE_LABEL[a.type] + (a.type === 'mc' ? ' · selecciona ' + needOf(q) : '') + (a.type === 'ord' ? ' · del primero al último' : '');
+  var qbar = '<div class="hexrow qbar"><div class="hex"><div class="hex-in"><span class="tag">' + tag + '</span><p class="q">' + esc(qText) + '</p></div></div></div>';
+
+  var notes = [];
+  if (a.audience) notes.push('<div class="audience" role="status">' + ICON.people + '<p><b>El público tiene la palabra.</b> Tus compañeros pueden ayudarte: sumaste ' + AUDIENCE_BONUS + ' segundos.</p></div>');
+  var pills = [];
+  if (a.fifty) pills.push('<span class="pill gold">50:50 usado · esta pregunta vale 0,5</span>');
+  if (a.swapped) pills.push('<span class="pill cyan">Pregunta cambiada</span>');
+  if (a.type === 'mc') pills.push('<span class="pill">Debes marcar ' + needOf(q) + ' respuestas</span>');
+  if (a.type === 'ord') pills.push('<span class="pill">Arrastra las tarjetas o usa las flechas</span>');
+  var noteHtml = notes.join('') + (pills.length ? '<div class="notice">' + pills.join('') + '</div>' : '');
+
+  var body = '';
+  if (a.type === 'tf') {
+    body = '<div class="opts two" role="group" aria-label="Respuestas">' + [['true', 'Verdadero', 'A'], ['false', 'Falso', 'B']].map(function (o) {
+      var pressed = a.resp !== null && String(a.resp) === o[0];
+      return '<button class="opt hexrow" data-act="tf" data-v="' + o[0] + '" aria-pressed="' + pressed + '"><span class="hex"><span class="hex-in"><span class="letter">' + o[2] + ':</span><span class="txt">' + o[1] + '</span></span></span></button>';
+    }).join('') + '</div>';
+  } else if (a.type === 'mc') {
+    var sel = a.resp || [];
+    body = '<div class="opts" role="group" aria-label="Respuestas">' + a.perm.map(function (oi, pos) {
+      var gone = a.removed.indexOf(oi) > -1, pressed = sel.indexOf(oi) > -1;
+      return '<button class="opt hexrow' + (gone ? ' gone' : '') + '" data-act="mc" data-i="' + oi + '" aria-pressed="' + pressed + '"' + (gone ? ' disabled aria-label="Opción eliminada"' : '') + '><span class="hex"><span class="hex-in"><span class="letter">' + LETTERS[pos] + ':</span><span class="txt">' + esc(q.o[oi][0]) + '</span></span></span></button>';
+    }).join('') + '</div>';
+  } else {
+    var n = a.cur.length;
+    body = '<ol class="order" aria-label="Pasos para ordenar">' + a.cur.map(function (si, pos) {
+      return '<li class="oitem" data-pos="' + pos + '"><span class="slot" aria-hidden="true">' + (pos + 1) + '</span>' +
+        '<div class="hexrow" draggable="true" data-pos="' + pos + '"><span class="hex"><span class="hex-in"><span class="grip">' + ICON.grip + '</span><span class="txt">' + esc(q.steps[si]) + '</span></span></span></div>' +
+        '<span class="arrows"><button data-act="up" data-pos="' + pos + '" aria-label="Subir paso"' + (pos === 0 ? ' disabled' : '') + '>' + ICON.up + '</button><button data-act="down" data-pos="' + pos + '" aria-label="Bajar paso"' + (pos === n - 1 ? ' disabled' : '') + '>' + ICON.down + '</button></span></li>';
+    }).join('') + '</ol>';
+  }
+
+  var canSubmit = a.type === 'ord' || (a.type === 'tf' ? a.resp !== null : (a.resp && a.resp.length > 0));
+  var actions = '<div class="actions"><p class="flash" id="flash" aria-live="polite">' + esc(flashMsg) + '</p><button class="btn primary lg" data-act="submit"' + (canSubmit ? '' : ' disabled') + '>Responder</button></div>';
+
+  var rungs = [];
+  var labels = ['Verdadero o falso', 'Verdadero o falso', 'Caso · pregunta 1', 'Caso · pregunta 2', 'Ordenar'];
+  for (var i = 4; i >= 0; i--) {
+    var cls = i === g.idx ? 'now' : (i < g.idx ? 'done' : '');
+    rungs.push('<div class="rung ' + cls + '"' + (i === g.idx ? ' aria-current="step"' : '') + '><span class="n">' + (i + 1) + '</span><span>' + labels[i] + '</span><span class="pt">1 pt</span></div>');
+  }
+  var ladder = '<aside class="ladder" aria-label="Progreso"><h3>Escalera</h3>' + rungs.join('') + '<p class="tot">Los resultados se revelan al final de la partida.</p></aside>';
+
+  app.innerHTML = '<p class="brand">Quiz de recuperación</p><div class="stage"><div class="main">' + head + caseBox + qbar + noteHtml + body + actions + '</div>' + ladder + '</div>';
+  tick();
+}
+
+function swapPool(a) {
+  if (a.type === 'tf') return availTF();
+  if (a.type === 'ord') return availORD();
+  return availCase(CASEMAP[a.caseId]);
+}
+
+function mk(type, q, caseId) {
+  var o = { type: type, id: q.id, caseId: caseId || null, resp: null, touched: false, fifty: false, audience: false, swapped: false, removed: [], points: 0, done: false, timeout: false, total: TIME[type], deadline: 0 };
+  if (type === 'mc') { o.perm = shuffle(q.o.map(function (_, i) { return i; })); o.resp = []; }
+  if (type === 'ord') {
+    var idx = q.steps.map(function (_, i) { return i; }), p;
+    do { p = shuffle(idx); } while (p.every(function (v, i) { return v === i; }));
+    o.cur = p;
+  }
+  return o;
+}
+
+function startGame() {
+  var name = (document.getElementById('pname').value || '').trim();
+  formName = name;
+  if (!name) { formErr = 'Escribe el nombre del estudiante para comenzar.'; render(); document.getElementById('pname').focus(); return; }
+  if (capacity() < 1) { formErr = 'No quedan preguntas suficientes. Reinicia el juego desde el panel docente.'; render(); return; }
+  var c;
+  if (formCase === 'random') {
+    var ok = CASES.filter(function (x) { return availCase(x).length >= 2; });
+    var max = Math.max.apply(null, ok.map(function (x) { return availCase(x).length; }));
+    var top = ok.filter(function (x) { return availCase(x).length === max; });
+    c = top[rnd(top.length)];
+  } else c = CASEMAP[formCase];
+  if (!c || availCase(c).length < 2) { formErr = 'Ese caso ya no tiene preguntas suficientes. Elige otro.'; render(); return; }
+  var tfs = shuffle(availTF()).slice(0, 2);
+  var mcs = shuffle(availCase(c)).slice(0, 2);
+  var ord = shuffle(availORD())[0];
+  var qs = tfs.map(function (q) { return mk('tf', q); }).concat(mcs.map(function (q) { return mk('mc', q, c.id); }), [mk('ord', ord)]);
+  qs.forEach(function (a) { S.used[a.id] = true; });
+  S.current = { name: name, caseId: c.id, qs: qs, idx: 0, life: { audience: false, fifty: false, swap: false }, started: Date.now() };
+  formName = ''; formErr = ''; formCase = 'random'; flashMsg = '';
+  beginQuestion();
+}
+
+function beginQuestion() {
+  var a = cur();
+  a.total = TIME[a.type];
+  a.deadline = Date.now() + a.total * 1000;
+  save();
+  view = 'game';
+  flashMsg = '';
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function tick() {
+  if (view !== 'game' || !S.current || busy) return;
+  var a = cur(); if (!a || a.done) return;
+  var left = Math.max(0, a.deadline - Date.now());
+  var secs = Math.ceil(left / 1000);
+  var ring = document.getElementById('ring'), num = document.getElementById('secs'), box = document.getElementById('timer');
+  if (ring) ring.setAttribute('stroke-dashoffset', String(251.33 * (1 - left / (a.total * 1000))));
+  if (num) num.textContent = secs;
+  if (box) box.classList.toggle('low', secs <= 5);
+  if (left <= 0) finalize(true);
+}
+setInterval(tick, 200);
+
+function grade(a) {
+  var q = qOf(a);
+  if (a.type === 'tf') a.points = a.resp === null ? 0 : (a.resp === q.a ? 1 : 0);
+  else if (a.type === 'mc') {
+    var correct = q.o.map(function (o, i) { return o[1] ? i : -1; }).filter(function (i) { return i > -1; }).sort().join(',');
+    var mine = (a.resp || []).slice().sort().join(',');
+    a.points = mine && mine === correct ? (a.fifty ? 0.5 : 1) : 0;
+  } else {
+    a.points = a.resp && a.resp.every(function (v, i) { return v === i; }) ? 1 : 0;
+  }
+}
+
+function finalize(timeout) {
+  var g = S.current, a = cur();
+  if (!a || a.done || busy) return;
+  busy = true;
+  if (a.type === 'ord') a.resp = (a.touched || !timeout) ? a.cur.slice() : null;
+  if (a.type === 'mc' && a.resp && !a.resp.length) a.resp = null;
+  a.timeout = timeout;
+  grade(a);
+  a.done = true;
+  save();
+  var last = g.idx >= g.qs.length - 1;
+  var nextLabel = last ? 'Preparando tu resultado…' : 'Siguiente: pregunta ' + (g.idx + 2) + ' · ' + TYPE_LABEL[g.qs[g.idx + 1].type];
+  layer.innerHTML = '<div class="veil" role="status"><div class="box"><span class="big' + (timeout ? ' time' : '') + '">' + (timeout ? '¡Se acabó el tiempo!' : 'Respuesta registrada') + '</span><span class="sub">' + nextLabel + '</span></div></div>';
+  setTimeout(function () {
+    layer.innerHTML = '';
+    busy = false;
+    if (last) endGame();
+    else { g.idx++; beginQuestion(); }
+  }, 1500);
+}
+
+function endGame() {
+  var g = S.current;
+  var total = g.qs.reduce(function (s, a) { return s + a.points; }, 0);
+  g.total = total; g.ended = Date.now();
+  S.results.push({ name: g.name, caso: CASEMAP[g.caseId].title, nota: total, fecha: g.ended, det: g.qs.map(function (a) { return a.points; }) });
+  lastGame = g;
+  S.current = null;
+  save();
+  view = 'summary';
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function useLife(k) {
+  var g = S.current, a = cur();
+  if (!a || a.done || g.life[k]) return;
+  if (k === 'audience') {
+    g.life.audience = true; a.audience = true; a.deadline += AUDIENCE_BONUS * 1000; a.total += AUDIENCE_BONUS;
+  } else if (k === 'fifty') {
+    if (a.type !== 'mc') return;
+    var q = qOf(a);
+    var wrong = q.o.map(function (o, i) { return o[1] ? -1 : i; }).filter(function (i) { return i > -1; });
+    var remove = shuffle(wrong).slice(0, Math.ceil(wrong.length / 2));
+    g.life.fifty = true; a.fifty = true; a.removed = remove;
+    a.resp = (a.resp || []).filter(function (i) { return remove.indexOf(i) < 0; });
+  } else if (k === 'swap') {
+    var pool = swapPool(a);
+    if (!pool.length) return;
+    var nq = pool[rnd(pool.length)];
+    S.used[nq.id] = true;
+    var na = mk(a.type, nq, a.caseId);
+    na.swapped = true; na.replaced = a.id;
+    g.life.swap = true;
+    g.qs[g.idx] = na;
+    flashMsg = '';
+    beginQuestion();
+    return;
+  }
+  save();
+  render();
+}
+
+function moveStep(from, to) {
+  var a = cur();
+  if (!a || a.type !== 'ord' || to < 0 || to >= a.cur.length || from === to) return;
+  var item = a.cur.splice(from, 1)[0];
+  a.cur.splice(to, 0, item);
+  a.touched = true;
+  save();
+  render();
+}
+
+/* ---------- Resumen ---------- */
+function feedback(n) {
+  if (n >= 4.5) return 'Excelente. Sabes proteger tus cuentas y tu información, y reconoces que encontrar un recurso no es lo mismo que tener permiso para usarlo.';
+  if (n >= 3.5) return 'Muy bien. Dominas la mayoría de los conceptos; revisa la retroalimentación de las preguntas que fallaste.';
+  if (n >= 3) return 'Aprobaste. Repasa en la presentación los temas de las preguntas que no acertaste: seguridad, privacidad, autenticación, phishing, licencias o atribución.';
+  return 'Aún hay conceptos por reforzar. Repasa la presentación de la clase, sobre todo los temas de las preguntas que fallaste.';
+}
+function lifeChips(a) {
+  var c = [];
+  if (a.audience) c.push('<span class="pill cyan">Pregunta al público</span>');
+  if (a.fifty) c.push('<span class="pill gold">50:50 · valía 0,5</span>');
+  if (a.swapped) c.push('<span class="pill cyan">Pregunta cambiada</span>');
+  if (a.timeout) c.push('<span class="pill gold">Tiempo agotado</span>');
+  return c.length ? '<div class="chips">' + c.join('') + '</div>' : '';
+}
+function renderSummary() {
+  var g = lastGame;
+  var cards = g.qs.map(function (a, i) {
+    var q = qOf(a);
+    var sc = a.points === 1 ? 's1' : a.points > 0 ? 's05' : 's0';
+    var scTxt = a.points === 1 ? '1 punto · correcta' : a.points > 0 ? '0,5 puntos · correcta con 50:50' : '0 puntos · ' + (a.resp === null ? 'sin respuesta' : 'incorrecta');
+    var title, ctx = '', mine, right;
+    if (a.type === 'tf') {
+      title = q.q;
+      mine = '<p>' + (a.resp === null ? 'Sin respuesta' : a.resp ? 'Verdadero' : 'Falso') + '</p>';
+      right = '<p>' + (q.a ? 'Verdadero' : 'Falso') + '</p>';
+    } else if (a.type === 'mc') {
+      title = q.q; ctx = '<p class="ctx">Caso: ' + esc(MCMAP[a.id].c.title) + '</p>';
+      mine = a.resp && a.resp.length ? '<ul>' + a.resp.map(function (oi) { return '<li>' + esc(q.o[oi][0]) + '</li>'; }).join('') + '</ul>' : '<p>Sin respuesta</p>';
+      right = '<ul>' + q.o.filter(function (o) { return o[1]; }).map(function (o) { return '<li>' + esc(o[0]) + '</li>'; }).join('') + '</ul>';
+    } else {
+      title = q.sit;
+      mine = a.resp ? '<ol>' + a.resp.map(function (si) { return '<li>' + esc(q.steps[si]) + '</li>'; }).join('') + '</ol>' : '<p>Sin respuesta (no se movió ningún paso)</p>';
+      right = '<ol>' + q.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+    }
+    return '<article class="rev"><header><span class="k">Pregunta ' + (i + 1) + ' · ' + TYPE_LABEL[a.type] + '</span><span class="score ' + sc + '">' + scTxt + '</span></header>' + ctx +
+      '<h3>' + esc(title) + '</h3>' + lifeChips(a) +
+      '<div class="cmp"><div><small>Tu respuesta</small>' + mine + '</div><div><small>Respuesta correcta</small>' + right + '</div></div>' +
+      '<p class="why"><b>Por qué:</b> ' + esc(q.why) + '</p></article>';
+  }).join('');
+  app.innerHTML = '<p class="brand">Quiz de recuperación · Resultado</p>' +
+    '<div class="sumhead"><div class="grade" role="img" aria-label="Nota ' + fmtPts(g.total) + ' de 5,0"><div><b>' + fmtPts(g.total) + '</b><span>de 5,0</span></div></div>' +
+    '<div><span class="pill cyan">Caso ' + esc(CASEMAP[g.caseId].title) + '</span><h2>' + esc(g.name) + ', tu nota definitiva es ' + fmtPts(g.total) + '</h2><p>' + feedback(g.total) + '</p></div></div>' +
+    '<div class="reviews">' + cards + '</div>' +
+    '<div class="foot"><button class="btn primary lg" data-act="next">Siguiente jugador</button></div>';
+}
+
+/* ---------- Panel docente ---------- */
+function renderLayer() {
+  if (!admin.open) { if (!busy) layer.innerHTML = ''; return; }
+  var html;
+  if (!admin.unlocked) {
+    html = '<div class="card" id="keyform"><h2>Panel docente</h2><p class="note">Escribe la clave para ver los resultados o reiniciar el juego.</p>' +
+      '<label class="f" for="key">Clave<input type="password" id="key" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+      (admin.err ? '<p class="err" role="alert">' + esc(admin.err) + '</p>' : '') +
+      '<div class="row"><button class="btn primary" type="button" data-act="unlock">Entrar</button><button class="btn" type="button" data-act="close">Cancelar</button></div></div>';
+  } else {
+    var usedTF = TF.length - availTF().length, usedORD = ORD.length - availORD().length;
+    var mcTotal = CASES.length * 5, mcAvail = CASES.reduce(function (s, c) { return s + availCase(c).length; }, 0);
+    var rows = S.results.slice().reverse().map(function (r) {
+      var d = new Date(r.fecha);
+      return '<tr><td>' + esc(r.name) + '</td><td>' + esc(r.caso) + '</td><td class="num">' + fmtPts(r.nota) + '</td><td>' + d.toLocaleDateString('es-CO') + ' ' + d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) + '</td></tr>';
+    }).join('');
+    var caseRows = CASES.map(function (c, i) { return '<tr><td>Caso ' + (i + 1) + '</td><td>' + esc(c.title) + '</td><td class="num">' + availCase(c).length + ' de 5</td></tr>'; }).join('');
+    var head = '<div class="row" style="justify-content:space-between"><h2>Panel docente</h2><button class="btn" data-act="close">Cerrar</button></div>' +
+      '<div class="tabs" role="group" aria-label="Secciones del panel"><button class="tab" data-act="atab" data-t="panel" aria-pressed="' + (admin.tab === 'panel') + '">Resultados y reinicio</button><button class="tab" data-act="atab" data-t="review" aria-pressed="' + (admin.tab === 'review') + '">Revisar preguntas</button></div>';
+    if (admin.tab === 'review') html = '<div class="card">' + head + reviewShell() + '</div>';
+    else html = '<div class="card">' + head +
+      '<div class="stats"><div class="stat"><small>Verdadero o falso</small><b>' + (TF.length - usedTF) + '</b> de ' + TF.length + '</div><div class="stat"><small>Casos</small><b>' + mcAvail + '</b> de ' + mcTotal + '</div><div class="stat"><small>Ordenar</small><b>' + (ORD.length - usedORD) + '</b> de ' + ORD.length + '</div><div class="stat"><small>Alcanza para</small><b>' + capacity() + '</b> jugadores</div></div>' +
+      '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Resultados de la ronda</h3>' +
+      (rows ? '<div class="tablewrap"><table><thead><tr><th>Estudiante</th><th>Caso</th><th>Nota</th><th>Fecha</th></tr></thead><tbody>' + rows + '</tbody></table></div>' : '<p class="note">Aún no hay resultados. Aparecerán aquí cuando cada estudiante termine su partida.</p>') +
+      '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Preguntas disponibles por caso</h3>' +
+      '<div class="tablewrap"><table><thead><tr><th>Caso</th><th>Nombre</th><th>Disponibles</th></tr></thead><tbody>' + caseRows + '</tbody></table></div>' +
+      '<section class="danger"><h3>Reiniciar el juego</h3><p class="note">Todas las preguntas vuelven a estar disponibles y se cancela cualquier partida en curso.</p>' +
+      '<label class="check" for="wipe"><input type="checkbox" id="wipe"' + (admin.wipe ? ' checked' : '') + '> Borrar también los resultados registrados</label>' +
+      (admin.confirm ? '<div class="row"><span>¿Confirmas el reinicio?</span><button class="btn warn" data-act="resetYes">Sí, reiniciar</button><button class="btn" data-act="resetNo">Cancelar</button></div>' : '<div class="row"><button class="btn warn" data-act="reset">Reiniciar juego</button></div>') +
+      (admin.done ? '<p class="note" role="status">' + esc(admin.done) + '</p>' : '') +
+      '</section></div>';
+  }
+  layer.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-label="Panel docente">' + html + '</div>';
+  var k = document.getElementById('key'); if (k) k.focus();
+  renderReviewList();
+}
+
+
+/* ---------- Revisión de preguntas: el docente verifica banco, respuestas y retroalimentación ---------- */
+function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function allItems() {
+  var out = [];
+  TF.forEach(function (q, i) { out.push({ bank: 'tf', id: q.id, n: i + 1, q: q, text: q.q + ' ' + q.why }); });
+  CASES.forEach(function (c, ci) { c.qs.forEach(function (q, i) { out.push({ bank: 'mc', id: q.id, n: i + 1, c: c, ci: ci, q: q, text: c.title + ' ' + c.text + ' ' + q.q + ' ' + q.o.map(function (o) { return o[0]; }).join(' ') + ' ' + q.why }); }); });
+  ORD.forEach(function (q, i) { out.push({ bank: 'ord', id: q.id, n: i + 1, q: q, text: q.sit + ' ' + q.steps.join(' ') + ' ' + q.why }); });
+  return out;
+}
+function audit() {
+  var items = allItems(), ids = {}, dup = [];
+  items.forEach(function (it) { if (ids[it.id]) dup.push(it.id); ids[it.id] = 1; });
+  var v = TF.filter(function (q) { return q.a; }).length;
+  var mcBad = [], longC = 0, shortC = 0, nMc = 0, lc = 0, nc = 0, li = 0, ni = 0;
+  CASES.forEach(function (c) { c.qs.forEach(function (q) {
+    var k = needOf(q); if (q.o.length !== 5 || k < 2 || k > 3) mcBad.push(q.id);
+    var L = q.o.map(function (o) { return o[0].length; }), mx = Math.max.apply(null, L), mn = Math.min.apply(null, L);
+    nMc++; if (q.o.some(function (o, i) { return o[1] && L[i] === mx; })) longC++; if (q.o.some(function (o, i) { return o[1] && L[i] === mn; })) shortC++;
+    q.o.forEach(function (o, i) { if (o[1]) { lc += L[i]; nc++; } else { li += L[i]; ni++; } });
+  }); });
+  var ordBad = ORD.filter(function (q) { var u = {}; return q.steps.length < 4 || q.steps.some(function (s) { if (u[s]) return true; u[s] = 1; return false; }); }).map(function (q) { return q.id; });
+  var noWhy = items.filter(function (it) { return !it.q.why || !String(it.q.why).trim(); }).map(function (it) { return it.id; });
+  var pL = nMc ? Math.round(longC / nMc * 100) : 0, pS = nMc ? Math.round(shortC / nMc * 100) : 0;
+  var gap = Math.abs((nc ? lc / nc : 0) - (ni ? li / ni : 0));
+  function li_(ok, t, d) { return '<li' + (ok ? '' : ' class="warn"') + '><b>' + (ok ? 'Correcto · ' : 'Revisar · ') + t + '</b>' + d + '</li>'; }
+  return '<ul class="audit" aria-label="Verificación automática">' +
+    li_(v >= Math.floor(TF.length * 0.45) && v <= Math.ceil(TF.length * 0.55), 'Verdadero o falso', TF.length + ' afirmaciones: ' + v + ' verdaderas y ' + (TF.length - v) + ' falsas.') +
+    li_(!mcBad.length, 'Casos', CASES.length + ' casos, ' + nMc + ' preguntas con 5 opciones y 2 o 3 correctas' + (mcBad.length ? '. Con problemas: ' + esc(mcBad.join(', ')) : '.')) +
+    li_(!ordBad.length, 'Ordenar', ORD.length + ' secuencias sin pasos repetidos' + (ordBad.length ? '. Con problemas: ' + esc(ordBad.join(', ')) : '.')) +
+    li_(pL <= 50 && pS >= 25 && gap < 8, 'Longitud de opciones', 'La más larga es correcta en el ' + pL + ' % de las preguntas y la más corta en el ' + pS + ' %. Diferencia media: ' + gap.toFixed(1).replace('.', ',') + ' caracteres.') +
+    li_(!noWhy.length && !dup.length, 'Retroalimentación', (noWhy.length ? 'Sin explicación: ' + esc(noWhy.join(', ')) : 'Todas las preguntas tienen su explicación') + (dup.length ? '. Códigos repetidos: ' + esc(dup.join(', ')) : '.')) +
+    '</ul>';
+}
+function reviewShell() {
+  var banks = [['all', 'Todas'], ['tf', 'Verdadero o falso'], ['mc', 'Casos'], ['ord', 'Ordenar']];
+  return '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Verificación automática</h3>' + audit() +
+    '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Revisión pregunta por pregunta</h3>' +
+    '<p class="note">Cada pregunta muestra la respuesta correcta y la retroalimentación que verá el estudiante. Marca «Revisada» cuando la confirmes; la marca queda guardada en este navegador y no se borra al reiniciar el juego.</p>' +
+    '<div class="progress" id="rvprog"></div>' +
+    '<div class="tabs" role="group" aria-label="Banco">' + banks.map(function (b) { return '<button class="tab" data-act="rvbank" data-b="' + b[0] + '" aria-pressed="' + (rv.bank === b[0]) + '">' + b[1] + '</button>'; }).join('') + '</div>' +
+    '<div class="rvtools"><input type="search" id="rvq" placeholder="Buscar en preguntas, opciones o explicaciones" aria-label="Buscar preguntas" value="' + esc(rv.q) + '">' +
+    '<label class="check" for="rvpend"><input type="checkbox" id="rvpend"' + (rv.pend ? ' checked' : '') + '> Solo pendientes</label>' +
+    '<button class="btn" data-act="rvclear">Quitar marcas</button></div>' +
+    '<div class="rvlist" id="rvlist"></div>';
+}
+function renderProgress() {
+  var el = document.getElementById('rvprog'); if (!el) return;
+  var items = allItems(), done = items.filter(function (it) { return rv.marks[it.id]; }).length, pct = Math.round(done / items.length * 100);
+  el.innerHTML = '<div class="row" style="justify-content:space-between"><span><b>' + done + '</b> de ' + items.length + ' preguntas revisadas</span><span class="used">' + pct + ' %</span></div><div class="track" role="progressbar" aria-valuemin="0" aria-valuemax="' + items.length + '" aria-valuenow="' + done + '"><div class="fill" style="width:' + pct + '%"></div></div>';
+}
+function itemHtml(it) {
+  var q = it.q, used = S.used[it.id], body;
+  if (it.bank === 'tf') body = '<p class="tfans">Respuesta correcta: ' + (q.a ? 'Verdadero' : 'Falso') + '</p>';
+  else if (it.bank === 'mc') body = '<p class="used">Debe marcar ' + needOf(q) + ' de 5</p><ul class="ans">' + q.o.map(function (o, i) {
+      return '<li' + (o[1] ? ' class="ok"' : '') + '><span class="l">' + LETTERS[i] + '</span><span class="t">' + esc(o[0]) + '</span>' + (o[1] ? '<span class="tag">Correcta</span>' : '') + '</li>'; }).join('') + '</ul>';
+  else body = '<p class="used">Orden correcto (en el juego aparece mezclado)</p><ol class="ans">' + q.steps.map(function (s, i) { return '<li class="ok"><span class="l">' + (i + 1) + '</span><span class="t">' + esc(s) + '</span></li>'; }).join('') + '</ol>';
+  var label = it.bank === 'tf' ? 'Verdadero o falso ' + it.n : it.bank === 'mc' ? 'Caso ' + (it.ci + 1) + ' · Pregunta ' + it.n : 'Ordenar ' + it.n;
+  return '<article class="qrev' + (rv.marks[it.id] ? ' done' : '') + '" data-id="' + it.id + '"><header><span class="k">' + label + ' · ' + esc(it.id) + '</span><span class="used">' + (used ? 'Ya salió en esta ronda' : 'Disponible') + '</span></header>' +
+    '<h5>' + esc(it.bank === 'ord' ? q.sit : q.q) + '</h5>' + body +
+    '<p class="why"><b>Retroalimentación:</b> ' + esc(q.why) + '</p>' +
+    '<label class="check"><input type="checkbox" class="rvmark" data-id="' + it.id + '"' + (rv.marks[it.id] ? ' checked' : '') + '> Revisada</label></article>';
+}
+function renderReviewList() {
+  var el = document.getElementById('rvlist'); if (!el) return;
+  renderProgress();
+  var term = norm(rv.q.trim());
+  var items = allItems().filter(function (it) {
+    return (rv.bank === 'all' || rv.bank === it.bank) && (!rv.pend || !rv.marks[it.id]) && (!term || norm(it.text + ' ' + it.id).indexOf(term) > -1);
+  });
+  if (!items.length) { el.innerHTML = '<p class="rvempty">No hay preguntas con ese filtro.</p>'; return; }
+  var html = '', lastCase = -1, open = false;
+  items.forEach(function (it) {
+    if (it.bank === 'mc' && it.ci !== lastCase) {
+      if (open) html += '</section>';
+      html += '<section class="qcase"><h4>Caso ' + (it.ci + 1) + ': ' + esc(it.c.title) + '</h4><p>' + esc(it.c.text) + '</p>'; open = true; lastCase = it.ci;
+    } else if (it.bank !== 'mc' && open) { html += '</section>'; open = false; lastCase = -1; }
+    html += itemHtml(it);
+  });
+  if (open) html += '</section>';
+  el.innerHTML = html;
+}
+
+/* =================== EVENTOS =================== */
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-act]');
+  if (!t || t.disabled) return;
+  var act = t.dataset.act;
+  if (act === 'start') { formCase = document.getElementById('pcase').value; startGame(); }
+  else if (act === 'resume') {
+    var a = cur();
+    if (a && a.done) {
+      if (S.current.idx >= S.current.qs.length - 1) { endGame(); return; }
+      S.current.idx++; beginQuestion(); return;
+    }
+    view = 'game'; render();
+    if (a && Date.now() >= a.deadline) finalize(true);
+  }
+  else if (act === 'tf') { var a1 = cur(); if (a1.done || busy) return; a1.resp = t.dataset.v === 'true'; save(); render(); }
+  else if (act === 'mc') {
+    var a2 = cur(); if (a2.done || busy) return;
+    var i = +t.dataset.i, need = needOf(qOf(a2));
+    var sel = a2.resp || [];
+    var at = sel.indexOf(i);
+    if (at > -1) { sel.splice(at, 1); flashMsg = ''; }
+    else if (sel.length >= need) { flashMsg = 'Ya marcaste ' + need + '. Quita una para elegir otra.'; render(); return; }
+    else { sel.push(i); flashMsg = ''; }
+    a2.resp = sel; save(); render();
+  }
+  else if (act === 'up') moveStep(+t.dataset.pos, +t.dataset.pos - 1);
+  else if (act === 'down') moveStep(+t.dataset.pos, +t.dataset.pos + 1);
+  else if (act === 'submit') finalize(false);
+  else if (act === 'unlock') tryUnlock();
+  else if (act === 'life') useLife(t.dataset.k);
+  else if (act === 'next') { lastGame = null; view = 'home'; render(); window.scrollTo({ top: 0 }); }
+  else if (act === 'admin') { admin = { open: true, unlocked: false, err: '', confirm: false, wipe: false, done: '', tab: 'panel' }; renderLayer(); }
+  else if (act === 'atab') { admin.tab = t.dataset.t; renderLayer(); var m = document.querySelector('.modal'); if (m) m.scrollTop = 0; }
+  else if (act === 'rvbank') { rv.bank = t.dataset.b; document.querySelectorAll('[data-act=rvbank]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.b === rv.bank); }); renderReviewList(); }
+  else if (act === 'rvclear') { rv.marks = {}; saveMarks(); renderReviewList(); }
+  else if (act === 'close') { admin.open = false; renderLayer(); if (view === 'home') render(); }
+  else if (act === 'reset') { admin.wipe = document.getElementById('wipe').checked; admin.confirm = true; admin.done = ''; renderLayer(); }
+  else if (act === 'resetNo') { admin.confirm = false; renderLayer(); }
+  else if (act === 'resetYes') {
+    var keep = admin.wipe ? [] : S.results;
+    S = blank(); S.results = keep; save();
+    lastGame = null; view = 'home';
+    admin.confirm = false; admin.done = 'Juego reiniciado. Todas las preguntas están disponibles de nuevo.';
+    render();
+  }
+});
+function tryUnlock() {
+  var k = document.getElementById('key');
+  var v = k ? k.value.trim() : '';
+  if (fp(v) === KEY_FP) { admin.unlocked = true; admin.err = ''; }
+  else admin.err = 'Clave incorrecta. Revisa mayúsculas y minúsculas.';
+  renderLayer();
+}
+document.addEventListener('input', function (e) {
+  if (e.target.id === 'pname') formName = e.target.value;
+  if (e.target.id === 'rvq') { rv.q = e.target.value; renderReviewList(); }
+});
+document.addEventListener('change', function (e) {
+  if (e.target.id === 'pcase') { formCase = e.target.value; formName = document.getElementById('pname').value; formErr = ''; render(); }
+  if (e.target.id === 'wipe') admin.wipe = e.target.checked;
+  if (e.target.id === 'rvpend') { rv.pend = e.target.checked; renderReviewList(); }
+  if (e.target.classList && e.target.classList.contains('rvmark')) {
+    var id = e.target.dataset.id;
+    if (e.target.checked) rv.marks[id] = 1; else delete rv.marks[id];
+    saveMarks(); var art = e.target.closest('.qrev'); if (art) art.classList.toggle('done', e.target.checked);
+    renderProgress();
+    if (rv.pend && e.target.checked) renderReviewList();
+  }
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && admin.open) { admin.open = false; renderLayer(); }
+  if (e.key === 'Enter' && e.target.id === 'key') { e.preventDefault(); tryUnlock(); return; }
+  if (e.key === 'Enter' && e.target.id === 'pname') { formCase = document.getElementById('pcase').value; startGame(); }
+});
+
+/* Arrastrar y soltar (ordenar) */
+document.addEventListener('dragstart', function (e) {
+  var h = e.target.closest && e.target.closest('.oitem .hexrow'); if (!h) return;
+  dragFrom = +h.dataset.pos;
+  h.closest('.oitem').classList.add('drag');
+  try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragFrom)); } catch (err) {}
+});
+document.addEventListener('dragover', function (e) {
+  var li = e.target.closest && e.target.closest('.oitem'); if (!li || dragFrom === null) return;
+  e.preventDefault();
+  document.querySelectorAll('.oitem.over').forEach(function (x) { if (x !== li) x.classList.remove('over'); });
+  li.classList.add('over');
+});
+document.addEventListener('drop', function (e) {
+  var li = e.target.closest && e.target.closest('.oitem'); if (!li || dragFrom === null) return;
+  e.preventDefault();
+  var to = +li.dataset.pos, from = dragFrom; dragFrom = null;
+  moveStep(from, to);
+});
+document.addEventListener('dragend', function () {
+  dragFrom = null;
+  document.querySelectorAll('.oitem.drag, .oitem.over').forEach(function (x) { x.classList.remove('drag', 'over'); });
+});
+
+render();
+})();
+</script>
+
+
+</body></html>

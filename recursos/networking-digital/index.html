@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Networking digital</title>
+<meta name="description" content="Clase sobre cómo construir y cuidar una red profesional en línea.">
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../../assets/deck/deck.css">
+</head>
+<body data-deck="networking-digital" data-course="Marca Personal Digital">
+<main class="stage-wrap">
+<div class="stage">
+<section id="cover" data-transition="fade" style="background:linear-gradient(135deg, #0B1B3F 0%, #1C3A8C 58%, #5B3FC4 100%);color:#FFFFFF;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between">
+<svg aria-label="Red de nodos conectados" width="820" height="1080" viewBox="0 0 820 1080" style="position:absolute;right:0;top:0;width:820px;height:1080px"><circle cx="560" cy="440" r="300" fill="#6C4AD8" fill-opacity="0.16"/><circle cx="660" cy="280" r="170" fill="#5FD3E6" fill-opacity="0.07"/><g stroke="#5FD3E6" stroke-opacity="0.4" stroke-width="1.5" fill="none"><path d="M220 160 L460 100 L700 230 L560 420 L320 340 Z M460 100 L560 420 L760 560 L600 700 L380 640 L320 340 M600 700 L700 900 L480 960 L380 640 M760 560 L700 900"/></g><g fill="#5FD3E6"><circle cx="220" cy="160" r="6"/><circle cx="460" cy="100" r="8"/><circle cx="700" cy="230" r="6"/><circle cx="320" cy="340" r="7"/><circle cx="760" cy="560" r="6"/><circle cx="600" cy="700" r="8"/><circle cx="480" cy="960" r="6"/></g><circle cx="560" cy="420" r="14" fill="#FFFFFF"/><circle cx="560" cy="420" r="34" fill="none" stroke="#FFFFFF" stroke-opacity="0.45"/><circle cx="560" cy="420" r="64" fill="none" stroke="#FFFFFF" stroke-opacity="0.15"/><circle cx="380" cy="640" r="10" fill="#9C82F5"/><circle cx="700" cy="900" r="10" fill="#9C82F5"/><g fill="#FFFFFF" fill-opacity="0.22"><circle cx="80" cy="900" r="3"/><circle cx="104" cy="900" r="3"/><circle cx="128" cy="900" r="3"/><circle cx="152" cy="900" r="3"/><circle cx="80" cy="924" r="3"/><circle cx="104" cy="924" r="3"/><circle cx="128" cy="924" r="3"/><circle cx="152" cy="924" r="3"/><circle cx="80" cy="948" r="3"/><circle cx="104" cy="948" r="3"/><circle cx="128" cy="948" r="3"/><circle cx="152" cy="948" r="3"/></g></svg>
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">Marca Personal Digital · Semana 10</p>
+<div style="display:flex;flex-direction:column;gap:40px;width:1080px">
+<h1 style="font-size:124px;font-weight:800;line-height:1.0;letter-spacing:-2px;color:#FFFFFF">Networking digital</h1>
+<p style="font-size:44px;font-weight:500;line-height:1.3;color:#DCE4F7;border-left:4px solid #5FD3E6;padding:8px 0 8px 32px">¿Quiénes deberían conocer mi trabajo y por qué?</p>
+</div>
+<p style="font-size:24px;color:#B9C6E6">Teleclase · 90 minutos · Networking estratégico, marca relacional y netiqueta profesional</p>
+
+</section>
+<section id="puente" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<svg aria-label="" width="420" height="300" viewBox="0 0 420 300" style="position:absolute;right:0;top:0;width:420px;height:300px"><g stroke="#2F5BEA" stroke-opacity="0.22" stroke-width="1.5" fill="none"><path d="M60 40 L180 110 L300 60 L400 150 M180 110 L250 220 L380 260 M300 60 L250 220 M120 230 L250 220"/></g><circle cx="180" cy="110" r="24" fill="none" stroke="#6C4AD8" stroke-opacity="0.3"/><circle cx="60" cy="40" r="6" fill="#5FD3E6"/><circle cx="180" cy="110" r="9" fill="#6C4AD8"/><circle cx="300" cy="60" r="6" fill="#2F5BEA"/><circle cx="400" cy="150" r="5" fill="#5FD3E6"/><circle cx="250" cy="220" r="7" fill="#2F5BEA" fill-opacity="0.7"/><circle cx="380" cy="260" r="5" fill="#6C4AD8"/><circle cx="120" cy="230" r="5" fill="#5FD3E6"/></svg>
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Lo que ya construimos</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Ya sabes quién eres y qué valor aportas</h2>
+</div>
+<div style="display:flex;flex-direction:row;flex-wrap:wrap;gap:16px;width:1400px">
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">Identidad profesional</p>
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">Propósito</p>
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">Propuesta de valor</p>
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">Storytelling</p>
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">Huella digital</p>
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">Posicionamiento estratégico</p>
+<p style="font-size:28px;font-weight:500;background:#FFFFFF;border:1px solid #DCE3F1;color:#0B1B3F;padding:12px 28px;border-radius:999px">LinkedIn</p>
+</div>
+<div style="flex:1"></div>
+<div style="background:linear-gradient(110deg, #0B1B3F 0%, #1C3A8C 70%, #4B3BB0 100%);border-radius:24px;padding:48px 56px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">La pregunta de hoy</p>
+<p style="font-size:52px;font-weight:700;line-height:1.18;color:#FFFFFF">¿Cómo hago para que mi propuesta de valor llegue a las personas correctas?</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="agenda" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Ruta de la teleclase · 90 minutos</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Cada bloque termina con una misión</h2>
+</div>
+<table style="font-size:26px;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif">
+<tr><th style="width:14%">Minutos</th><th style="width:46%">Bloque</th><th style="width:40%">Reto en el Pasaporte de Red</th></tr>
+<tr><td>0–8</td><td>Apertura: encuesta en vivo</td><td>—</td></tr>
+<tr style="background:#EEF2FB"><td>8–22</td><td>1. Del contacto a la relación</td><td><span style="color:#6C4AD8">Misión 1</span> · Rompe los mitos · 4 min</td></tr>
+<tr><td>22–38</td><td>2. Networking estratégico</td><td><span style="color:#6C4AD8">Misión 2</span> · Caso Valentina · 6 min</td></tr>
+<tr style="background:#EEF2FB"><td>38–50</td><td>3. Marca relacional</td><td><span style="color:#6C4AD8">Misión 4</span> · Dilemas · 4 min</td></tr>
+<tr><td>50–64</td><td>4. Netiqueta profesional</td><td><span style="color:#6C4AD8">Misión 3</span> · Juego de roles · 6 min</td></tr>
+<tr style="background:#EEF2FB"><td>64–80</td><td>5. Speed networking en salas</td><td><span style="color:#6C4AD8">Misión 5</span> · Pitch relacional</td></tr>
+<tr><td>80–87</td><td>6. Mapa de red inicial</td><td><span style="color:#6C4AD8">Misión 6</span> · Mapa de tu red</td></tr>
+<tr style="background:#EEF2FB"><td>87–90</td><td>Cierre y entrega</td><td>Descarga en PDF</td></tr>
+</table>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="resultados" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<svg aria-label="" width="360" height="760" viewBox="0 0 360 760" style="position:absolute;right:0;top:160px;width:360px;height:760px"><g stroke="#6C4AD8" stroke-opacity="0.2" stroke-width="1.5" fill="none"><path d="M300 40 L180 160 L260 300 L140 420 L240 560 L160 700"/><path d="M180 160 L60 240 M140 420 L40 460 M240 560 L340 620"/></g><circle cx="300" cy="40" r="6" fill="#5FD3E6"/><circle cx="180" cy="160" r="8" fill="#2F5BEA"/><circle cx="260" cy="300" r="6" fill="#6C4AD8"/><circle cx="140" cy="420" r="10" fill="#2F5BEA" fill-opacity="0.8"/><circle cx="240" cy="560" r="6" fill="#5FD3E6"/><circle cx="160" cy="700" r="8" fill="#6C4AD8"/><circle cx="60" cy="240" r="4" fill="#5FD3E6"/><circle cx="40" cy="460" r="4" fill="#6C4AD8"/><circle cx="340" cy="620" r="4" fill="#2F5BEA"/></svg>
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Resultados de aprendizaje</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Al terminar la sesión podrás…</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:22px;width:1300px">
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center"><span class="x-shape" aria-hidden="true" style="width:16px;height:16px;background:#5FD3E6;border-radius:50%"></span><p style="font-size:32px;line-height:1.35;color:#3B4766"><b style="color:#2F5BEA">Explicar</b> el networking como capital social y distinguir vínculos fuertes y débiles.</p></div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center"><span class="x-shape" aria-hidden="true" style="width:16px;height:16px;background:#5FD3E6;border-radius:50%"></span><p style="font-size:32px;line-height:1.35;color:#3B4766"><b style="color:#2F5BEA">Analizar</b> tu red actual e identificar brechas frente a tu posicionamiento.</p></div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center"><span class="x-shape" aria-hidden="true" style="width:16px;height:16px;background:#5FD3E6;border-radius:50%"></span><p style="font-size:32px;line-height:1.35;color:#3B4766"><b style="color:#2F5BEA">Redactar</b> mensajes de conexión con netiqueta profesional y reciprocidad.</p></div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center"><span class="x-shape" aria-hidden="true" style="width:16px;height:16px;background:#5FD3E6;border-radius:50%"></span><p style="font-size:32px;line-height:1.35;color:#3B4766"><b style="color:#2F5BEA">Comunicar</b> tu propuesta de valor en un pitch breve y llevarlo a LinkedIn.</p></div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center"><span class="x-shape" aria-hidden="true" style="width:16px;height:16px;background:#5FD3E6;border-radius:50%"></span><p style="font-size:32px;line-height:1.35;color:#3B4766"><b style="color:#2F5BEA">Diseñar</b> un plan de red inicial con tres metas SMART a 30 días.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1500px;font-size:24px;color:#6B7794">Competencias digitales DigComp 2.2 · área 2: interactuar, compartir, colaborar, netiqueta e identidad digital</p>
+
+</section>
+<section id="pasaporte" data-transition="fade" style="background:#0B1B3F;color:#FFFFFF;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:44px">
+<svg aria-label="" width="600" height="300" viewBox="0 0 600 300" style="position:absolute;right:0;top:0;width:600px;height:300px"><circle cx="480" cy="60" r="200" fill="#6C4AD8" fill-opacity="0.18"/><g stroke="#5FD3E6" stroke-opacity="0.35" stroke-width="1.5" fill="none"><path d="M140 60 L300 120 L460 40 L560 180 L380 240 L300 120"/></g><circle cx="140" cy="60" r="5" fill="#5FD3E6"/><circle cx="300" cy="120" r="9" fill="#FFFFFF"/><circle cx="460" cy="40" r="6" fill="#5FD3E6"/><circle cx="560" cy="180" r="6" fill="#9C82F5"/><circle cx="380" cy="240" r="5" fill="#5FD3E6"/><g fill="#FFFFFF" fill-opacity="0.2"><circle cx="40" cy="200" r="3"/><circle cx="64" cy="200" r="3"/><circle cx="88" cy="200" r="3"/><circle cx="40" cy="224" r="3"/><circle cx="64" cy="224" r="3"/><circle cx="88" cy="224" r="3"/><circle cx="40" cy="248" r="3"/><circle cx="64" cy="248" r="3"/><circle cx="88" cy="248" r="3"/></g></svg>
+<div style="display:flex;flex-direction:column;gap:16px;width:1300px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">La actividad de hoy</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#FFFFFF">Tu Pasaporte de Red: seis misiones, seis sellos</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+<div style="background:#14275A;border:1px solid #2A3E78;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#5FD3E6">M1 · Verdadero o falso</p><h3 style="font-size:32px;font-weight:700;color:#FFFFFF">Rompe los mitos</h3></div>
+<div style="background:#14275A;border:1px solid #2A3E78;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#5FD3E6">M2 · Estudio de caso</p><h3 style="font-size:32px;font-weight:700;color:#FFFFFF">El caso de Valentina</h3></div>
+<div style="background:#14275A;border:1px solid #2A3E78;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#5FD3E6">M3 · Juego de roles</p><h3 style="font-size:32px;font-weight:700;color:#FFFFFF">La bandeja de entrada</h3></div>
+<div style="background:#14275A;border:1px solid #2A3E78;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#5FD3E6">M4 · Dilemas</p><h3 style="font-size:32px;font-weight:700;color:#FFFFFF">Marca relacional</h3></div>
+<div style="background:#14275A;border:1px solid #2A3E78;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#5FD3E6">M5 · Salas en parejas</p><h3 style="font-size:32px;font-weight:700;color:#FFFFFF">Speed networking virtual</h3></div>
+<div style="background:#14275A;border:1px solid #2A3E78;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#5FD3E6">M6 · Evidencia</p><h3 style="font-size:32px;font-weight:700;color:#FFFFFF">Mapa de tu red</h3></div>
+</div>
+<p style="font-size:30px;line-height:1.45;color:#C9D3EE">Escribe tu nombre en la portada · suma XP con cada reto · al final pulsa <b style="color:#FFFFFF">Descargar PDF</b> y súbelo a la plataforma del curso.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#8E9CC4">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="apertura" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Apertura · Encuesta en vivo</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Vota en la encuesta de la teleclase</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:48px;display:flex;flex-direction:column;gap:24px;box-shadow:0 12px 32px rgba(11,27,63,0.06)">
+<div style="display:flex;flex-direction:row;gap:14px;align-items:center"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:36px;height:36px"><path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17v-9"/></svg><p style="font-size:24px;font-weight:700;color:#2F5BEA">Pregunta 1</p></div>
+<p style="font-size:44px;font-weight:700;line-height:1.2;color:#0B1B3F">Conseguir empleo depende de los contactos.</p>
+<div style="display:flex;flex-direction:row;gap:12px"><p style="font-size:28px;font-weight:600;background:#EEF2FB;color:#2F5BEA;padding:8px 28px;border-radius:999px">Sí</p><p style="font-size:28px;font-weight:600;background:#EEF2FB;color:#2F5BEA;padding:8px 28px;border-radius:999px">No</p></div>
+</div>
+<div style="flex:1;background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:48px;display:flex;flex-direction:column;gap:24px;box-shadow:0 12px 32px rgba(11,27,63,0.06)">
+<div style="display:flex;flex-direction:row;gap:14px;align-items:center"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#6C4AD8;width:36px;height:36px"><path d="M3 3v18h18"/><path d="M8 17v-5M13 17V8M18 17v-9"/></svg><p style="font-size:24px;font-weight:700;color:#6C4AD8">Pregunta 2</p></div>
+<p style="font-size:44px;font-weight:700;line-height:1.2;color:#0B1B3F">Los contactos son suficientes para conseguir oportunidades.</p>
+<div style="display:flex;flex-direction:row;gap:12px"><p style="font-size:28px;font-weight:600;background:#F1EDFC;color:#6C4AD8;padding:8px 28px;border-radius:999px">Sí</p><p style="font-size:28px;font-weight:600;background:#F1EDFC;color:#6C4AD8;padding:8px 28px;border-radius:999px">No</p></div>
+</div>
+</div>
+<p style="font-size:32px;color:#3B4766">Conocer personas no genera oportunidades automáticamente. <b style="color:#0B1B3F">La confianza sí.</b></p>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="definicion" data-transition="fade" style="background:#0B1B3F;color:#FFFFFF;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<svg aria-label="" width="560" height="1080" viewBox="0 0 560 1080" style="position:absolute;right:0;top:0;width:560px;height:1080px"><circle cx="420" cy="540" r="260" fill="#6C4AD8" fill-opacity="0.16"/><g stroke="#5FD3E6" stroke-opacity="0.35" stroke-width="1.5" fill="none"><path d="M200 260 L380 380 L520 300 M380 380 L420 540 L260 640 L340 820 L500 760 L420 540 M260 640 L120 560"/></g><circle cx="420" cy="540" r="16" fill="#FFFFFF"/><circle cx="420" cy="540" r="40" fill="none" stroke="#FFFFFF" stroke-opacity="0.35"/><circle cx="200" cy="260" r="6" fill="#5FD3E6"/><circle cx="380" cy="380" r="8" fill="#5FD3E6"/><circle cx="520" cy="300" r="5" fill="#9C82F5"/><circle cx="260" cy="640" r="8" fill="#9C82F5"/><circle cx="340" cy="820" r="6" fill="#5FD3E6"/><circle cx="500" cy="760" r="6" fill="#5FD3E6"/><circle cx="120" cy="560" r="5" fill="#5FD3E6"/></svg>
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">Bloque 1 · ¿Qué es realmente el networking?</p>
+<p style="font-size:60px;font-weight:600;line-height:1.22;color:#FFFFFF;width:1280px">El proceso de <span style="color:#7FA0FF">construir</span>, <span style="color:#7FA0FF">mantener</span> y <span style="color:#7FA0FF">fortalecer</span> relaciones profesionales basadas en <span style="color:#B9A4FF">confianza</span>, <span style="color:#B9A4FF">intercambio de valor</span> y <span style="color:#B9A4FF">colaboración</span>.</p>
+<p style="font-size:32px;color:#C9D3EE">Tres verbos de proceso. Tres bases que lo sostienen.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#8E9CC4">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="contacto" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1400px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 1 · Del contacto a la relación</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.12;color:#0B1B3F">Un contacto sabe tu nombre; una relación conoce tu trabajo</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:center">
+<div style="flex:1;background:#FFFFFF;border:2px dashed #C3CDE3;border-radius:24px;padding:40px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#8A96B2;width:40px;height:40px"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><h3 style="font-size:40px;font-weight:700;color:#5A6888">Contacto</h3></div>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>Conocimiento:</b> sabe tu nombre</p>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>Interacción:</b> ocasional o ninguna</p>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>Confianza:</b> no probada</p>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>¿Te recomendaría?</b> Poco probable</p>
+</div>
+<span class="x-shape" aria-hidden="true" style="width:96px;height:48px;background:#5FD3E6;clip-path:polygon(0 32%,58% 32%,58% 0,100% 50%,58% 100%,58% 68%,0 68%)"></span>
+<div style="flex:1;background:#FFFFFF;border:2px solid #2F5BEA;border-radius:24px;padding:40px;display:flex;flex-direction:column;gap:18px;box-shadow:0 16px 40px rgba(47,91,234,0.12)">
+<div style="display:flex;flex-direction:row;gap:16px;align-items:center"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:40px;height:40px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><h3 style="font-size:40px;font-weight:700;color:#0B1B3F">Relación profesional</h3></div>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>Conocimiento:</b> conoce tu trabajo y cómo trabajas</p>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>Interacción:</b> recurrente y con historia</p>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>Confianza:</b> construida con evidencia</p>
+<p style="font-size:28px;line-height:1.35;color:#3B4766"><b>¿Te recomendaría?</b> Muy probable</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="mitos" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<svg aria-label="" width="420" height="300" viewBox="0 0 420 300" style="position:absolute;right:0;top:0;width:420px;height:300px"><g stroke="#6C4AD8" stroke-opacity="0.2" stroke-width="1.5" fill="none"><path d="M80 60 L200 40 L340 120 L260 230 L120 180 Z M200 40 L260 230 M340 120 L410 60"/></g><circle cx="80" cy="60" r="5" fill="#5FD3E6"/><circle cx="200" cy="40" r="7" fill="#2F5BEA"/><circle cx="340" cy="120" r="9" fill="#6C4AD8"/><circle cx="260" cy="230" r="6" fill="#5FD3E6"/><circle cx="120" cy="180" r="5" fill="#2F5BEA"/><circle cx="410" cy="60" r="4" fill="#5FD3E6"/></svg>
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 1 · Rompiendo mitos</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Lo que no es y lo que sí es networking</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:40px 48px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:row;gap:14px;align-items:center"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#8A96B2;width:40px;height:40px"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><h3 style="font-size:40px;font-weight:700;color:#5A6888">No es</h3></div>
+<ul style="font-size:30px;line-height:1.55;color:#3B4766">
+<li>Acumular contactos</li>
+<li>Agregar personas al azar en LinkedIn</li>
+<li>Pedir empleo de inmediato</li>
+<li>Aprovecharse de otros</li>
+</ul>
+</div>
+<div style="flex:1;background:linear-gradient(135deg, #0B1B3F 0%, #1C3A8C 75%, #4B3BB0 100%);border-radius:24px;padding:40px 48px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:row;gap:14px;align-items:center"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#5FD3E6;width:40px;height:40px"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><h3 style="font-size:40px;font-weight:700;color:#FFFFFF">Sí es</h3></div>
+<ul style="font-size:30px;line-height:1.55;color:#DCE4F7">
+<li>Aprender y compartir conocimiento</li>
+<li>Construir confianza</li>
+<li>Colaborar</li>
+<li>Generar oportunidades mutuas</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="etica" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1400px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 1 · La dimensión ética</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.12;color:#0B1B3F">¿Por qué a muchos nos incomoda «hacer networking»?</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:56px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:32px;line-height:1.45;color:#3B4766">Casciaro, Gino y Kouchaki (2014) encontraron que el networking puramente instrumental hace que las personas se sientan moralmente incómodas.</p>
+<p style="font-size:32px;line-height:1.45;color:#3B4766">Ese malestar disminuye cuando la relación se plantea desde el <b style="color:#2F5BEA">aprendizaje</b> y el <b style="color:#6C4AD8">aporte</b>.</p>
+</div>
+<div style="flex:1;background:linear-gradient(135deg, #0B1B3F 0%, #1C3A8C 70%, #4B3BB0 100%);border-radius:24px;padding:56px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">Reencuadre</p>
+<p style="font-size:44px;font-weight:600;line-height:1.28;color:#FFFFFF">No «qué puedo sacar», sino «qué puedo aprender y aportar».</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B7794">Casciaro, Gino y Kouchaki (2014), Administrative Science Quarterly</p>
+<p style="position:absolute;right:128px;bottom:56px;width:420px;font-size:24px;font-weight:700;text-align:center;background:#6C4AD8;color:#FFFFFF;padding:8px 20px;border-radius:999px">Pasaporte · Misión 1</p>
+
+</section>
+<section id="capital" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 2 · Capital social</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Tus relaciones son un recurso profesional</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:56px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:700;color:#2F5BEA">Bourdieu (1986)</p>
+<p style="font-size:30px;line-height:1.45;color:#3B4766">El capital social son los recursos disponibles por pertenecer a una red de relaciones.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:700;color:#6C4AD8">Putnam (2000)</p>
+<p style="font-size:30px;line-height:1.45;color:#3B4766"><b>Capital que une:</b> vínculos entre semejantes, dan apoyo.<br><b>Capital que tiende puentes:</b> vínculos entre grupos distintos, dan acceso a lo nuevo.</p>
+</div>
+</div>
+<div style="width:760px;background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:16px">
+<svg aria-label="Dos grupos unidos internamente y conectados por un puente" width="696" height="360" viewBox="0 0 696 360"><circle cx="170" cy="180" r="150" fill="#2F5BEA" fill-opacity="0.06"/><circle cx="526" cy="180" r="150" fill="#6C4AD8" fill-opacity="0.06"/><g stroke="#2F5BEA" stroke-width="3" stroke-opacity="0.7"><path d="M110 110 L230 110 L260 210 L170 270 L80 210 Z M110 110 L260 210 M230 110 L80 210 M170 270 L170 180"/></g><g stroke="#6C4AD8" stroke-width="3" stroke-opacity="0.7"><path d="M466 110 L586 110 L616 210 L526 270 L436 210 Z M466 110 L616 210 M586 110 L436 210"/></g><path d="M260 210 L436 210" stroke="#14B8C9" stroke-width="3" stroke-dasharray="10 8"/><g fill="#2F5BEA"><circle cx="110" cy="110" r="12"/><circle cx="230" cy="110" r="12"/><circle cx="80" cy="210" r="12"/><circle cx="170" cy="270" r="12"/><circle cx="170" cy="180" r="12"/></g><g fill="#6C4AD8"><circle cx="466" cy="110" r="12"/><circle cx="586" cy="110" r="12"/><circle cx="616" cy="210" r="12"/><circle cx="526" cy="270" r="12"/></g><circle cx="260" cy="210" r="16" fill="#5FD3E6"/><circle cx="436" cy="210" r="16" fill="#5FD3E6"/></svg>
+<div style="display:flex;flex-direction:row;gap:32px">
+<p style="font-size:24px;color:#3B4766"><span style="color:#2F5BEA">━</span> Une: apoyo dentro del grupo</p>
+<p style="font-size:24px;color:#3B4766"><span style="color:#14B8C9">┅</span> Tiende puentes: acceso a lo nuevo</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+<section id="lazos" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 2 · Networking estratégico</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Calidad y diversidad, no solo cantidad</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:6px;border-left:3px solid #2F5BEA;padding:4px 0 4px 24px">
+<p style="font-size:24px;font-weight:700;color:#2F5BEA">Granovetter (1973) · Lazos débiles</p>
+<p style="font-size:28px;line-height:1.4;color:#3B4766">Las oportunidades nuevas suelen llegar por conocidos, no por amigos cercanos.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;border-left:3px solid #6C4AD8;padding:4px 0 4px 24px">
+<p style="font-size:24px;font-weight:700;color:#6C4AD8">Burt (1992) · Agujeros estructurales</p>
+<p style="font-size:28px;line-height:1.4;color:#3B4766">Quien conecta grupos que no se hablan accede antes a ideas y oportunidades.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;border-left:3px solid #14B8C9;padding:4px 0 4px 24px">
+<p style="font-size:24px;font-weight:700;color:#0E8FA0">Rajkumar et al. (2022) · Evidencia en LinkedIn</p>
+<p style="font-size:28px;line-height:1.4;color:#3B4766">Con millones de usuarios, los vínculos moderadamente débiles favorecieron más la movilidad laboral.</p>
+</div>
+</div>
+<div style="width:700px;display:flex;flex-direction:column;gap:16px;align-items:center">
+<svg aria-label="Tu red: un núcleo de vínculos fuertes y una periferia de vínculos débiles hacia otros grupos" width="620" height="520" viewBox="0 0 620 520"><circle cx="310" cy="260" r="240" fill="#6C4AD8" fill-opacity="0.05"/><circle cx="310" cy="260" r="120" fill="#2F5BEA" fill-opacity="0.07"/><g stroke="#2F5BEA" stroke-width="4" stroke-opacity="0.75"><path d="M310 260 L310 150 M310 260 L415 225 M310 260 L375 355 M310 260 L245 355 M310 260 L205 225"/></g><g stroke="#14B8C9" stroke-width="2" stroke-dasharray="8 7"><path d="M310 150 L310 40 M415 225 L560 170 M375 355 L470 470 M205 225 L60 200 M245 355 L150 470"/></g><g stroke="#C3CDE3" stroke-width="1.5"><path d="M310 40 L270 18 M310 40 L350 18 M560 170 L600 140 M560 170 L596 210 M470 470 L520 496 M60 200 L24 170 M60 200 L28 236 M150 470 L104 492"/></g><g fill="#2F5BEA"><circle cx="310" cy="150" r="14"/><circle cx="415" cy="225" r="14"/><circle cx="375" cy="355" r="14"/><circle cx="245" cy="355" r="14"/><circle cx="205" cy="225" r="14"/></g><g fill="#5FD3E6"><circle cx="310" cy="40" r="12"/><circle cx="560" cy="170" r="12"/><circle cx="470" cy="470" r="12"/><circle cx="60" cy="200" r="12"/><circle cx="150" cy="470" r="12"/></g><g fill="#C3CDE3"><circle cx="270" cy="18" r="6"/><circle cx="350" cy="18" r="6"/><circle cx="600" cy="140" r="6"/><circle cx="596" cy="210" r="6"/><circle cx="520" cy="496" r="6"/><circle cx="24" cy="170" r="6"/><circle cx="28" cy="236" r="6"/><circle cx="104" cy="492" r="6"/></g><circle cx="310" cy="260" r="30" fill="#0B1B3F"/><circle cx="310" cy="260" r="44" fill="none" stroke="#6C4AD8" stroke-width="2"/></svg>
+<div style="display:flex;flex-direction:row;gap:28px">
+<p style="font-size:24px;color:#3B4766"><span style="color:#0B1B3F">●</span> Tú</p>
+<p style="font-size:24px;color:#3B4766"><span style="color:#2F5BEA">━</span> Vínculos fuertes</p>
+<p style="font-size:24px;color:#3B4766"><span style="color:#14B8C9">┅</span> Vínculos débiles</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1500px;font-size:24px;color:#6B7794">Un núcleo de confianza + una periferia diversa de vínculos débiles activos</p>
+
+</section>
+<section id="redes" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 2 · ¿Quiénes deberían formar parte de mi red?</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Cuatro redes, cuatro funciones</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px">
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 32px rgba(11,27,63,0.05)">
+<svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:48px;height:48px"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>
+<h3 style="font-size:34px;font-weight:700;color:#0B1B3F">Académica</h3>
+<p style="font-size:26px;line-height:1.55;color:#3B4766">Profesores<br>Investigadores<br>Semilleros</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 32px rgba(11,27,63,0.05)">
+<svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:48px;height:48px"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg>
+<h3 style="font-size:34px;font-weight:700;color:#0B1B3F">Profesional</h3>
+<p style="font-size:26px;line-height:1.55;color:#3B4766">Egresados<br>Líderes del sector<br>Reclutadores</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 32px rgba(11,27,63,0.05)">
+<svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#6C4AD8;width:48px;height:48px"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg>
+<h3 style="font-size:34px;font-weight:700;color:#0B1B3F">Aprendizaje</h3>
+<p style="font-size:26px;line-height:1.55;color:#3B4766">Comunidades<br>Grupos temáticos<br>Eventos</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:24px;padding:32px;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 32px rgba(11,27,63,0.05)">
+<svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#6C4AD8;width:48px;height:48px"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+<h3 style="font-size:34px;font-weight:700;color:#0B1B3F">Colaboración</h3>
+<p style="font-size:26px;line-height:1.55;color:#3B4766">Compañeros<br>Emprendimientos<br>Proyectos</p>
+</div>
+</div>
+<p style="font-size:32px;color:#3B4766">Pregunta: <b style="color:#0B1B3F">¿tu red se parece a ti o se parece a donde quieres llegar?</b></p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+<p style="position:absolute;right:128px;bottom:56px;width:420px;font-size:24px;font-weight:700;text-align:center;background:#6C4AD8;color:#FFFFFF;padding:8px 20px;border-radius:999px">Pasaporte · Misión 2</p>
+
+</section>
+<section id="marca" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<svg aria-label="" width="420" height="300" viewBox="0 0 420 300" style="position:absolute;right:0;top:0;width:420px;height:300px"><g stroke="#2F5BEA" stroke-opacity="0.2" stroke-width="1.5" fill="none"><path d="M100 50 L220 90 L360 40 M220 90 L300 200 L180 240 L220 90 M300 200 L410 230"/></g><circle cx="100" cy="50" r="5" fill="#5FD3E6"/><circle cx="220" cy="90" r="9" fill="#2F5BEA"/><circle cx="360" cy="40" r="6" fill="#6C4AD8"/><circle cx="300" cy="200" r="7" fill="#5FD3E6"/><circle cx="180" cy="240" r="5" fill="#6C4AD8"/><circle cx="410" cy="230" r="4" fill="#2F5BEA"/></svg>
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 3 · Marca relacional</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Tu marca también vive en cada interacción</h2>
+<p style="font-size:30px;line-height:1.4;color:#3B4766">La percepción que otras personas construyen a partir de sus experiencias de interacción contigo.</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:20px">
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;gap:12px"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:40px;height:40px"><path d="M20 6 9 17l-5-5"/></svg><h3 style="font-size:26px;font-weight:700;color:#0B1B3F">Confiabilidad</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">¿Cumples lo que prometes?</p><p style="font-size:24px;line-height:1.4;color:#6C4AD8">Respondes y entregas a tiempo</p></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;gap:12px"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:40px;height:40px"><path d="m12 2 2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><h3 style="font-size:26px;font-weight:700;color:#0B1B3F">Profesionalismo</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">¿Cómo te comportas?</p><p style="font-size:24px;line-height:1.4;color:#6C4AD8">Tono y pertinencia de lo que publicas</p></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;gap:12px"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:40px;height:40px"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8M21 21v-2a4 4 0 0 0-3-3.9"/></svg><h3 style="font-size:26px;font-weight:700;color:#0B1B3F">Colaboración</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">¿Cómo trabajas con otros?</p><p style="font-size:24px;line-height:1.4;color:#6C4AD8">Reconoces el trabajo de tu equipo</p></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;gap:12px"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:40px;height:40px"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V18h6v-1.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg><h3 style="font-size:26px;font-weight:700;color:#0B1B3F">Generosidad</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">¿Compartes conocimiento?</p><p style="font-size:24px;line-height:1.4;color:#6C4AD8">Compartes recursos sin pedir nada</p></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;gap:12px"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:40px;height:40px"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.3A8 8 0 1 1 21 12z"/></svg><h3 style="font-size:26px;font-weight:700;color:#0B1B3F">Comunicación</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">¿Cómo interactúas?</p><p style="font-size:24px;line-height:1.4;color:#6C4AD8">Comentarios que aportan</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B7794">En violeta: la evidencia observable en lo digital</p>
+<p style="position:absolute;right:128px;bottom:56px;width:420px;font-size:24px;font-weight:700;text-align:center;background:#6C4AD8;color:#FFFFFF;padding:8px 20px;border-radius:999px">Pasaporte · Misión 4</p>
+
+</section>
+<section id="netiqueta" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1400px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 4 · Netiqueta profesional</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.12;color:#0B1B3F">Si te escriben «Hola.», ¿respondes?</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:row;gap:20px;align-items:start"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:44px;height:44px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700;color:#0B1B3F">Respeto</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Cuida el tiempo y los límites del otro</p></div></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:row;gap:20px;align-items:start"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:44px;height:44px"><circle cx="11" cy="11" r="7"/><path d="m21 21-5-5"/></svg><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700;color:#0B1B3F">Claridad</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">El motivo se entiende al primer vistazo</p></div></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:row;gap:20px;align-items:start"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#2F5BEA;width:44px;height:44px"><path d="m12 2 2.4 1.8 3-.2.9 2.9 2.5 1.7-1 2.8 1 2.8-2.5 1.7-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9-2.5-1.7 1-2.8-1-2.8 2.5-1.7.9-2.9 3 .2z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700;color:#0B1B3F">Profesionalismo</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Tono, ortografía y perfil acordes</p></div></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:row;gap:20px;align-items:start"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#6C4AD8;width:44px;height:44px"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700;color:#0B1B3F">Pertinencia</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">A quien corresponde, por el canal adecuado</p></div></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:row;gap:20px;align-items:start"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#6C4AD8;width:44px;height:44px"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 2"/></svg><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700;color:#0B1B3F">Seguimiento</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Agradece; un solo recordatorio tras una semana</p></div></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:row;gap:20px;align-items:start"><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#6C4AD8;width:44px;height:44px"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div style="display:flex;flex-direction:column;gap:6px"><h3 style="font-size:30px;font-weight:700;color:#0B1B3F">Privacidad</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">No compartas datos de terceros sin permiso</p></div></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1600px;font-size:24px;color:#6B7794">Shea (1994) · DigComp 2.2, competencia 2.5 · Ley 1581 de 2012 sobre protección de datos personales</p>
+
+</section>
+<section id="mensaje" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:44px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1400px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 4 · Un mensaje de conexión</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.12;color:#0B1B3F">Seis partes, una frase cada una</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:56px;align-items:start">
+<div style="width:700px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#2F5BEA;width:48px;height:48px;border-radius:999px;text-align:center;line-height:2">1</p><p style="font-size:28px;color:#3B4766">Saludo con nombre</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#2F5BEA;width:48px;height:48px;border-radius:999px;text-align:center;line-height:2">2</p><p style="font-size:28px;color:#3B4766">Contexto: cómo llegaste a esa persona</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#2F5BEA;width:48px;height:48px;border-radius:999px;text-align:center;line-height:2">3</p><p style="font-size:28px;color:#3B4766">Conexión específica con su trabajo</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#6C4AD8;width:48px;height:48px;border-radius:999px;text-align:center;line-height:2">4</p><p style="font-size:28px;color:#3B4766">Motivo o aporte: por qué te importa</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#6C4AD8;width:48px;height:48px;border-radius:999px;text-align:center;line-height:2">5</p><p style="font-size:28px;color:#3B4766">Petición pequeña, o ninguna</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#6C4AD8;width:48px;height:48px;border-radius:999px;text-align:center;line-height:2">6</p><p style="font-size:28px;color:#3B4766">Cierre con agradecimiento</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:24px 28px;display:flex;flex-direction:row;gap:20px;align-items:start">
+<p style="font-size:24px;font-weight:700;color:#5A6888;background:#E7EBF3;width:56px;height:56px;border-radius:999px;text-align:center;line-height:2.33">AR</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#8A96B2">Sin contexto · probablemente ignorado</p><p style="font-size:28px;font-style:italic;color:#3B4766">«Hola.»</p></div>
+</div>
+<div style="background:#FFFFFF;border:2px solid #5FD3E6;border-radius:20px;padding:24px 28px;display:flex;flex-direction:row;gap:20px;align-items:start;box-shadow:0 16px 40px rgba(20,184,201,0.12)">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#2F5BEA;width:56px;height:56px;border-radius:999px;text-align:center;line-height:2.33">SG</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;color:#0E8FA0">Genera confianza</p><p style="font-size:26px;line-height:1.45;font-style:italic;color:#3B4766">«Hola, Carlos. Vi tu publicación sobre analítica de datos en educación y me interesó cómo usaron los datos de deserción. Estoy en un proyecto universitario sobre ese tema y me gustaría seguir tu trabajo. Gracias por compartir lo que aprendes.»</p></div>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+<p style="position:absolute;right:128px;bottom:56px;width:420px;font-size:24px;font-weight:700;text-align:center;background:#6C4AD8;color:#FFFFFF;padding:8px 20px;border-radius:999px">Pasaporte · Misión 3</p>
+
+</section>
+<section id="speed" data-transition="fade" style="background:#0B1B3F;color:#FFFFFF;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:44px">
+<svg aria-label="" width="520" height="280" viewBox="0 0 520 280" style="position:absolute;right:0;top:0;width:520px;height:280px"><circle cx="440" cy="40" r="180" fill="#6C4AD8" fill-opacity="0.16"/><g stroke="#5FD3E6" stroke-opacity="0.35" stroke-width="1.5" fill="none"><path d="M120 60 L260 30 L400 110 L300 200 L120 60 M400 110 L500 200"/></g><circle cx="120" cy="60" r="5" fill="#5FD3E6"/><circle cx="260" cy="30" r="6" fill="#9C82F5"/><circle cx="400" cy="110" r="9" fill="#FFFFFF"/><circle cx="300" cy="200" r="6" fill="#5FD3E6"/><circle cx="500" cy="200" r="5" fill="#5FD3E6"/></svg>
+<div style="display:flex;flex-direction:column;gap:16px;width:1300px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">Bloque 5 · Speed networking virtual</p>
+<h2 style="font-size:64px;font-weight:700;line-height:1.12;color:#FFFFFF">Salas de dos personas, 3 minutos cada encuentro</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:start">
+<div style="flex:1;background:#14275A;border:1px solid #2A3E78;border-radius:24px;padding:36px 40px;display:flex;flex-direction:column;gap:18px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5FD3E6">Tu pitch relacional · 90 segundos</p>
+<p style="font-size:28px;line-height:1.4;color:#DCE4F7"><b style="color:#FFFFFF">Quién soy:</b> nombre, carrera e interés</p>
+<p style="font-size:28px;line-height:1.4;color:#DCE4F7"><b style="color:#FFFFFF">Qué aporto:</b> el problema que quiero ayudar a resolver</p>
+<p style="font-size:28px;line-height:1.4;color:#DCE4F7"><b style="color:#FFFFFF">Con quién busco conectar</b></p>
+<p style="font-size:28px;line-height:1.4;color:#DCE4F7"><b style="color:#FFFFFF">Una pregunta genuina</b> para la otra persona</p>
+</div>
+<div style="width:720px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center;border-bottom:1px solid #2A3E78;padding:0 0 14px 0"><p style="font-size:28px;font-weight:700;color:#5FD3E6;width:120px">3 min</p><p style="font-size:28px;color:#DCE4F7">Escribes tu pitch en la Misión 5</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center;border-bottom:1px solid #2A3E78;padding:0 0 14px 0"><p style="font-size:28px;font-weight:700;color:#5FD3E6;width:120px">9 min</p><p style="font-size:28px;color:#DCE4F7">Tres salas de 3 minutos con personas distintas</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center;border-bottom:1px solid #2A3E78;padding:0 0 14px 0"><p style="font-size:28px;font-weight:700;color:#5FD3E6;width:120px">2 min</p><p style="font-size:28px;color:#DCE4F7">Registro e invitación de LinkedIn con nota</p></div>
+<div style="display:flex;flex-direction:row;gap:20px;align-items:center"><p style="font-size:28px;font-weight:700;color:#5FD3E6;width:120px">2 min</p><p style="font-size:28px;color:#DCE4F7">Plenaria: ¿quién te generó interés y por qué?</p></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#8E9CC4">Marca Personal Digital · Semana 10</p>
+<p style="position:absolute;right:128px;bottom:56px;width:420px;font-size:24px;font-weight:700;text-align:center;background:#6C4AD8;color:#FFFFFF;padding:8px 20px;border-radius:999px">Pasaporte · Misión 5</p>
+
+</section>
+<section id="mapa" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px;width:1340px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Bloque 6 · Evidencia</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Tu mapa de red profesional inicial</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 300px 1fr;gap:24px">
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:30px;font-weight:700;color:#2F5BEA">Ya conozco</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Profesores, compañeros, egresados · mínimo 3</p></div>
+<div style="grid-row:span 2;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div style="width:240px;height:240px;border-radius:50%;background:linear-gradient(135deg, #0B1B3F 0%, #1C3A8C 60%, #5B3FC4 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 0 14px rgba(95,211,230,0.18)"><p style="font-size:36px;font-weight:700;color:#FFFFFF;text-align:center">Mi red</p></div>
+</div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:30px;font-weight:700;color:#2F5BEA">Quiero conocer</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Líderes, investigadores, reclutadores · mínimo 3</p></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:30px;font-weight:700;color:#6C4AD8">Comunidades</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Grupos de LinkedIn, eventos, semilleros · mínimo 2</p></div>
+<div style="background:#FFFFFF;border:1px solid #DCE3F1;border-radius:20px;padding:28px 32px;display:flex;flex-direction:column;gap:8px"><h3 style="font-size:30px;font-weight:700;color:#6C4AD8">Próximos pasos</h3><p style="font-size:24px;line-height:1.4;color:#3B4766">Tres metas SMART a 30 días</p></div>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#3B4766">Para cada persona: <b style="color:#0B1B3F">tipo de vínculo</b> (fuerte o débil) y <b style="color:#0B1B3F">qué puedes aportarle</b>. Cierra con un análisis de brechas y descarga tu Pasaporte en PDF.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+<p style="position:absolute;right:128px;bottom:56px;width:420px;font-size:24px;font-weight:700;text-align:center;background:#6C4AD8;color:#FFFFFF;padding:8px 20px;border-radius:999px">Pasaporte · Misión 6</p>
+
+</section>
+<section id="cierre" data-transition="fade" style="background:linear-gradient(135deg, #0B1B3F 0%, #1C3A8C 58%, #5B3FC4 100%);color:#FFFFFF;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<svg aria-label="" width="640" height="1080" viewBox="0 0 640 1080" style="position:absolute;right:0;top:0;width:640px;height:1080px"><circle cx="460" cy="560" r="260" fill="#6C4AD8" fill-opacity="0.18"/><g stroke="#5FD3E6" stroke-opacity="0.4" stroke-width="1.5" fill="none"><path d="M260 300 L460 220 L600 360 L460 560 L280 500 Z M460 560 L560 760 L380 860 L280 500 M560 760 L620 940"/></g><circle cx="460" cy="560" r="16" fill="#FFFFFF"/><circle cx="460" cy="560" r="40" fill="none" stroke="#FFFFFF" stroke-opacity="0.4"/><g fill="#5FD3E6"><circle cx="260" cy="300" r="6"/><circle cx="460" cy="220" r="8"/><circle cx="600" cy="360" r="6"/><circle cx="280" cy="500" r="7"/><circle cx="560" cy="760" r="8"/><circle cx="620" cy="940" r="5"/></g><circle cx="380" cy="860" r="10" fill="#9C82F5"/></svg>
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#5FD3E6">Cierre</p>
+<p style="font-size:56px;font-weight:700;line-height:1.2;color:#FFFFFF;width:1180px">Una marca personal sólida no crece aislada: crece a través de relaciones.</p>
+<p style="font-size:32px;line-height:1.45;color:#DCE4F7;width:1140px">Las oportunidades rara vez aparecen en aislamiento. Aparecen cuando una persona preparada es visible para las personas correctas y ha construido relaciones significativas con ellas.</p>
+<p style="font-size:28px;font-weight:600;color:#FFFFFF;border-left:4px solid #5FD3E6;padding:4px 0 4px 24px;width:1100px">Vuelve a la pregunta: ¿quiénes deberían conocer mi trabajo y por qué?</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#B9C6E6">Entrega: Pasaporte de Red en PDF antes de la próxima sesión</p>
+
+</section>
+<section id="referencias" data-transition="fade" style="background:#FAFBFE;color:#0B1B3F;font-family:'Plus Jakarta Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#2F5BEA">Para profundizar</p>
+<h2 style="font-size:68px;font-weight:700;line-height:1.12;color:#0B1B3F">Referencias</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 56px">
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Bourdieu, P. (1986). The forms of capital. En J. G. Richardson (Ed.), <i>Handbook of theory and research for the sociology of education</i>. Greenwood.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Granovetter, M. S. (1973). The strength of weak ties. <i>American Journal of Sociology, 78</i>(6), 1360–1380.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Burt, R. S. (1992). <i>Structural holes: The social structure of competition</i>. Harvard University Press.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Grant, A. (2013). <i>Give and take</i>. Viking.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Casciaro, T., Gino, F., y Kouchaki, M. (2014). The contaminating effects of building instrumental ties. <i>Administrative Science Quarterly, 59</i>(4), 705–735.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Putnam, R. D. (2000). <i>Bowling alone</i>. Simon &amp; Schuster.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Rajkumar, K., Saint-Jacques, G., Bojinov, I., Brynjolfsson, E., y Aral, S. (2022). A causal test of the strength of weak ties. <i>Science, 377</i>(6612), 1304–1310.</p>
+<p style="font-size:24px;line-height:1.4;color:#3B4766">Shea, V. (1994). <i>Netiquette</i>. Albion Books. · Vuorikari, R. et al. (2022). <i>DigComp 2.2</i>. Unión Europea. · Ley 1581 de 2012 (Colombia).</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1100px;font-size:24px;color:#6B7794">Marca Personal Digital · Semana 10</p>
+
+</section>
+</div>
+</main>
+<script src="../../assets/deck/deck.js"></script>
+</body>
+</html>

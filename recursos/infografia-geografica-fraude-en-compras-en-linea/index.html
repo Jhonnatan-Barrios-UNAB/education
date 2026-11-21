@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tipo: geográfica / de mapas</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  .badge{display:block;width:fit-content;margin:0 auto 14px;background:#fbeaf0;color:#72243e;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:6px 14px;border-radius:20px;}
+  .stage{max-width:460px;margin:0 auto;}
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+  .head{background:#993556;color:#fff;padding:26px 24px;text-align:center;}
+  .head h1{margin:0 0 4px;font-size:18px;font-weight:700;}
+  .head p{margin:0;font-size:12px;opacity:.85;}
+  .body{padding:24px;}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+  .tile{border-radius:10px;padding:12px 8px;text-align:center;color:#fff;}
+  .tile b{display:block;font-size:16px;}
+  .tile span{font-size:10px;opacity:.9;}
+  .t1{background:#f0997b;} .t2{background:#d85a30;} .t3{background:#712b13;}
+  .t4{background:#f5c4b3;color:#712b13;} .t5{background:#993c1d;} .t6{}
+  .legend-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:16px;font-size:10.5px;color:#555;}
+  .scale{display:flex;height:10px;width:160px;border-radius:6px;overflow:hidden;}
+  .scale div{flex:1;}
+  .note{font-size:10.5px;color:#999;text-align:center;font-style:italic;margin:0;}
+  .foot{background:#fbeaf0;padding:12px;text-align:center;font-size:11px;color:#72243e;font-weight:700;}
+</style>
+</head>
+<body>
+  <div class="badge">Tipo: geográfica / de mapas</div>
+  <div class="stage">
+    <div class="card">
+      <div class="head">
+        <h1>Fraude en compras en línea</h1>
+        <p>Casos reportados por región en Colombia · 2024</p>
+      </div>
+      <div class="body">
+        <div class="tiles">
+          <div class="tile t2"><b>1.240</b><span>Caribe</span></div>
+          <div class="tile t3"><b>2.180</b><span>Andina</span></div>
+          <div class="tile t1"><b>860</b><span>Pacífica</span></div>
+          <div class="tile t4"><b>310</b><span>Orinoquía</span></div>
+          <div class="tile t4"><b>190</b><span>Amazonía</span></div>
+          <div class="tile" style="background:#f1efe8;color:#888"><b>—</b><span>Insular</span></div>
+        </div>
+        <div class="legend-row">
+          Menos casos
+          <div class="scale">
+            <div style="background:#f5c4b3"></div><div style="background:#f0997b"></div>
+            <div style="background:#d85a30"></div><div style="background:#993c1d"></div><div style="background:#712b13"></div>
+          </div>
+          Más casos
+        </div>
+        <p class="note">Datos ilustrativos con fines educativos, no corresponden a cifras oficiales reales.</p>
+      </div>
+      <div class="foot">El color comunica la magnitud del dato por zona</div>
+    </div>
+  </div>
+</body>
+</html>

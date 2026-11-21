@@ -1,0 +1,596 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script src="../../assets/js/descargas.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ruleta de retos fotográficos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Proyección en aula: ruleta de estaciones con 10 fotos (3 planos, 2 ángulos, 5 técnicas) por equipo */
+:root {
+  color-scheme: dark;
+  --bg: #121c45; --bg-2: #172554;
+  --line: rgba(199, 208, 238, 0.18);
+  --fg: #f5f7ff; --fg-soft: #c7d0ee; --fg-muted: #93a0cf;
+  --indigo: #303f9f; --violet: #4330bc; --cyan: #00bcd4; --cyan-soft: #67e0ee;
+  --ok: #5ee0a0; --warn: #ffcf70;
+  --c-plano: #67e0ee; --c-angulo: #ffcf70; --c-tecnica: #b39cff;
+  --font-display: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 700px at 85% -10%, rgba(67, 48, 188, 0.45), transparent 60%), linear-gradient(160deg, var(--bg-2) 0%, var(--bg) 70%);
+  background-color: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.5;
+}
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 40px); padding-block: 28px 48px; display: flex; flex-direction: column; gap: 24px; }
+header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.eyebrow { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan-soft); margin: 0; }
+.eyebrow::before { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--cyan); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4.2vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 8px 0 0; text-wrap: balance; }
+.pill { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--fg-soft); font-size: 15px; background: rgba(255,255,255,0.04); }
+.pill b { color: var(--fg); }
+nav.steps { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.steps button { font: 600 15px/1 var(--font-body); color: var(--fg-soft); background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 999px; padding: 11px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+nav.steps button .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 12px; }
+nav.steps button[aria-current="step"] { background: var(--fg); color: var(--bg-2); border-color: var(--fg); }
+nav.steps button[aria-current="step"] .n { background: var(--indigo); color: var(--fg); }
+nav.steps button .done { color: var(--ok); font-size: 13px; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--cyan-soft); outline-offset: 3px; }
+.panel { background: rgba(29, 44, 102, 0.72); border: 1px solid var(--line); border-radius: 20px; padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 20px; }
+.panel h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.15; margin: 0; text-wrap: balance; }
+.lead { color: var(--fg-soft); margin: 0; max-width: 78ch; font-size: 17px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { font: 600 15px/1 var(--font-body); border-radius: 12px; padding: 12px 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--fg); cursor: pointer; }
+.btn:hover { background: rgba(255,255,255,0.12); }
+.btn.primary { background: var(--cyan); color: #0b1435; border-color: var(--cyan); }
+.btn.primary:hover { background: var(--cyan-soft); }
+.btn.danger { border-color: rgba(255, 207, 112, 0.5); color: var(--warn); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+.hint { font-size: 14px; color: var(--fg-muted); margin: 0; }
+.counter { display: flex; align-items: center; gap: 14px; }
+.counter output { font-family: var(--font-display); font-size: 44px; font-weight: 800; min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.teamgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.teamchip { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+.badge { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 20px; background: linear-gradient(135deg, var(--indigo), var(--violet)); color: var(--fg); flex: none; }
+.toggle { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; color: var(--fg-soft); cursor: pointer; }
+.toggle input { width: 20px; height: 20px; accent-color: var(--cyan); }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--fg-soft); padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+.legend i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+/* Ruleta */
+.spin { display: grid; grid-template-columns: minmax(0, 500px) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 1000px) { .spin { grid-template-columns: minmax(0, 1fr); } }
+.wheelbox { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1; margin-inline: auto; }
+.wheelbox svg.wheel { width: 100%; height: 100%; display: block; transition: transform 4.6s cubic-bezier(.12,.72,.12,1); filter: drop-shadow(0 18px 40px rgba(5,10,40,0.45)); }
+.pointer { position: absolute; left: 50%; top: -6px; transform: translateX(-50%); width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-top: 34px solid var(--warn); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); z-index: 2; }
+.hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 104px; height: 104px; border-radius: 50%; border: 4px solid var(--fg); background: linear-gradient(135deg, var(--indigo), var(--violet)); color: var(--fg); font: 800 18px/1.1 var(--font-display); cursor: pointer; box-shadow: 0 8px 24px rgba(5,10,40,0.5); z-index: 2; }
+.hub:hover:not([disabled]) { background: var(--cyan); color: #0b1435; }
+.hub[disabled] { cursor: not-allowed; opacity: 0.7; }
+.side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.side > h3 { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); margin: 0; font-weight: 600; }
+.turnlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 8px; }
+.turn { font: 800 22px/1 var(--font-display); height: 52px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.05); color: var(--fg); cursor: pointer; position: relative; }
+.turn[aria-pressed="true"] { background: var(--fg); color: var(--bg-2); border-color: var(--fg); }
+.turn.has { color: var(--fg-muted); background: transparent; border-style: dashed; }
+.turn.has::after { content: "✓"; position: absolute; top: 4px; right: 7px; font-size: 12px; color: var(--ok); }
+.status { padding: 14px 16px; border-radius: 14px; background: rgba(0, 188, 212, 0.12); border: 1px solid rgba(103, 224, 238, 0.35); font-size: 15px; }
+.status.ok { background: rgba(94, 224, 160, 0.12); border-color: rgba(94, 224, 160, 0.4); }
+input.text { font: 500 16px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.06); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; width: 100%; }
+
+/* Tarjeta de estación */
+.reto { display: flex; flex-direction: column; gap: 14px; padding: clamp(18px, 2.4vw, 26px); border-radius: 18px; background: var(--fg); color: #172554; border-top: 8px solid var(--cyan); }
+.reto.empty { background: rgba(255,255,255,0.05); color: var(--fg-soft); border: 1px dashed var(--line); }
+.reto .meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 14px; color: #4b5563; }
+.reto .num { font: 800 14px var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: #303f9f; }
+.reto h3 { font: 800 clamp(24px, 2.6vw, 32px)/1.1 var(--font-display); margin: 0; }
+.shots { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.shot { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 12px; background: #eef1f9; border-left: 5px solid var(--sc); }
+.shot .k { font: 800 15px/1 var(--font-display); color: #303f9f; min-width: 22px; padding-top: 3px; }
+.shot .cat { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #4b5563; }
+.shot .nm { display: block; font-weight: 700; font-size: 16px; line-height: 1.3; }
+.shot .how { display: block; font-size: 14px; color: #4b5563; line-height: 1.35; }
+.reto .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 14px; color: #4b5563; border-top: 1px solid #e1e5f0; padding-top: 12px; }
+.reto .actions button { font: 600 14px var(--font-body); border-radius: 10px; padding: 8px 12px; border: 0; cursor: pointer; background: #eef1f9; color: #303f9f; }
+.reto .actions button.yes { background: #303f9f; color: #fff; }
+
+/* Reto y socialización */
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding: 20px 24px; border-radius: 18px; background: rgba(5, 10, 40, 0.35); border: 1px solid var(--line); }
+.timer output { font: 800 clamp(48px, 7vw, 84px)/1 var(--font-display); font-variant-numeric: tabular-nums; min-width: 4.4ch; }
+.timer.end output { color: var(--warn); }
+.timer .presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.rule { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.rule .k { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-soft); }
+.rule h3 { font-family: var(--font-display); font-size: 21px; margin: 0; line-height: 1.2; }
+.rule p, .rule li { margin: 0; color: var(--fg-soft); }
+.rule ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+.check { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-left: 5px solid var(--sc); }
+.check .k { font: 800 18px/1 var(--font-display); color: var(--fg-muted); min-width: 24px; }
+.check .txt { flex: 1; min-width: 0; }
+.check .cat { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sc); }
+.check .nm { display: block; font-weight: 600; }
+.check .nm.hidden { color: var(--fg-muted); font-style: italic; font-weight: 500; }
+.check button { font: 600 13px var(--font-body); border-radius: 10px; padding: 8px 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--fg); cursor: pointer; white-space: nowrap; }
+.check button[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #0b1435; }
+.check.on { background: rgba(94, 224, 160, 0.10); }
+.check.off { background: rgba(255, 207, 112, 0.08); }
+.check .yn { display: flex; gap: 6px; }
+.check button.no[aria-pressed="true"] { background: var(--warn); border-color: var(--warn); color: #0b1435; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tabs button { font: 700 16px/1 var(--font-display); border-radius: 12px; padding: 10px 14px; border: 1px solid var(--line); background: rgba(255,255,255,0.05); color: var(--fg); cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--fg); color: var(--bg-2); }
+.tabs button[disabled] { opacity: 0.4; cursor: not-allowed; }
+.score { display: flex; flex-wrap: wrap; gap: 12px; }
+.score div { padding: 12px 16px; border-radius: 14px; background: rgba(5, 10, 40, 0.35); border: 1px solid var(--line); }
+.score b { font: 800 28px/1 var(--font-display); display: block; font-variant-numeric: tabular-nums; }
+.score span { font-size: 13px; color: var(--fg-muted); }
+.prompt { padding: 16px 18px; border-radius: 14px; background: var(--fg); color: #172554; font-size: 16px; }
+.prompt b { color: #303f9f; }
+
+/* Resumen */
+.summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.tcard { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.tcard header { display: flex; align-items: center; gap: 12px; }
+.tcard header h3 { margin: 0; font-family: var(--font-display); font-size: 20px; }
+.tcard .grp { font-size: 14px; color: var(--fg-soft); margin: 0; }
+.tcard .grp b { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; display: block; }
+.tcard .nums { font-size: 14px; color: var(--fg-muted); }
+.tcard .empty { color: var(--fg-muted); font-style: italic; }
+.preview { display: flex; flex-direction: column; gap: 10px; }
+.preview img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+@media (prefers-reduced-motion: reduce) { .wheelbox svg.wheel { transition-duration: 0.01s; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Creación de Contenidos Digitales · Reto fotográfico</p>
+      <h1>Ruleta de retos fotográficos</h1>
+    </div>
+    <span class="pill">Equipos de 3 · <b>10 fotos</b> por estación · 3 planos · 2 ángulos · 5 técnicas · <b>30 min</b></span>
+  </header>
+
+  <nav class="steps" id="steps" aria-label="Momentos de la actividad"></nav>
+
+  <main id="view"></main>
+
+  <div class="foot">
+    <button class="btn" id="prev" type="button">← Anterior</button>
+    <button class="btn primary" id="next" type="button">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CAT = {
+    p: { label: 'Plano', color: '#67e0ee' },
+    a: { label: 'Ángulo', color: '#ffcf70' },
+    t: { label: 'Técnica', color: '#b39cff' }
+  };
+  var PLANOS = [
+    { n: 'Gran plano general', h: 'La persona es pequeña frente a un gran espacio del campus.' },
+    { n: 'Plano general', h: 'Cuerpo completo y el entorno que lo rodea.' },
+    { n: 'Plano americano', h: 'Desde la cabeza hasta las rodillas.' },
+    { n: 'Plano medio', h: 'Desde la cabeza hasta la cintura.' },
+    { n: 'Primer plano', h: 'Rostro y hombros.' },
+    { n: 'Primerísimo primer plano', h: 'Solo el rostro llena el cuadro.' },
+    { n: 'Plano detalle', h: 'Un objeto o una parte del cuerpo: manos, ojos, un útil.' }
+  ];
+  var ANGULOS = [
+    { n: 'Normal', h: 'Cámara a la altura de los ojos del sujeto.' },
+    { n: 'Picado', h: 'Cámara por encima, mirando hacia abajo.' },
+    { n: 'Contrapicado', h: 'Cámara por debajo, mirando hacia arriba.' },
+    { n: 'Cenital', h: 'Cámara totalmente encima, paralela al suelo.' },
+    { n: 'Nadir', h: 'Cámara en el suelo, mirando justo hacia arriba.' },
+    { n: 'Holandés', h: 'Cámara inclinada: el horizonte queda torcido a propósito.' }
+  ];
+  var TECNICAS = [
+    { n: 'Regla de tercios', h: 'Protagonista sobre una línea o un cruce de la cuadrícula.' },
+    { n: 'Simetría', h: 'Un eje en el centro: fachada, escalera, reflejo.' },
+    { n: 'Aislar un elemento', h: 'Un solo sujeto sobre un fondo limpio.' },
+    { n: 'Líneas y punto de fuga', h: 'Pasillos, escaleras o andenes que llevan la mirada.' },
+    { n: 'Componer desde una esquina', h: 'Un camino o una línea que entra por una esquina.' },
+    { n: 'Figura humana y escala', h: 'Una persona pequeña que muestre lo grande del lugar.' },
+    { n: 'Enmarcar', h: 'Una puerta, un arco, una ventana o ramas como marco.' },
+    { n: 'Patrón (o romperlo)', h: 'Sillas, ventanas o bicicletas repetidas; o una que rompa.' },
+    { n: 'Primer plano complementario', h: 'Algo desenfocado cerca del lente y el sujeto al fondo.' },
+    { n: 'Panorámica', h: 'Modo panorámico de una vista amplia del campus.' }
+  ];
+  var NST = 10, SEG = 360 / NST;
+  var COLORS = ['#303f9f', '#155e75', '#4330bc', '#173b7a'];
+  var DOTS = ['#67e0ee', '#ffcf70', '#b39cff', '#5ee0a0', '#ff9fc0'];
+  var STEPS = [{ id: 'equipos', label: 'Equipos' }, { id: 'ruleta', label: 'Ruleta' }, { id: 'reto', label: 'Al campus · 30 min' }, { id: 'social', label: 'Socialización' }, { id: 'resumen', label: 'Resumen' }];
+  var LETTERS = 'ABCDEFGHIJKL'.split('');
+  var KEY = 'ruleta-estaciones-fotograficas-v3';
+
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  // Reparte cada lista de forma pareja: baraja la lista varias veces seguidas y cada estación toma k elementos distintos en orden.
+  function deal(len, k) {
+    var range = Array.from({ length: len }, function (_, i) { return i; }), pool = [], out = [];
+    while (pool.length < NST * k) pool = pool.concat(shuffle(range));
+    for (var s = 0; s < NST; s++) {
+      var g = [];
+      while (g.length < k) { var idx = 0; while (g.indexOf(pool[idx]) >= 0) idx++; g.push(pool.splice(idx, 1)[0]); }
+      out.push(g);
+    }
+    return out;
+  }
+  function distinct(g) { var seen = {}; return g.every(function (x) { var key = x.slice().sort().join(','); if (seen[key]) return false; seen[key] = 1; return true; }); }
+  // Repite el reparto hasta que ninguna estación tenga los mismos planos, ángulos o técnicas que otra.
+  function makeStations() {
+    var p, a, t, tries = 0;
+    do { p = deal(PLANOS.length, 3); tries++; } while (!distinct(p) && tries < 500);
+    tries = 0; do { a = deal(ANGULOS.length, 2); tries++; } while (!distinct(a) && tries < 500);
+    tries = 0; do { t = deal(TECNICAS.length, 5); tries++; } while (!distinct(t) && tries < 500);
+    return p.map(function (_, s) { return { p: p[s], a: a[s], t: t[s] }; });
+  }
+  function fresh() { return { step: 'equipos', teams: 8, stations: makeStations(), picks: {}, sel: 'A', rot: 0, noRepeat: true, last: null, confirm: null, taken: {}, ident: {}, view: 'A', showList: false, shown: {} }; }
+  var state = null;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
+  if (!state || !Array.isArray(state.stations) || state.stations.length !== NST) state = fresh();
+  ['taken', 'ident', 'shown', 'picks'].forEach(function (k) { if (!state[k] || typeof state[k] !== 'object') state[k] = {}; });
+  state.confirm = null;
+  var who = '', spinning = false;
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function teams() { return LETTERS.slice(0, state.teams); }
+  function pickOf(t) { return state.picks[t] || null; }
+  function used(i) { return teams().some(function (t) { return state.picks[t] && state.picks[t].i === i; }); }
+  function nextPending() { var ts = teams(); for (var i = 0; i < ts.length; i++) if (!pickOf(ts[i])) return ts[i]; return null; }
+  function allDone() { return teams().every(function (t) { return pickOf(t); }); }
+  function available() { var a = []; for (var i = 0; i < NST; i++) if (!state.noRepeat || !used(i)) a.push(i); return a; }
+  // Las 10 fotos de una estación, en orden: 3 planos, 2 ángulos, 5 técnicas.
+  function shots(i) {
+    var S = state.stations[i], out = [];
+    S.p.forEach(function (x) { out.push({ c: 'p', n: PLANOS[x].n, h: PLANOS[x].h }); });
+    S.a.forEach(function (x) { out.push({ c: 'a', n: ANGULOS[x].n, h: ANGULOS[x].h }); });
+    S.t.forEach(function (x) { out.push({ c: 't', n: TECNICAS[x].n, h: TECNICAS[x].h }); });
+    return out;
+  }
+  function flag(map, t, k) { return !!(map[t] && map[t][k]); }
+  function setFlag(map, t, k, v) { if (!map[t]) map[t] = {}; map[t][k] = v; }
+  function count(map, t) { var m = map[t] || {}, n = 0; for (var k in m) if (m[k] === true) n++; return n; }
+  function countNo(map, t) { var m = map[t] || {}, n = 0; for (var k in m) if (m[k] === false) n++; return n; }
+
+  function polar(r, deg) { var a = (deg - 90) * Math.PI / 180; return [250 + r * Math.cos(a), 250 + r * Math.sin(a)]; }
+  function wheelSvg() {
+    var s = '<svg class="wheel" id="wheel" viewBox="0 0 500 500" aria-hidden="true" style="transform:rotate(' + state.rot + 'deg)"><circle cx="250" cy="250" r="246" fill="#0b1435"/>';
+    for (var i = 0; i < NST; i++) {
+      var a0 = i * SEG, a1 = a0 + SEG, p0 = polar(238, a0), p1 = polar(238, a1), mid = a0 + SEG / 2;
+      var dim = state.noRepeat && used(i);
+      s += '<path d="M250 250 L' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1) + ' A238 238 0 0 1 ' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1) + ' Z" fill="' + COLORS[i % 4] + '" stroke="#0b1435" stroke-width="3" opacity="' + (dim ? 0.3 : 1) + '"/>';
+      var pn = polar(204, mid);
+      s += '<circle cx="' + pn[0].toFixed(1) + '" cy="' + pn[1].toFixed(1) + '" r="19" fill="' + DOTS[i % 5] + '" opacity="' + (dim ? 0.35 : 1) + '"/>';
+      s += '<text x="' + pn[0].toFixed(1) + '" y="' + (pn[1] + 6).toFixed(1) + '" text-anchor="middle" font-family="Manrope, Segoe UI, Arial" font-weight="800" font-size="18" fill="#0b1435">' + (i + 1) + '</text>';
+      var pt = polar(122, mid);
+      s += '<text transform="translate(' + pt[0].toFixed(1) + ' ' + pt[1].toFixed(1) + ') rotate(' + (mid - 90).toFixed(1) + ')" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Segoe UI, Arial" font-weight="600" font-size="15" fill="#f5f7ff" opacity="' + (dim ? 0.4 : 0.95) + '">Estación ' + (i + 1) + '</text>';
+    }
+    return s + '<circle cx="250" cy="250" r="238" fill="none" stroke="#f5f7ff" stroke-opacity="0.25" stroke-width="2"/></svg>';
+  }
+
+  var view = document.getElementById('view');
+  var stepsNav = document.getElementById('steps');
+  function renderSteps() {
+    stepsNav.innerHTML = STEPS.map(function (s, i) {
+      var done = s.id === 'ruleta' && allDone();
+      return '<button type="button" data-step="' + s.id + '"' + (state.step === s.id ? ' aria-current="step"' : '') + '><span class="n">' + (i + 1) + '</span>' + s.label + (done ? ' <span class="done" aria-label="completo">✓</span>' : '') + '</button>';
+    }).join('');
+  }
+  function legend() {
+    return '<div class="legend"><span><i style="background:' + CAT.p.color + '"></i>3 planos</span><span><i style="background:' + CAT.a.color + '"></i>2 ángulos</span><span><i style="background:' + CAT.t.color + '"></i>5 técnicas</span></div>';
+  }
+
+  function renderEquipos() {
+    var any = Object.keys(state.picks).length > 0;
+    view.innerHTML = '<section class="panel"><h2>¿Cuántos equipos de 3 personas hay?</h2>' +
+      '<p class="lead">Cada equipo gira la ruleta una vez y cae en una estación. Cada estación es una combinación de <b>10 fotografías</b>: 3 planos, 2 ángulos y 5 técnicas de composición. Tienen 30 minutos para tomarlas en el campus.</p>' +
+      legend() +
+      '<div class="counter"><button class="btn" type="button" id="minus" aria-label="Quitar un equipo">−</button><output aria-live="polite">' + state.teams + '</output><button class="btn" type="button" id="plus" aria-label="Agregar un equipo">+</button><span class="hint">equipos (de 2 a 12; con más de 10 se repiten estaciones)</span></div>' +
+      '<div class="teamgrid">' + teams().map(function (t) { return '<div class="teamchip"><span class="badge">' + t + '</span><span>Equipo ' + t + '</span></div>'; }).join('') + '</div>' +
+      '<label class="toggle"><input type="checkbox" id="norep"' + (state.noRepeat ? ' checked' : '') + '> No repetir estaciones entre equipos</label>' +
+      (any ? '<p class="hint">Si quitan equipos, se libera la estación que esos equipos ya tenían.</p>' : '') +
+      '<div class="row">' + (state.confirm === 'reset'
+        ? '<span>¿Borrar los giros y las marcas, y crear combinaciones nuevas?</span><button class="btn danger" type="button" id="resetYes">Sí, empezar de cero</button><button class="btn" type="button" id="resetNo">Cancelar</button>'
+        : '<button class="btn danger" type="button" id="reset">Reiniciar y barajar estaciones</button>') + '</div></section>';
+  }
+
+  function stationHtml(t) {
+    var p = t ? pickOf(t) : null;
+    if (!p) return '<div class="reto empty">Giren la ruleta: aquí aparece la estación del equipo con sus 10 fotografías.</div>';
+    var confirming = state.confirm === t;
+    return '<div class="reto" role="status"><div class="meta"><span class="badge">' + t + '</span><span>Equipo ' + t + (p.who ? ' · giró ' + esc(p.who) : '') + '</span><span class="num">Estación ' + (p.i + 1) + '</span></div>' +
+      '<h3>Sus 10 fotografías</h3><ol class="shots">' + shots(p.i).map(function (s, k) {
+        return '<li class="shot" style="--sc:' + CAT[s.c].color + '"><span class="k">' + (k + 1) + '</span><span><span class="cat">' + CAT[s.c].label + '</span><span class="nm">' + esc(s.n) + '</span><span class="how">' + esc(s.h) + '</span></span></li>';
+      }).join('') + '</ol>' +
+      '<div class="actions">' + (confirming ? '<span>¿Liberar esta estación para que el equipo gire de nuevo?</span><button type="button" class="yes" data-release="' + t + '">Sí, liberar</button><button type="button" data-cancel="1">Cancelar</button>'
+        : '<button type="button" data-ask="' + t + '">Liberar estación</button><span>Solo si hubo un error.</span>') + '</div></div>';
+  }
+
+  function renderRuleta() {
+    var ts = teams();
+    if (!state.sel || pickOf(state.sel) || ts.indexOf(state.sel) < 0) state.sel = nextPending();
+    var sel = state.sel, done = allDone(), avail = available();
+    var canSpin = !!sel && !done && avail.length > 0;
+    var shown = state.last && pickOf(state.last) ? state.last : null;
+    view.innerHTML = '<section class="panel"><h2>Giren la ruleta</h2>' + legend() + '<div class="spin">' +
+      '<div class="wheelbox"><span class="pointer" aria-hidden="true"></span>' + wheelSvg() + '<button type="button" class="hub" id="spin"' + (canSpin ? '' : ' disabled') + '>GIRAR</button></div>' +
+      '<div class="side"><h3>Turno de</h3><div class="turnlist">' + ts.map(function (t) {
+        var has = !!pickOf(t);
+        return '<button type="button" class="turn' + (has ? ' has' : '') + '" data-team="' + t + '" aria-pressed="' + (sel === t) + '" aria-label="Equipo ' + t + (has ? ', ya giró' : '') + '">' + t + '</button>';
+      }).join('') + '</div>' +
+      '<label class="hint" for="who" style="display:flex;flex-direction:column;gap:6px">¿Quién gira? (opcional)<input class="text" type="text" id="who" placeholder="Nombre del integrante" value="' + esc(who) + '" autocomplete="off"></label>' +
+      (done ? '<div class="status ok">Todos los equipos tienen su estación. ¡Al campus!</div>'
+        : (avail.length ? '<div class="status">Turno del <b>equipo ' + sel + '</b>: pulsen GIRAR en el centro de la ruleta.</div>' : '<div class="status">No quedan estaciones libres. Activen la repetición en «Equipos».</div>')) +
+      '<div id="retoBox">' + stationHtml(shown) + '</div></div></div></section>';
+  }
+
+  function spin() {
+    if (spinning) return;
+    var t = state.sel, avail = available();
+    if (!t || pickOf(t) || !avail.length) return;
+    spinning = true;
+    var i = avail[Math.floor(Math.random() * avail.length)];
+    var center = i * SEG + SEG / 2 + (Math.random() - 0.5) * SEG * 0.6;
+    var target = ((-center) % 360 + 360) % 360, cur = ((state.rot % 360) + 360) % 360;
+    state.rot = state.rot + 360 * 6 + ((target - cur + 360) % 360);
+    var name = (document.getElementById('who') || {}).value || '';
+    var w = document.getElementById('wheel'), hub = document.getElementById('spin');
+    if (hub) hub.disabled = true;
+    var box = document.getElementById('retoBox');
+    if (box) box.innerHTML = '<div class="reto empty">Girando…</div>';
+    if (w) { void w.getBoundingClientRect(); w.style.transform = 'rotate(' + state.rot + 'deg)'; }
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(function () {
+      state.picks[t] = { i: i, who: name.trim() };
+      delete state.taken[t]; delete state.ident[t]; delete state.shown[t];
+      state.last = t; state.sel = nextPending(); who = ''; spinning = false;
+      render();
+    }, reduce ? 80 : 4700);
+  }
+
+  function teamTabs(cur) {
+    return '<div class="tabs" role="group" aria-label="Equipo">' + teams().map(function (t) {
+      return '<button type="button" data-view="' + t + '" aria-pressed="' + (cur === t) + '"' + (pickOf(t) ? '' : ' disabled') + '>Equipo ' + t + '</button>';
+    }).join('') + '</div>';
+  }
+  function curView() {
+    var ts = teams();
+    if (!state.view || ts.indexOf(state.view) < 0 || !pickOf(state.view)) { state.view = null; for (var i = 0; i < ts.length; i++) if (pickOf(ts[i])) { state.view = ts[i]; break; } }
+    return state.view;
+  }
+
+  var timer = { total: 1800, left: 1800, id: null };
+  function fmt(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function renderReto() {
+    var t = curView();
+    var list = t ? shots(pickOf(t).i) : [];
+    view.innerHTML = '<section class="panel"><h2>Al campus: 30 minutos para 10 fotos</h2>' +
+      '<div class="timer" id="timerBox"><output id="clock" aria-live="off">' + fmt(timer.left) + '</output><div class="presets">' +
+      '<button class="btn" type="button" data-preset="1200">20:00</button><button class="btn" type="button" data-preset="1800">30:00</button><button class="btn" type="button" data-preset="2400">40:00</button></div>' +
+      '<div class="row"><button class="btn primary" type="button" id="play">' + (timer.id ? 'Pausar' : 'Iniciar') + '</button><button class="btn" type="button" id="restart">Reiniciar</button></div></div>' +
+      '<div class="rules">' +
+      '<article class="rule"><span class="k">Roles que rotan</span><h3>Fotógrafo, director y modelo</h3><p>En cada foto cambian de rol, para que los tres disparen al menos tres veces.</p></article>' +
+      '<article class="rule"><span class="k">Qué entregan</span><h3>10 fotos numeradas</h3><ul><li>Una foto por cada elemento de su estación, con el número de la lista.</li><li>Sin filtros; se vale recortar.</li></ul></article>' +
+      '<article class="rule"><span class="k">Respeto</span><h3>Fotografía ética</h3><ul><li>Pidan permiso a quien aparezca reconocible.</li><li>No interrumpan clases ni zonas restringidas.</li></ul></article>' +
+      '</div>' +
+      (t ? '<div class="row"><button class="btn" type="button" id="toggleList" aria-expanded="' + !!state.showList + '">' + (state.showList ? 'Ocultar lista de verificación' : 'Mostrar lista de verificación') + '</button></div>' : '') +
+      (t && state.showList ? '<h2 style="font-size:24px">Lista de verificación</h2>' + teamTabs(t) +
+        '<div class="score"><div><b>' + count(state.taken, t) + '/10</b><span>fotos tomadas · equipo ' + t + '</span></div></div>' +
+        '<div class="checks">' + list.map(function (s, k) {
+          var on = flag(state.taken, t, k);
+          return '<div class="check' + (on ? ' on' : '') + '" style="--sc:' + CAT[s.c].color + '"><span class="k">' + (k + 1) + '</span><span class="txt"><span class="cat">' + CAT[s.c].label + '</span><span class="nm">' + esc(s.n) + '</span></span><button type="button" data-take="' + k + '" aria-pressed="' + on + '">' + (on ? 'Tomada ✓' : 'Marcar tomada') + '</button></div>';
+        }).join('') + '</div>'
+        : (t ? '' : '<p class="hint">Cuando los equipos giren la ruleta, aquí aparece la lista de cada uno.</p>')) +
+      '</section>';
+  }
+  function tick() {
+    timer.left = Math.max(0, timer.left - 1);
+    var c = document.getElementById('clock'); if (c) c.textContent = fmt(timer.left);
+    var b = document.getElementById('timerBox'); if (b) b.classList.toggle('end', timer.left === 0);
+    if (timer.left === 0) { clearInterval(timer.id); timer.id = null; var p = document.getElementById('play'); if (p) p.textContent = 'Iniciar'; }
+  }
+
+  function renderSocial() {
+    var t = curView();
+    if (!t) { view.innerHTML = '<section class="panel"><h2>Socialización</h2><p class="hint">Primero giren la ruleta.</p></section>'; return; }
+    var list = shots(pickOf(t).i);
+    view.innerHTML = '<section class="panel"><h2>Socialización: ¿qué plano, ángulo o técnica ven?</h2>' +
+      '<p class="lead">El equipo proyecta cada foto por su número. El grupo dice qué plano, ángulo o técnica refleja, y el docente marca si se identificó o no.</p>' +
+      teamTabs(t) +
+      '<div class="score"><div><b>' + count(state.taken, t) + '/10</b><span>fotos tomadas</span></div><div><b>' + count(state.ident, t) + '/10</b><span>identificadas</span></div><div><b>' + countNo(state.ident, t) + '/10</b><span>no identificadas</span></div></div>' +
+      '<div class="checks">' + list.map(function (s, k) {
+        var v = state.ident[t] ? state.ident[t][k] : undefined, yes = v === true, no = v === false;
+        return '<div class="check' + (yes ? ' on' : (no ? ' off' : '')) + '" style="--sc:' + CAT[s.c].color + '"><span class="k">' + (k + 1) + '</span><span class="txt"><span class="cat">' + CAT[s.c].label + '</span><span class="nm">' + esc(s.n) + '</span></span>' +
+          '<span class="yn"><button type="button" data-ident="' + k + '" data-v="1" aria-pressed="' + yes + '">Sí ✓</button><button type="button" class="no" data-ident="' + k + '" data-v="0" aria-pressed="' + no + '">No</button></span></div>';
+      }).join('') + '</div>' +
+      '<div class="prompt"><b>Preguntas para el grupo:</b> ¿Dónde está el protagonista? ¿A qué altura estaba la cámara? ¿Qué técnica dirige la mirada? ¿Qué mejorarían en esta foto?</div></section>';
+  }
+
+  function summaryText() {
+    return teams().map(function (t) {
+      var p = pickOf(t); if (!p) return 'Equipo ' + t + ': pendiente';
+      var S = shots(p.i);
+      return 'Equipo ' + t + ' · Estación ' + (p.i + 1) + (p.who ? ' (giró ' + p.who + ')' : '') + '\n' +
+        S.map(function (s, k) { return '  ' + (k + 1) + '. ' + CAT[s.c].label + ': ' + s.n; }).join('\n') +
+        '\n  Tomadas: ' + count(state.taken, t) + '/10 · Identificadas: ' + count(state.ident, t) + '/10';
+    }).join('\n\n');
+  }
+  function names(i, c) { return shots(i).filter(function (s) { return s.c === c; }).map(function (s) { return s.n; }).join(' · '); }
+  function renderResumen() {
+    view.innerHTML = '<section class="panel"><h2>Resumen por equipo</h2><p class="lead">La estación de cada equipo, sus 10 fotos y el resultado de la socialización.</p><div class="summary">' +
+      teams().map(function (t) {
+        var p = pickOf(t);
+        if (!p) return '<article class="tcard"><header><span class="badge">' + t + '</span><h3>Equipo ' + t + '</h3></header><span class="empty">Pendiente de girar</span></article>';
+        return '<article class="tcard"><header><span class="badge">' + t + '</span><h3>Equipo ' + t + ' · Estación ' + (p.i + 1) + '</h3></header>' +
+          '<p class="grp"><b style="color:' + CAT.p.color + '">Planos</b>' + esc(names(p.i, 'p')) + '</p>' +
+          '<p class="grp"><b style="color:' + CAT.a.color + '">Ángulos</b>' + esc(names(p.i, 'a')) + '</p>' +
+          '<p class="grp"><b style="color:' + CAT.t.color + '">Técnicas</b>' + esc(names(p.i, 't')) + '</p>' +
+          '<span class="nums">Tomadas ' + count(state.taken, t) + '/10 · Identificadas ' + count(state.ident, t) + '/10' + (p.who ? ' · Giró: ' + esc(p.who) : '') + '</span></article>';
+      }).join('') + '</div><div class="row"><button class="btn" type="button" id="copy">Copiar resumen</button><button class="btn primary" type="button" id="png">Descargar como imagen</button><span class="hint" id="copyMsg" aria-live="polite"></span></div><div class="preview" id="preview" hidden></div></section>';
+  }
+
+  /* ---- Resumen como imagen (canvas) ---- */
+  var downloadsP = (window.claude && typeof window.claude.use === 'function') ? window.claude.use('downloads').catch(function () { return null; }) : Promise.resolve(null);
+  function wrapText(ctx, text, maxW) {
+    var words = String(text).split(/\s+/), lines = [], line = '';
+    words.forEach(function (w) {
+      var test = line ? line + ' ' + w : w;
+      if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; } else line = test;
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+  // items: [{badge, name, tag, color, groups:[{label,color,text}], who, foot}]
+  function drawSummary(eyebrow, title, items) {
+    var W = 1600, M = 64, G = 32, cols = items.length > 1 ? 2 : 1, cw = (W - 2 * M - (cols - 1) * G) / cols, P = 32, tw = cw - 2 * P - 8;
+    var D = 'Manrope, "Segoe UI", Arial, sans-serif', B = 'Inter, "Segoe UI", Arial, sans-serif';
+    var meas = document.createElement('canvas').getContext('2d');
+    function lay(it) {
+      var L = { groups: [] };
+      meas.font = '400 22px ' + B;
+      L.groups = (it.groups || []).map(function (g) { return wrapText(meas, g.text, tw); });
+      var h = P + 52 + 14 + (it.tag ? 40 : 0);
+      L.groups.forEach(function (ls) { h += 26 + ls.length * 31 + 10; });
+      meas.font = '600 22px ' + B; L.who = it.who ? wrapText(meas, it.who, tw) : [];
+      meas.font = '400 20px ' + B; L.foot = it.foot ? wrapText(meas, it.foot, tw) : [];
+      if (L.who.length) h += 4 + L.who.length * 31;
+      if (L.foot.length) h += 14 + L.foot.length * 28;
+      L.h = h + P; return L;
+    }
+    var lays = items.map(lay), rows = [];
+    for (var i = 0; i < items.length; i += cols) rows.push(Math.max.apply(null, lays.slice(i, i + cols).map(function (l) { return l.h; })));
+    var headH = 150, H = M + headH + rows.reduce(function (a, b) { return a + b + G; }, 0) - G + M;
+    var S = 1.5, c = document.createElement('canvas'); c.width = W * S; c.height = H * S;
+    var ctx = c.getContext('2d'); ctx.scale(S, S);
+    var g = ctx.createLinearGradient(0, 0, W, H); g.addColorStop(0, '#172554'); g.addColorStop(1, '#121c45');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#00bcd4'; ctx.fillRect(M, M + 14, 48, 4);
+    ctx.textBaseline = 'top'; ctx.fillStyle = '#67e0ee'; ctx.font = '600 20px ' + B; ctx.fillText(eyebrow.toUpperCase(), M + 64, M + 4);
+    ctx.fillStyle = '#f5f7ff'; ctx.font = '800 48px ' + D; ctx.fillText(title, M, M + 44);
+    var y = M + headH;
+    items.forEach(function (it, i) {
+      var L = lays[i], col = i % cols, x = M + col * (cw + G), h = rows[Math.floor(i / cols)];
+      if (col === 0 && i > 0) y += rows[Math.floor(i / cols) - 1] + G;
+      ctx.fillStyle = 'rgba(255,255,255,0.07)'; rr(ctx, x, y, cw, h, 20); ctx.fill();
+      ctx.fillStyle = it.color || '#67e0ee'; rr(ctx, x, y, 8, h, 4); ctx.fill();
+      var cx = x + P + 8, cy = y + P;
+      var bg = ctx.createLinearGradient(cx, cy, cx + 52, cy + 52); bg.addColorStop(0, '#303f9f'); bg.addColorStop(1, '#4330bc');
+      ctx.fillStyle = bg; rr(ctx, cx, cy, 52, 52, 14); ctx.fill();
+      ctx.fillStyle = '#f5f7ff'; ctx.font = '800 26px ' + D; ctx.textAlign = 'center'; ctx.fillText(it.badge, cx + 26, cy + 11); ctx.textAlign = 'left';
+      ctx.font = '800 26px ' + D; ctx.fillText(it.name, cx + 68, cy + 12);
+      cy += 52 + 14;
+      if (it.tag) { ctx.fillStyle = it.color || '#67e0ee'; ctx.font = '700 18px ' + B; ctx.fillText(it.tag.toUpperCase(), cx, cy + 6); cy += 40; }
+      (it.groups || []).forEach(function (gr, k) {
+        ctx.fillStyle = gr.color; ctx.font = '700 17px ' + B; ctx.fillText(gr.label.toUpperCase(), cx, cy); cy += 26;
+        ctx.fillStyle = '#f5f7ff'; ctx.font = '400 22px ' + B; L.groups[k].forEach(function (l) { ctx.fillText(l, cx, cy); cy += 31; }); cy += 10;
+      });
+      if (L.who.length) { cy += 4; ctx.fillStyle = '#f5f7ff'; ctx.font = '600 22px ' + B; L.who.forEach(function (l) { ctx.fillText(l, cx, cy); cy += 31; }); }
+      if (L.foot.length) { cy += 14; ctx.fillStyle = '#93a0cf'; ctx.font = '400 20px ' + B; L.foot.forEach(function (l) { ctx.fillText(l, cx, cy); cy += 28; }); }
+    });
+    return c;
+  }
+  function offerImage(canvas, filename, msgEl, previewEl) {
+    msgEl.textContent = 'Preparando la imagen…';
+    canvas.toBlob(function (blob) {
+      if (!blob) { msgEl.textContent = 'No se pudo crear la imagen.'; return; }
+      var url = URL.createObjectURL(blob);
+      function showPreview(note) {
+        previewEl.innerHTML = '<p class="hint">' + note + '</p><img alt="Resumen como imagen" src="' + url + '">';
+        previewEl.hidden = false;
+      }
+      downloadsP.then(function (dl) {
+        if (!dl) { showPreview('Clic derecho (o mantener presionado) sobre la imagen y «Guardar imagen como…».'); msgEl.textContent = ''; return; }
+        dl.save({ filename: filename, data: blob }).then(function () {
+          msgEl.textContent = 'Imagen descargada.';
+        }, function (e) {
+          if (e && e.code === 'declined') { msgEl.textContent = 'Descarga cancelada.'; return; }
+          if (e && e.code === 'rate_limited') { msgEl.textContent = 'Hay una descarga pendiente; intenten de nuevo en un momento.'; return; }
+          msgEl.textContent = ''; showPreview('No se pudo descargar aquí. Clic derecho (o mantener presionado) sobre la imagen y «Guardar imagen como…».');
+        });
+      });
+    }, 'image/png');
+  }
+
+  function render() {
+    renderSteps();
+    if (state.step === 'equipos') renderEquipos();
+    else if (state.step === 'ruleta') renderRuleta();
+    else if (state.step === 'reto') renderReto();
+    else if (state.step === 'social') renderSocial();
+    else renderResumen();
+    var i = STEPS.findIndex(function (s) { return s.id === state.step; });
+    document.getElementById('prev').disabled = i === 0;
+    var nx = document.getElementById('next');
+    nx.disabled = i === STEPS.length - 1;
+    nx.textContent = i < STEPS.length - 1 ? STEPS[i + 1].label + ' →' : 'Fin';
+    save();
+  }
+  function go(step) { if (spinning) return; state.step = step; state.confirm = null; state.last = null; who = ''; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  stepsNav.addEventListener('click', function (e) { var b = e.target.closest('button[data-step]'); if (b) go(b.dataset.step); });
+  document.getElementById('prev').addEventListener('click', function () { var i = STEPS.findIndex(function (s) { return s.id === state.step; }); if (i > 0) go(STEPS[i - 1].id); });
+  document.getElementById('next').addEventListener('click', function () { var i = STEPS.findIndex(function (s) { return s.id === state.step; }); if (i < STEPS.length - 1) go(STEPS[i + 1].id); });
+
+  view.addEventListener('change', function (e) {
+    if (e.target.id === 'norep') { state.noRepeat = e.target.checked; render(); }
+  });
+  view.addEventListener('input', function (e) { if (e.target.id === 'who') who = e.target.value; });
+  view.addEventListener('click', function (e) {
+    var t = e.target.closest('button') || e.target;
+    if (spinning) return;
+    if (t.id === 'plus' && state.teams < 12) { state.teams++; render(); return; }
+    if (t.id === 'minus' && state.teams > 2) { state.teams--; var gone = LETTERS[state.teams]; delete state.picks[gone]; delete state.taken[gone]; delete state.ident[gone]; delete state.shown[gone]; render(); return; }
+    if (t.id === 'reset') { state.confirm = 'reset'; render(); return; }
+    if (t.id === 'resetNo') { state.confirm = null; render(); return; }
+    if (t.id === 'resetYes') { var n = state.teams, nr = state.noRepeat; state = fresh(); state.teams = n; state.noRepeat = nr; render(); return; }
+    if (t.id === 'spin') { spin(); return; }
+    if (t.dataset.ask) { state.confirm = t.dataset.ask; state.last = t.dataset.ask; render(); return; }
+    if (t.dataset.release) { var r = t.dataset.release; delete state.picks[r]; delete state.taken[r]; delete state.ident[r]; delete state.shown[r]; state.sel = r; state.last = null; state.confirm = null; render(); return; }
+    if (t.dataset.cancel) { state.confirm = null; render(); return; }
+    if (t.classList.contains('turn')) { var tm = t.dataset.team; if (pickOf(tm)) { state.last = tm; } else { state.sel = tm; state.last = null; } var w = document.getElementById('who'); who = w ? w.value : ''; render(); return; }
+    if (t.dataset.view) { state.view = t.dataset.view; render(); return; }
+    if (t.dataset.take) { setFlag(state.taken, state.view, t.dataset.take, !flag(state.taken, state.view, t.dataset.take)); render(); return; }
+    if (t.id === 'toggleList') { state.showList = !state.showList; render(); return; }
+    if (t.dataset.ident) { var want = t.dataset.v === '1', curV = state.ident[state.view] ? state.ident[state.view][t.dataset.ident] : undefined; setFlag(state.ident, state.view, t.dataset.ident, curV === want ? undefined : want); render(); return; }
+    if (t.id === 'copy') {
+      var msg = document.getElementById('copyMsg');
+      try { navigator.clipboard.writeText(summaryText()).then(function () { msg.textContent = 'Resumen copiado.'; }, function () { msg.textContent = 'No se pudo copiar; usen la imagen.'; }); } catch (err) { msg.textContent = 'No se pudo copiar; usen la imagen.'; }
+      return;
+    }
+    if (t.id === 'png') {
+      var items = teams().map(function (tm) {
+        var p = pickOf(tm);
+        if (!p) return { badge: tm, name: 'Equipo ' + tm, tag: 'Pendiente de girar', color: '#93a0cf', groups: [] };
+        return { badge: tm, name: 'Equipo ' + tm, tag: 'Estación ' + (p.i + 1), color: DOTS[p.i % 5],
+          groups: [{ label: 'Planos', color: CAT.p.color, text: names(p.i, 'p') }, { label: 'Ángulos', color: CAT.a.color, text: names(p.i, 'a') }, { label: 'Técnicas', color: CAT.t.color, text: names(p.i, 't') }],
+          who: p.who ? 'Giró: ' + p.who : 'Giró: (sin nombre)',
+          foot: 'Tomadas ' + count(state.taken, tm) + '/10 · Identificadas ' + count(state.ident, tm) + '/10' };
+      });
+      var goImg = function () { offerImage(drawSummary('Ruleta de retos fotográficos', 'Las 10 fotos de cada equipo', items), 'resumen-retos-fotograficos.png', document.getElementById('copyMsg'), document.getElementById('preview')); };
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(goImg); else goImg();
+      return;
+    }
+    if (t.dataset.preset) { clearInterval(timer.id); timer.id = null; timer.total = timer.left = +t.dataset.preset; render(); return; }
+    if (t.id === 'play') {
+      if (timer.id) { clearInterval(timer.id); timer.id = null; t.textContent = 'Iniciar'; }
+      else { if (timer.left === 0) timer.left = timer.total; timer.id = setInterval(tick, 1000); t.textContent = 'Pausar'; var bx = document.getElementById('timerBox'); if (bx) bx.classList.remove('end'); }
+      return;
+    }
+    if (t.id === 'restart') { clearInterval(timer.id); timer.id = null; timer.left = timer.total; render(); return; }
+  });
+
+  render();
+})();
+</script>
+
+</body></html>

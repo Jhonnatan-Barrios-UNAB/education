@@ -1,0 +1,411 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script src="../../assets/js/descargas.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>La historia en cadena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: proyección en aula — encabezado con pasos, tablero central de tarjetas boca abajo, panel lateral de turnos */
+:root {
+  color-scheme: dark;
+  --bg: #121c45;
+  --bg-2: #172554;
+  --panel: #1d2c66;
+  --panel-2: #24357a;
+  --line: rgba(199, 208, 238, 0.18);
+  --fg: #f5f7ff;
+  --fg-soft: #c7d0ee;
+  --fg-muted: #93a0cf;
+  --indigo: #303f9f;
+  --violet: #4330bc;
+  --cyan: #00bcd4;
+  --cyan-soft: #67e0ee;
+  --cat-personaje: #8c9bff;
+  --cat-problema: #b39cff;
+  --cat-giro: #67e0ee;
+  --ok: #5ee0a0;
+  --warn: #ffcf70;
+  --font-display: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Arial, sans-serif;
+  --radius: 16px;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(1200px 700px at 85% -10%, rgba(67, 48, 188, 0.45), transparent 60%), linear-gradient(160deg, var(--bg-2) 0%, var(--bg) 70%);
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 40px); padding-block: 28px 48px; display: flex; flex-direction: column; gap: 24px; }
+header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.eyebrow { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan-soft); margin: 0; }
+.eyebrow::before { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--cyan); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4.2vw, 52px); line-height: 1.05; letter-spacing: -0.02em; margin: 8px 0 0; text-wrap: balance; }
+.teamsize { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--fg-soft); font-size: 15px; background: rgba(255,255,255,0.04); }
+.teamsize b { color: var(--fg); }
+
+nav.steps { display: flex; flex-wrap: wrap; gap: 8px; }
+nav.steps button {
+  font: 600 15px/1 var(--font-body); color: var(--fg-soft); background: rgba(255,255,255,0.04);
+  border: 1px solid var(--line); border-radius: 999px; padding: 11px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+nav.steps button .n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 12px; font-variant-numeric: tabular-nums; }
+nav.steps button[aria-current="step"] { background: var(--fg); color: var(--bg-2); border-color: var(--fg); }
+nav.steps button[aria-current="step"] .n { background: var(--indigo); color: var(--fg); }
+nav.steps button .done { color: var(--ok); font-size: 13px; }
+button:focus-visible, input:focus-visible, .card:focus-visible { outline: 3px solid var(--cyan-soft); outline-offset: 3px; }
+
+.panel { background: rgba(29, 44, 102, 0.72); border: 1px solid var(--line); border-radius: 20px; padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 20px; }
+.panel h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.15; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.lead { color: var(--fg-soft); margin: 0; max-width: 70ch; font-size: 17px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { font: 600 15px/1 var(--font-body); border-radius: 12px; padding: 12px 18px; border: 1px solid var(--line); background: rgba(255,255,255,0.06); color: var(--fg); cursor: pointer; }
+.btn:hover { background: rgba(255,255,255,0.12); }
+.btn.primary { background: var(--cyan); color: #0b1435; border-color: var(--cyan); }
+.btn.primary:hover { background: var(--cyan-soft); }
+.btn.danger { border-color: rgba(255, 207, 112, 0.5); color: var(--warn); }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+/* Equipos */
+.counter { display: flex; align-items: center; gap: 14px; }
+.counter output { font-family: var(--font-display); font-size: 44px; font-weight: 800; min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.teamgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.teamchip { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+.teamchip .badge { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 20px; background: linear-gradient(135deg, var(--indigo), var(--violet)); }
+
+/* Ronda */
+.round { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 860px) { .round { grid-template-columns: minmax(0, 1fr); } }
+.turns { display: flex; flex-direction: column; gap: 14px; }
+.turns h3, .side h3 { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); margin: 0; font-weight: 600; }
+.turnlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 8px; }
+.turn { font: 800 22px/1 var(--font-display); height: 56px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.05); color: var(--fg); cursor: pointer; position: relative; }
+.turn[aria-pressed="true"] { background: var(--fg); color: var(--bg-2); border-color: var(--fg); }
+.turn.has { color: var(--fg-muted); background: transparent; border-style: dashed; cursor: default; }
+.turn.has::after { content: "✓"; position: absolute; top: 4px; right: 7px; font-size: 12px; color: var(--ok); }
+label.field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--fg-soft); }
+input[type="text"] { font: 500 16px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.06); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; width: 100%; }
+input::placeholder { color: var(--fg-muted); }
+.hint { font-size: 14px; color: var(--fg-muted); margin: 0; }
+.status { padding: 14px 16px; border-radius: 14px; background: rgba(0, 188, 212, 0.12); border: 1px solid rgba(103, 224, 238, 0.35); color: var(--fg); font-size: 15px; }
+.status.donecat { background: rgba(94, 224, 160, 0.12); border-color: rgba(94, 224, 160, 0.4); }
+
+.board { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.card { perspective: 1200px; aspect-ratio: 3 / 4; max-width: 100%; border: 0; padding: 0; background: none; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+.card[disabled] { cursor: not-allowed; }
+.card .inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(.2,.7,.2,1); transform-style: preserve-3d; }
+.card.flipped .inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; border-radius: var(--radius); backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+.back { background: linear-gradient(150deg, var(--panel-2) 0%, var(--indigo) 60%, var(--violet) 100%); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 10px 30px rgba(5, 10, 40, 0.35); }
+.card:not([disabled]):hover .back { border-color: var(--cyan-soft); transform: translateY(-2px); }
+.back .num { font-family: var(--font-display); font-weight: 800; font-size: 48px; line-height: 1; color: var(--fg); font-variant-numeric: tabular-nums; }
+.back .cat { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; }
+.back svg { position: absolute; right: -20px; bottom: -10px; width: 140px; height: 140px; opacity: 0.55; }
+.front { transform: rotateY(180deg); background: #f5f7ff; color: #172554; border: 3px solid var(--catc, var(--cyan)); }
+.front .cat { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: #303f9f; }
+.front .txt { font-family: var(--font-display); font-weight: 800; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.2; text-wrap: balance; }
+.front .owner { display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: #4b5563; border-top: 1px solid #e1e5f0; padding-top: 8px; }
+.front .owner b { font-family: var(--font-display); font-size: 18px; color: #172554; }
+.front .release { align-self: flex-start; font: 600 12px var(--font-body); color: #303f9f; background: #eef1f9; border: 0; border-radius: 8px; padding: 6px 8px; cursor: pointer; }
+.front .confirm { display: flex; gap: 6px; flex-wrap: wrap; }
+.front .confirm button { font: 600 12px var(--font-body); border-radius: 8px; padding: 6px 8px; border: 0; cursor: pointer; }
+.front .confirm .yes { background: #303f9f; color: #fff; }
+.front .confirm .no { background: #eef1f9; color: #303f9f; }
+.cat-personaje { --catc: var(--cat-personaje); }
+.cat-problema { --catc: var(--cat-problema); }
+.cat-giro { --catc: var(--cat-giro); }
+.back .cat { color: var(--catc); }
+
+.reveal { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 16px; background: var(--fg); color: var(--bg-2); }
+.reveal .badge { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font: 800 26px var(--font-display); color: var(--fg); background: linear-gradient(135deg, var(--indigo), var(--violet)); flex: none; }
+.reveal .what { min-width: 0; flex: 1; }
+.reveal .what small { display: block; font-size: 13px; color: #4b5563; }
+.reveal .what strong { font: 800 clamp(20px, 2.2vw, 28px)/1.2 var(--font-display); }
+
+/* Resumen */
+.summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.tcard { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.tcard header { display: flex; align-items: center; gap: 12px; }
+.tcard header .badge { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font: 800 22px var(--font-display); background: linear-gradient(135deg, var(--indigo), var(--violet)); }
+.tcard header h3 { margin: 0; font-family: var(--font-display); font-size: 20px; }
+.slot { display: flex; flex-direction: column; gap: 2px; padding-left: 12px; border-left: 3px solid var(--catc); }
+.slot .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--catc); font-weight: 600; }
+.slot .v { font-weight: 600; font-size: 17px; }
+.slot .v.empty { color: var(--fg-muted); font-weight: 500; font-style: italic; }
+.slot .who { font-size: 13px; color: var(--fg-muted); }
+
+/* Instrucciones */
+.steps3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.istep { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+.istep .time { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan-soft); }
+.istep h3 { font-family: var(--font-display); font-size: 24px; margin: 0; line-height: 1.2; }
+.istep p { margin: 0; color: var(--fg-soft); }
+.spine { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.spine li { padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.06); border-left: 3px solid var(--catc); display: flex; flex-direction: column; gap: 2px; }
+.spine .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--catc); }
+.spine .ph { font-style: italic; font-weight: 600; color: var(--fg); }
+.spine .use { font-size: 14px; color: var(--fg-soft); }
+.cat-res { --catc: #9fd8ff; }
+.cat-apr { --catc: #5ee0a0; }
+.formats { display: flex; flex-wrap: wrap; gap: 8px; }
+.formats span { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; }
+.timer { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding: 20px 24px; border-radius: 18px; background: rgba(5, 10, 40, 0.35); border: 1px solid var(--line); }
+.timer output { font: 800 clamp(48px, 7vw, 84px)/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; min-width: 4.2ch; }
+.timer.end output { color: var(--warn); }
+.timer .presets { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .card .inner { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Actividad lúdica · Storytelling improvisado</p>
+      <h1>La historia en cadena</h1>
+    </div>
+    <span class="teamsize">Equipos de <b>3 a 4 personas</b> · ideal 4</span>
+  </header>
+
+  <nav class="steps" id="steps" aria-label="Momentos de la actividad"></nav>
+
+  <main id="view"></main>
+
+  <div class="foot">
+    <button class="btn" id="prev" type="button">← Anterior</button>
+    <button class="btn primary" id="next" type="button">Siguiente →</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CATS = {
+    personaje: { label: 'Personaje', plural: 'personajes', items: [
+      'Estudiante que trabaja de noche', 'Emprendedora de comida local', 'Docente que regresa a estudiar', 'Deportista universitario',
+      'Estudiante de intercambio recién llegado', 'Abuela que aprende a usar redes sociales', 'Fotógrafo aficionado del campus', 'Voluntaria de una fundación de animales',
+      'Músico que toca en el transporte público', 'Recién egresada que busca su primer empleo', 'Dueño de una tienda de barrio', 'Estudiante de primer semestre'
+    ]},
+    problema: { label: 'Problema', plural: 'problemas', items: [
+      'No le alcanza el tiempo para nada', 'Nadie conoce su proyecto', 'Le da miedo hablar en público', 'Se lesiona antes de un torneo',
+      'Su publicación recibe comentarios negativos', 'No sabe usar la IA sin caer en plagio', 'Pierde sus archivos un día antes de entregar', 'Tiene una gran idea y cero presupuesto',
+      'Su cuenta lleva meses sin crecer', 'Debe presentar su proyecto en otro idioma', 'Su equipo de trabajo no responde', 'Le roban el celular con todo su contenido'
+    ]},
+    giro: { label: 'Giro inesperado', plural: 'giros', items: [
+      'Se va la luz en el peor momento', 'Aparece una tendencia viral sobre su tema', 'Un cliente se queja en público', 'Recibe una propuesta inesperada',
+      'Un creador reconocido comparte su contenido', 'Descubre que alguien copió su idea', 'Le ofrecen una entrevista en vivo', 'Su mascota se vuelve la protagonista del video',
+      'Un profesor lo invita a dar una charla', 'Llueve el día del evento', 'El algoritmo cambia de un día para otro', 'Encuentra un aliado donde menos lo esperaba'
+    ]}
+  };
+  var ORDER = ['personaje', 'problema', 'giro'];
+  var STEPS = [
+    { id: 'equipos', label: 'Equipos' },
+    { id: 'personaje', label: 'Personaje' },
+    { id: 'problema', label: 'Problema' },
+    { id: 'giro', label: 'Giro' },
+    { id: 'resumen', label: 'Resumen' },
+    { id: 'reto', label: 'Manos a la obra' }
+  ];
+  var LETTERS = 'ABCDEFGHIJKLMNOP'.split('');
+  var KEY = 'historia-en-cadena-v1';
+
+  function shuffle(n) {
+    var a = []; for (var i = 0; i < n; i++) a.push(i);
+    for (var j = n - 1; j > 0; j--) { var k = Math.floor(Math.random() * (j + 1)); var t = a[j]; a[j] = a[k]; a[k] = t; }
+    return a;
+  }
+  function fresh() {
+    var s = { step: 'equipos', teams: 6, order: {}, picks: {}, sel: {}, last: {}, confirm: null };
+    ORDER.forEach(function (c) { s.order[c] = shuffle(CATS[c].items.length); s.picks[c] = CATS[c].items.map(function () { return null; }); s.sel[c] = 'A'; s.last[c] = null; });
+    return s;
+  }
+  var state;
+  try { state = JSON.parse(localStorage.getItem(KEY)); } catch (e) { state = null; }
+  if (!state || !state.order) state = (window.claude && window.claude.hot && window.claude.hot.data && window.claude.hot.data.order) ? window.claude.hot.data : fresh();
+  state.confirm = null;
+  var who = '';
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  if (window.claude && window.claude.hot && window.claude.hot.snapshot) { try { window.claude.hot.snapshot(function () { return state; }); } catch (e) {} }
+
+  function teams() { return LETTERS.slice(0, state.teams); }
+  function teamHas(cat, t) { return state.picks[cat].some(function (p) { return p && p.team === t; }); }
+  function pickOf(cat, t) {
+    for (var i = 0; i < state.picks[cat].length; i++) { var p = state.picks[cat][i]; if (p && p.team === t) return { text: CATS[cat].items[state.order[cat][i]], who: p.who }; }
+    return null;
+  }
+  function nextPending(cat) { var ts = teams(); for (var i = 0; i < ts.length; i++) if (!teamHas(cat, ts[i])) return ts[i]; return null; }
+  function catDone(cat) { return teams().every(function (t) { return teamHas(cat, t); }); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  var nodesSvg = '<svg viewBox="0 0 160 160" aria-hidden="true"><g fill="none" stroke="#67e0ee" stroke-width="1.5" stroke-opacity="0.8"><path d="M20 130 L60 100 L105 115 L145 70 M60 100 L75 50 L120 30 M75 50 L105 115"/></g><g fill="#67e0ee"><circle cx="20" cy="130" r="3"/><circle cx="60" cy="100" r="4"/><circle cx="105" cy="115" r="3"/><circle cx="145" cy="70" r="4"/><circle cx="75" cy="50" r="3"/><circle cx="120" cy="30" r="3"/></g></svg>';
+
+  var view = document.getElementById('view');
+  var stepsNav = document.getElementById('steps');
+
+  function renderSteps() {
+    stepsNav.innerHTML = STEPS.map(function (s, i) {
+      var done = ORDER.indexOf(s.id) > -1 && catDone(s.id);
+      return '<button type="button" data-step="' + s.id + '"' + (state.step === s.id ? ' aria-current="step"' : '') + '><span class="n">' + (i + 1) + '</span>' + s.label + (done ? ' <span class="done" aria-label="completo">✓</span>' : '') + '</button>';
+    }).join('');
+  }
+
+  function renderEquipos() {
+    var used = ORDER.some(function (c) { return state.picks[c].some(function (p) { return p; }); });
+    var html = '<section class="panel"><h2>¿Cuántos equipos se formaron?</h2>' +
+      '<p class="lead">Pidan a los estudiantes que se levanten, formen equipos de 3 a 4 personas y pasen al frente. Cada equipo recibe una letra.</p>' +
+      '<div class="counter"><button class="btn" type="button" id="minus" aria-label="Quitar un equipo">−</button><output id="count" aria-live="polite">' + state.teams + '</output><button class="btn" type="button" id="plus" aria-label="Agregar un equipo">+</button><span class="hint">equipos (de 2 a 12)</span></div>' +
+      '<div class="teamgrid">' + teams().map(function (t) { return '<div class="teamchip"><span class="badge">' + t + '</span><span>Equipo ' + t + '</span></div>'; }).join('') + '</div>' +
+      (used ? '<p class="hint">Si quitan equipos, se liberan las tarjetas que esos equipos ya tenían.</p>' : '') +
+      '<div class="row">' + (state.confirm === 'reset'
+        ? '<span>¿Borrar todas las selecciones y barajar de nuevo?</span><button class="btn danger" type="button" id="resetYes">Sí, empezar de cero</button><button class="btn" type="button" id="resetNo">Cancelar</button>'
+        : '<button class="btn danger" type="button" id="reset">Reiniciar actividad</button>') + '</div></section>';
+    view.innerHTML = html;
+  }
+
+  function renderRound(cat) {
+    var C = CATS[cat];
+    var ts = teams();
+    if (!state.sel[cat] || teamHas(cat, state.sel[cat]) || ts.indexOf(state.sel[cat]) < 0) state.sel[cat] = nextPending(cat);
+    var sel = state.sel[cat];
+    var done = catDone(cat);
+    var last = state.last[cat];
+    var reveal = '';
+    if (last !== null && state.picks[cat][last]) {
+      var p = state.picks[cat][last];
+      reveal = '<div class="reveal" role="status"><span class="badge">' + p.team + '</span><div class="what"><small>Equipo ' + p.team + (p.who ? ' · lo eligió ' + esc(p.who) : '') + ' · ' + C.label.toLowerCase() + '</small><strong>' + esc(C.items[state.order[cat][last]]) + '</strong></div></div>';
+    }
+    var turns = '<div class="turns"><h3>Turno de</h3><div class="turnlist">' + ts.map(function (t) {
+      var has = teamHas(cat, t);
+      return '<button type="button" class="turn' + (has ? ' has' : '') + '" data-team="' + t + '" aria-pressed="' + (sel === t) + '"' + (has ? ' aria-label="Equipo ' + t + ', ya eligió"' : ' aria-label="Equipo ' + t + '"') + '>' + t + '</button>';
+    }).join('') + '</div>' +
+      '<label class="field" for="who">¿Quién pasa a elegir? (opcional)<input type="text" id="who" placeholder="Nombre del integrante" value="' + esc(who) + '" autocomplete="off"></label>' +
+      (done ? '<div class="status donecat">Todos los equipos tienen su ' + C.label.toLowerCase() + '. Pasen al siguiente momento.</div>'
+            : '<div class="status">Pasa al frente un integrante del <b>equipo ' + sel + '</b> y elige una tarjeta.</div>') +
+      '<p class="hint">Para devolver una tarjeta, tóquenla y elijan «Liberar».</p></div>';
+    var board = '<div class="board">' + state.order[cat].map(function (idx, pos) {
+      var p = state.picks[cat][pos];
+      var confirming = state.confirm && state.confirm.cat === cat && state.confirm.pos === pos;
+      var front = '<div class="face front"><span class="cat">' + C.label + '</span><span class="txt">' + esc(C.items[idx]) + '</span>' +
+        (p ? '<span class="owner"><b>Equipo ' + p.team + '</b>' + (p.who ? '<span>' + esc(p.who) + '</span>' : '') + '</span>' +
+          (confirming ? '<span class="confirm"><button type="button" class="yes" data-release="' + pos + '">Liberar</button><button type="button" class="no" data-cancel="1">Cancelar</button></span>' : '')
+          : '') + '</div>';
+      var back = '<div class="face back"><span class="cat">' + C.label + '</span><span class="num">' + (pos + 1) + '</span>' + nodesSvg + '</div>';
+      var disabled = !p && (done || !sel);
+      return '<div class="card cat-' + cat + (p ? ' flipped' : '') + '" role="button" tabindex="' + (disabled ? '-1' : '0') + '" data-pos="' + pos + '"' + (disabled ? ' aria-disabled="true"' : '') +
+        ' aria-label="' + (p ? C.label + ': ' + esc(C.items[idx]) + ', equipo ' + p.team : 'Tarjeta ' + (pos + 1) + ' boca abajo') + '"><div class="inner">' + back + front + '</div></div>';
+    }).join('') + '</div>';
+    view.innerHTML = '<section class="panel"><h2>Ronda: ' + C.label.toLowerCase() + '</h2>' + reveal +
+      '<div class="round">' + turns + '<div class="side">' + board + '</div></div></section>';
+  }
+
+  function renderResumen() {
+    view.innerHTML = '<section class="panel"><h2>Lo que le tocó a cada equipo</h2><p class="lead">Cada equipo lleva su personaje, su problema y su giro. Con eso construyen la historia.</p><div class="summary">' +
+      teams().map(function (t) {
+        return '<article class="tcard"><header><span class="badge">' + t + '</span><h3>Equipo ' + t + '</h3></header>' + ORDER.map(function (c) {
+          var p = pickOf(c, t);
+          return '<div class="slot cat-' + c + '"><span class="k">' + CATS[c].label + '</span>' + (p ? '<span class="v">' + esc(p.text) + '</span>' + (p.who ? '<span class="who">Eligió: ' + esc(p.who) + '</span>' : '') : '<span class="v empty">Pendiente</span>') + '</div>';
+        }).join('') + '</article>';
+      }).join('') + '</div></section>';
+  }
+
+  var timer = { total: 240, left: 240, id: null };
+  function fmt(s) { var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function renderReto() {
+    view.innerHTML = '<section class="panel"><h2>Manos a la obra</h2><p class="lead">Con las tres tarjetas de su equipo, construyan una historia y conviértanla en contenido.</p>' +
+      '<div class="steps3">' +
+        '<article class="istep"><span class="time">Paso 1 · 4 minutos</span><h3>Cuenten la historia en cadena</h3><p>Por turnos, cada integrante agrega una frase en 20 segundos. No se vale volver atrás.</p><ol class="spine">' +
+          '<li class="cat-personaje"><span class="tag">Personaje</span><span class="ph">Había una vez… Todos los días…</span><span class="use">Presenten su tarjeta de personaje y su rutina.</span></li>' +
+          '<li class="cat-problema"><span class="tag">Problema</span><span class="ph">Hasta que un día…</span><span class="use">Aparece su tarjeta de problema.</span></li>' +
+          '<li class="cat-giro"><span class="tag">Acción</span><span class="ph">Por eso… y por eso…</span><span class="use">Lo que hace el personaje. Aquí entra el giro inesperado.</span></li>' +
+          '<li class="cat-res"><span class="tag">Resultado</span><span class="ph">Hasta que finalmente…</span><span class="use">Cómo se resuelve la situación.</span></li>' +
+          '<li class="cat-apr"><span class="tag">Aprendizaje</span><span class="ph">Y desde entonces…</span><span class="use">Qué cambió y qué se aprende.</span></li>' +
+        '</ol></article>' +
+        '<article class="istep"><span class="time">Paso 2 · 3 minutos</span><h3>Transfórmenla en contenido</h3><p>¿Qué pieza saldría de este relato? Definan el gancho de los primeros segundos y el llamado a la acción.</p><div class="formats"><span>Reel</span><span>Carrusel</span><span>Historia</span></div><p>Extra: ¿qué acción real demostraría esta historia? Eso es storydoing.</p></article>' +
+        '<article class="istep"><span class="time">Paso 3 · 30 segundos por equipo</span><h3>Socialicen</h3><p>Cuenten la historia completa y digan qué contenido harían con ella y por qué.</p><p>Pregunta para todos: ¿qué parte fue más fácil de convertir en contenido?</p></article>' +
+      '</div>' +
+      '<div class="timer" id="timerBox"><output id="clock" aria-live="off">' + fmt(timer.left) + '</output><div class="presets">' +
+        '<button class="btn" type="button" data-preset="240">4:00 historia</button><button class="btn" type="button" data-preset="180">3:00 contenido</button><button class="btn" type="button" data-preset="30">0:30 socializar</button></div>' +
+        '<div class="row"><button class="btn primary" type="button" id="play">' + (timer.id ? 'Pausar' : 'Iniciar') + '</button><button class="btn" type="button" id="restart">Reiniciar</button></div></div></section>';
+  }
+  function tick() {
+    timer.left = Math.max(0, timer.left - 1);
+    var c = document.getElementById('clock'); if (c) c.textContent = fmt(timer.left);
+    var b = document.getElementById('timerBox'); if (b) b.classList.toggle('end', timer.left === 0);
+    if (timer.left === 0) { clearInterval(timer.id); timer.id = null; var p = document.getElementById('play'); if (p) p.textContent = 'Iniciar'; }
+  }
+
+  function render() {
+    renderSteps();
+    if (state.step === 'equipos') renderEquipos();
+    else if (ORDER.indexOf(state.step) > -1) renderRound(state.step);
+    else if (state.step === 'resumen') renderResumen();
+    else renderReto();
+    var i = STEPS.findIndex(function (s) { return s.id === state.step; });
+    document.getElementById('prev').disabled = i === 0;
+    var nx = document.getElementById('next');
+    nx.disabled = i === STEPS.length - 1;
+    nx.textContent = i < STEPS.length - 1 ? STEPS[i + 1].label + ' →' : 'Fin';
+    save();
+  }
+  function go(step) { state.step = step; state.confirm = null; who = ''; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  stepsNav.addEventListener('click', function (e) { var b = e.target.closest('button[data-step]'); if (b) go(b.dataset.step); });
+  document.getElementById('prev').addEventListener('click', function () { var i = STEPS.findIndex(function (s) { return s.id === state.step; }); if (i > 0) go(STEPS[i - 1].id); });
+  document.getElementById('next').addEventListener('click', function () { var i = STEPS.findIndex(function (s) { return s.id === state.step; }); if (i < STEPS.length - 1) go(STEPS[i + 1].id); });
+
+  function pick(cat, pos) {
+    if (state.picks[cat][pos]) { state.confirm = { cat: cat, pos: pos }; render(); return; }
+    var t = state.sel[cat];
+    if (!t || teamHas(cat, t)) return;
+    var name = (document.getElementById('who') || {}).value || '';
+    state.picks[cat][pos] = { team: t, who: name.trim() };
+    state.last[cat] = pos;
+    state.sel[cat] = nextPending(cat);
+    state.confirm = null; who = '';
+    render();
+    var w = document.getElementById('who'); if (w && !catDone(cat)) w.focus();
+  }
+
+  view.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.id === 'plus' && state.teams < 12) { state.teams++; render(); return; }
+    if (t.id === 'minus' && state.teams > 2) {
+      state.teams--;
+      var gone = LETTERS[state.teams];
+      ORDER.forEach(function (c) { state.picks[c] = state.picks[c].map(function (p, i) { if (p && p.team === gone) { if (state.last[c] === i) state.last[c] = null; return null; } return p; }); });
+      render(); return;
+    }
+    if (t.id === 'reset') { state.confirm = 'reset'; render(); return; }
+    if (t.id === 'resetNo') { state.confirm = null; render(); return; }
+    if (t.id === 'resetYes') { var n = state.teams; state = fresh(); state.teams = n; render(); return; }
+    if (t.dataset.release) { var cat = state.step; var pos = +t.dataset.release; state.picks[cat][pos] = null; if (state.last[cat] === pos) state.last[cat] = null; state.confirm = null; render(); e.stopPropagation(); return; }
+    if (t.dataset.cancel) { state.confirm = null; render(); e.stopPropagation(); return; }
+    var turn = t.closest('.turn');
+    if (turn && !turn.classList.contains('has')) { state.sel[state.step] = turn.dataset.team; var w = document.getElementById('who'); who = w ? w.value : ''; render(); return; }
+    var card = t.closest('.card');
+    if (card && card.getAttribute('aria-disabled') !== 'true') { pick(state.step, +card.dataset.pos); return; }
+    if (t.dataset.preset) { clearInterval(timer.id); timer.id = null; timer.total = timer.left = +t.dataset.preset; render(); return; }
+    if (t.id === 'play') {
+      if (timer.id) { clearInterval(timer.id); timer.id = null; t.textContent = 'Iniciar'; }
+      else { if (timer.left === 0) timer.left = timer.total; timer.id = setInterval(tick, 1000); t.textContent = 'Pausar'; var bx = document.getElementById('timerBox'); if (bx) bx.classList.remove('end'); var ck = document.getElementById('clock'); if (ck) ck.textContent = fmt(timer.left); }
+      return;
+    }
+    if (t.id === 'restart') { clearInterval(timer.id); timer.id = null; timer.left = timer.total; render(); return; }
+  });
+  view.addEventListener('keydown', function (e) {
+    var card = e.target.closest && e.target.closest('.card');
+    if (card && (e.key === 'Enter' || e.key === ' ') && e.target === card && card.getAttribute('aria-disabled') !== 'true') { e.preventDefault(); pick(state.step, +card.dataset.pos); }
+  });
+  view.addEventListener('input', function (e) { if (e.target.id === 'who') who = e.target.value; });
+
+  render();
+})();
+</script>
+
+</body></html>

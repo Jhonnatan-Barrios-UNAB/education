@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Color: mala vs. buena combinación</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  h1.page-title{text-align:center;font-size:20px;font-weight:700;margin:0 0 6px;}
+  p.page-sub{text-align:center;color:#666;font-size:14px;margin:0 0 24px;}
+  .wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
+  .col{flex:1 1 380px;max-width:440px;}
+  .label{text-align:center;font-weight:700;font-size:13px;letter-spacing:.03em;text-transform:uppercase;margin-bottom:10px;padding:6px;border-radius:6px;}
+  .label.bad{background:#fde3e3;color:#a32d2d;}
+  .label.good{background:#dff3ea;color:#0f6e56;}
+
+  .card{border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+  .head{padding:20px;text-align:center;}
+  .head h2{margin:0;font-size:18px;font-weight:700;}
+  .cats{padding:18px;display:flex;flex-direction:column;gap:10px;}
+  .cat{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:8px;}
+  .cat .ic{font-size:20px;}
+  .cat .t strong{display:block;font-size:13.5px;}
+  .cat .t span{font-size:11.5px;}
+
+  /* MALA COMBINACIÓN */
+  .bad-card .head{background:#ff2e93;color:#c8ff00;}
+  .bad-card{background:#fffbe0;}
+  .bad-card .cats .cat:nth-child(1){background:#ff0000;color:#b30000;}
+  .bad-card .cats .cat:nth-child(2){background:#00ff00;color:#ffff66;}
+  .bad-card .cats .cat:nth-child(3){background:#0033cc;color:#000066;}
+  .bad-card .cats .cat:nth-child(4){background:#663399;color:#5c1a99;}
+
+  /* BUENA COMBINACIÓN */
+  .good-card{background:#fff;}
+  .good-card .head{background:#2c2c2a;color:#fff;}
+  .good-card .cats .cat:nth-child(1){background:#e6f1fb;} /* papel: azul */
+  .good-card .cats .cat:nth-child(1) .t strong{color:#0c447c;}
+  .good-card .cats .cat:nth-child(1) .t span{color:#185fa5;}
+  .good-card .cats .cat:nth-child(2){background:#eaf3de;} /* vidrio: verde */
+  .good-card .cats .cat:nth-child(2) .t strong{color:#27500a;}
+  .good-card .cats .cat:nth-child(2) .t span{color:#3b6d11;}
+  .good-card .cats .cat:nth-child(3){background:#faeeda;} /* plastico: amarillo/ambar */
+  .good-card .cats .cat:nth-child(3) .t strong{color:#633806;}
+  .good-card .cats .cat:nth-child(3) .t span{color:#854f0b;}
+  .good-card .cats .cat:nth-child(4){background:#f1efe8;} /* organico: gris/marron neutro */
+  .good-card .cats .cat:nth-child(4) .t strong{color:#2c2c2a;}
+  .good-card .cats .cat:nth-child(4) .t span{color:#5f5e5a;}
+  .good-foot{background:#f4f4f2;padding:10px;text-align:center;font-size:11px;color:#444;font-weight:700;}
+
+  .legend{max-width:820px;margin:28px auto 0;background:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 1px 4px rgba(0,0,0,.06);font-size:12.5px;color:#444;}
+</style>
+</head>
+<body>
+  <h1 class="page-title">Uso del color en infografías</h1>
+  <p class="page-sub">Mismo tema, dos paletas: "Cómo separar los residuos reciclables"</p>
+
+  <div class="wrap">
+    <div class="col">
+      <div class="label bad">Mala combinación</div>
+      <div class="card bad-card">
+        <div class="head"><h2>¡RECICLA BIEN!</h2></div>
+        <div class="cats">
+          <div class="cat"><span class="ic">📦</span><div class="t"><strong>Papel y cartón</strong><span>cajas, hojas, periódico</span></div></div>
+          <div class="cat"><span class="ic">🍾</span><div class="t"><strong>Vidrio</strong><span>botellas, frascos</span></div></div>
+          <div class="cat"><span class="ic">🥤</span><div class="t"><strong>Plástico</strong><span>envases, bolsas</span></div></div>
+          <div class="cat"><span class="ic">🍎</span><div class="t"><strong>Orgánicos</strong><span>restos de comida</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="label good">Buena combinación</div>
+      <div class="card good-card">
+        <div class="head"><h2>Cómo separar tus residuos</h2></div>
+        <div class="cats">
+          <div class="cat"><span class="ic">📦</span><div class="t"><strong>Papel y cartón</strong><span>cajas, hojas, periódico</span></div></div>
+          <div class="cat"><span class="ic">🍾</span><div class="t"><strong>Vidrio</strong><span>botellas, frascos</span></div></div>
+          <div class="cat"><span class="ic">🥤</span><div class="t"><strong>Plástico</strong><span>envases, bolsas</span></div></div>
+          <div class="cat"><span class="ic">🍎</span><div class="t"><strong>Orgánicos</strong><span>restos de comida</span></div></div>
+        </div>
+        <div class="good-foot">Un color por categoría, coherente y con buen contraste</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <b>Qué observar:</b> en la versión de la izquierda hay más de 6 colores sin relación entre sí, poco contraste entre texto y fondo (ej. rojo sobre rojo, morado sobre morado) y no hay asociación lógica de color por categoría. En la de la derecha se usa una paleta reducida (4 colores + neutros), un color por categoría con buen contraste texto/fondo, y colores que refuerzan asociaciones ya conocidas del reciclaje.
+  </div>
+</body>
+</html>

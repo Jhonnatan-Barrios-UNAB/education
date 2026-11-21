@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tipo: cronológica / línea de tiempo</title>
+<style>
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#f4f4f2;font-family:Arial,Helvetica,sans-serif;color:#222;padding:24px;}
+  .badge{display:block;width:fit-content;margin:0 auto 14px;background:#eeedfe;color:#3c3489;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:6px 14px;border-radius:20px;}
+  .stage{max-width:520px;margin:0 auto;}
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+  .head{background:#3c3489;color:#fff;padding:26px 24px;text-align:center;}
+  .head h1{margin:0 0 4px;font-size:20px;font-weight:700;}
+  .head p{margin:0;font-size:13px;opacity:.85;}
+  .timeline{padding:26px 24px 22px;position:relative;}
+  .timeline::before{content:"";position:absolute;left:43px;top:26px;bottom:22px;width:2px;background:#cecbf6;}
+  .ev{display:flex;gap:16px;margin-bottom:22px;position:relative;}
+  .ev:last-child{margin-bottom:0;}
+  .ev .dot{width:40px;height:40px;flex:0 0 40px;border-radius:50%;background:#eeedfe;border:2px solid #7f77dd;display:flex;align-items:center;justify-content:center;font-size:19px;z-index:1;}
+  .ev .txt{padding-top:4px;}
+  .ev .yr{font-size:14px;font-weight:700;color:#534ab7;letter-spacing:.03em;}
+  .ev h3{margin:2px 0 3px;font-size:14px;font-weight:700;color:#26215c;}
+  .ev p{margin:0;font-size:12px;color:#555;line-height:1.4;}
+  .foot{background:#f0f0fb;padding:12px;text-align:center;font-size:11px;color:#534ab7;font-weight:700;}
+</style>
+</head>
+<body>
+  <div class="badge">Tipo: cronológica / línea de tiempo</div>
+  <div class="stage">
+    <div class="card">
+      <div class="head">
+        <h1>Breve historia de internet</h1>
+        <p>De una red militar al amanecer de la inteligencia artificial</p>
+      </div>
+      <div class="timeline">
+        <div class="ev"><div class="dot">🖧</div><div class="txt"><span class="yr">1969</span><h3>Nace ARPANET</h3><p>Primera red de computadoras conectadas entre universidades en EE. UU.</p></div></div>
+        <div class="ev"><div class="dot">🌐</div><div class="txt"><span class="yr">1991</span><h3>Llega la World Wide Web</h3><p>Tim Berners-Lee publica la primera página web pública.</p></div></div>
+        <div class="ev"><div class="dot">🔍</div><div class="txt"><span class="yr">1998</span><h3>Aparece Google</h3><p>Cambia la forma de buscar información en la red.</p></div></div>
+        <div class="ev"><div class="dot">👥</div><div class="txt"><span class="yr">2004</span><h3>Auge de redes sociales</h3><p>Facebook impulsa la conexión social masiva en línea.</p></div></div>
+        <div class="ev"><div class="dot">📱</div><div class="txt"><span class="yr">2007</span><h3>Era de los smartphones</h3><p>El iPhone lleva internet al bolsillo de millones.</p></div></div>
+        <div class="ev"><div class="dot">🤖</div><div class="txt"><span class="yr">2020s</span><h3>IA generativa</h3><p>Herramientas como ChatGPT y Claude transforman la creación de contenido.</p></div></div>
+      </div>
+      <div class="foot">Más de 50 años de evolución constante</div>
+    </div>
+  </div>
+</body>
+</html>

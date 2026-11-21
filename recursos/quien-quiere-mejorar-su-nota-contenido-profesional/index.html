@@ -1,0 +1,900 @@
+<!doctype html><html><head>
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>¿Quién quiere mejorar su nota?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: escenario de concurso — columna principal (comodines, cronómetro, pregunta en barra hexagonal, opciones) y escalera de 5 niveles a la derecha */
+:root {
+  color-scheme: dark;
+  --bg-0: #071331;
+  --bg-1: #0b1b3f;
+  --panel: #122150;
+  --panel-2: #18306e;
+  --indigo: #2f5bea;
+  --violet: #6c4ad8;
+  --deep: #1c3a8c;
+  --petrol: #155e75;
+  --cyan: #14b8c9;
+  --cyan-soft: #5fd3e6;
+  --lilac: #b9a4ff;
+  --fg: #f5f7ff;
+  --fg-soft: #c9d3ee;
+  --fg-muted: #9faac8;
+  --line: rgba(95, 211, 230, 0.5);
+  --hair: rgba(199, 208, 238, 0.16);
+  --ok: #5ee0a0;
+  --half: #ffcf70;
+  --bad: #ff8f8f;
+  --ink-on-cyan: #061433;
+  --font-display: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--bg-0);
+  background-image:
+    radial-gradient(1100px 620px at 50% -12%, rgba(108, 74, 216, 0.55), transparent 62%),
+    radial-gradient(900px 500px at 50% 115%, rgba(20, 184, 201, 0.16), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 100%);
+  background-attachment: fixed;
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: clamp(16px, 3vw, 40px); padding-block: 22px 48px; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--cyan-soft); outline-offset: 3px; }
+.brand { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan-soft); margin: 0 0 18px; }
+.brand::before { content: ""; width: 40px; height: 3px; border-radius: 2px; background: var(--cyan); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Botones ---------- */
+.btn { border-radius: 12px; padding: 12px 20px; border: 1px solid var(--hair); background: rgba(255,255,255,0.06); cursor: pointer; font-weight: 600; font-size: 15px; }
+.btn:hover { background: rgba(255,255,255,0.12); }
+.btn.primary { background: linear-gradient(180deg, var(--cyan-soft), var(--cyan)); color: var(--ink-on-cyan); border-color: transparent; }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn.warn { color: var(--half); border-color: rgba(255, 207, 112, 0.5); }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; filter: none; }
+.btn.lg { padding: 16px 28px; font-size: 17px; border-radius: 14px; }
+
+/* ---------- Hexágonos estilo concurso ---------- */
+.hexrow { position: relative; display: block; width: 100%; background: none; border: 0; padding: 0; text-align: left; }
+.hexrow::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--line); opacity: 0.55; }
+.hex { display: block; position: relative; margin-inline: clamp(8px, 2.6vw, 30px); padding: 2px; background: linear-gradient(90deg, var(--cyan-soft), var(--lilac) 50%, var(--cyan-soft));
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 22px 100%, 0 50%); }
+.hex-in { clip-path: polygon(21px 0, calc(100% - 21px) 0, 100% 50%, calc(100% - 21px) 100%, 21px 100%, 0 50%);
+  background: linear-gradient(180deg, #1a2f6e 0%, #0b1b3f 100%); padding: 14px 40px; display: flex; align-items: center; gap: 14px; min-height: 58px; }
+.opt { cursor: pointer; }
+.opt .letter { font-family: var(--font-display); font-weight: 800; color: var(--cyan-soft); min-width: 1.6em; }
+.opt .txt { font-size: 16.5px; line-height: 1.35; }
+.opt:hover .hex-in { background: linear-gradient(180deg, #23408f 0%, #12275a 100%); }
+.opt[aria-pressed="true"] .hex { background: linear-gradient(90deg, #fff, var(--cyan-soft), #fff); }
+.opt[aria-pressed="true"] .hex-in { background: linear-gradient(180deg, var(--cyan-soft) 0%, var(--cyan) 100%); color: var(--ink-on-cyan); }
+.opt[aria-pressed="true"] .letter { color: var(--ink-on-cyan); }
+.opt.gone { cursor: default; opacity: 0.22; }
+.opt.gone .txt { visibility: hidden; }
+.opt:focus-visible { outline: none; }
+.opt:focus-visible .hex { background: linear-gradient(90deg, #fff, #fff); }
+
+.qbar .hex-in { padding: 20px 46px; min-height: 96px; flex-direction: column; align-items: flex-start; gap: 6px; }
+.qbar .tag { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--cyan-soft); }
+.qbar .q { font-family: var(--font-display); font-weight: 700; font-size: clamp(18px, 2vw, 23px); line-height: 1.3; text-wrap: balance; margin: 0; }
+
+/* ---------- Inicio ---------- */
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+@media (max-width: 920px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+.title { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 5vw, 62px); line-height: 1.02; letter-spacing: -0.02em; margin: 6px 0 12px; text-wrap: balance; }
+.title em { font-style: normal; background: linear-gradient(90deg, var(--cyan-soft), var(--lilac)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--fg-soft); font-size: 17px; max-width: 58ch; margin: 0 0 22px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.rule { background: rgba(18, 33, 80, 0.72); border: 1px solid var(--hair); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+.rule h3 { margin: 0; font-family: var(--font-display); font-size: 17px; }
+.rule p { margin: 0; color: var(--fg-soft); font-size: 14.5px; }
+.rule .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.timechips { display: flex; flex-direction: column; gap: 6px; }
+.timechips span { display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; color: var(--fg-soft); border-bottom: 1px dashed var(--hair); padding-bottom: 4px; }
+.timechips b { color: var(--fg); font-variant-numeric: tabular-nums; }
+.lifelist { display: flex; flex-direction: column; gap: 10px; }
+.lifelist div { display: flex; gap: 12px; align-items: flex-start; }
+.lifelist .mini { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--cyan-soft); display: grid; place-items: center; font: 800 11px var(--font-display); color: var(--cyan-soft); }
+.lifelist .mini svg { width: 18px; height: 18px; }
+.lifelist p { margin: 0; font-size: 14px; color: var(--fg-soft); }
+.lifelist b { color: var(--fg); }
+
+.card { background: rgba(18, 33, 80, 0.82); border: 1px solid var(--hair); border-radius: 20px; padding: clamp(18px, 2.4vw, 28px); display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 50px rgba(3, 7, 30, 0.45); }
+.card h2 { margin: 0; font-family: var(--font-display); font-size: 22px; }
+label.f { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--fg-soft); font-weight: 500; }
+input[type="text"], input[type="password"], select { font: 500 16px var(--font-body); color: var(--fg); background: rgba(255,255,255,0.07); border: 1px solid var(--hair); border-radius: 12px; padding: 13px 14px; width: 100%; }
+select option { background: #122150; color: var(--fg); }
+input::placeholder { color: var(--fg-muted); }
+.err { color: var(--bad); font-size: 14px; margin: 0; }
+.note { font-size: 13.5px; color: var(--fg-muted); margin: 0; }
+.cap { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(20, 184, 201, 0.1); border: 1px solid rgba(95, 211, 230, 0.3); font-size: 14.5px; }
+.cap b { font-variant-numeric: tabular-nums; }
+.cap.empty { background: rgba(255, 207, 112, 0.1); border-color: rgba(255, 207, 112, 0.4); color: var(--half); }
+.resume { border: 1px solid rgba(255, 207, 112, 0.45); background: rgba(255, 207, 112, 0.08); border-radius: 14px; padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.resume p { margin: 0; }
+.foot { display: flex; justify-content: flex-end; margin-top: 24px; }
+.emblem { width: 100%; max-width: 120px; height: auto; margin-bottom: 4px; }
+
+/* ---------- Juego ---------- */
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+@media (max-width: 1000px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.player { display: flex; flex-direction: column; }
+.player small { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-muted); font-weight: 600; }
+.player b { font-family: var(--font-display); font-size: 20px; }
+.lifelines { display: flex; gap: 14px; }
+.life { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: 0; cursor: pointer; padding: 0; }
+.life .orb { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--cyan-soft); background: radial-gradient(circle at 50% 35%, #23408f, #0b1b3f); color: var(--fg); position: relative; box-shadow: 0 0 18px rgba(95, 211, 230, 0.25); }
+.life .orb svg { width: 28px; height: 28px; }
+.life .orb .ff { font: 800 16px var(--font-display); letter-spacing: -0.02em; }
+.life .lab { font-size: 12px; color: var(--fg-soft); font-weight: 600; }
+.life:hover:not([disabled]) .orb { box-shadow: 0 0 26px rgba(95, 211, 230, 0.55); }
+.life[disabled] { cursor: not-allowed; }
+.life[disabled] .orb { opacity: 0.35; box-shadow: none; }
+.life.used .orb::after { content: ""; position: absolute; width: 74px; height: 3px; background: var(--bad); transform: rotate(-40deg); border-radius: 2px; }
+.life.used .lab::after { content: " · usado"; color: var(--bad); }
+
+.timer { position: relative; width: 92px; height: 92px; flex: none; }
+.timer svg { width: 92px; height: 92px; transform: rotate(-90deg); }
+.timer .track { fill: none; stroke: rgba(255,255,255,0.1); stroke-width: 8; }
+.timer .bar { fill: none; stroke: var(--cyan-soft); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.25s linear, stroke 0.3s; }
+.timer.low .bar { stroke: var(--half); }
+.timer .num { position: absolute; inset: 0; display: grid; place-items: center; font: 800 28px var(--font-display); font-variant-numeric: tabular-nums; }
+.timer.low .num { color: var(--half); }
+
+.casebox { border: 1px solid rgba(185, 164, 255, 0.4); background: linear-gradient(180deg, rgba(108, 74, 216, 0.28), rgba(18, 33, 80, 0.6)); border-radius: 16px; padding: 16px 20px; }
+.casebox .k { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lilac); font-weight: 700; }
+.casebox h3 { margin: 2px 0 6px; font-family: var(--font-display); font-size: 19px; }
+.casebox p { margin: 0; color: var(--fg-soft); font-size: 15.5px; max-width: 95ch; }
+.notice { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--hair); background: rgba(255,255,255,0.05); }
+.pill.cyan { border-color: rgba(95, 211, 230, 0.5); color: var(--cyan-soft); }
+.pill.gold { border-color: rgba(255, 207, 112, 0.5); color: var(--half); }
+.audience { display: flex; gap: 14px; align-items: center; border-radius: 14px; padding: 12px 16px; background: rgba(20, 184, 201, 0.12); border: 1px solid rgba(95, 211, 230, 0.4); }
+.audience svg { width: 30px; height: 30px; flex: none; color: var(--cyan-soft); }
+.audience p { margin: 0; }
+.opts { display: grid; gap: 12px; }
+.opts.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .opts.two { grid-template-columns: minmax(0, 1fr); } }
+.opts.two .hex-in { justify-content: center; min-height: 72px; }
+.opts.two .txt { font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-top: 4px; }
+.flash { font-size: 14px; color: var(--half); min-height: 1.4em; margin: 0; }
+
+/* Ordenar */
+.order { display: flex; flex-direction: column; gap: 10px; }
+.oitem { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.oitem .slot { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--cyan-soft); font: 800 17px var(--font-display); color: var(--cyan-soft); }
+.oitem .hexrow { cursor: grab; }
+.oitem .hexrow:active { cursor: grabbing; }
+.oitem .hex-in { padding: 12px 38px; min-height: 54px; }
+.oitem .grip { color: var(--fg-muted); flex: none; }
+.oitem.drag .hex { opacity: 0.4; }
+.oitem.over .hex { background: linear-gradient(90deg, #fff, var(--cyan-soft), #fff); }
+.arrows { display: flex; flex-direction: column; gap: 4px; }
+.arrows button { width: 38px; height: 26px; border-radius: 8px; border: 1px solid var(--hair); background: rgba(255,255,255,0.06); cursor: pointer; display: grid; place-items: center; padding: 0; }
+.arrows button:hover:not([disabled]) { background: rgba(255,255,255,0.14); }
+.arrows button[disabled] { opacity: 0.25; cursor: default; }
+.arrows svg { width: 14px; height: 14px; }
+
+/* Escalera */
+.ladder { background: rgba(11, 27, 63, 0.85); border: 1px solid var(--hair); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 6px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); }
+.ladder h3 { margin: 0 0 6px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; }
+.rung { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 9px 12px; border-radius: 10px; font-size: 14px; color: var(--fg-soft); }
+.rung .n { font: 800 14px var(--font-display); color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.rung .pt { font-size: 12.5px; color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.rung.now { background: linear-gradient(90deg, var(--cyan-soft), var(--cyan)); color: var(--ink-on-cyan); font-weight: 700; }
+.rung.now .n, .rung.now .pt { color: var(--ink-on-cyan); }
+.rung.done { color: var(--fg); }
+.rung.done .n::after { content: "✓"; color: var(--cyan-soft); margin-left: 2px; font-size: 11px; }
+.ladder .tot { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--hair); font-size: 13px; color: var(--fg-muted); }
+@media (max-width: 1000px) {
+  .ladder { position: static; order: -1; flex-direction: row; flex-wrap: wrap; padding: 10px; }
+  .ladder h3, .ladder .tot { display: none; }
+  .rung { grid-template-columns: auto auto; padding: 6px 10px; }
+  .rung .pt { display: none; }
+}
+
+/* Transición */
+.veil { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(5, 12, 32, 0.72); backdrop-filter: blur(4px); z-index: 20; padding: 16px; }
+.veil .box { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.veil .big { font: 800 clamp(30px, 5vw, 52px)/1.1 var(--font-display); }
+.veil .sub { color: var(--fg-soft); font-size: 17px; }
+.veil .big.time { color: var(--half); }
+
+/* ---------- Resumen ---------- */
+.sumhead { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: center; margin-bottom: 24px; }
+@media (max-width: 640px) { .sumhead { grid-template-columns: minmax(0, 1fr); } }
+.grade { width: 190px; height: 190px; border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle at 50% 30%, #2f5bea, #0b1b3f 70%); border: 3px solid var(--cyan-soft); box-shadow: 0 0 40px rgba(95, 211, 230, 0.35); }
+.grade b { display: block; font: 800 64px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.grade span { font-size: 14px; color: var(--fg-soft); }
+.sumhead h2 { font-family: var(--font-display); font-size: clamp(26px, 3.4vw, 40px); margin: 4px 0 8px; line-height: 1.1; }
+.sumhead p { margin: 0; color: var(--fg-soft); max-width: 62ch; }
+.reviews { display: flex; flex-direction: column; gap: 14px; }
+.rev { background: rgba(18, 33, 80, 0.78); border: 1px solid var(--hair); border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.rev header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.rev .k { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan-soft); font-weight: 700; }
+.rev h3 { margin: 0; font-family: var(--font-display); font-size: 17.5px; line-height: 1.35; }
+.rev .ctx { margin: 0; font-size: 14px; color: var(--fg-muted); }
+.score { font: 800 14px var(--font-display); padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.score.s1 { background: rgba(94, 224, 160, 0.16); color: var(--ok); border: 1px solid rgba(94, 224, 160, 0.45); }
+.score.s05 { background: rgba(255, 207, 112, 0.14); color: var(--half); border: 1px solid rgba(255, 207, 112, 0.45); }
+.score.s0 { background: rgba(255, 143, 143, 0.12); color: var(--bad); border: 1px solid rgba(255, 143, 143, 0.4); }
+.cmp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 700px) { .cmp { grid-template-columns: minmax(0, 1fr); } }
+.cmp div { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px 14px; }
+.cmp small { display: block; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-muted); font-weight: 700; margin-bottom: 4px; }
+.cmp ul, .cmp ol { margin: 0; padding-left: 20px; }
+.cmp li { margin: 2px 0; }
+.cmp p { margin: 0; }
+.why { margin: 0; padding: 12px 14px; border-radius: 12px; background: rgba(20, 184, 201, 0.09); border-left: 3px solid var(--cyan); color: var(--fg); }
+.why b { color: var(--cyan-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ---------- Panel docente ---------- */
+.modal { position: fixed; inset: 0; z-index: 30; background: rgba(5, 12, 32, 0.78); backdrop-filter: blur(4px); display: grid; place-items: start center; overflow-y: auto; padding: 40px 16px; }
+.modal .card { width: min(820px, 100%); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 14px; }
+.stat small { display: block; font-size: 12px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; }
+.stat b { font: 800 24px var(--font-display); font-variant-numeric: tabular-nums; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--hair); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted); background: rgba(255,255,255,0.03); }
+td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 14.5px; color: var(--fg-soft); }
+.check input { width: 18px; height: 18px; accent-color: var(--cyan); }
+.danger { border: 1px solid rgba(255, 207, 112, 0.35); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.danger h3 { margin: 0; font-size: 16px; font-family: var(--font-display); }
+
+@media (prefers-reduced-motion: reduce) { .timer .bar { transition: none; } .veil { backdrop-filter: none; } }
+</style>
+
+<div class="wrap" id="app"></div>
+<div id="layer"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* =================== CONFIGURACIÓN =================== */
+var TIME = { tf: 30, mc: 90, ord: 90 };   // segundos por tipo de pregunta
+var AUDIENCE_BONUS = 30;                    // segundos extra del comodín "Pregunta al público"
+var KEY_FP = 'fd0d6456-d74ecf53';           // huella de la clave de reinicio
+var STORE = 'quien-quiere-mejorar-su-nota-mpd-contenido-v1';
+
+
+/* =================== BANCO 1: VERDADERO O FALSO (20) =================== */
+var TF = [
+  { id: 'tf01', q: 'El contenido no crea la autoridad profesional, pero ayuda a hacerla visible ante otras personas.', a: true, why: 'Es la idea clave de la apertura: muchas personas tienen conocimientos valiosos, pero pocas los comunican.' },
+  { id: 'tf02', q: 'El contenido relacional tiene como objetivo principal enseñar un procedimiento paso a paso.', a: false, why: 'Enseñar es la función del contenido educativo. El relacional busca conectar con personas: eventos, agradecimientos, colaboraciones.' },
+  { id: 'tf03', q: 'Una publicación que muestra el avance semanal de un prototipo en un semillero es contenido experiencial.', a: true, why: 'El contenido experiencial muestra procesos: proyectos, prácticas, investigaciones y desafíos.' },
+  { id: 'tf04', q: 'Para publicar contenido profesional con valor, primero hay que alcanzar un nivel experto en el tema.', a: false, why: 'Documentar el propio aprendizaje suele generar más valor y más confianza que aparentar experiencia.' },
+  { id: 'tf05', q: 'En un post profesional, el hook busca captar la atención en las primeras líneas, antes del «ver más».', a: true, why: 'El hook es la primera de las cuatro partes del post: su función es capturar la atención.' },
+  { id: 'tf06', q: 'El cierre de un post profesional sirve para resumir de nuevo el contexto de la situación descrita.', a: false, why: 'El cierre invita a la conversación. El contexto es la segunda parte del post y explica la situación.' },
+  { id: 'tf07', q: 'Una frase motivacional bien redactada cumple por sí sola la función de un post profesional.', a: false, why: 'Publicar solo frases motivacionales es el error frecuente: LinkedIn no premia publicaciones vacías, premia conversaciones valiosas.' },
+  { id: 'tf08', q: 'Frente al post, el artículo suele generar menos interacción inmediata, pero más credibilidad.', a: true, why: 'El post captura atención; el artículo desarrolla profundidad y construye autoridad temática.' },
+  { id: 'tf09', q: 'Un carrusel funciona mejor cuando se diseña como una presentación de diapositivas de clase.', a: false, why: 'Un carrusel no es una presentación: es una narrativa visual, con una idea por lámina.' },
+  { id: 'tf10', q: 'La estructura sugerida para un video corto profesional es hook, idea principal y cierre.', a: true, why: 'Es la estructura del video corto que se vio en clase; además, debe tener valor profesional y no solo entretener.' },
+  { id: 'tf11', q: 'Usar IA para redactar una experiencia de liderazgo que no se vivió es válido siempre que se declare.', a: false, why: 'La IA no reemplaza las experiencias: ayuda a comunicarlas. Declarar el uso no corrige una experiencia inventada.' },
+  { id: 'tf12', q: 'Según David Allen, la mente es buena para generar ideas, pero mala para almacenar tareas.', a: true, why: 'Es la idea de partida de GTD: por eso propone sacar los pendientes de la cabeza a un sistema confiable.' },
+  { id: 'tf13', q: 'En GTD, el paso de revisar consiste en decidir qué es cada pendiente apenas se captura.', a: false, why: 'Decidir qué es cada pendiente es procesar. Revisar es repasar todo una vez por semana.' },
+  { id: 'tf14', q: 'En GTD, una tarea que toma menos de dos minutos se hace en el momento de procesarla.', a: true, why: 'Es la regla de los dos minutos del paso procesar.' },
+  { id: 'tf15', q: 'El time blocking consiste en asignar bloques específicos del calendario a actividades determinadas.', a: true, why: 'Es la definición de la clase. Su beneficio principal es reducir la improvisación.' },
+  { id: 'tf16', q: 'Según la clase, las personas más productivas se distinguen por manejar listas de tareas más largas.', a: false, why: 'La mayoría administra listas de tareas; las personas más productivas administran tiempo.' },
+  { id: 'tf17', q: 'Para Cal Newport, el deep work es concentrarse sin distracciones en tareas cognitivamente exigentes.', a: true, why: 'Es la definición de trabajo profundo. No todas las horas de trabajo tienen el mismo valor.' },
+  { id: 'tf18', q: 'Gloria Mark (2023) encontró que la atención en una pantalla dura en promedio unos 47 minutos.', a: false, why: 'La cifra es de unos 47 segundos, no minutos: la atención se volvió uno de los recursos más escasos.' },
+  { id: 'tf19', q: 'Una regla «si…, entonces…» ata un hábito a una situación concreta para que sea más fácil cumplirlo.', a: true, why: 'Viene de las intenciones de implementación de Gollwitzer (1999). Ejemplo: si me siento a estudiar, dejo el celular en otra habitación.' },
+  { id: 'tf20', q: 'Según la clase, la diferencia entre personas productivas está sobre todo en las horas disponibles.', a: false, why: 'Todos tienen 24 horas: la diferencia rara vez está en el tiempo disponible, sino en cómo se administra.' }
+];
+
+/* =================== BANCO 2: CASOS DE SELECCIÓN MÚLTIPLE (10 × 5) =================== */
+var CASES = [
+  { id: 'c01', title: 'Valentina espera ser experta', text: 'Valentina Ortiz estudia sexto semestre de Contaduría Pública. Lleva un año en un semillero sobre facturación electrónica para pequeños negocios y ha ayudado a tres tiendas de su barrio a organizar sus cuentas. Nunca ha publicado nada porque siente que todavía no sabe lo suficiente. Dice que empezará a compartir contenido cuando se gradúe y tenga experiencia «de verdad» en una firma.',
+    qs: [
+      { id: 'c01q1', q: '¿Qué ideas de la clase cuestionan la decisión de Valentina?', o: [['No hace falta ser experta para publicar contenido con valor.', 1], ['Documentar lo que aprende genera confianza y la hace visible.', 1], ['Debe esperar a tener experiencia laboral formal para publicar.', 0], ['Solo el contenido educativo construye autoridad profesional.', 0], ['Publicar como estudiante puede afectar su credibilidad futura.', 0]], why: 'Documentar el aprendizaje suele generar más valor que aparentar experiencia, y el contenido hace visible una autoridad que ya está construyendo.' },
+      { id: 'c01q2', q: 'Si muestra paso a paso cómo organizó las cuentas de una tienda, ¿qué tipo de contenido sería?', o: [['Educativo, si su objetivo es enseñar el procedimiento.', 1], ['Experiencial, si su objetivo es mostrar el proceso que vivió.', 1], ['Relacional, porque menciona a los dueños de la tienda que la contrataron.', 0], ['Reflexivo, porque toda publicación personal hace pensar.', 0], ['Ninguno, porque no tiene experiencia laboral formal.', 0]], why: 'El tipo lo define la función: enseñar el procedimiento es educativo; mostrar el proceso vivido es experiencial.' },
+      { id: 'c01q3', q: '¿Qué publicaciones serían contenido reflexivo?', o: [['Lo que aprendió al ver que una tienda perdía dinero sin saberlo.', 1], ['Su opinión sobre por qué los pequeños negocios temen facturar.', 1], ['Una guía en cinco pasos para emitir la primera factura electrónica.', 0], ['Un agradecimiento al semillero por acompañarla todo el año.', 0], ['Fotos del proceso de organizar las cuentas de la tienda.', 0]], why: 'El reflexivo genera pensamiento: aprendizajes, opiniones y experiencias analizadas. La guía es educativa, el agradecimiento relacional y el proceso experiencial.' },
+      { id: 'c01q4', q: '¿Qué publicaciones serían contenido relacional?', o: [['Agradecer al semillero y mencionar lo que aprendió con el grupo.', 1], ['Contar el encuentro de semilleros donde conoció a otros estudiantes.', 1], ['Explicar qué es la facturación electrónica y para qué les sirve a las tiendas.', 0], ['Mostrar una plantilla de Excel que diseñó para las tiendas.', 0], ['Dar su opinión sobre los cambios en la norma tributaria.', 0]], why: 'El contenido relacional conecta con personas: eventos, networking, agradecimientos y colaboraciones.' },
+      { id: 'c01q5', q: '¿Qué le aconsejarías para empezar?', o: [['Contar casos reales del semillero sin inventar resultados.', 1], ['Usar la estructura de hook, contexto, aprendizaje y cierre.', 1], ['Asegurarse de que cada post responda qué aprenderá quien lo lea.', 1], ['Publicar frases motivacionales hasta sentirse lista.', 0], ['Pedirle a una IA que invente casos de clientes grandes.', 0]], why: 'Lo que vale es la experiencia real comunicada con estructura y con un aprendizaje para quien lee; inventar casos daña la credibilidad.' }
+    ] },
+  { id: 'c02', title: 'El post de Mateo', text: 'Mateo Silva estudia Ingeniería de Sistemas y acaba de terminar su práctica en una empresa de software. Escribió este post: «Hoy terminé mi práctica. Fue un camino duro, pero lo logré. Nunca dejen de soñar. ¡Gracias a todos!». Lo publicó con una foto de su escritorio. Tuvo cuatro reacciones y ningún comentario, y ahora dice que LinkedIn «no funciona» para estudiantes.',
+    qs: [
+      { id: 'c02q1', q: '¿Qué problemas tiene el post de Mateo?', o: [['No deja ningún aprendizaje concreto para quien lo lee.', 1], ['Se apoya en frases motivacionales sin contenido real.', 1], ['Es demasiado largo para el formato de un post.', 0], ['Menciona su práctica, algo que no debe publicarse.', 0], ['Le falta usar más emojis y etiquetas al final.', 0]], why: 'El error frecuente es publicar frases motivacionales. La prueba de todo post es: ¿qué aprenderá alguien al leer esto?' },
+      { id: 'c02q2', q: '¿Qué hooks serían mejores para empezar su nuevo post?', o: [['«En mi práctica descubrí que la mayor parte de mi trabajo no era programar.»', 1], ['«Creía que bastaba con saber código. Descubrí que había que preguntar más.»', 1], ['«Hoy quiero compartirles algo muy importante que me pasó durante este semestre.»', 0], ['«Hola a todos, espero que estén muy bien en este inicio de semana.»', 0], ['«Terminé mi práctica y estoy muy feliz con todo lo que viví en ella.»', 0]], why: 'Un buen hook capta la atención con un dato, una confesión, una pregunta o un contraste. Los saludos y anuncios genéricos no generan curiosidad.' },
+      { id: 'c02q3', q: '¿Qué debería incluir la parte de aprendizaje?', o: [['Una práctica concreta que adoptó y que otros pueden aplicar.', 1], ['Lo que cambió en su forma de trabajar después de la experiencia.', 1], ['La lista completa de todas las tareas que hizo durante los seis meses de práctica.', 0], ['Un agradecimiento general a todas las personas de la empresa.', 0], ['La invitación final a que comenten su experiencia en prácticas.', 0]], why: 'El aprendizaje entrega el valor del post. El agradecimiento no lo reemplaza y la invitación a comentar corresponde al cierre.' },
+      { id: 'c02q4', q: '¿Qué cierres invitan a la conversación?', o: [['«¿Qué habilidad no técnica les ha servido más en sus prácticas?»', 1], ['«Si están por empezar práctica, ¿qué les gustaría saber antes?»', 1], ['«Gracias por leer hasta aquí. Nos vemos en la próxima publicación.»', 0], ['«Eso fue todo por hoy. Que tengan un excelente fin de semana.»', 0], ['«Este fue mi resumen de la práctica que terminé esta semana.»', 0]], why: 'El cierre invita a la conversación: una pregunta abierta a la audiencia funciona; una despedida no genera diálogo.' },
+      { id: 'c02q5', q: '¿Qué conclusiones sobre LinkedIn son correctas según la clase?', o: [['LinkedIn no premia publicaciones vacías, sino conversaciones valiosas.', 1], ['El post es la unidad básica de la comunicación profesional allí.', 1], ['LinkedIn solo funciona para profesionales con varios años de experiencia laboral.', 0], ['El problema de Mateo fue publicar desde una cuenta de estudiante.', 0], ['Lo que más funciona allí son las fotos personales sin texto.', 0]], why: 'El post es el formato más usado en LinkedIn, y la plataforma premia conversaciones valiosas. El problema fue el contenido, no ser estudiante.' }
+    ] },
+  { id: 'c03', title: 'Daniela y los formatos', text: 'Daniela Pardo estudia Gastronomía y quiere mostrar su trabajo. Tiene tres ideas: explicar en detalle cómo cambian los costos de un menú cuando sube el precio de los insumos, mostrar en pocos segundos cómo emplata un postre en su práctica y compartir los cinco errores más comunes al calcular porciones. No sabe qué formato usar para cada idea ni por cuál empezar.',
+    qs: [
+      { id: 'c03q1', q: '¿Qué formato conviene para el análisis de costos del menú?', o: [['Un artículo, porque permite argumentar y profundizar el análisis.', 1], ['Un formato que construya credibilidad aunque genere menos reacciones.', 1], ['Un video de 15 segundos, porque es el formato con más alcance en redes hoy.', 0], ['Una frase corta en un post, para no aburrir a la audiencia.', 0], ['Una historia efímera, porque el tema cambia todos los meses.', 0]], why: 'El artículo desarrolla profundidad y argumenta; genera menos interacción inmediata, pero más credibilidad.' },
+      { id: 'c03q2', q: '¿Qué formato encaja con el emplatado del postre?', o: [['Un video corto, porque muestra el proceso en segundos.', 1], ['Una pieza con hook, idea principal y cierre en menos de un minuto.', 1], ['Un artículo largo con fuentes sobre la historia y el origen del postre francés.', 0], ['Un carrusel de diez láminas solo con texto y sin imágenes.', 0], ['Un post sin imagen que describa el plato con detalle.', 0]], why: 'El video corto permite mostrar experiencias y enseñar en segundos, con la estructura hook, idea principal y cierre.' },
+      { id: 'c03q3', q: '¿Por qué un carrusel encaja con los cinco errores al calcular porciones?', o: [['Convierte información compleja en una secuencia visual fácil de seguir.', 1], ['Permite dedicar una lámina a cada error, con una idea por lámina.', 1], ['Es el formato que mejor sirve para argumentar con fuentes académicas.', 0], ['Funciona igual que una presentación de clase con muchas viñetas.', 0], ['Permite publicar sin necesidad de pensar en una portada atractiva.', 0]], why: 'El carrusel funciona para listas y procesos: convierte lo complejo en una secuencia visual. No es una presentación.' },
+      { id: 'c03q4', q: '¿Cómo debería ser la portada de ese carrusel?', o: [['Debe hacer una promesa clara sobre lo que se va a aprender.', 1], ['Debe tener pocas palabras para detener el scroll de quien pasa.', 1], ['Debe incluir los cinco errores completos para ahorrar láminas.', 0], ['Debe ser igual a la última lámina, para dar al carrusel una sensación de orden.', 0], ['Puede omitirse, porque la gente desliza directo al contenido.', 0]], why: 'La estructura del carrusel empieza con una portada con promesa, sigue con una idea por lámina y termina con una invitación.' },
+      { id: 'c03q5', q: '¿Qué principios sobre formatos debe recordar Daniela?', o: [['El formato cambia, pero el valor sigue siendo lo más importante.', 1], ['Un mismo tema puede contarse en post, carrusel o video corto.', 1], ['Conviene publicar las tres ideas en el mismo formato por coherencia.', 0], ['El video corto vale aunque solo entretenga, si tiene muchas vistas.', 0], ['El artículo es el formato que más interacción inmediata consigue.', 0]], why: 'El valor manda sobre el formato, y un tema puede tener varias piezas. El video corto debe tener valor profesional.' }
+    ] },
+  { id: 'c04', title: 'Camilo y la IA', text: 'Camilo Rojas estudia Derecho y quiere escribir sobre el uso de inteligencia artificial en la revisión de contratos. Le pidió a ChatGPT un post y la herramienta le entregó un texto que cuenta cómo él «lideró la implementación de IA en un bufete», algo que nunca ocurrió. El texto suena muy profesional. Camilo está pensando en publicarlo tal cual, con una nota que diga que usó IA.',
+    qs: [
+      { id: 'c04q1', q: '¿Por qué no debería publicar el texto tal como está?', o: [['Cuenta una experiencia que Camilo no vivió.', 1], ['Una experiencia inventada daña la credibilidad de su marca.', 1], ['Los textos hechos con IA siempre suenan poco profesionales.', 0], ['En Derecho está prohibido publicar sobre inteligencia artificial.', 0], ['El texto es muy corto para el formato de un post profesional.', 0]], why: 'La IA no reemplaza las experiencias. Inventar una experiencia o un logro daña la credibilidad que la marca intenta construir.' },
+      { id: 'c04q2', q: '¿Qué usos de la IA serían adecuados para Camilo?', o: [['Ordenar las ideas que ya tiene sobre el tema.', 1], ['Proponer una estructura para su texto.', 1], ['Revisar la redacción de lo que él escribió.', 1], ['Inventarle un caso de un cliente importante.', 0], ['Atribuirle un cargo que todavía no ha tenido.', 0]], why: 'ChatGPT y Copilot sirven para idear, estructurar y revisar textos. La experiencia contada debe ser real.' },
+      { id: 'c04q3', q: 'Si quiere analizar el tema con argumentos y fuentes, ¿qué formato y estructura le sirven?', o: [['Un artículo con título, tesis, argumentos con fuentes y conclusión.', 1], ['Un formato que construya autoridad temática sobre el tema.', 1], ['Un video de 15 segundos con música de tendencia y sin texto en pantalla.', 0], ['Un carrusel de una sola lámina con la conclusión principal.', 0], ['Un post corto solo con la pregunta, para generar debate.', 0]], why: 'El artículo sirve para argumentar, analizar tendencias y construir autoridad temática, con tesis, desarrollo con fuentes y conclusión.' },
+      { id: 'c04q4', q: '¿Qué podría contar Camilo con base en su experiencia real?', o: [['Lo que aprendió en una materia al analizar contratos con IA.', 1], ['Su opinión argumentada sobre los riesgos que ve en esa práctica.', 1], ['Un caso de éxito de un bufete reconocido donde nunca ha trabajado.', 0], ['Una cifra de ahorro que la IA le sugirió sin fuente alguna.', 0], ['Una entrevista a un experto que en realidad no realizó.', 0]], why: 'Documentar lo que aprende y opinar con argumentos es contenido valioso; inventar casos, cifras o entrevistas no lo es.' },
+      { id: 'c04q5', q: '¿Qué afirmaciones sobre declarar el uso de IA son correctas?', o: [['Declarar el uso es buena práctica, pero no corrige un contenido falso.', 1], ['Conviene decir qué aportó la herramienta y qué aportó él.', 1], ['Si lo declara, puede publicar cualquier experiencia que genere.', 0], ['Declararlo le quita valor al contenido, así que es mejor omitirlo.', 0], ['Solo hay que declararlo cuando la IA escribió todo el texto.', 0]], why: 'Declarar el uso de IA es parte de la práctica responsable, pero la experiencia contada tiene que ser real.' }
+    ] },
+  { id: 'c05', title: 'El semillero EcoRuta', text: 'El semillero EcoRuta, de Ingeniería Industrial, diseña rutas de reciclaje para conjuntos residenciales. Su líder, Laura Rincón, quiere que el proyecto se conozca. Tienen fotos de las visitas, datos de cuánto material recogieron, una charla que dieron en una feria universitaria y un método de cuatro pasos para diseñar rutas. Hasta ahora solo han publicado una foto grupal con la frase «Equipo EcoRuta».',
+    qs: [
+      { id: 'c05q1', q: '¿Qué publicaciones serían contenido experiencial?', o: [['El avance semanal del diseño de una ruta en un conjunto real.', 1], ['Detrás de cámaras de una visita, con lo que salió mal y se ajustó.', 1], ['Una guía general sobre qué es el reciclaje y por qué importa en la ciudad.', 0], ['Un agradecimiento a la feria universitaria por la invitación.', 0], ['Una opinión sobre la cultura del reciclaje en la ciudad.', 0]], why: 'El contenido experiencial muestra procesos: proyectos, prácticas, investigaciones y desafíos.' },
+      { id: 'c05q2', q: '¿Qué formato conviene para el método de cuatro pasos?', o: [['Un carrusel con una lámina por paso.', 1], ['Una secuencia visual con portada, pasos y cierre.', 1], ['Un post con la foto grupal y el método en una línea.', 0], ['Una historia efímera de 15 segundos sin texto.', 0], ['Un artículo de opinión sin datos ni estructura.', 0]], why: 'El carrusel convierte procesos y metodologías en una secuencia visual: portada con promesa, una idea por lámina y cierre.' },
+      { id: 'c05q3', q: '¿Qué podría ser contenido relacional para EcoRuta?', o: [['Contar la charla de la feria y a quiénes conocieron allí.', 1], ['Agradecer a los administradores que abrieron sus conjuntos.', 1], ['Explicar paso a paso cómo se calcula el material recogido.', 0], ['Publicar la tabla de datos de reciclaje sin ningún contexto.', 0], ['Escribir un análisis largo sobre la normativa ambiental.', 0]], why: 'El relacional conecta con personas: eventos, networking, agradecimientos y colaboraciones.' },
+      { id: 'c05q4', q: '¿Por qué la foto con «Equipo EcoRuta» aporta poco?', o: [['No cuenta qué hacen, qué aprendieron ni a quién ayudan.', 1], ['No responde qué aprenderá alguien al ver la publicación.', 1], ['Porque las fotos grupales no deben publicarse en LinkedIn.', 0], ['Porque un semillero no puede tener presencia en redes.', 0], ['Porque le faltan más etiquetas y menciones a la universidad.', 0]], why: 'Una publicación profesional debe responder qué aprenderá quien la lea. La foto sola no comunica el valor del proyecto.' },
+      { id: 'c05q5', q: 'Si convierten los datos en un post, ¿qué partes y en qué función van?', o: [['Un hook con el dato más llamativo de lo que recogieron.', 1], ['El contexto de por qué empezaron el proyecto.', 1], ['Un cierre que pregunte cómo reciclan en otros conjuntos.', 1], ['Un cierre que solo repita el nombre del semillero.', 0], ['Un aprendizaje reemplazado por una frase motivacional.', 0]], why: 'Hook para captar, contexto para explicar, aprendizaje para entregar valor y cierre para invitar a la conversación.' }
+    ] },
+  { id: 'c06', title: 'La cabeza llena de Sofía', text: 'Sofía Mantilla estudia Administración de Empresas y trabaja medio tiempo. Anota sus pendientes en papeles sueltos, en el chat consigo misma y a veces en ninguna parte. Esta semana olvidó una reunión con su profesor de semillero y entregó tarde un informe. Dice que vive estresada porque siente que siempre se le escapa algo, y que quiere empezar a publicar, pero «no tiene cabeza» para eso.',
+    qs: [
+      { id: 'c06q1', q: '¿Qué idea de GTD explica mejor la situación de Sofía?', o: [['La mente es buena generando ideas, pero mala guardando tareas.', 1], ['Los recordatorios improvisados y el miedo a olvidar generan estrés.', 1], ['Sofía tiene pocas horas en el día comparada con otros estudiantes.', 0], ['Sofía necesita memorizar mejor sus pendientes cada mañana.', 0], ['El problema es trabajar y estudiar al mismo tiempo, y eso no tiene solución.', 0]], why: 'GTD parte de que la mente no sirve para almacenar tareas: los pendientes mentales y recordatorios improvisados generan estrés.' },
+      { id: 'c06q2', q: '¿Qué debería hacer primero según GTD?', o: [['Capturar todos sus pendientes en una sola bandeja confiable.', 1], ['Sacar de la cabeza todo lo que tiene pendiente.', 1], ['Ordenar los pendientes por prioridad sin escribirlos.', 0], ['Empezar por la tarea más difícil de la semana.', 0], ['Hacer una revisión semanal antes de anotar nada.', 0]], why: 'El primer paso del ciclo es capturar: sacar todo de la cabeza y llevarlo a una bandeja confiable.' },
+      { id: 'c06q3', q: 'Al procesar «responder el correo del profesor con la fecha», ¿qué corresponde?', o: [['Hacerlo de inmediato si toma menos de dos minutos.', 1], ['Aplicar la regla de los dos minutos del paso procesar.', 1], ['Pasarlo a la lista de algún día para no saturarse.', 0], ['Delegarlo a un compañero del semillero.', 0], ['Guardarlo para la revisión semanal del domingo en la noche.', 0]], why: 'En el paso procesar, si algo toma menos de dos minutos, se hace ya.' },
+      { id: 'c06q4', q: '¿Dónde deberían ir estos pendientes al organizar?', o: [['La reunión del martes a las 3 p. m.: en el calendario.', 1], ['El borrador del post de la semana: en próximas acciones.', 1], ['Aprender edición de video algún día: en algún día.', 1], ['El correo de un curso que no le interesa: en el calendario.', 0], ['La reunión del martes: en algún día, para pensarla.', 0]], why: 'Organizar ubica cada pendiente en el calendario, en próximas acciones, en algún día, en manos de otra persona o en la papelera.' },
+      { id: 'c06q5', q: '¿Qué resultados puede esperar Sofía si sostiene el ciclo?', o: [['Menos carga mental, porque confía en su sistema.', 1], ['Trabajar desde sus listas y no desde la memoria.', 1], ['Más horas disponibles en el día para estudiar.', 0], ['No tener que revisar nunca más sus pendientes.', 0], ['Dejar de usar el calendario para sus citas.', 0]], why: 'Un sistema confiable reduce la carga mental; ejecutar es trabajar desde las listas, y revisar sigue siendo semanal.' }
+    ] },
+  { id: 'c07', title: 'Andrés y las tres semanas', text: 'Andrés Díaz estudia Ingeniería Industrial. Hace un mes decidió publicar en LinkedIn y lo hizo tres semanas seguidas, siempre a última hora y de madrugada. La cuarta semana tuvo parciales y lo dejó. Ahora dice que «no le da el tiempo» para crear contenido. Su calendario solo tiene las clases; todo lo demás lo hace cuando se acuerda o cuando encuentra un rato libre.',
+    qs: [
+      { id: 'c07q1', q: '¿Qué le falta a Andrés según la clase?', o: [['Bloques fijos en el calendario para crear contenido.', 1], ['Administrar su tiempo, no solo una lista de tareas.', 1], ['Más horas al día que el resto de sus compañeros.', 0], ['Publicar todos los días para crear el hábito rápido.', 0], ['Esperar a vacaciones, cuando tenga tiempo libre.', 0]], why: 'Las personas productivas administran tiempo, no listas. El time blocking reduce la improvisación.' },
+      { id: 'c07q2', q: '¿Qué bloques incluye la semana mínima de un creador?', o: [['Creación de 45 a 60 minutos.', 1], ['Interacción de 15 a 20 minutos.', 1], ['Revisión semanal de 15 minutos.', 1], ['Publicación diaria de 2 horas.', 0], ['Edición de video de 4 horas.', 0]], why: 'La semana mínima tiene creación, interacción, revisión semanal y deep work académico.' },
+      { id: 'c07q3', q: '¿Para qué sirve el bloque de interacción?', o: [['Para comentar con aporte publicaciones de su red.', 1], ['Para sostener la conversación, porque comentar también es publicar.', 1], ['Para revisar cuántas reacciones y vistas tuvo su última publicación.', 0], ['Para aceptar todas las solicitudes de conexión pendientes.', 0], ['Para escribir y diseñar la publicación de la semana.', 0]], why: 'El bloque de interacción es para comentar con aporte tres publicaciones de la red; escribir y diseñar es el bloque de creación.' },
+      { id: 'c07q4', q: '¿Qué beneficios tiene el time blocking para Andrés?', o: [['Reduce la improvisación de crear a última hora.', 1], ['Le da un espacio definido para publicar cada semana.', 1], ['Elimina la necesidad de planear sus temas de contenido.', 0], ['Le garantiza que cada publicación tendrá más alcance.', 0], ['Hace innecesario el estudio para los parciales.', 0]], why: 'El beneficio del time blocking es reducir la improvisación: lo que tiene bloque en el calendario tiene tiempo asignado.' },
+      { id: 'c07q5', q: '¿Qué cambios le ayudarían a no abandonar en semana de parciales?', o: [['Revisar cada semana qué funcionó y qué quedó pendiente.', 1], ['Mantener una frecuencia mínima que sí pueda sostener.', 1], ['Duplicar las publicaciones en las semanas antes de los parciales.', 0], ['Crear solo cuando encuentre un rato libre en el día.', 0], ['Dejar de estudiar para no perder la racha en redes.', 0]], why: 'La revisión semanal y una frecuencia mínima viable hacen sostenible la presencia; crear «cuando se pueda» es improvisar.' }
+    ] },
+  { id: 'c08', title: 'Laura estudia con el celular', text: 'Laura Gómez estudia Derecho y prepara un ensayo largo para una materia. Estudia en la biblioteca con el celular sobre la mesa y las notificaciones activas. Cada vez que suena un mensaje, lo responde y vuelve al texto. En tres horas escribió dos párrafos. Dice que estuvo «toda la tarde estudiando» y no entiende por qué avanzó tan poco.',
+    qs: [
+      { id: 'c08q1', q: '¿Qué concepto explica mejor lo que le pasa a Laura?', o: [['Le falta deep work: concentración sin distracciones.', 1], ['No todas las horas de trabajo tienen el mismo valor.', 1], ['Le faltan horas: tres no alcanzan para escribir un ensayo largo.', 0], ['Le falta una lista de tareas más detallada y larga.', 0], ['Estudiar en biblioteca impide el trabajo profundo.', 0]], why: 'El deep work es la capacidad de concentrarse sin distracciones en tareas exigentes; no todas las horas valen lo mismo.' },
+      { id: 'c08q2', q: '¿Qué dato de la clase ayuda a explicar su situación?', o: [['La atención en una pantalla dura en promedio unos 47 segundos.', 1], ['La atención se volvió uno de los recursos más escasos hoy.', 1], ['La atención en una pantalla dura en promedio unos 47 minutos.', 0], ['Las notificaciones solo afectan a quienes trabajan en oficina.', 0], ['Responder mensajes rápido mejora la concentración posterior.', 0]], why: 'Gloria Mark (2023) encontró que la atención en una pantalla dura unos 47 segundos antes de cambiar de foco.' },
+      { id: 'c08q3', q: '¿Qué debería hacer en su próximo bloque de estudio?', o: [['Bloquear 60 a 90 minutos solo para el ensayo.', 1], ['Dejar el celular en otra habitación o lejos.', 1], ['Silenciar las notificaciones durante el bloque.', 1], ['Responder todos los mensajes cada diez minutos.', 0], ['Estudiar con el chat del curso siempre abierto.', 0]], why: 'El bloque de deep work académico dura de 60 a 90 minutos, con el celular en otra habitación y sin notificaciones.' },
+      { id: 'c08q4', q: '¿Qué tipo de tareas requieren deep work?', o: [['Redactar un ensayo argumentativo.', 1], ['Escribir y diseñar un artículo con fuentes.', 1], ['Responder un mensaje de confirmación.', 0], ['Aceptar una invitación de calendario.', 0], ['Reenviar un archivo a un compañero.', 0]], why: 'El deep work es para tareas cognitivamente exigentes; las tareas de menos de dos minutos se resuelven al procesarlas.' },
+      { id: 'c08q5', q: '¿Qué hábito digital podría escribir Laura?', o: [['«Si me siento a escribir, entonces dejo el celular en el casillero.»', 1], ['«Si empiezo mi bloque de estudio, entonces activo no molestar.»', 1], ['«Voy a intentar distraerme menos cuando tenga tiempo libre en la semana.»', 0], ['«Si me llega un mensaje, entonces lo respondo de inmediato.»', 0], ['«Voy a estudiar más horas para compensar las distracciones.»', 0]], why: 'Una regla «si…, entonces…» ata el hábito a una situación concreta; una intención vaga no indica cuándo ni qué hacer.' }
+    ] },
+  { id: 'c09', title: 'Santiago y sus notificaciones', text: 'Santiago Ruiz estudia Música y publica videos cortos tocando piano. Revisó el tiempo de uso de su celular y descubrió que lo desbloquea más de cien veces al día. Tiene activas las notificaciones de doce aplicaciones, las redes en la pantalla de inicio y suele mirar comentarios mientras ensaya. Quiere seguir creando contenido sin que el celular le quite horas de práctica.',
+    qs: [
+      { id: 'c09q1', q: '¿Qué hábitos clave de la clase debería trabajar?', o: [['Gestionar las notificaciones.', 1], ['Organizar sus herramientas digitales.', 1], ['Crear espacios libres de distracción.', 1], ['Activar alertas de todas sus redes.', 0], ['Revisar comentarios mientras ensaya.', 0]], why: 'Los cinco hábitos clave son gestionar notificaciones, organizar herramientas, tener rutinas, consumir información de forma consciente y crear espacios libres de distracción.' },
+      { id: 'c09q2', q: '¿Qué cambios en su celular aplican esos hábitos?', o: [['Desactivar las notificaciones que no son esenciales.', 1], ['Mover las redes fuera de la pantalla de inicio.', 1], ['Activar el sonido de todas las aplicaciones.', 0], ['Poner las redes en el primer lugar del inicio.', 0], ['Instalar más aplicaciones para controlar el uso del celular.', 0]], why: 'Gestionar notificaciones y organizar herramientas: lo productivo a mano y lo que distrae lejos.' },
+      { id: 'c09q3', q: '¿Qué reglas «si…, entonces…» le servirían?', o: [['«Si empiezo a ensayar, entonces dejo el celular fuera del salón.»', 1], ['«Si publico un video, entonces reviso comentarios en mi bloque.»', 1], ['«Si me aburro ensayando, entonces miro un rato las redes.»', 0], ['«Si alguien comenta un video, entonces respondo antes de seguir ensayando.»', 0], ['«Voy a tratar de usar menos el celular durante la semana.»', 0]], why: 'Las reglas atan el hábito a una situación concreta y protegen el tiempo de práctica; las otras refuerzan la interrupción o son vagas.' },
+      { id: 'c09q4', q: '¿Qué afirmaciones sobre la tecnología son coherentes con la clase?', o: [['Puede ser una herramienta de productividad.', 1], ['Puede ser una fuente permanente de interrupciones.', 1], ['Debe abandonarse para crear contenido de calidad.', 0], ['Es neutra: no afecta la atención de quien la usa.', 0], ['Solo distrae a quienes no crean contenido.', 0]], why: 'La tecnología puede ser una herramienta de productividad o una fuente permanente de interrupciones; depende de los hábitos.' },
+      { id: 'c09q5', q: '¿Cómo puede sostener su contenido sin perder práctica?', o: [['Bloquear un horario fijo para grabar y otro para interactuar.', 1], ['Proteger los ensayos como bloques de trabajo profundo.', 1], ['Grabar cada vez que tenga una idea, durante el ensayo.', 0], ['Responder cada comentario en el momento en que llega.', 0], ['Publicar más seguido para compensar el tiempo perdido.', 0]], why: 'El contenido hace visible el valor y la productividad lo sostiene: bloques definidos y espacios sin distracciones.' }
+    ] },
+  { id: 'c10', title: 'Isabella arma su sistema', text: 'Isabella Mora estudia Administración de Empresas y quiere publicar una vez por semana sobre finanzas personales para jóvenes. Ya definió su tema de autoridad. Tiene muchas ideas anotadas en distintos lugares, no sabe qué formatos usar y suele quedarse sin tiempo. Su meta es mantener la publicación durante cuatro semanas seguidas sin descuidar sus materias ni su trabajo de medio tiempo.',
+    qs: [
+      { id: 'c10q1', q: '¿Por dónde debería empezar a organizar sus ideas?', o: [['Capturarlas todas en una sola bandeja confiable.', 1], ['Procesarlas para decidir cuáles serán publicaciones.', 1], ['Dejarlas dispersas para no perder la inspiración.', 0], ['Elegir una al azar cada semana, sin revisarlas.', 0], ['Pedir a una IA que elija las ideas y escriba todas las publicaciones por ella.', 0]], why: 'GTD empieza por capturar en una bandeja confiable y procesar: decidir qué es cada cosa.' },
+      { id: 'c10q2', q: '¿Qué combinación de formatos tiene sentido para su tema?', o: [['Un carrusel con los pasos para armar un presupuesto.', 1], ['Un video corto que explique un concepto en 30 segundos.', 1], ['Un artículo sin fuentes con su opinión sobre la bolsa.', 0], ['Un carrusel que copie tal cual las diapositivas de su clase de finanzas.', 0], ['Un video corto de entretenimiento sin valor práctico.', 0]], why: 'El carrusel sirve para procesos y listas; el video corto para explicar en segundos con valor profesional.' },
+      { id: 'c10q3', q: '¿Qué debería tener su calendario semanal?', o: [['Un bloque de creación para escribir y diseñar.', 1], ['Un bloque de interacción para comentar con aporte.', 1], ['Una revisión semanal de lo que funcionó.', 1], ['Un bloque para publicar cuando le sobre tiempo.', 0], ['Ningún bloque, para conservar la flexibilidad.', 0]], why: 'La semana mínima de un creador tiene creación, interacción, revisión semanal y deep work académico.' },
+      { id: 'c10q4', q: '¿Qué estructura debería tener cada post que publique?', o: [['Hook, contexto, aprendizaje y cierre.', 1], ['Un aprendizaje útil para jóvenes que lo lean.', 1], ['Una frase motivacional sobre el ahorro.', 0], ['Un cierre que solo diga «gracias por leer».', 0], ['Un contexto largo sin ningún aprendizaje.', 0]], why: 'El post tiene cuatro partes y debe responder qué aprenderá alguien al leerlo.' },
+      { id: 'c10q5', q: '¿Qué idea resume lo que necesita Isabella?', o: [['El contenido hace visible el valor que ya construyó.', 1], ['La productividad le permite sostener ese contenido en el tiempo.', 1], ['Basta con tener un buen tema para posicionarse sola.', 0], ['Publicar mucho una semana compensa no publicar después.', 0], ['La productividad importa más que el valor de lo que se publica cada semana.', 0]], why: 'Es el cierre integrador: el contenido hace visible el valor y la productividad permite sostenerlo.' }
+    ] }
+];
+
+/* =================== BANCO 3: ORDENAR (10) =================== */
+var ORD = [
+  { id: 'o01', sit: 'Ordena las partes de un post profesional, de la primera a la última.', steps: ['Hook: capta la atención antes del «ver más»', 'Contexto: explica la situación', 'Aprendizaje: entrega el valor', 'Cierre: invita a la conversación'], why: 'El post tiene cuatro partes en este orden: hook, contexto, aprendizaje y cierre.' },
+  { id: 'o02', sit: 'Ordena los pasos del ciclo GTD propuesto por David Allen.', steps: ['Capturar', 'Procesar', 'Organizar', 'Ejecutar', 'Revisar'], why: 'Capturar, procesar, organizar, ejecutar y revisar: un sistema confiable reduce la carga mental.' },
+  { id: 'o03', sit: 'Ordena las frases para formar un post profesional completo.', steps: ['«En mi primera práctica descubrí que la mayor parte de mi trabajo no era programar.»', '«Entré convencido de que lo importante era escribir código rápido, pero los proyectos se retrasaban por requisitos mal entendidos.»', '«Aprendí a preguntar antes de cada tarea: ¿para quién es, qué problema resuelve y cómo sabremos que funciona?»', '«¿Qué habilidad no técnica les ha servido más en sus prácticas?»'], why: 'Hook con un dato que sorprende, contexto de la situación, aprendizaje que entrega valor y cierre con una pregunta a la audiencia.' },
+  { id: 'o04', sit: 'Ordena las láminas de un carrusel titulado «GTD en tres pasos para estudiantes».', steps: ['Portada: «¿Se te olvidan las entregas? Prueba esto»', 'Lámina 2: Capturar todo en una sola bandeja', 'Lámina 3: Procesar cada pendiente', 'Lámina 4: Organizarlo en calendario o próximas acciones', 'Cierre: «¿Cuál de estos pasos te cuesta más?»'], why: 'El carrusel abre con una portada con promesa, sigue con una idea por lámina en el orden del ciclo GTD y cierra con una invitación.' },
+  { id: 'o05', sit: 'Ordena las partes de un artículo sobre analítica de datos para pequeñas empresas.', steps: ['Título: «Analítica de datos para pequeñas empresas»', 'Tesis: los datos que ya tienen bastan para decidir mejor', 'Desarrollo: tres argumentos con ejemplos y fuentes', 'Conclusión: qué puede hacer una tienda desde mañana'], why: 'La estructura del artículo es título, tesis, desarrollo con fuentes y conclusión.' },
+  { id: 'o06', sit: 'Sofía recibe un correo que dice: «Confirma tu asistencia a la reunión de semillero». Ordena cómo lo maneja con GTD.', steps: ['Lo anota en su bandeja apenas lo recibe', 'Decide si requiere una acción', 'Como toma menos de dos minutos, responde de inmediato', 'Agenda la reunión en su calendario'], why: 'Primero captura, luego procesa: si toma menos de dos minutos se hace ya, y lo que tiene fecha se organiza en el calendario.' },
+  { id: 'o07', sit: 'Andrés quiere retomar su publicación semanal. Ordena los pasos de su nuevo sistema.', steps: ['Capturar en una lista todas sus ideas de publicación', 'Elegir de esa lista la idea de esta semana', 'Escribir la idea elegida en su bloque de creación', 'Comentar con aporte en su bloque de interacción', 'Revisar el domingo qué funcionó y qué quedó pendiente'], why: 'Sin ideas capturadas no hay qué elegir; lo elegido se escribe en el bloque de creación, después se interactúa y la semana cierra con la revisión.' },
+  { id: 'o08', sit: 'Ordena los pasos para crear una regla digital «si…, entonces…».', steps: ['Identificar la distracción que más interrumpe tu estudio', 'Reconocer la situación en la que aparece esa distracción', 'Escribir la regla atando una acción a esa situación', 'Comprobar al final de la semana si la cumpliste'], why: 'Primero se identifica la distracción y su situación; luego la regla ata la acción a esa situación y se revisa si se cumplió.' },
+  { id: 'o09', sit: 'Ordena cómo usar la IA de forma responsable para crear un carrusel.', steps: ['Elegir una experiencia real del equipo', 'Pedir a la IA tres ideas de carrusel sobre esa experiencia', 'Elegir una idea y cambiar lo genérico por detalles reales', 'Declarar qué aportó la IA y qué aportó el equipo'], why: 'La experiencia real va primero; la IA ayuda a idear, el equipo corrige con detalles reales y al final declara el uso.' },
+  { id: 'o10', sit: 'Laura prepara su próximo bloque de deep work. Ordena los pasos.', steps: ['Elegir la tarea exigente que va a trabajar', 'Reservar en el calendario de 60 a 90 minutos para esa tarea', 'Al empezar el bloque, dejar el celular en otra habitación', 'Trabajar sin interrupciones hasta que termine el bloque'], why: 'Primero se define la tarea, luego se bloquea el tiempo, se eliminan distracciones al empezar y se trabaja en profundidad.' }
+];
+
+
+/* =================== UTILIDADES =================== */
+var MCMAP = {}; CASES.forEach(function (c) { c.qs.forEach(function (q) { MCMAP[q.id] = { c: c, q: q }; }); });
+var TFMAP = {}; TF.forEach(function (q) { TFMAP[q.id] = q; });
+var ORDMAP = {}; ORD.forEach(function (q) { ORDMAP[q.id] = q; });
+var CASEMAP = {}; CASES.forEach(function (c) { CASEMAP[c.id] = c; });
+var LETTERS = 'ABCDE';
+var TYPE_LABEL = { tf: 'Verdadero o falso', mc: 'Caso', ord: 'Ordenar' };
+
+function rnd(n) {
+  try { var a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; } catch (e) { return Math.floor(Math.random() * n); }
+}
+function shuffle(arr) { var a = arr.slice(); for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function fp(s) { var a = 0x811c9dc5, b = 0x9e3779b1; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); a ^= c; a = Math.imul(a, 16777619) >>> 0; b = Math.imul(b ^ c, 0x5bd1e995) >>> 0; b = (b ^ (b >>> 15)) >>> 0; } return a.toString(16) + '-' + b.toString(16); }
+function fmtPts(p) { return (Math.round(p * 10) / 10).toFixed(1).replace('.', ','); }
+
+/* =================== ESTADO (en este navegador) =================== */
+var S;
+function blank() { return { used: {}, results: [], current: null }; }
+try { S = JSON.parse(localStorage.getItem(STORE)); } catch (e) { S = null; }
+if (!S || typeof S !== 'object' || !S.used) S = blank();
+var storageOk = true;
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) { storageOk = false; } }
+
+function availTF() { return TF.filter(function (q) { return !S.used[q.id]; }); }
+function availCase(c) { return c.qs.filter(function (q) { return !S.used[q.id]; }); }
+function availORD() { return ORD.filter(function (q) { return !S.used[q.id]; }); }
+function capacity() {
+  var tf = Math.floor(availTF().length / 2), ord = availORD().length;
+  var mc = CASES.reduce(function (s, c) { return s + Math.floor(availCase(c).length / 2); }, 0);
+  return Math.min(tf, ord, mc);
+}
+
+/* =================== VISTAS =================== */
+var app = document.getElementById('app');
+var layer = document.getElementById('layer');
+var view = 'home';
+var lastGame = null;
+var formName = '', formCase = 'random', formErr = '';
+var admin = { open: false, unlocked: false, err: '', confirm: false, wipe: false, done: '' };
+var flashMsg = '';
+var dragFrom = null;
+var busy = false;
+
+var ICON = {
+  people: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.8 14.2c2.3.2 4 1.8 4.6 4.8"/></svg>',
+  swap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3.5-3.5"/><path d="M20 16H7l3.5 3.5"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
+  grip: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>'
+};
+var EMBLEM = '<svg class="emblem" viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5fd3e6"/><stop offset="1" stop-color="#b9a4ff"/></linearGradient></defs><circle cx="60" cy="60" r="54" fill="none" stroke="url(#eg)" stroke-width="2.5"/><circle cx="60" cy="60" r="42" fill="none" stroke="#5fd3e6" stroke-opacity=".35" stroke-width="1.5"/><g stroke="#5fd3e6" stroke-width="1.6" fill="none" stroke-opacity=".85"><path d="M30 78 L48 62 L66 70 L88 44 M48 62 L56 40 L76 32 M56 40 L66 70"/></g><g fill="#5fd3e6"><circle cx="30" cy="78" r="3.5"/><circle cx="48" cy="62" r="4.5"/><circle cx="66" cy="70" r="3.5"/><circle cx="88" cy="44" r="5"/><circle cx="56" cy="40" r="3.5"/><circle cx="76" cy="32" r="3.5"/></g></svg>';
+
+function render() {
+  if (view === 'game' && S.current) renderGame();
+  else if (view === 'summary' && lastGame) renderSummary();
+  else { view = 'home'; renderHome(); }
+  renderLayer();
+}
+
+/* ---------- Inicio ---------- */
+function renderHome() {
+  var cap = capacity();
+  var cur = S.current;
+  var caseOpts = '<option value="random"' + (formCase === 'random' ? ' selected' : '') + '>Asignar al azar</option>' + CASES.map(function (c, i) {
+    var n = availCase(c).length;
+    return '<option value="' + c.id + '"' + (formCase === c.id ? ' selected' : '') + (n < 2 ? ' disabled' : '') + '>Caso ' + (i + 1) + ': ' + esc(c.title) + ' (' + n + ' de 5 disponibles)</option>';
+  }).join('');
+  var chosenOk = formCase === 'random' || (CASEMAP[formCase] && availCase(CASEMAP[formCase]).length >= 2);
+  app.innerHTML =
+    '<p class="brand">Marca Personal Digital - Quiz de recuperación</p>' +
+    '<div class="hero">' +
+      '<section>' + EMBLEM +
+        '<h1 class="title">¿Quién quiere <em>mejorar su nota?</em></h1>' +
+        '<p class="lead">Cinco preguntas, tiempo en contra y tres comodines. Demuestra que sabes pasar de tener contactos a construir relaciones profesionales.</p>' +
+        '<div class="rules">' +
+          '<article class="rule"><span class="k">La partida</span><h3>5 preguntas, 1 punto cada una</h3><p>Dos de verdadero o falso, dos de un caso de selección múltiple y una de ordenar. La nota final va de 0 a 5.</p></article>' +
+          '<article class="rule"><span class="k">El reloj</span><div class="timechips"><span>Verdadero o falso <b>' + TIME.tf + ' s</b></span><span>Caso (selección múltiple) <b>' + TIME.mc + ' s</b></span><span>Ordenar <b>' + TIME.ord + ' s</b></span></div><p>Si se acaba el tiempo, queda lo que hayas marcado. Sin respuesta, la pregunta vale 0.</p></article>' +
+          '<article class="rule"><span class="k">Comodines · uno de cada uno</span><div class="lifelist">' +
+            '<div><span class="mini">' + ICON.people + '</span><p><b>Pregunta al público.</b> Tus compañeros te ayudan y ganas ' + AUDIENCE_BONUS + ' segundos.</p></div>' +
+            '<div><span class="mini">50:50</span><p><b>50:50.</b> Elimina la mitad de las opciones incorrectas. Solo en preguntas de caso; si aciertas, vale 0,5.</p></div>' +
+            '<div><span class="mini">' + ICON.swap + '</span><p><b>Cambiar pregunta.</b> Otra del mismo tipo; en los casos, otra del mismo caso.</p></div>' +
+          '</div></article>' +
+        '</div>' +
+      '</section>' +
+      '<section class="card" aria-labelledby="startTitle">' +
+        (cur ? '<div class="resume"><p>Hay una partida en curso de <b>' + esc(cur.name) + '</b>.</p><button class="btn primary" data-act="resume">Continuar partida</button></div>' : '') +
+        '<h2 id="startTitle">Nuevo jugador</h2>' +
+        '<label class="f" for="pname">Nombre del estudiante<input type="text" id="pname" maxlength="60" autocomplete="off" placeholder="Nombre y apellido" value="' + esc(formName) + '"></label>' +
+        '<label class="f" for="pcase">Caso asignado<select id="pcase">' + caseOpts + '</select></label>' +
+        (formErr ? '<p class="err" role="alert">' + esc(formErr) + '</p>' : '') +
+        (cap > 0
+          ? '<div class="cap">Quedan preguntas para <b>' + cap + '</b> ' + (cap === 1 ? 'jugador' : 'jugadores') + ' en esta ronda.</div>'
+          : '<div class="cap empty">Se agotaron las preguntas de esta ronda. Reinicia el juego desde el panel docente.</div>') +
+        '<button class="btn primary lg" data-act="start"' + (cap > 0 && chosenOk && !cur ? '' : ' disabled') + '>Comenzar</button>' +
+        (cur ? '<p class="note">Termina la partida en curso antes de empezar otra.</p>' : '<p class="note">Las preguntas que recibe cada jugador quedan marcadas como usadas y no se repiten hasta reiniciar el juego.</p>') +
+        (!storageOk ? '<p class="err">Este navegador no está guardando el progreso. Usa una ventana normal (no privada).</p>' : '') +
+      '</section>' +
+    '</div>' +
+    '<div class="foot"><button class="btn ghost" data-act="admin">Panel docente</button></div>';
+}
+
+/* ---------- Juego ---------- */
+function cur() { var g = S.current; return g ? g.qs[g.idx] : null; }
+function qOf(a) { return a.type === 'tf' ? TFMAP[a.id] : a.type === 'mc' ? MCMAP[a.id].q : ORDMAP[a.id]; }
+function needOf(q) { return q.o.filter(function (o) { return o[1]; }).length; }
+
+function renderGame() {
+  var g = S.current, a = cur(), q = qOf(a);
+  var life = g.life;
+  var swapAvail = swapPool(a).length > 0;
+  var fiftyOk = a.type === 'mc' && !life.fifty;
+  var lifeBtn = function (key, inner, label, enabled, title) {
+    var used = life[key];
+    return '<button class="life' + (used ? ' used' : '') + '" data-act="life" data-k="' + key + '"' + (!used && enabled ? '' : ' disabled') + ' title="' + esc(title) + '"><span class="orb">' + inner + '</span><span class="lab">' + label + '</span></button>';
+  };
+  var lifelines = '<div class="lifelines" role="group" aria-label="Comodines">' +
+    lifeBtn('audience', ICON.people, 'Público', true, 'Pregunta al público: +' + AUDIENCE_BONUS + ' segundos para que tus compañeros te ayuden') +
+    lifeBtn('fifty', '<span class="ff">50:50</span>', '50:50', fiftyOk, a.type === 'mc' ? 'Elimina la mitad de las opciones incorrectas; la pregunta vale 0,5' : 'Solo disponible en preguntas de caso') +
+    lifeBtn('swap', ICON.swap, 'Cambiar', swapAvail, swapAvail ? 'Cambia por otra pregunta del mismo tipo' : 'No quedan preguntas disponibles de este tipo') +
+    '</div>';
+  var total = a.total;
+  var timer = '<div class="timer" id="timer" role="timer" aria-label="Tiempo restante"><svg viewBox="0 0 92 92"><circle class="track" cx="46" cy="46" r="40"/><circle class="bar" id="ring" cx="46" cy="46" r="40" stroke-dasharray="251.33" stroke-dashoffset="0"/></svg><span class="num" id="secs">' + total + '</span></div>';
+  var head = '<div class="topbar"><div class="player"><small>Jugador</small><b>' + esc(g.name) + '</b></div>' + lifelines + timer + '</div>';
+
+  var caseBox = '';
+  if (a.type === 'mc') { var c = MCMAP[a.id].c; caseBox = '<section class="casebox" aria-label="Caso"><span class="k">Caso</span><h3>' + esc(c.title) + '</h3><p>' + esc(c.text) + '</p></section>'; }
+
+  var qText = a.type === 'ord' ? q.sit : q.q;
+  var tag = 'Pregunta ' + (g.idx + 1) + ' de 5 · ' + TYPE_LABEL[a.type] + (a.type === 'mc' ? ' · selecciona ' + needOf(q) : '') + (a.type === 'ord' ? ' · del primero al último' : '');
+  var qbar = '<div class="hexrow qbar"><div class="hex"><div class="hex-in"><span class="tag">' + tag + '</span><p class="q">' + esc(qText) + '</p></div></div></div>';
+
+  var notes = [];
+  if (a.audience) notes.push('<div class="audience" role="status">' + ICON.people + '<p><b>El público tiene la palabra.</b> Tus compañeros pueden ayudarte: sumaste ' + AUDIENCE_BONUS + ' segundos.</p></div>');
+  var pills = [];
+  if (a.fifty) pills.push('<span class="pill gold">50:50 usado · esta pregunta vale 0,5</span>');
+  if (a.swapped) pills.push('<span class="pill cyan">Pregunta cambiada</span>');
+  if (a.type === 'mc') pills.push('<span class="pill">Debes marcar ' + needOf(q) + ' respuestas</span>');
+  if (a.type === 'ord') pills.push('<span class="pill">Arrastra las tarjetas o usa las flechas</span>');
+  var noteHtml = notes.join('') + (pills.length ? '<div class="notice">' + pills.join('') + '</div>' : '');
+
+  var body = '';
+  if (a.type === 'tf') {
+    body = '<div class="opts two" role="group" aria-label="Respuestas">' + [['true', 'Verdadero', 'A'], ['false', 'Falso', 'B']].map(function (o) {
+      var pressed = a.resp !== null && String(a.resp) === o[0];
+      return '<button class="opt hexrow" data-act="tf" data-v="' + o[0] + '" aria-pressed="' + pressed + '"><span class="hex"><span class="hex-in"><span class="letter">' + o[2] + ':</span><span class="txt">' + o[1] + '</span></span></span></button>';
+    }).join('') + '</div>';
+  } else if (a.type === 'mc') {
+    var sel = a.resp || [];
+    body = '<div class="opts" role="group" aria-label="Respuestas">' + a.perm.map(function (oi, pos) {
+      var gone = a.removed.indexOf(oi) > -1, pressed = sel.indexOf(oi) > -1;
+      return '<button class="opt hexrow' + (gone ? ' gone' : '') + '" data-act="mc" data-i="' + oi + '" aria-pressed="' + pressed + '"' + (gone ? ' disabled aria-label="Opción eliminada"' : '') + '><span class="hex"><span class="hex-in"><span class="letter">' + LETTERS[pos] + ':</span><span class="txt">' + esc(q.o[oi][0]) + '</span></span></span></button>';
+    }).join('') + '</div>';
+  } else {
+    var n = a.cur.length;
+    body = '<ol class="order" aria-label="Pasos para ordenar">' + a.cur.map(function (si, pos) {
+      return '<li class="oitem" data-pos="' + pos + '"><span class="slot" aria-hidden="true">' + (pos + 1) + '</span>' +
+        '<div class="hexrow" draggable="true" data-pos="' + pos + '"><span class="hex"><span class="hex-in"><span class="grip">' + ICON.grip + '</span><span class="txt">' + esc(q.steps[si]) + '</span></span></span></div>' +
+        '<span class="arrows"><button data-act="up" data-pos="' + pos + '" aria-label="Subir paso"' + (pos === 0 ? ' disabled' : '') + '>' + ICON.up + '</button><button data-act="down" data-pos="' + pos + '" aria-label="Bajar paso"' + (pos === n - 1 ? ' disabled' : '') + '>' + ICON.down + '</button></span></li>';
+    }).join('') + '</ol>';
+  }
+
+  var canSubmit = a.type === 'ord' || (a.type === 'tf' ? a.resp !== null : (a.resp && a.resp.length > 0));
+  var actions = '<div class="actions"><p class="flash" id="flash" aria-live="polite">' + esc(flashMsg) + '</p><button class="btn primary lg" data-act="submit"' + (canSubmit ? '' : ' disabled') + '>Responder</button></div>';
+
+  var rungs = [];
+  var labels = ['Verdadero o falso', 'Verdadero o falso', 'Caso · pregunta 1', 'Caso · pregunta 2', 'Ordenar'];
+  for (var i = 4; i >= 0; i--) {
+    var cls = i === g.idx ? 'now' : (i < g.idx ? 'done' : '');
+    rungs.push('<div class="rung ' + cls + '"' + (i === g.idx ? ' aria-current="step"' : '') + '><span class="n">' + (i + 1) + '</span><span>' + labels[i] + '</span><span class="pt">1 pt</span></div>');
+  }
+  var ladder = '<aside class="ladder" aria-label="Progreso"><h3>Escalera</h3>' + rungs.join('') + '<p class="tot">Los resultados se revelan al final de la partida.</p></aside>';
+
+  app.innerHTML = '<p class="brand">Marca Personal Digital - Quiz de recuperación</p><div class="stage"><div class="main">' + head + caseBox + qbar + noteHtml + body + actions + '</div>' + ladder + '</div>';
+  tick();
+}
+
+function swapPool(a) {
+  if (a.type === 'tf') return availTF();
+  if (a.type === 'ord') return availORD();
+  return availCase(CASEMAP[a.caseId]);
+}
+
+function mk(type, q, caseId) {
+  var o = { type: type, id: q.id, caseId: caseId || null, resp: null, touched: false, fifty: false, audience: false, swapped: false, removed: [], points: 0, done: false, timeout: false, total: TIME[type], deadline: 0 };
+  if (type === 'mc') { o.perm = shuffle(q.o.map(function (_, i) { return i; })); o.resp = []; }
+  if (type === 'ord') {
+    var idx = q.steps.map(function (_, i) { return i; }), p;
+    do { p = shuffle(idx); } while (p.every(function (v, i) { return v === i; }));
+    o.cur = p;
+  }
+  return o;
+}
+
+function startGame() {
+  var name = (document.getElementById('pname').value || '').trim();
+  formName = name;
+  if (!name) { formErr = 'Escribe el nombre del estudiante para comenzar.'; render(); document.getElementById('pname').focus(); return; }
+  if (capacity() < 1) { formErr = 'No quedan preguntas suficientes. Reinicia el juego desde el panel docente.'; render(); return; }
+  var c;
+  if (formCase === 'random') {
+    var ok = CASES.filter(function (x) { return availCase(x).length >= 2; });
+    var max = Math.max.apply(null, ok.map(function (x) { return availCase(x).length; }));
+    var top = ok.filter(function (x) { return availCase(x).length === max; });
+    c = top[rnd(top.length)];
+  } else c = CASEMAP[formCase];
+  if (!c || availCase(c).length < 2) { formErr = 'Ese caso ya no tiene preguntas suficientes. Elige otro.'; render(); return; }
+  var tfs = shuffle(availTF()).slice(0, 2);
+  var mcs = shuffle(availCase(c)).slice(0, 2);
+  var ord = shuffle(availORD())[0];
+  var qs = tfs.map(function (q) { return mk('tf', q); }).concat(mcs.map(function (q) { return mk('mc', q, c.id); }), [mk('ord', ord)]);
+  qs.forEach(function (a) { S.used[a.id] = true; });
+  S.current = { name: name, caseId: c.id, qs: qs, idx: 0, life: { audience: false, fifty: false, swap: false }, started: Date.now() };
+  formName = ''; formErr = ''; formCase = 'random'; flashMsg = '';
+  beginQuestion();
+}
+
+function beginQuestion() {
+  var a = cur();
+  a.total = TIME[a.type];
+  a.deadline = Date.now() + a.total * 1000;
+  save();
+  view = 'game';
+  flashMsg = '';
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function tick() {
+  if (view !== 'game' || !S.current || busy) return;
+  var a = cur(); if (!a || a.done) return;
+  var left = Math.max(0, a.deadline - Date.now());
+  var secs = Math.ceil(left / 1000);
+  var ring = document.getElementById('ring'), num = document.getElementById('secs'), box = document.getElementById('timer');
+  if (ring) ring.setAttribute('stroke-dashoffset', String(251.33 * (1 - left / (a.total * 1000))));
+  if (num) num.textContent = secs;
+  if (box) box.classList.toggle('low', secs <= 5);
+  if (left <= 0) finalize(true);
+}
+setInterval(tick, 200);
+
+function grade(a) {
+  var q = qOf(a);
+  if (a.type === 'tf') a.points = a.resp === null ? 0 : (a.resp === q.a ? 1 : 0);
+  else if (a.type === 'mc') {
+    var correct = q.o.map(function (o, i) { return o[1] ? i : -1; }).filter(function (i) { return i > -1; }).sort().join(',');
+    var mine = (a.resp || []).slice().sort().join(',');
+    a.points = mine && mine === correct ? (a.fifty ? 0.5 : 1) : 0;
+  } else {
+    a.points = a.resp && a.resp.every(function (v, i) { return v === i; }) ? 1 : 0;
+  }
+}
+
+function finalize(timeout) {
+  var g = S.current, a = cur();
+  if (!a || a.done || busy) return;
+  busy = true;
+  if (a.type === 'ord') a.resp = (a.touched || !timeout) ? a.cur.slice() : null;
+  if (a.type === 'mc' && a.resp && !a.resp.length) a.resp = null;
+  a.timeout = timeout;
+  grade(a);
+  a.done = true;
+  save();
+  var last = g.idx >= g.qs.length - 1;
+  var nextLabel = last ? 'Preparando tu resultado…' : 'Siguiente: pregunta ' + (g.idx + 2) + ' · ' + TYPE_LABEL[g.qs[g.idx + 1].type];
+  layer.innerHTML = '<div class="veil" role="status"><div class="box"><span class="big' + (timeout ? ' time' : '') + '">' + (timeout ? '¡Se acabó el tiempo!' : 'Respuesta registrada') + '</span><span class="sub">' + nextLabel + '</span></div></div>';
+  setTimeout(function () {
+    layer.innerHTML = '';
+    busy = false;
+    if (last) endGame();
+    else { g.idx++; beginQuestion(); }
+  }, 1500);
+}
+
+function endGame() {
+  var g = S.current;
+  var total = g.qs.reduce(function (s, a) { return s + a.points; }, 0);
+  g.total = total; g.ended = Date.now();
+  S.results.push({ name: g.name, caso: CASEMAP[g.caseId].title, nota: total, fecha: g.ended, det: g.qs.map(function (a) { return a.points; }) });
+  lastGame = g;
+  S.current = null;
+  save();
+  view = 'summary';
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function useLife(k) {
+  var g = S.current, a = cur();
+  if (!a || a.done || g.life[k]) return;
+  if (k === 'audience') {
+    g.life.audience = true; a.audience = true; a.deadline += AUDIENCE_BONUS * 1000; a.total += AUDIENCE_BONUS;
+  } else if (k === 'fifty') {
+    if (a.type !== 'mc') return;
+    var q = qOf(a);
+    var wrong = q.o.map(function (o, i) { return o[1] ? -1 : i; }).filter(function (i) { return i > -1; });
+    var remove = shuffle(wrong).slice(0, Math.ceil(wrong.length / 2));
+    g.life.fifty = true; a.fifty = true; a.removed = remove;
+    a.resp = (a.resp || []).filter(function (i) { return remove.indexOf(i) < 0; });
+  } else if (k === 'swap') {
+    var pool = swapPool(a);
+    if (!pool.length) return;
+    var nq = pool[rnd(pool.length)];
+    S.used[nq.id] = true;
+    var na = mk(a.type, nq, a.caseId);
+    na.swapped = true; na.replaced = a.id;
+    g.life.swap = true;
+    g.qs[g.idx] = na;
+    flashMsg = '';
+    beginQuestion();
+    return;
+  }
+  save();
+  render();
+}
+
+function moveStep(from, to) {
+  var a = cur();
+  if (!a || a.type !== 'ord' || to < 0 || to >= a.cur.length || from === to) return;
+  var item = a.cur.splice(from, 1)[0];
+  a.cur.splice(to, 0, item);
+  a.touched = true;
+  save();
+  render();
+}
+
+/* ---------- Resumen ---------- */
+function feedback(n) {
+  if (n >= 4.5) return 'Excelente. Sabes convertir lo que sabes en contenido con estructura y sostenerlo con un sistema de productividad.';
+  if (n >= 3.5) return 'Muy bien. Dominas la mayoría de los conceptos; revisa la retroalimentación de las preguntas que fallaste.';
+  if (n >= 3) return 'Aprobaste. Repasa en la presentación los temas de las preguntas que no acertaste antes de planear tu próxima publicación.';
+  return 'Aún hay conceptos por reforzar. Repasa la presentación y el banco de retos de la Liga, sobre todo los temas de las preguntas que fallaste.';
+}
+function lifeChips(a) {
+  var c = [];
+  if (a.audience) c.push('<span class="pill cyan">Pregunta al público</span>');
+  if (a.fifty) c.push('<span class="pill gold">50:50 · valía 0,5</span>');
+  if (a.swapped) c.push('<span class="pill cyan">Pregunta cambiada</span>');
+  if (a.timeout) c.push('<span class="pill gold">Tiempo agotado</span>');
+  return c.length ? '<div class="chips">' + c.join('') + '</div>' : '';
+}
+function renderSummary() {
+  var g = lastGame;
+  var cards = g.qs.map(function (a, i) {
+    var q = qOf(a);
+    var sc = a.points === 1 ? 's1' : a.points > 0 ? 's05' : 's0';
+    var scTxt = a.points === 1 ? '1 punto · correcta' : a.points > 0 ? '0,5 puntos · correcta con 50:50' : '0 puntos · ' + (a.resp === null ? 'sin respuesta' : 'incorrecta');
+    var title, ctx = '', mine, right;
+    if (a.type === 'tf') {
+      title = q.q;
+      mine = '<p>' + (a.resp === null ? 'Sin respuesta' : a.resp ? 'Verdadero' : 'Falso') + '</p>';
+      right = '<p>' + (q.a ? 'Verdadero' : 'Falso') + '</p>';
+    } else if (a.type === 'mc') {
+      title = q.q; ctx = '<p class="ctx">Caso: ' + esc(MCMAP[a.id].c.title) + '</p>';
+      mine = a.resp && a.resp.length ? '<ul>' + a.resp.map(function (oi) { return '<li>' + esc(q.o[oi][0]) + '</li>'; }).join('') + '</ul>' : '<p>Sin respuesta</p>';
+      right = '<ul>' + q.o.filter(function (o) { return o[1]; }).map(function (o) { return '<li>' + esc(o[0]) + '</li>'; }).join('') + '</ul>';
+    } else {
+      title = q.sit;
+      mine = a.resp ? '<ol>' + a.resp.map(function (si) { return '<li>' + esc(q.steps[si]) + '</li>'; }).join('') + '</ol>' : '<p>Sin respuesta (no se movió ningún paso)</p>';
+      right = '<ol>' + q.steps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+    }
+    return '<article class="rev"><header><span class="k">Pregunta ' + (i + 1) + ' · ' + TYPE_LABEL[a.type] + '</span><span class="score ' + sc + '">' + scTxt + '</span></header>' + ctx +
+      '<h3>' + esc(title) + '</h3>' + lifeChips(a) +
+      '<div class="cmp"><div><small>Tu respuesta</small>' + mine + '</div><div><small>Respuesta correcta</small>' + right + '</div></div>' +
+      '<p class="why"><b>Por qué:</b> ' + esc(q.why) + '</p></article>';
+  }).join('');
+  app.innerHTML = '<p class="brand">Marca Personal Digital - Quiz de recuperación · Resultado</p>' +
+    '<div class="sumhead"><div class="grade" role="img" aria-label="Nota ' + fmtPts(g.total) + ' de 5,0"><div><b>' + fmtPts(g.total) + '</b><span>de 5,0</span></div></div>' +
+    '<div><span class="pill cyan">Caso ' + esc(CASEMAP[g.caseId].title) + '</span><h2>' + esc(g.name) + ', tu nota definitiva es ' + fmtPts(g.total) + '</h2><p>' + feedback(g.total) + '</p></div></div>' +
+    '<div class="reviews">' + cards + '</div>' +
+    '<div class="foot"><button class="btn primary lg" data-act="next">Siguiente jugador</button></div>';
+}
+
+/* ---------- Panel docente ---------- */
+function renderLayer() {
+  if (!admin.open) { if (!busy) layer.innerHTML = ''; return; }
+  var html;
+  if (!admin.unlocked) {
+    html = '<div class="card" id="keyform"><h2>Panel docente</h2><p class="note">Escribe la clave para ver los resultados o reiniciar el juego.</p>' +
+      '<label class="f" for="key">Clave<input type="password" id="key" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+      (admin.err ? '<p class="err" role="alert">' + esc(admin.err) + '</p>' : '') +
+      '<div class="row"><button class="btn primary" type="button" data-act="unlock">Entrar</button><button class="btn" type="button" data-act="close">Cancelar</button></div></div>';
+  } else {
+    var usedTF = TF.length - availTF().length, usedORD = ORD.length - availORD().length;
+    var mcTotal = CASES.length * 5, mcAvail = CASES.reduce(function (s, c) { return s + availCase(c).length; }, 0);
+    var rows = S.results.slice().reverse().map(function (r) {
+      var d = new Date(r.fecha);
+      return '<tr><td>' + esc(r.name) + '</td><td>' + esc(r.caso) + '</td><td class="num">' + fmtPts(r.nota) + '</td><td>' + d.toLocaleDateString('es-CO') + ' ' + d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) + '</td></tr>';
+    }).join('');
+    var caseRows = CASES.map(function (c, i) { return '<tr><td>Caso ' + (i + 1) + '</td><td>' + esc(c.title) + '</td><td class="num">' + availCase(c).length + ' de 5</td></tr>'; }).join('');
+    html = '<div class="card"><div class="row" style="justify-content:space-between"><h2>Panel docente</h2><button class="btn" data-act="close">Cerrar</button></div>' +
+      '<div class="stats"><div class="stat"><small>Verdadero o falso</small><b>' + (TF.length - usedTF) + '</b> de ' + TF.length + '</div><div class="stat"><small>Casos</small><b>' + mcAvail + '</b> de ' + mcTotal + '</div><div class="stat"><small>Ordenar</small><b>' + (ORD.length - usedORD) + '</b> de ' + ORD.length + '</div><div class="stat"><small>Alcanza para</small><b>' + capacity() + '</b> jugadores</div></div>' +
+      '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Resultados de la ronda</h3>' +
+      (rows ? '<div class="tablewrap"><table><thead><tr><th>Estudiante</th><th>Caso</th><th>Nota</th><th>Fecha</th></tr></thead><tbody>' + rows + '</tbody></table></div>' : '<p class="note">Aún no hay resultados. Aparecerán aquí cuando cada estudiante termine su partida.</p>') +
+      '<h3 style="margin:4px 0 0;font-family:var(--font-display)">Preguntas disponibles por caso</h3>' +
+      '<div class="tablewrap"><table><thead><tr><th>Caso</th><th>Nombre</th><th>Disponibles</th></tr></thead><tbody>' + caseRows + '</tbody></table></div>' +
+      '<section class="danger"><h3>Reiniciar el juego</h3><p class="note">Todas las preguntas vuelven a estar disponibles y se cancela cualquier partida en curso.</p>' +
+      '<label class="check" for="wipe"><input type="checkbox" id="wipe"' + (admin.wipe ? ' checked' : '') + '> Borrar también los resultados registrados</label>' +
+      (admin.confirm ? '<div class="row"><span>¿Confirmas el reinicio?</span><button class="btn warn" data-act="resetYes">Sí, reiniciar</button><button class="btn" data-act="resetNo">Cancelar</button></div>' : '<div class="row"><button class="btn warn" data-act="reset">Reiniciar juego</button></div>') +
+      (admin.done ? '<p class="note" role="status">' + esc(admin.done) + '</p>' : '') +
+      '</section></div>';
+  }
+  layer.innerHTML = '<div class="modal" role="dialog" aria-modal="true" aria-label="Panel docente">' + html + '</div>';
+  var k = document.getElementById('key'); if (k) k.focus();
+}
+
+/* =================== EVENTOS =================== */
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-act]');
+  if (!t || t.disabled) return;
+  var act = t.dataset.act;
+  if (act === 'start') { formCase = document.getElementById('pcase').value; startGame(); }
+  else if (act === 'resume') {
+    var a = cur();
+    if (a && a.done) {
+      if (S.current.idx >= S.current.qs.length - 1) { endGame(); return; }
+      S.current.idx++; beginQuestion(); return;
+    }
+    view = 'game'; render();
+    if (a && Date.now() >= a.deadline) finalize(true);
+  }
+  else if (act === 'tf') { var a1 = cur(); if (a1.done || busy) return; a1.resp = t.dataset.v === 'true'; save(); render(); }
+  else if (act === 'mc') {
+    var a2 = cur(); if (a2.done || busy) return;
+    var i = +t.dataset.i, need = needOf(qOf(a2));
+    var sel = a2.resp || [];
+    var at = sel.indexOf(i);
+    if (at > -1) { sel.splice(at, 1); flashMsg = ''; }
+    else if (sel.length >= need) { flashMsg = 'Ya marcaste ' + need + '. Quita una para elegir otra.'; render(); return; }
+    else { sel.push(i); flashMsg = ''; }
+    a2.resp = sel; save(); render();
+  }
+  else if (act === 'up') moveStep(+t.dataset.pos, +t.dataset.pos - 1);
+  else if (act === 'down') moveStep(+t.dataset.pos, +t.dataset.pos + 1);
+  else if (act === 'submit') finalize(false);
+  else if (act === 'unlock') tryUnlock();
+  else if (act === 'life') useLife(t.dataset.k);
+  else if (act === 'next') { lastGame = null; view = 'home'; render(); window.scrollTo({ top: 0 }); }
+  else if (act === 'admin') { admin = { open: true, unlocked: false, err: '', confirm: false, wipe: false, done: '' }; renderLayer(); }
+  else if (act === 'close') { admin.open = false; renderLayer(); if (view === 'home') render(); }
+  else if (act === 'reset') { admin.wipe = document.getElementById('wipe').checked; admin.confirm = true; admin.done = ''; renderLayer(); }
+  else if (act === 'resetNo') { admin.confirm = false; renderLayer(); }
+  else if (act === 'resetYes') {
+    var keep = admin.wipe ? [] : S.results;
+    S = blank(); S.results = keep; save();
+    lastGame = null; view = 'home';
+    admin.confirm = false; admin.done = 'Juego reiniciado. Todas las preguntas están disponibles de nuevo.';
+    render();
+  }
+});
+function tryUnlock() {
+  var k = document.getElementById('key');
+  var v = k ? k.value.trim() : '';
+  if (fp(v) === KEY_FP) { admin.unlocked = true; admin.err = ''; }
+  else admin.err = 'Clave incorrecta. Revisa mayúsculas y minúsculas.';
+  renderLayer();
+}
+document.addEventListener('input', function (e) {
+  if (e.target.id === 'pname') formName = e.target.value;
+});
+document.addEventListener('change', function (e) {
+  if (e.target.id === 'pcase') { formCase = e.target.value; formName = document.getElementById('pname').value; formErr = ''; render(); }
+  if (e.target.id === 'wipe') admin.wipe = e.target.checked;
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && admin.open) { admin.open = false; renderLayer(); }
+  if (e.key === 'Enter' && e.target.id === 'key') { e.preventDefault(); tryUnlock(); return; }
+  if (e.key === 'Enter' && e.target.id === 'pname') { formCase = document.getElementById('pcase').value; startGame(); }
+});
+
+/* Arrastrar y soltar (ordenar) */
+document.addEventListener('dragstart', function (e) {
+  var h = e.target.closest && e.target.closest('.oitem .hexrow'); if (!h) return;
+  dragFrom = +h.dataset.pos;
+  h.closest('.oitem').classList.add('drag');
+  try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(dragFrom)); } catch (err) {}
+});
+document.addEventListener('dragover', function (e) {
+  var li = e.target.closest && e.target.closest('.oitem'); if (!li || dragFrom === null) return;
+  e.preventDefault();
+  document.querySelectorAll('.oitem.over').forEach(function (x) { if (x !== li) x.classList.remove('over'); });
+  li.classList.add('over');
+});
+document.addEventListener('drop', function (e) {
+  var li = e.target.closest && e.target.closest('.oitem'); if (!li || dragFrom === null) return;
+  e.preventDefault();
+  var to = +li.dataset.pos, from = dragFrom; dragFrom = null;
+  moveStep(from, to);
+});
+document.addEventListener('dragend', function () {
+  dragFrom = null;
+  document.querySelectorAll('.oitem.drag, .oitem.over').forEach(function (x) { x.classList.remove('drag', 'over'); });
+});
+
+render();
+})();
+</script>
+
+</body></html>
