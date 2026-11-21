@@ -1,0 +1,87 @@
+/* ============================================================
+   Catálogo
+   ============================================================ */
+.catalog{padding-block:clamp(40px,6vw,80px) 40px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:26px}
+.sec-head h2{font-size:clamp(36px,5.4vw,76px);font-weight:860;letter-spacing:-.02em}
+.sec-head p{max-width:46ch;color:var(--ink-2)}
+
+.toolbar{position:sticky;top:var(--navh);z-index:20;background:var(--paper);border-bottom:2.5px solid var(--ink);padding-block:12px;margin-bottom:18px}
+.toolbar-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.mini-search{flex:1 1 280px;display:flex;align-items:center;gap:10px;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:0 12px;min-height:50px}
+.mini-search input{flex:1;border:0;background:transparent;font-size:18px;font-weight:600;min-width:0;padding:10px 0}
+.mini-search input:focus{outline:none}
+.mini-search:focus-within{box-shadow:var(--shadow)}
+.mini-search kbd{font-family:inherit;font-size:13px;border:1.5px solid var(--muted);color:var(--muted);border-radius:6px;padding:1px 7px;font-weight:700}
+.mini-search .clear{border:0;background:none;padding:4px;display:none;border-radius:8px}
+.mini-search.has-value .clear{display:grid}
+.mini-search.has-value kbd{display:none}
+.count{font-weight:700;white-space:nowrap}
+.count b{font-variation-settings:var(--wide);font-weight:900;font-size:22px}
+.seg{display:inline-flex;border:2.5px solid var(--ink);border-radius:12px;overflow:hidden;background:#fff}
+.seg button{border:0;background:none;padding:10px 12px;display:grid;place-items:center}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.select{border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:11px 12px;font-weight:600;max-width:100%}
+
+.filters{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:30px}
+.filters > *{min-width:0}
+.frow{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.frow > span{font-weight:700;min-width:64px;padding-top:9px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;flex:1 1 0;min-width:0}
+.frow .select{flex:0 1 auto}
+.chip{border:2px solid var(--ink);background:#fff;border-radius:999px;padding:7px 14px;font-weight:650;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.chip i{font-style:normal;font-weight:800;font-size:13px;min-width:20px;text-align:center;border-radius:999px;padding:1px 6px;background:var(--paper)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff}
+.chip[aria-pressed="true"] i{background:rgba(255,255,255,.2)}
+.chip:disabled{opacity:.35;cursor:not-allowed}
+.chip .sw{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.chip[aria-pressed="true"] .sw{border-color:#fff}
+@media (max-width:700px){
+  .toolbar{position:static}
+  .frow{flex-direction:column;gap:8px}
+  .frow > span{padding-top:0}
+  .chips{flex:none;flex-wrap:nowrap;overflow-x:auto;width:100%;max-width:100%;padding-bottom:6px;scrollbar-width:thin}
+  .chip{flex:none}
+  .frow .select{width:100%}
+  .mini-search kbd{display:none}
+}
+
+/* Tarjeta tipo carpeta: la pestaña lleva el color del curso */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:34px 24px;padding-top:10px}
+.card{position:relative;display:flex;flex-direction:column;min-height:100%}
+.card .tab{align-self:flex-start;background:var(--cc);color:var(--on);border:2.5px solid var(--ink);border-bottom:0;border-radius:12px 12px 0 0;padding:6px 14px;font-weight:800;font-size:13.5px;font-variation-settings:"wdth" 115;position:relative;top:2.5px;z-index:1}
+.card .sheet{flex:1;display:flex;flex-direction:column;gap:12px;background:#fff;border:2.5px solid var(--ink);border-radius:0 16px 16px 16px;padding:18px 18px 16px;box-shadow:var(--shadow);transition:transform .14s ease, box-shadow .14s ease}
+.card:hover .sheet,.card:focus-within .sheet{transform:translate(-3px,-3px);box-shadow:7px 7px 0 var(--ink)}
+.card .top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.card .kind{font-size:14px;font-weight:700;color:var(--ink-2);display:flex;flex-direction:column;gap:2px}
+.card .kind small{font-weight:500;color:var(--muted);font-size:13.5px}
+.card .glyph{flex:none;width:54px;height:54px;border-radius:14px;background:var(--paper);display:grid;place-items:center;border:2px solid var(--ink)}
+.card h3{font-size:21px;font-weight:800;line-height:1.08;letter-spacing:-.01em;font-variation-settings:"wdth" 112}
+.card h3 button{all:unset;cursor:pointer}
+.card h3 button::after{content:"";position:absolute;inset:0;z-index:0}
+.card:has(h3 button:focus-visible) .sheet{outline:3px solid var(--ink);outline-offset:4px}
+.card p.d{font-size:15.5px;color:var(--ink-2);line-height:1.45}
+.card .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;position:relative;z-index:2}
+.tag{border:1.5px solid var(--ink-2);background:transparent;border-radius:8px;padding:2px 8px;font-size:13.5px;font-weight:600;color:var(--ink-2)}
+.tag:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+mark{background:var(--lime);color:var(--ink);padding:0 2px;border-radius:3px}
+
+.list{border-top:2.5px solid var(--ink)}
+.row{display:grid;grid-template-columns:10px minmax(0,1fr) 210px 170px 90px;gap:18px;align-items:center;padding:14px 6px;border:0;border-bottom:1.5px solid rgba(20,18,58,.25);cursor:pointer;background:none;width:100%;text-align:left}
+.row:hover{background:#fff}
+.row .bar{width:10px;height:34px;border-radius:4px;background:var(--cc);border:1.5px solid var(--ink)}
+.row .t{font-weight:750;font-size:17px;font-variation-settings:"wdth" 108}
+.row .t small{display:block;font-weight:500;color:var(--muted);font-size:14px;font-variation-settings:"wdth" 100}
+.row .m{font-size:15px;color:var(--ink-2)}
+@media (max-width:820px){.row{grid-template-columns:10px minmax(0,1fr)}.row .m{display:none}}
+
+.empty{border:2.5px dashed var(--ink);border-radius:18px;padding:clamp(28px,5vw,60px);display:grid;gap:14px;justify-items:start;background:#fff}
+.empty h3{font-size:clamp(26px,3vw,40px);font-weight:850}
+.empty p{max-width:52ch;color:var(--ink-2)}
+.btn{border:2.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:12px;padding:11px 18px;font-weight:750;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .12s, box-shadow .12s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow)}
+.btn.light{background:#fff;color:var(--ink)}
+
+/* Etiqueta «Nuevo» en la pestaña de la ficha (recursos con fecha reciente) */
+.card .tab .new{display:inline-block;margin-left:8px;background:var(--ink);color:#fff;border-radius:999px;padding:1px 8px;font-size:12px;font-weight:800;vertical-align:1px}
+.empty code{background:var(--paper);border-radius:6px;padding:1px 6px}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "presentacion",
+    "nombre": "Presentación",
+    "plural": "presentaciones",
+    "icono": "presentacion"
+  },
+  {
+    "id": "juego",
+    "nombre": "Juego de clase",
+    "plural": "juegos de clase",
+    "icono": "juego"
+  },
+  {
+    "id": "quiz",
+    "nombre": "Quiz",
+    "plural": "quizzes",
+    "icono": "quiz"
+  },
+  {
+    "id": "guia",
+    "nombre": "Guía o ficha",
+    "plural": "guías y fichas",
+    "icono": "guia"
+  },
+  {
+    "id": "plantilla",
+    "nombre": "Plantilla",
+    "plural": "plantillas",
+    "icono": "plantilla"
+  },
+  {
+    "id": "ejemplo-visual",
+    "nombre": "Ejemplo visual",
+    "plural": "ejemplos visuales",
+    "icono": "ejemplo"
+  }
+]

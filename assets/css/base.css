@@ -1,0 +1,58 @@
+/* ============================================================
+   Fuente: Archivo (variable: ancho 62–125, peso 100–900)
+   Autoalojada en assets/fonts. Licencia OFL en assets/fonts/LICENSE.
+   ============================================================ */
+@font-face{
+  font-family:"Archivo";font-style:normal;font-display:swap;
+  font-weight:100 900;font-stretch:62% 125%;
+  src:url(../fonts/archivo-latin-ext-wdth-normal.woff2) format("woff2-variations"),url(../fonts/archivo-latin-ext-wdth-normal.woff2) format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face{
+  font-family:"Archivo";font-style:normal;font-display:swap;
+  font-weight:100 900;font-stretch:62% 125%;
+  src:url(../fonts/archivo-latin-wdth-normal.woff2) format("woff2-variations"),url(../fonts/archivo-latin-wdth-normal.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* ============================================================
+   Tokens
+   Tinta índigo + papel frío y cuatro colores de acento.
+   El color de cada curso se define en data/cursos.json; estos
+   tokens se usan en la interfaz (hero, perfil, contacto).
+   Una sola familia (Archivo) jugando con su ancho.
+   ============================================================ */
+:root{
+  --ink:#14123A;
+  --ink-2:#3B3A63;
+  --paper:#ECEFF6;
+  --muted:#5A5C7E;
+
+  --cobalt:#3346FF;   /* azul principal */
+  --orange:#FF6B2C;   /* naranja */
+  --lime:#B6F03C;     /* verde lima */
+  --orchid:#C98BFF;   /* lila */
+
+  --wide:"wdth" 125;
+  --font:"Archivo", "Arial Narrow", Arial, sans-serif;
+  --shadow:4px 4px 0 var(--ink);
+  --shadow-up:8px 8px 0 var(--ink);
+  --gut:clamp(18px, 4vw, 56px);
+  --max:1360px;
+  --navh:72px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:var(--navh)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.5;font-variation-settings:"wdth" 100}
+img,svg{display:block}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.hero :focus-visible,.site-foot :focus-visible,.navbar[data-state="hero"] :focus-visible,.about-visual :focus-visible{outline-color:#fff}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gut)}
+h1,h2,h3{margin:0;line-height:1;font-variation-settings:var(--wide);text-wrap:balance}
+p{margin:0}

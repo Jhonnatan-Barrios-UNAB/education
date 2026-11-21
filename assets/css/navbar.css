@@ -1,0 +1,23 @@
+/* ============================================================
+   Menú fijo: azul sobre el hero, papel al bajar
+   ============================================================ */
+.navbar{position:sticky;top:0;z-index:50;background:var(--cobalt);color:#fff;border-bottom:2.5px solid transparent;transition:background .25s ease,color .25s ease,border-color .25s ease}
+.navbar[data-state="scrolled"]{background:rgba(236,239,246,.94);color:var(--ink);border-bottom-color:var(--ink);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.navbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.me{display:flex;align-items:center;gap:12px;background:none;border:0;padding:0;text-align:left;color:inherit}
+.avatar{position:relative;width:46px;height:46px;border-radius:50%;background:var(--lime);border:2.5px solid var(--ink);overflow:hidden;flex:none}
+.avatar img{position:absolute;left:50%;top:3px;width:150%;max-width:none;transform:translateX(-50%)}
+.me:hover .avatar{transform:rotate(-6deg)}
+.avatar{transition:transform .15s ease}
+.me span{font-weight:800;font-size:17px;font-variation-settings:"wdth" 112;line-height:1.1}
+.me small{display:block;font-weight:500;font-size:14px;opacity:.8;font-variation-settings:"wdth" 100}
+.navbar nav{display:flex;gap:4px;align-items:center;flex-wrap:nowrap}
+.navbar nav a,.navbar nav button{text-decoration:none;font-weight:650;padding:8px 13px;border-radius:999px;border:0;background:none;color:inherit;white-space:nowrap}
+.navbar nav a:hover,.navbar nav button:hover{background:rgba(255,255,255,.16)}
+.navbar[data-state="scrolled"] nav a:hover,.navbar[data-state="scrolled"] nav button:hover{background:rgba(20,18,58,.08)}
+.navbar nav .about-btn{border:2px solid currentColor}
+.navbar nav .cta{background:#fff;color:var(--cobalt)}
+.navbar[data-state="scrolled"] nav .cta{background:var(--ink);color:#fff}
+.navbar nav .cta:hover{background:var(--lime)!important;color:var(--ink)!important}
+@media (max-width:820px){.navbar nav .hide-sm{display:none}}
+@media (max-width:480px){.me small{display:none}.navbar nav .cta{display:none}}

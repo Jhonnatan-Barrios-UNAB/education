@@ -1,0 +1,38 @@
+[
+  {
+    "id": "interaccion-digital",
+    "nombre": "Interacción Digital",
+    "corto": "Interacción Digital",
+    "categoria": "Curso transversal de competencias digitales",
+    "descripcion": "Convivir, colaborar y cuidarse en lo digital: netiqueta, conflictos en línea, seguridad, derechos de autor y diseño pensado en las personas.",
+    "color": "#3346FF",
+    "colorTexto": "#FFFFFF"
+  },
+  {
+    "id": "marca-personal-digital",
+    "nombre": "Marca Personal Digital",
+    "corto": "Marca Personal",
+    "categoria": "Curso transversal de competencias digitales",
+    "descripcion": "Construir una identidad profesional en línea: huella digital, networking, comunicación estratégica y contenido con propósito.",
+    "color": "#FF6B2C",
+    "colorTexto": "#14123A"
+  },
+  {
+    "id": "creacion-de-contenidos",
+    "nombre": "Creación de Contenidos Digitales",
+    "corto": "Creación de Contenidos",
+    "categoria": "Curso transversal de competencias digitales",
+    "descripcion": "Del público al formato: diseño visual, infografías, planeación editorial, fotografía y producción audiovisual.",
+    "color": "#B6F03C",
+    "colorTexto": "#14123A"
+  },
+  {
+    "id": "de-la-idea-al-video",
+    "nombre": "De la Idea al Video",
+    "corto": "De la Idea al Video",
+    "categoria": "Formación docente",
+    "descripcion": "Formación para profesores sobre microvideos educativos con inteligencia artificial, del guion a la pantalla.",
+    "color": "#C98BFF",
+    "colorTexto": "#14123A"
+  }
+]

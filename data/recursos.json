@@ -1,0 +1,696 @@
+[
+  {
+    "id": "netiqueta-el-otro-lado-de-la-pantalla",
+    "titulo": "Netiqueta: el otro lado de la pantalla",
+    "curso": "interaccion-digital",
+    "tipo": "presentacion",
+    "semana": 9,
+    "temas": [
+      "netiqueta",
+      "ética digital",
+      "convivencia"
+    ],
+    "descripcion": "Clase sobre cómo nos comportamos en línea y por qué detrás de cada mensaje hay una persona.",
+    "enlace": "https://claude.ai/artifact/33Vgsw6CJhU1ZeS3KCyj3V",
+    "fecha": "2026-10-09"
+  },
+  {
+    "id": "lo-publicarias",
+    "titulo": "¿Lo publicarías?",
+    "curso": "interaccion-digital",
+    "tipo": "juego",
+    "semana": 9,
+    "temas": [
+      "netiqueta",
+      "huella digital",
+      "redes sociales"
+    ],
+    "descripcion": "Tablero proyectable en el que la clase decide, caso por caso, si publicaría o no un contenido.",
+    "enlace": "https://claude.ai/artifact/PJKpahuGuvmK58Y8cM3JMM",
+    "fecha": "2026-10-09"
+  },
+  {
+    "id": "termometro-del-conflicto",
+    "titulo": "Termómetro del conflicto",
+    "curso": "interaccion-digital",
+    "tipo": "juego",
+    "semana": 9,
+    "temas": [
+      "conflictos digitales",
+      "comunicación",
+      "trabajo en equipo"
+    ],
+    "descripcion": "Simulador para el tablero: la clase vota cómo responder en un chat de equipo y ve cómo el conflicto escala o se calma.",
+    "enlace": "https://claude.ai/artifact/TEJVEVPyLLruYb58U5w97Y",
+    "fecha": "2026-10-09"
+  },
+  {
+    "id": "quien-quiere-mejorar-su-nota-netiqueta",
+    "titulo": "¿Quién quiere mejorar su nota? Netiqueta",
+    "curso": "interaccion-digital",
+    "tipo": "quiz",
+    "semana": 9,
+    "temas": [
+      "netiqueta",
+      "recuperación"
+    ],
+    "descripcion": "Quiz de recuperación tipo concurso con panel docente para revisar preguntas y respuestas.",
+    "enlace": "https://claude.ai/artifact/HJxm2jQi5iBmhurrkEfGEL",
+    "fecha": "2026-11-09"
+  },
+  {
+    "id": "quien-quiere-mejorar-su-nota-trabajar-juntos-sin-estar-junto",
+    "titulo": "¿Quién quiere mejorar su nota? Trabajar juntos sin estar juntos",
+    "curso": "interaccion-digital",
+    "tipo": "quiz",
+    "temas": [
+      "colaboración digital",
+      "trabajo remoto",
+      "recuperación"
+    ],
+    "descripcion": "Concurso de recuperación con comodines, cronómetro y panel docente sobre colaboración a distancia.",
+    "enlace": "https://claude.ai/artifact/SfkfkEuaxKToMPmBSxyLJX",
+    "fecha": "2026-10-12"
+  },
+  {
+    "id": "mi-vida-digital-tambien-necesita-seguridad",
+    "titulo": "Mi vida digital también necesita seguridad",
+    "curso": "interaccion-digital",
+    "tipo": "presentacion",
+    "semana": 10,
+    "temas": [
+      "seguridad digital",
+      "privacidad",
+      "contraseñas"
+    ],
+    "descripcion": "Clase sobre hábitos para proteger cuentas, datos y dispositivos en la vida universitaria.",
+    "enlace": "https://claude.ai/artifact/SSqW97mj471zyG6tXsoagv",
+    "fecha": "2026-11-04"
+  },
+  {
+    "id": "hackea-al-estudiante",
+    "titulo": "Hackea al estudiante",
+    "curso": "interaccion-digital",
+    "tipo": "juego",
+    "semana": 10,
+    "temas": [
+      "seguridad digital",
+      "huella digital",
+      "privacidad"
+    ],
+    "descripcion": "Competencia por equipos: cada equipo investiga un perfil ficticio y descubre cuánto revela su huella digital.",
+    "enlace": "https://claude.ai/artifact/6Hx5ggu1x1EG8Znzp3zuXE",
+    "fecha": "2026-11-04"
+  },
+  {
+    "id": "internet-no-significa-gratis-para-usar",
+    "titulo": "Internet no significa gratis para usar",
+    "curso": "interaccion-digital",
+    "tipo": "presentacion",
+    "semana": 11,
+    "temas": [
+      "derechos de autor",
+      "licencias",
+      "creative commons"
+    ],
+    "descripcion": "Clase sobre derechos de autor y licencias para usar bien imágenes, música y textos de internet.",
+    "enlace": "https://claude.ai/artifact/KfyCDnmLp5zVzJjPv2yHNa",
+    "fecha": "2026-11-04"
+  },
+  {
+    "id": "semaforo-de-derechos-de-autor",
+    "titulo": "Semáforo de derechos de autor",
+    "curso": "interaccion-digital",
+    "tipo": "juego",
+    "semana": 11,
+    "temas": [
+      "derechos de autor",
+      "licencias"
+    ],
+    "descripcion": "Concurso por equipos que clasifica usos de recursos en verde, amarillo o rojo, con tabla de posiciones y nota.",
+    "enlace": "https://claude.ai/artifact/9ZAaVJmDFV83MUqmBjbmCz",
+    "fecha": "2026-11-04"
+  },
+  {
+    "id": "quien-quiere-mejorar-su-nota",
+    "titulo": "¿Quién quiere mejorar su nota?",
+    "curso": "interaccion-digital",
+    "tipo": "quiz",
+    "temas": [
+      "recuperación",
+      "repaso"
+    ],
+    "descripcion": "Concurso de recuperación con la línea gráfica de Interacción Digital, comodines y escalera de cinco niveles.",
+    "enlace": "https://claude.ai/artifact/JhhEStgGtxexUVF86hPCCd",
+    "fecha": "2026-11-11"
+  },
+  {
+    "id": "mi-semana-universitaria",
+    "titulo": "Mi semana universitaria",
+    "curso": "interaccion-digital",
+    "tipo": "guia",
+    "temas": [
+      "organización",
+      "productividad",
+      "herramientas digitales"
+    ],
+    "descripcion": "Guía para planear la semana con herramientas digitales y llegar a tiempo a entregas y clases.",
+    "enlace": "https://claude.ai/artifact/TUnHkLa6aqNYQq2nkaMyd9",
+    "fecha": "2026-10-27"
+  },
+  {
+    "id": "herramientas-digitales-y-dashboard-personal",
+    "titulo": "Herramientas digitales y dashboard personal",
+    "curso": "interaccion-digital",
+    "tipo": "presentacion",
+    "temas": [
+      "herramientas digitales",
+      "productividad",
+      "organización"
+    ],
+    "descripcion": "Clase para armar un tablero personal que reúna calendario, tareas y archivos.",
+    "enlace": "https://claude.ai/artifact/BonTV6ScKNVjAQTWV9QFN9",
+    "fecha": "2026-10-27"
+  },
+  {
+    "id": "disenar-pensando-en-las-personas",
+    "titulo": "Diseñar pensando en las personas",
+    "curso": "interaccion-digital",
+    "tipo": "presentacion",
+    "temas": [
+      "diseño centrado en las personas",
+      "accesibilidad",
+      "experiencia de usuario"
+    ],
+    "descripcion": "Clase sobre cómo diseñar experiencias digitales a partir de las necesidades reales de quien las usa.",
+    "enlace": "https://claude.ai/artifact/Bjc4dPvJGgZt8P1KMDUcJX",
+    "fecha": "2026-11-09"
+  },
+  {
+    "id": "plantilla-mi-sistema-de-marca",
+    "titulo": "Plantilla: Mi sistema de marca",
+    "curso": "marca-personal-digital",
+    "tipo": "plantilla",
+    "temas": [
+      "identidad profesional",
+      "propuesta de valor",
+      "identidad visual"
+    ],
+    "descripcion": "Plantilla para que cada estudiante defina los elementos de su marca personal en un solo sistema.",
+    "enlace": "https://claude.ai/artifact/U7Zf4QEH8iZ2RR2E2cXcYH",
+    "fecha": "2026-10-13"
+  },
+  {
+    "id": "tras-el-rastro-digital-de-un-referente",
+    "titulo": "Tras el rastro digital de un referente",
+    "curso": "marca-personal-digital",
+    "tipo": "guia",
+    "temas": [
+      "huella digital",
+      "posicionamiento",
+      "referentes"
+    ],
+    "descripcion": "Ficha de actividad para analizar la presencia en línea de un profesional que admiran.",
+    "enlace": "https://claude.ai/artifact/BaxyKosp1tTwVPLhqHTD6Y",
+    "fecha": "2026-10-14"
+  },
+  {
+    "id": "plantilla-auditoria-digital-de-un-referente",
+    "titulo": "Plantilla: Auditoría digital de un referente",
+    "curso": "marca-personal-digital",
+    "tipo": "plantilla",
+    "temas": [
+      "huella digital",
+      "posicionamiento",
+      "referentes"
+    ],
+    "descripcion": "Diapositivas guía para presentar los hallazgos de la auditoría del referente.",
+    "enlace": "https://claude.ai/artifact/LryxAwWSr9LfGHbNaTEoE2",
+    "fecha": "2026-10-16"
+  },
+  {
+    "id": "networking-digital",
+    "titulo": "Networking digital",
+    "curso": "marca-personal-digital",
+    "tipo": "presentacion",
+    "semana": 10,
+    "temas": [
+      "networking",
+      "LinkedIn",
+      "relaciones profesionales"
+    ],
+    "descripcion": "Clase sobre cómo construir y cuidar una red profesional en línea.",
+    "enlace": "https://claude.ai/artifact/DbzgjS4peVAL5b1oCfhUPX",
+    "fecha": "2026-10-06"
+  },
+  {
+    "id": "pasaporte-de-red",
+    "titulo": "Pasaporte de Red",
+    "curso": "marca-personal-digital",
+    "tipo": "juego",
+    "semana": 10,
+    "temas": [
+      "networking",
+      "relaciones profesionales"
+    ],
+    "descripcion": "Actividad interactiva en la que los estudiantes recogen sellos al conectar con sus compañeros.",
+    "enlace": "https://claude.ai/artifact/PNK2FguctixvFPcEzcVL4d",
+    "fecha": "2026-10-06"
+  },
+  {
+    "id": "quien-quiere-mejorar-su-nota-networking",
+    "titulo": "¿Quién quiere mejorar su nota? Networking",
+    "curso": "marca-personal-digital",
+    "tipo": "quiz",
+    "semana": 10,
+    "temas": [
+      "networking",
+      "recuperación"
+    ],
+    "descripcion": "Concurso de recuperación con comodines, reloj y panel docente sobre networking digital.",
+    "enlace": "https://claude.ai/artifact/WV6X4MmKS958LcsEtJaCnH",
+    "fecha": "2026-10-12"
+  },
+  {
+    "id": "comunicacion-estrategica-y-ecosistema-digital",
+    "titulo": "Comunicación estratégica y ecosistema digital",
+    "curso": "marca-personal-digital",
+    "tipo": "presentacion",
+    "semana": 11,
+    "temas": [
+      "comunicación estratégica",
+      "ecosistema digital",
+      "canales"
+    ],
+    "descripcion": "Clase doble sobre qué decir, a quién y en qué canal para que la marca personal sea coherente.",
+    "enlace": "https://claude.ai/artifact/SazoQALHqRnrCoY8uuqmt6",
+    "fecha": "2026-10-13"
+  },
+  {
+    "id": "contenido-profesional-y-productividad-digital",
+    "titulo": "Contenido profesional y productividad digital",
+    "curso": "marca-personal-digital",
+    "tipo": "presentacion",
+    "semana": 13,
+    "temas": [
+      "contenido profesional",
+      "productividad",
+      "gestión del tiempo"
+    ],
+    "descripcion": "Clase doble sobre crear contenido que aporte a la marca y organizar el tiempo para sostenerlo.",
+    "enlace": "https://claude.ai/artifact/FKcBX7DNn7XFZM43wrnTZJ",
+    "fecha": "2026-10-20"
+  },
+  {
+    "id": "liga-de-creadores",
+    "titulo": "Liga de Creadores",
+    "curso": "marca-personal-digital",
+    "tipo": "juego",
+    "semana": 13,
+    "temas": [
+      "contenido profesional",
+      "gamificación",
+      "trabajo en equipo"
+    ],
+    "descripcion": "Liga por equipos con ruleta de retos y tabla de posiciones para crear contenido en clase.",
+    "enlace": "https://claude.ai/artifact/ApMs4CuzCQaLDQHnzsM3Fw",
+    "fecha": "2026-10-19"
+  },
+  {
+    "id": "quien-quiere-mejorar-su-nota-contenido-profesional",
+    "titulo": "¿Quién quiere mejorar su nota? Contenido profesional",
+    "curso": "marca-personal-digital",
+    "tipo": "quiz",
+    "semana": 13,
+    "temas": [
+      "contenido profesional",
+      "productividad",
+      "recuperación"
+    ],
+    "descripcion": "Quiz de recuperación con preguntas de verdadero o falso, casos y ordenar pasos.",
+    "enlace": "https://claude.ai/artifact/Lhxf6u5oMPBSGyC7uaDLqz",
+    "fecha": "2026-10-20"
+  },
+  {
+    "id": "apertura-buen-diseno-vs-saturado",
+    "titulo": "Apertura: buen diseño vs. saturado",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "diseño visual",
+      "jerarquía visual"
+    ],
+    "descripcion": "Comparación para abrir la clase: la misma pieza bien diseñada y saturada.",
+    "enlace": "https://claude.ai/artifact/G2CVCzcsfyFmfKjcbEEuTF",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "principios-de-diseno",
+    "titulo": "Principios de diseño",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "diseño visual",
+      "contraste",
+      "alineación"
+    ],
+    "descripcion": "Contraste, repetición, alineación y proximidad mostrados con ejemplos.",
+    "enlace": "https://claude.ai/artifact/QUcE3KsgSmhmwaCnJaeK9P",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "color-mala-vs-buena-combinacion",
+    "titulo": "Color: mala vs. buena combinación",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "teoría del color",
+      "diseño visual",
+      "accesibilidad"
+    ],
+    "descripcion": "Dos versiones de una pieza para discutir por qué una combinación de color funciona y otra no.",
+    "enlace": "https://claude.ai/artifact/W5wShoHWbSpMm5oaHvCs1R",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "jerarquia-visual-mala-vs-buena-lectura",
+    "titulo": "Jerarquía visual: mala vs. buena lectura",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "jerarquía visual",
+      "tipografía"
+    ],
+    "descripcion": "Ejemplo para ver cómo el tamaño, el peso y el orden guían la lectura.",
+    "enlace": "https://claude.ai/artifact/KW88wc9Vk7kymopTwtadR4",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-para-redisenar",
+    "titulo": "Infografía para rediseñar",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "diseño visual"
+    ],
+    "descripcion": "Infografía con errores a propósito para la actividad de rediseño en clase.",
+    "enlace": "https://claude.ai/artifact/AVWEHHLHuopJNGJ9nmYFd2",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-informativa-sabores-de-santander",
+    "titulo": "Infografía informativa: sabores de Santander",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "tipos de infografía"
+    ],
+    "descripcion": "Muestra de infografía temática con contenido regional.",
+    "enlace": "https://claude.ai/artifact/WHxuVLACsePEFj6cZjqnAS",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-comparativa-renovables-vs-no-renovables",
+    "titulo": "Infografía comparativa: renovables vs. no renovables",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "tipos de infografía"
+    ],
+    "descripcion": "Muestra de infografía que compara dos opciones lado a lado.",
+    "enlace": "https://claude.ai/artifact/TfKhoa4C2JqGFFUEuUL7fg",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-cronologica-historia-de-internet",
+    "titulo": "Infografía cronológica: historia de internet",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "tipos de infografía"
+    ],
+    "descripcion": "Muestra de línea de tiempo con los hitos de internet.",
+    "enlace": "https://claude.ai/artifact/Ftbn286kQvvMtE5x5gGDdb",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-de-proceso-arma-tu-presupuesto",
+    "titulo": "Infografía de proceso: arma tu presupuesto",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "tipos de infografía"
+    ],
+    "descripcion": "Muestra de infografía paso a paso para un presupuesto personal.",
+    "enlace": "https://claude.ai/artifact/Ub8Mbz1yK3REfNgAdpE3xH",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-geografica-fraude-en-compras-en-linea",
+    "titulo": "Infografía geográfica: fraude en compras en línea",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "tipos de infografía",
+      "visualización de datos"
+    ],
+    "descripcion": "Muestra de infografía con datos distribuidos por región.",
+    "enlace": "https://claude.ai/artifact/49X3UfmaABgvSwGsKxMAEH",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "infografia-estadistica-habitos-de-consumo-digital",
+    "titulo": "Infografía estadística: hábitos de consumo digital",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "infografías",
+      "tipos de infografía",
+      "visualización de datos"
+    ],
+    "descripcion": "Muestra de infografía construida a partir de cifras.",
+    "enlace": "https://claude.ai/artifact/TCs1N1bSSFwYACHtxbZj4Z",
+    "fecha": "2026-09-24"
+  },
+  {
+    "id": "la-ia-te-ayuda-tu-firmas-el-trabajo",
+    "titulo": "La IA te ayuda. Tú firmas el trabajo.",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "IA generativa",
+      "infografías",
+      "prompts"
+    ],
+    "descripcion": "Pieza vertical sobre el uso responsable de la IA en trabajos académicos, hecha a partir de un prompt de clase.",
+    "enlace": "https://claude.ai/artifact/TtdrF8PNQZKe91DtoxPGey",
+    "fecha": "2026-10-01"
+  },
+  {
+    "id": "tu-noche-empieza-a-las-3-p-m",
+    "titulo": "Tu noche empieza a las 3 p.m.",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "IA generativa",
+      "infografías",
+      "prompts",
+      "bienestar"
+    ],
+    "descripcion": "Segunda pieza del mismo prompt: hábitos de sueño para estudiantes universitarios.",
+    "enlace": "https://claude.ai/artifact/V3Fxj3U4czg9V1ywYAdLrr",
+    "fecha": "2026-10-01"
+  },
+  {
+    "id": "aura-salon-pieza-publicitaria",
+    "titulo": "Aura Salón: pieza publicitaria",
+    "curso": "creacion-de-contenidos",
+    "tipo": "ejemplo-visual",
+    "semana": 7,
+    "temas": [
+      "IA generativa",
+      "publicidad",
+      "prompts"
+    ],
+    "descripcion": "Tercer ejemplo del prompt: pieza vertical para un negocio local con sorteo y plan de referidos.",
+    "enlace": "https://claude.ai/artifact/MKtijR6uhaYCMBFcPqvS5e",
+    "fecha": "2026-10-01"
+  },
+  {
+    "id": "de-la-idea-a-la-secuencia-planeacion-de-contenidos",
+    "titulo": "De la idea a la secuencia: planeación de contenidos",
+    "curso": "creacion-de-contenidos",
+    "tipo": "presentacion",
+    "semana": 8,
+    "temas": [
+      "planeación de contenidos",
+      "calendario editorial",
+      "storytelling"
+    ],
+    "descripcion": "Clase sobre calendario editorial, storytelling y storydoing para pasar de ideas sueltas a una secuencia.",
+    "enlace": "https://claude.ai/artifact/6jcvdsmkE7mGWGqTu5S7zV",
+    "fecha": "2026-10-07"
+  },
+  {
+    "id": "taller-parrilla-editorial-mensual",
+    "titulo": "Taller: parrilla editorial mensual",
+    "curso": "creacion-de-contenidos",
+    "tipo": "guia",
+    "semana": 8,
+    "temas": [
+      "planeación de contenidos",
+      "calendario editorial"
+    ],
+    "descripcion": "Guía de taller para diseñar la parrilla de contenidos de un mes.",
+    "enlace": "https://claude.ai/artifact/DtaUtSWVBDWzhg2Bg4w2ri",
+    "fecha": "2026-10-07"
+  },
+  {
+    "id": "la-historia-en-cadena",
+    "titulo": "La historia en cadena",
+    "curso": "creacion-de-contenidos",
+    "tipo": "juego",
+    "semana": 8,
+    "temas": [
+      "storytelling",
+      "creatividad"
+    ],
+    "descripcion": "Juego de storytelling improvisado en el que cada equipo continúa la historia del anterior.",
+    "enlace": "https://claude.ai/artifact/QDajVDPNC1yv1juRvbGeYf",
+    "fecha": "2026-10-07"
+  },
+  {
+    "id": "quien-quiere-ser-estratega",
+    "titulo": "¿Quién quiere ser estratega?",
+    "curso": "creacion-de-contenidos",
+    "tipo": "quiz",
+    "temas": [
+      "estrategia de contenidos",
+      "público objetivo",
+      "canales"
+    ],
+    "descripcion": "Concurso tipo millonario para repasar público, objetivos, canales y formatos.",
+    "enlace": "https://claude.ai/artifact/2yFBzGxCr3BVFiU9DCJc6d",
+    "fecha": "2026-10-11"
+  },
+  {
+    "id": "composicion-fotografica-para-contenidos-digitales",
+    "titulo": "Composición fotográfica para contenidos digitales",
+    "curso": "creacion-de-contenidos",
+    "tipo": "presentacion",
+    "temas": [
+      "fotografía",
+      "composición",
+      "encuadre"
+    ],
+    "descripcion": "Clase sobre regla de tercios, encuadres y luz para fotos que comunican.",
+    "enlace": "https://claude.ai/artifact/CeKuJebqNC9FXPmTDbzSyV",
+    "fecha": "2026-10-28"
+  },
+  {
+    "id": "ruleta-de-retos-fotograficos",
+    "titulo": "Ruleta de retos fotográficos",
+    "curso": "creacion-de-contenidos",
+    "tipo": "juego",
+    "temas": [
+      "fotografía",
+      "composición",
+      "gamificación"
+    ],
+    "descripcion": "Ruleta que asigna a cada equipo un reto de foto para resolver en el campus.",
+    "enlace": "https://claude.ai/artifact/WoS2j8UYbG1xwEkVGpKx8v",
+    "fecha": "2026-10-29"
+  },
+  {
+    "id": "produccion-audiovisual",
+    "titulo": "Producción audiovisual",
+    "curso": "creacion-de-contenidos",
+    "tipo": "presentacion",
+    "temas": [
+      "video",
+      "producción audiovisual",
+      "planos"
+    ],
+    "descripcion": "Clase sobre planos, movimientos de cámara, sonido y etapas de la producción.",
+    "enlace": "https://claude.ai/artifact/5zgcrwUSYx9TgbSAyF61kJ",
+    "fecha": "2026-10-21"
+  },
+  {
+    "id": "del-guion-al-storyboard",
+    "titulo": "Del guion al storyboard",
+    "curso": "creacion-de-contenidos",
+    "tipo": "presentacion",
+    "temas": [
+      "guion",
+      "storyboard",
+      "preproducción",
+      "narrativa"
+    ],
+    "descripcion": "Clase sobre narrativa y preproducción: cómo convertir un guion en un storyboard.",
+    "enlace": "https://claude.ai/artifact/YCjnLkDy32LBEHfqqnTyjE",
+    "fecha": "2026-10-21"
+  },
+  {
+    "id": "sorteo-de-retos-de-produccion",
+    "titulo": "Sorteo de retos de producción",
+    "curso": "creacion-de-contenidos",
+    "tipo": "juego",
+    "temas": [
+      "video",
+      "producción audiovisual",
+      "gamificación"
+    ],
+    "descripcion": "Sorteo que asigna a cada equipo el reto de su pieza audiovisual.",
+    "enlace": "https://claude.ai/artifact/JsE3qohLq1NgoMr6v5fsS9",
+    "fecha": "2026-10-22"
+  },
+  {
+    "id": "de-la-idea-al-video",
+    "titulo": "De la idea al video",
+    "curso": "de-la-idea-al-video",
+    "tipo": "presentacion",
+    "temas": [
+      "microvideos",
+      "IA generativa",
+      "video educativo",
+      "guion"
+    ],
+    "descripcion": "Presentación interactiva de la formación: cada diapositiva se construye sola y los elementos con + abren ventanas.",
+    "enlace": "https://claude.ai/artifact/9qDE3e7mZFPvxkyQLnhWeH",
+    "fecha": "2026-11-07"
+  },
+  {
+    "id": "video-cinematografico-realista-con-ia-de-cero-a-experto",
+    "titulo": "Video cinematográfico realista con IA, de cero a experto",
+    "curso": "de-la-idea-al-video",
+    "tipo": "guia",
+    "temas": [
+      "IA generativa",
+      "video",
+      "prompts",
+      "storyboard"
+    ],
+    "descripcion": "Ruta de aprendizaje para producir video de estilo cinematográfico con herramientas de IA.",
+    "enlace": "https://claude.ai/artifact/94UguGPnEYoGV9TA5LhPJr",
+    "fecha": "2026-11-12"
+  }
+]
